@@ -14,7 +14,7 @@ doit.o: doit.c extract $(CONFIG_HEADER) $(PKG)/djbfft.a
 	-DAUTO_OPT="\"`cat $(PKG)/auto_opt`\"" \
          -c $<
 
-$(PKG)/djbfft.a: $(PKG)
+$(PKG)/djbfft.a: extract
 	(cd $(PKG); make)
 
 extract: $(TARFILE)
