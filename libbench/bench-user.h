@@ -18,9 +18,13 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.22 2001-07-15 01:01:37 stevenj Exp $ */
+/* $Id: bench-user.h,v 1.23 2001-07-15 04:44:21 stevenj Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif                          /* __cplusplus */
 
 /* benchmark program definitions for user code */
 #include "config.h"
@@ -199,5 +203,9 @@ const struct bench_doc bench_doc[] = {				\
 
 #define END_BENCH_DOC				\
      {0, 0}};
+
+#ifdef __cplusplus
+}                               /* extern "C" */
+#endif                          /* __cplusplus */
     
 #endif /* __BENCH_USER_H__ */
