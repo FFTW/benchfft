@@ -1,10 +1,9 @@
-FFTs to add:
+FFTs to possibly add:
 
 pdqfft
 
 NFFT (probably slow, but interesting for academic reasons)
 
-crandall (out-of-order)
 edelblute
 [newer emayer?]
 monro [superseded by statlib?]
