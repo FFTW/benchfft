@@ -193,7 +193,7 @@ if test "$ac_test_CFLAGS" != "set"; then
                     CFLAGS="-newc -w0 -O5 -ansi_alias -ansi_args -fp_reorder -tune host -arch host"
                 fi;;
 
-  hppa*-hpux*)  if test "$CC" = cc; then
+  hppa*-hpux*)  if test "$ac_compiler_gnu" != yes; then
                     CFLAGS="-Ae +O3 +Oall"
                 fi;;
 
