@@ -285,13 +285,27 @@ dnl thus come before the subsequenct checks
 ACX_PROG_CC_MAXOPT(benchfft)
 
 if test "$GCC" = "yes"; then
+    ACX_CHECK_CC_FLAGS(-msse2, msse2, SSE2_CFLAGS="-msse2")
     ACX_CHECK_CC_FLAGS(-faltivec, faltivec, ALTIVEC_CFLAGS="-faltivec",
 	[ACX_CHECK_CC_FLAGS(-maltivec -mabi=altivec, maltivec,
 	    [ALTIVEC_CFLAGS="-maltivec -mabi=altivec -DOS_LINUXPPC"
 	     ALTIVEC_ABIFLAGS="-mabi=altivec"])])
 fi
+AC_SUBST(SSE2_CFLAGS)
 AC_SUBST(ALTIVEC_CFLAGS)
 AC_SUBST(ALTIVEC_ABIFLAGS)
+
+dnl check whether SSE2 works:
+AC_MSG_CHECKING([whether SSE2 instructions work])
+save_CFLAGS=$CFLAGS
+CFLAGS="$CFLAGS $SSE2_CFLAGS"
+AC_RUN_IFELSE([AC_LANG_PROGRAM([],[[
+     __asm__ __volatile__ ("xorpd %xmm0, %xmm0");
+     return 0;
+]])], [have_sse2=yes], [have_sse2=no], [have_sse2=no])
+CFLAGS=$save_CFLAGS
+AC_MSG_RESULT($have_sse2)
+AM_CONDITIONAL(HAVE_SSE2, test "x$have_sse2" = xyes)
 
 dnl override CFLAGS selection when debugging
 if test "${enable_debug}" = "yes"; then
