@@ -77,7 +77,7 @@ void copy_c2c_to(struct problem *p, bench_complex *out)
      }
 }
 
-/* interleaved input and out of order output.  What a f*cking idiot */
+/* interleaved input and out of order output.  What an idiot */
 void copy_c2r(struct problem *p, bench_complex *in)
 {
      unsigned int i;
