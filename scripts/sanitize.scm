@@ -3,7 +3,7 @@
 
 (do ((entry (read) (read)))
     ((eof-object? entry))
-  (if (member (cadr (assoc 'name entry)) verboten)
+  (if (and (assoc 'name entry) (member (cadr (assoc 'name entry)) verboten))
       'nothing-to-do
       (begin   (display "(")
                (newline)
