@@ -89,4 +89,5 @@ dfftpack/Makefile
 green-ffts-2.0/Makefile
 libbench/Makefile
 ooura/Makefile
+singleton/Makefile
 ])

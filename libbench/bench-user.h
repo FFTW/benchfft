@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.13 2001-07-08 23:26:14 athena Exp $ */
+/* $Id: bench-user.h,v 1.14 2001-07-09 01:13:40 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -29,7 +29,7 @@
 #include <stddef.h>
 #endif
 
-typedef double bench_real;
+typedef float bench_real;
 
 typedef struct {
      bench_real re, im;
@@ -80,6 +80,7 @@ extern int power_of_two(unsigned int n);
 extern int problem_power_of_two(struct problem *p, int in_place);
 extern int problem_complex_power_of_two(struct problem *p, int in_place);
 extern int problem_real_power_of_two(struct problem *p, int in_place);
+extern int problem_in_place(struct problem *p);
 extern int log_2(unsigned int n);
 
 extern void aset(bench_real *A, unsigned int n, bench_real x);
@@ -94,6 +95,8 @@ extern void caadd(bench_complex *C, bench_complex *A,
 		  bench_complex *B, unsigned int n);
 extern void casub(bench_complex *C, bench_complex *A, 
 		  bench_complex *B, unsigned int n);
+
+extern int check_prime_factors(unsigned int n, unsigned int maxprime);
 
 /**************************************************************
  * malloc

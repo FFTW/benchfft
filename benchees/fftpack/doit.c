@@ -14,7 +14,8 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return (sizeof(bench_real) == sizeof(float) && p->rank == 1);
+     return (sizeof(bench_real) == sizeof(float) && p->rank == 1
+	  && problem_in_place(p));
 }
 
 void copy_h2c(struct problem *p, bench_complex *out)

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.6 2001-07-07 21:56:10 athena Exp $ */
+/* $Id: problem.c,v 1.7 2001-07-09 01:13:40 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -119,4 +119,9 @@ int problem_real_power_of_two(struct problem *p, int in_place)
 	  return 0;
 
      return problem_power_of_two(p, in_place);
+}
+
+int problem_in_place(struct problem *p)
+{
+     return (p->in == p->out);
 }
