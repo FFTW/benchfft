@@ -18,7 +18,6 @@ AM_CONDITIONAL(SINGLE, test "$ok" = "yes")
 AM_CONDITIONAL(DOUBLE, test "$ok" = "no")
 
 dnl Checks for programs.
-AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CC_STDC
 ACX_PROG_CC_EGCS
@@ -27,6 +26,15 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 AC_PROG_AWK
+
+dnl check for c++, but allow the check to fail
+AC_CHECK_PROGS(CXX, $CCC c++ g++ gcc CC cxx cc++ cl, nosuchprogram)
+if test "$CXX" = nosuchprogram; then
+    CXX=""
+else
+    AC_PROG_CXX
+fi
+
 AC_CHECK_PROG(GZIP, gzip, gzip)
 AC_CHECK_PROG(TAR, tar, tar)
 AC_CHECK_PROG(MKDIR, mkdir, mkdir)
@@ -97,18 +105,16 @@ AC_CHECK_LIB(xlf, sqrt)
 AC_CHECK_LIB(essl, dcft)
 
 dnl Check for DEC Alpha DXML library
-AC_CHECK_LIB(dxml, zfft_apply_)
-AC_CHECK_LIB(for, for_stop)
+AC_CHECK_LIB(dxml, zfft_,
+	[LIBS="-ldxml $LIBS"; have_dxml=yes])
+AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
 
 dnl Check for Sun Performance library:
 dnl AC_CHECK_LIB(SUNWPro_lic, __lsp_rethread_mn_ph_)
 AC_CHECK_LIB(sunmath, acosp)
-AC_CHECK_LIB(F77, ishft_)
-AC_CHECK_LIB(f90, _F90_STOP)
 AC_CHECK_LIB(sunperf, cfftf_,
 	[LIBS="-xlic_lib=sunperf $LIBS"; 
 	AC_DEFINE(HAVE_LIBSUNPERF, 1, [Define if you have the Sun Performance Library])])
-AC_CHECK_LIB(M77, __pow_ri)
 
 dnl Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d,
@@ -122,6 +128,8 @@ AC_CHECK_LIB(mkl32_p3, zfft1d_, [have_mkl32_p3=yes])
 AM_CONDITIONAL(HAVE_MKL32_P3, test -n "$have_mkl32_p3")
 AC_CHECK_LIB(mkl32_p4, zfft1d_, [have_mkl32_p4=yes])
 AM_CONDITIONAL(HAVE_MKL32_P4, test -n "$have_mkl32_p4")
+AC_CHECK_LIB(mkl64_itp, zfft1d_, [have_mkl64_itp=yes])
+AM_CONDITIONAL(HAVE_MKL64_ITP, test -n "$have_mkl64_itp")
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 
@@ -185,6 +193,7 @@ benchees/cwplib/Makefile
 benchees/dfftpack/Makefile
 benchees/djbfft-0.76/Makefile
 benchees/dsp/Makefile
+benchees/dxml/Makefile
 benchees/fftpack/Makefile
 benchees/fxt/Makefile
 benchees/gpfa/Makefile

@@ -1,18 +1,13 @@
-if SINGLE
-HARM=harm.f
-EXTRA_DIST=harmd.f
-else
-HARM=harmd.f
-EXTRA_DIST=harm.f
-endif
-
 if HAVE_F77
 PRG=doit
+noinst_LIBRARIES=libharm.a
 endif
 
 INCLUDES = $(INCLBENCH)
 
-doit_SOURCES=doit.c $(HARM)
-doit_LDADD=$(LIBBENCH) @FLIBS@
+doit_SOURCES=doit.c
+doit_LDADD=libharm.a $(LIBBENCH) @FLIBS@
+
+libharm_a_SOURCES = harm.f harmd.f
 
 include ../Makefile.common
