@@ -1,7 +1,8 @@
 PRG=doit
-PKG=kiss_fft_04
+PKG=kiss_fft_v101
+PKGSUB = $(PKG)/sample_code
 TARFILE=$(PKG).tar.gz
-INCLUDES = $(INCLBENCH) -I$(PKG)
+INCLUDES = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)
 EXTRA_DIST = $(TARFILE)
 
 if SINGLE
@@ -10,15 +11,17 @@ else
 AM_CFLAGS=-Dkiss_fft_scalar=double
 endif
 
+
 doit_SOURCES=doit.c
-nodist_doit_SOURCES=$(PKG)/kiss_fft.c
+nodist_doit_SOURCES=$(PKG)/kiss_fft.c \
+	$(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fft2d.c
 doit_LDADD=$(LIBBENCH)
 
 include ../Makefile.common
 
-$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h: extract-mkdir
+$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h $(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fft2d.c: extract
 
 doit.o: $(PKG)/kiss_fft.h
 
 clean-local::
-	rm -rf benchmark extract-mkdir $(PKG) *.o $(PRG)
+	rm -rf benchmark extract $(PKG) *.o $(PRG)

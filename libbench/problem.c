@@ -18,13 +18,14 @@
  *
  */
 
-/* $Id: problem.c,v 1.14 2003-04-16 13:05:57 athena Exp $ */
+/* $Id: problem.c,v 1.15 2004-01-07 01:57:33 stevenj Exp $ */
 
 #include "config.h"
 #include "bench.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <string.h>
 
 
 /* parse a problem description, return a problem */

@@ -3,10 +3,12 @@
 #include "bench-user.h"
 #include <math.h>
 #include "kiss_fft.h"
+#include "kiss_fftr.h"
+#include "kiss_fft2d.h"
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "0.4")
+BENCH_DOC("version", "1.0.1")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
@@ -27,35 +29,111 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return p->rank == 1 && p->kind == PROBLEM_COMPLEX;
+     return ((p->rank <= 2 && p->kind == PROBLEM_COMPLEX) ||
+	     (p->rank == 1 && p->n[0] % 2 == 0 && p->kind == PROBLEM_REAL));
 }
 
-static void *WORK;
+void copy_h2c(struct problem *p, bench_complex *out)
+{
+     copy_h2c_unpacked(p, out, -1.0);
+}
+                                                                                
+void copy_c2h(struct problem *p, bench_complex *in)
+{
+     copy_c2h_unpacked(p, in, -1.0);
+}
+                                                                                
+void copy_r2c(struct problem *p, bench_complex *out)
+{
+     copy_r2c_packed(p, out);
+}
+                                                                                
+void copy_c2r(struct problem *p, bench_complex *in)
+{
+     copy_c2r_packed(p, in);
+}
+
+static void *cfg;
 
 void setup(struct problem *p)
 {
-     WORK = kiss_fft_alloc(p->n[0], (p->sign == 1));
+     size_t lenmem;
+     if (p->kind == PROBLEM_COMPLEX) {
+	  if (p->rank == 1) {
+	       kiss_fft_alloc(p->n[0], p->sign == 1, 0, &lenmem);
+	       cfg = bench_malloc(lenmem);
+	       kiss_fft_alloc(p->n[0], p->sign == 1, cfg, &lenmem);
+	  }
+	  else {
+	       kiss_fft2d_alloc(p->n[0], p->n[1], p->sign == 1, 0, &lenmem);
+	       cfg = bench_malloc(lenmem);
+	       kiss_fft2d_alloc(p->n[0], p->n[1], p->sign == 1, cfg, &lenmem);
+	  }
+     }
+     else {
+	  kiss_fftr_alloc(p->n[0], p->sign == 1, 0, &lenmem);
+	  cfg = bench_malloc(lenmem);
+	  kiss_fftr_alloc(p->n[0], p->sign == 1, cfg, &lenmem);
+     }
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
-     void *in = p->in;
-     void *work = WORK;
-     
-     if (p->in_place) {
-	  for (i = 0; i < iter; ++i) 
-	       kiss_fft(work, in);
+
+     if (p->kind == PROBLEM_COMPLEX) {
+	  kiss_fft_cpx *in = (kiss_fft_cpx *) p->in;
+	  
+	  if (p->in_place) {
+	       if (p->rank == 1)
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fft(cfg, in, in);
+	       else
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fft2d(cfg, in, in);
+	  }
+	  else {
+	       kiss_fft_cpx *out = (kiss_fft_cpx *) p->out;
+	       if (p->rank == 1)
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fft(cfg, in, out);
+	       else
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fft2d(cfg, in, out);
+	  }
      }
-     else {
-	  void *out = p->out;
-	  for (i = 0; i < iter; ++i) 
-	       kiss_fft_io(work, in, out);
+     else if (p->kind == PROBLEM_REAL) {
+	  if (p->sign == 1) {
+	       kiss_fft_cpx *in = (kiss_fft_cpx *) p->in;
+
+	       if (p->in_place) {
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fftri(cfg, in, (kiss_fft_scalar *) in);
+	       }
+	       else {
+		    kiss_fft_scalar *out = (kiss_fft_scalar *) p->out;
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fftri(cfg, in, out);
+	       }
+	  }
+	  else {
+	       kiss_fft_scalar *in = (kiss_fft_scalar *) p->in;
+
+	       if (p->in_place) {
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fftr(cfg, in, (kiss_fft_cpx *) in);
+	       }
+	       else {
+		    kiss_fft_cpx *out = (kiss_fft_cpx *) p->out;
+		    for (i = 0; i < iter; ++i) 
+			 kiss_fftr(cfg, in, out);
+	       }
+	  }
      }
 }
 
 void done(struct problem *p)
 {
-     free(WORK);
+     free(cfg);
      UNUSED(p);
 }
