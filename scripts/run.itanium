@@ -14,9 +14,9 @@ mkdir $HOSTNAME
 
 ( 
   cd $HOSTNAME
-  ../configure --disable-single --with-f90
+  ../configure --disable-single
   make -k; make -k; make benchmark; make clean
-  ../configure --enable-single --with-f90
+  ../configure --enable-single
   make -k; make -k; make benchmark; make clean
   make collect
 )
