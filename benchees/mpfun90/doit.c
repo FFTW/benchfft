@@ -46,7 +46,7 @@ int can_do(struct problem *p)
 /* We must call mpinix before calling any FFT routines, in order to
    initialize the trig tables. */
 #define MPINIX_F77 F77_FUNC(mpinix, MPINIX)
-extern void MPINIX_F77(int *n);
+extern void MPINIX_F77(unsigned int *n);
 
 /* Bailey complex FFT: */
 #define MPFFT1_F77 F77_FUNC(mpfft1, MPFFT1)
