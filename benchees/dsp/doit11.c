@@ -7,7 +7,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-rader")
 BENCH_DOC("author", "C. M. Rader, after Brenner")
 BENCH_DOC("year", "1979, after Brenner 1967")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("notes", "The backward transform is scaled")
 BENCH_DOC("notes", "DSP Section 1.1")
 END_BENCH_DOC

@@ -7,7 +7,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "bailey")
 BENCH_DOC("author", "David H. Bailey")
 BENCH_DOC("year", "1988")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("email", "dhbailey@lbl.gov")
 BENCH_DOC("url", "http://www.nersc.gov/~dhb/mpdist/mpdist.html")
 BENCH_DOC("url-was-valid-on", "Sat Jul 14 19:40:00 EDT 2001")

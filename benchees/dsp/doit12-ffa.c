@@ -7,7 +7,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-FFA")
 BENCH_DOC("author", "G. D. Bergland and M. T. Dolan")
 BENCH_DOC("year", "1979")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("notes", "Subroutine FFA from DSP Section 1.2")
 BENCH_DOC("notes", "The backward transform is scaled")
 END_BENCH_DOC

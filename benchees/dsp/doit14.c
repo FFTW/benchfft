@@ -7,7 +7,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-singleton")
 BENCH_DOC("author", "Richard C. Singleton")
 BENCH_DOC("year", "1979, derived from Singleton 1968")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("notes", "DSP Section 1.4")
 BENCH_DOC("bibitem", 
 	  "R. C. Singleton, An algorithm for computing the mixed radix fast Fourier transform, IEEE Trans. on Audio and Electroacoustics AU-17, no. 2, p. 93-103 (June, 1969).")

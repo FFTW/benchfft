@@ -8,7 +8,7 @@ BENCH_DOC("name", "fftpack")
 BENCH_DOC("author", "Paul N. Swarztrauber")
 BENCH_DOC("year", "1985")
 BENCH_DOC("version", "4")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "ftp://ftp.netlib.org:/fftpack")
 BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
 BENCH_DOC("bibitem", 

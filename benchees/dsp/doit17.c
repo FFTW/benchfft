@@ -7,7 +7,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-wfta")
 BENCH_DOC("author", "James H. McClellan and Hamid Nawab")
 BENCH_DOC("year", "1979")
-BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("notes", "The backward transform is scaled")
 BENCH_DOC("notes", "DSP Section 1.7")
 BENCH_DOC("notes", "Modified by Matteo Frigo to remove assumption that local variables are SAVEd")

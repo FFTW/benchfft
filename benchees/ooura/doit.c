@@ -14,8 +14,8 @@ BENCH_DOC("copyright",
 	  "Copyright(C) 1996-1999 Takuya OOURA\n"
 	  "You may use, copy, modify this code for any purpose and\n"
 	  "without fee. You may distribute this ORIGINAL package.")
-#ifdef FORTRAN
-  BENCH_DOC("language", "FORTRAN")
+#ifdef Fortran 77
+  BENCH_DOC("language", "Fortran 77")
 #else
   BENCH_DOC("language", "C")
 #endif
@@ -27,7 +27,7 @@ END_BENCH_DOC
 static double *w;
 static int *ip;
 
-#ifdef FORTRAN
+#ifdef Fortran 77
    extern void F77_FUNC(cdft,CDFT)(int *n, int *isgn, double *a, 
 				   int *ip, double *w);
    extern void F77_FUNC(rdft,RDFT)(int *n, int *isgn, double *a, 
