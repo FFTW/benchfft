@@ -76,7 +76,7 @@ switch (p->n[0]) {				\
 
 void setup(struct problem *p)
 {
-     if (sizeof(bench_real) == sizeof(float)) {
+     if (SINGLE_PRECISION) {
 	  if (p->sign == 1) {
 	       CASE(p, fft, fftc4_);
 	  } else {

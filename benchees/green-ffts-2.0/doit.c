@@ -18,7 +18,7 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return (sizeof(bench_real) == sizeof(float) &&
+     return (SINGLE_PRECISION &&
 	     problem_power_of_two(p, 1) &&
 	     ((p->kind == PROBLEM_COMPLEX && p->rank >= 1 && p->rank < 4)
 	      ||

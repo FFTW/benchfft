@@ -44,7 +44,7 @@ static int *ip;
 
 int can_do(struct problem *p)
 {
-     return (sizeof(bench_real) == sizeof(double) &&
+     return (DOUBLE_PRECISION &&
 	     p->rank == 1 &&
 	     (p->n[0] >= 2 || (p->kind == PROBLEM_COMPLEX && p->n[0] >= 1)) &&
 	     problem_power_of_two(p, 1));

@@ -16,17 +16,16 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return (
-	  sizeof(bench_real) == sizeof(float) && 
-	  p->rank == 1 &&
-	  p->kind == PROBLEM_COMPLEX &&
-	  p->in == p->out &&
-	  check_prime_factors(p->n[0], 23) &&
-	  problem_in_place(p)
-	  /* &&  if n has more than one square-free factor, the product of the
-	         square-free factors must be .le. 210
-	     &&  n has at most 15 prime factors
-	  */
+     return (SINGLE_PRECISION &&
+	     p->rank == 1 &&
+	     p->kind == PROBLEM_COMPLEX &&
+	     p->in == p->out &&
+	     check_prime_factors(p->n[0], 23) &&
+	     problem_in_place(p)
+	     /* && if n has more than one square-free factor, the
+		   product of the square-free factors must be .le. 210 
+		&& n has at most 15 prime factors
+	     */
 	  );
 }
 
