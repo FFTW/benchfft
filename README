@@ -25,7 +25,7 @@ USE AT YOUR OWN RISK.
 			       Contents
 
 libbench/
-	-- Timing, benchmarking, accuracy, and other routines used
+	-- Timing, accuracy, utilities, and other routines used
 	   when benchmarking and testing each FFT code.
 
 benchees/
@@ -35,7 +35,7 @@ benchees/
 	   call the FFT routine.  (See "architecture", below.)
 
 scripts/
-	-- Scripts to run the benchmark as to process and plot the
+	-- Scripts to run the benchmark and to process/plot the
 	   resulting data.  (See "running" and "plotting" below.)
 
 ----------------------------------------------------------------------------
