@@ -32,16 +32,21 @@ BENCH_DOC("language", "C++")
 BENCH_DOC("notes", NOTES)
 END_BENCH_DOC
 
+#ifndef RANK_OK
+#  define RANK_OK(r) ((r) == 1)
+#endif
+
 extern "C"
 int can_do(struct problem *p)
 {
      return (DOUBLE_PRECISION &&
-	     p->rank == 1 &&
+	     RANK_OK(p->rank) &&
 	     problem_power_of_two(p, 1));
 }
 
 Complex *x = (Complex *) 0;
-int m;
+int m, m1, N, n0, n1;
+ulong *md;
 
 extern "C"
 void setup(struct problem *p)
@@ -53,17 +58,30 @@ void setup(struct problem *p)
 	  x[i] = Complex(0.0, 0.0);
      }
 #endif
-     m = log_2(n);
+     md = new ulong[p->rank];
+     N = 1;
+     for (i = 0; i < p->rank; ++i) {
+       md[i] = log_2(p->n[p->rank - 1 - i]);
+       N *= p->n[i];
+     }
+     if (p->rank > 0) {
+       n0 = p->n[0];
+       m = md[p->rank - 1 - 0];
+     }
+     if (p->rank > 1) {
+       n1 = p->n[1];
+       m1 = md[p->rank - 1 - 1];
+     }
 }
 
 #ifndef NO_Complex
 extern "C"
 void problem_ccopy_from(struct problem *p, bench_complex *in)
 {
-     int i, n = p->n[0];
+     int i;
      Complex *out = x;
 
-     for (i = 0; i < n; ++i) {
+     for (i = 0; i < N; ++i) {
 	  out[i] = Complex(c_re(in[i]), c_im(in[i]));
      }
 }
@@ -71,10 +89,10 @@ void problem_ccopy_from(struct problem *p, bench_complex *in)
 extern "C"
 void problem_ccopy_to(struct problem *p, bench_complex *out)
 {
-     int i, n = p->n[0];
+     int i;
      Complex *in = x;
 
-     for (i = 0; i < n; ++i) {
+     for (i = 0; i < N; ++i) {
 	  c_re(out[i]) = real(in[i]);
 	  c_im(out[i]) = imag(in[i]);
      }
@@ -83,13 +101,13 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
 void problem_ccopy_from(struct problem *p, bench_complex *in)
 {
      bench_real *x = (bench_real *) p->in;
-     copy_c2ri(in, x, x + p->n[0], p->n[0]);
+     copy_c2ri(in, x, x + N, N);
 }
 
 void problem_ccopy_to(struct problem *p, bench_complex *out)
 {
      bench_real *x = (bench_real *) p->in;
-     copy_ri2c(x, x + p->n[0], out, p->n[0]);
+     copy_ri2c(x, x + N, out, N);
 }
 #endif /* NO_Complex */
 
@@ -99,9 +117,9 @@ void doit(int iter, struct problem *p)
      int i;
      int is = p->sign;
 #ifdef NO_Complex
-     int n = p->n[0];
+     int rank= p->rank;
      bench_real *inr = (bench_real *) p->in;
-     bench_real *ini = inr + n;
+     bench_real *ini = inr + N;
 #endif
 
      for (i = 0; i < iter; ++i) {
@@ -113,6 +131,7 @@ extern "C"
 void done(struct problem *p)
 {
      UNUSED(p);
+     delete md;
 #ifndef NO_Complex
      delete x;
 #endif

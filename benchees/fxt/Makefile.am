@@ -1,5 +1,5 @@
 if HAVE_CXX
-PRG=doit_dif doit_dit doit_split doit_fht doit_4step
+PRG=doit_dif doit_dit doit_split doit_fht doit_4step doit_twodim doit_ndim
 else
 FORTRAN_PRG=
 endif
@@ -32,6 +32,14 @@ doit_fht.o: doit.cc $(LIBFXT)
 doit_4step_SOURCES = doit_4step.cc
 doit_4step_LDADD = $(LIBFXT) $(LIBBENCH)
 doit_4step.o: doit.cc $(LIBFXT)
+
+doit_twodim_SOURCES = doit_twodim.cc
+doit_twodim_LDADD = $(LIBFXT) $(LIBBENCH)
+doit_twodim.o: doit.cc $(LIBFXT)
+
+doit_ndim_SOURCES = doit_ndim.cc
+doit_ndim_LDADD = $(LIBFXT) $(LIBBENCH)
+doit_ndim.o: doit.cc $(LIBFXT)
 
 $(LIBFXT): extract
 	cd $(PKG) && make CXX="@CXX@" CXXFLAGS="@CXXFLAGS@"
