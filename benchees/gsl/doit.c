@@ -38,15 +38,25 @@ END_BENCH_DOC
 #include <gsl/gsl_fft_real_float.h>
 #include <gsl/gsl_fft_halfcomplex_float.h>
 #define C(x) gsl_fft_complex_float_##x
+#define CWv(x) gsl_fft_complex_wavetable_float_##x
+#define CWk(x) gsl_fft_complex_workspace_float_##x
 #define R(x) gsl_fft_real_float_##x
+#define RWv(x) gsl_fft_real_wavetable_float_##x
+#define RWk(x) gsl_fft_real_workspace_float_##x
 #define H(x) gsl_fft_halfcomplex_float_##x
+#define HWv(x) gsl_fft_halfcomplex_wavetable_float_##x
 #else
 #include <gsl/gsl_fft_complex.h>
 #include <gsl/gsl_fft_real.h>
 #include <gsl/gsl_fft_halfcomplex.h>
 #define C(x) gsl_fft_complex_##x
+#define CWv(x) gsl_fft_complex_wavetable_##x
+#define CWk(x) gsl_fft_complex_workspace_##x
 #define R(x) gsl_fft_real_##x
+#define RWv(x) gsl_fft_real_wavetable_##x
+#define RWk(x) gsl_fft_real_workspace_##x
 #define H(x) gsl_fft_halfcomplex_##x
+#define HWv(x) gsl_fft_halfcomplex_wavetable_##x
 #endif
 
 int can_do(struct problem *p)
@@ -65,7 +75,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
      copy_c2h_1d_fftpack(p, in, -1.0);
 }
 
-static void *W;
+static void *Wv = 0, *Wk = 0;
 
 void setup(struct problem *p)
 {
@@ -75,12 +85,14 @@ void setup(struct problem *p)
      n = p->n[0];
  
      if (p->kind == PROBLEM_COMPLEX) {
-	  W = C(alloc)(n);
+	  Wv = CWv(alloc)(n);
+	  Wk = CWk(alloc)(n);
      } else {
 	  if (p->sign == -1)
-	       W = R(alloc)(n);
+	       Wv = RWv(alloc)(n);
 	  else
-	       W = H(alloc)(n);
+	       Wv = HWv(alloc)(n);
+	  Wk = RWk(alloc)(n);
      }
 }
 
@@ -89,23 +101,23 @@ void doit(int iter, struct problem *p)
      int i;
      int n = p->n[0];
      void *in = p->in;
-     void *w = W;
+     void *wv = Wv, *wk = Wk;
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (p->sign == -1) {
 	    for (i = 0; i < iter; ++i) 
-	      C(forward)(in, 1, n, w);
+		 C(forward)(in, 1, n, wv, wk);
 	  } else {
 	    for (i = 0; i < iter; ++i) 
-	      C(backward)(in, 1, n, w);
+		 C(backward)(in, 1, n, wv, wk);
 	  }
      } else {
 	  if (p->sign == -1) {
 	    for (i = 0; i < iter; ++i) 
-	      R(transform)(in, 1, n, w);
+		 R(transform)(in, 1, n, wv, wk);
 	  } else {
 	    for (i = 0; i < iter; ++i) 
-	      H(transform)(in, 1, n, w);
+		 H(transform)(in, 1, n, wv, wk);
 	  }
      }
 }
@@ -114,12 +126,13 @@ void done(struct problem *p)
 {
      UNUSED(p);
      if (p->kind == PROBLEM_COMPLEX) {
-	  C(free)(W);
+	  CWv(free)(Wv);
      } else {
 	  if (p->sign == -1)
-	       R(free)(W);
+	       RWv(free)(Wv);
 	  else
-	       H(free)(W);
+	       HWv(free)(Wv);
+	  RWk(free)(Wk);
      }
 }
 
