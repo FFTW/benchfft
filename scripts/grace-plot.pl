@@ -8,6 +8,7 @@ $plot_worst = 0;
 $skip_missing_styles = 0;
 $use_paper_styles = 0;
 $dxleg = 0;
+$linwid = 1;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
@@ -17,6 +18,7 @@ while (@ARGV) {
     $plot_worst = 1 if ($arg eq "--plot-worst");
     $skip_missing_styles = 1 if ($arg eq "--skip-missing-styles");
     $use_paper_styles = 1 if ($arg eq "--use-paper-styles");
+    $linwid = 3 if ($arg eq "--wide-fftw");
     if ($arg =~ /^--dxleg=.*$/) {
 	($arg, $dxleg) = split(/=/,$arg);
     }
@@ -51,7 +53,7 @@ while (@ARGV) {
 # (The default symbol-size/line-width is 1.0.)
 
 %styles = (
-	   "acml" => "black:solid:1:black:triangle-up:0.7:none",
+	   "acml" => "black:solid:$linwid:black:triangle-up:0.7:none",
 	   "arprec" => "green4:solid:1:green4:circle:0.5:none",
 	   "as83" => "maroon:solid:1:maroon:none:0.5:none",
 	   "as97" => "orange:solid:1:orange:none:0.5:none",
@@ -69,10 +71,10 @@ while (@ARGV) {
 	   "dsp79-singleton" => "yellow:solid:1:yellow:star:0.8:none",
 	   "dsp79-wfta" => "yellow:dash:1:yellow:square:0.5:none",
 	   "dsp79-morris" => "yellow:dotdash:1:yellow:square:0.5:yellow",
-	   "cxml" => "black:solid:1:black:star:0.5:none",
+	   "cxml" => "black:solid:$linwid:black:star:0.5:none",
 	   "emayer" => "turquoise:dot:1.5:turquoise:plus:0.5:none",
 	   "esrfft" => "indigo:dash:1:indigo:square:0.4:indigo",
-	   "essl" => "black:solid:1:black:star:0.5:none",
+	   "essl" => "black:solid:$linwid:black:star:0.5:none",
 	   "ffte" => "indigo:solid:2:indigo:none:0.5:none",
 	   "ffte-sse2" => "indigo:dash:2:indigo:none:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
@@ -86,13 +88,13 @@ while (@ARGV) {
 	   "fftw3_simd" => "black:solid:1:blue:circle:0.5:blue",
 	   "fftw3_simd-impatient" => "black:solid:1:blue:triangle-up:0.5:none",
 	   "fftw3_simd-estimate" => "black:solid:1:blue:circle:0.5:none",
-	   "fftw3" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3" => "blue:solid:$linwid:blue:circle:0.5:blue",
 	   "fftw3-impatient" => "blue:solid:1:blue:triangle-up:0.5:none",
 	   "fftw3-estimate" => "blue:solid:1:blue:circle:0.5:none",
-	   "fftw3 out-of-place" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3 out-of-place" => "blue:solid:$linwid:blue:circle:0.5:blue",
 	   "fftw3-impatient out-of-place" => "blue:solid:1:blue:triangle-up:0.5:none",
 	   "fftw3-estimate out-of-place" => "blue:solid:1:blue:circle:0.5:none",
-	   "fftw3 in-place" => "blue:dot:1:blue:circle:0.3:blue",
+	   "fftw3 in-place" => "blue:dot:$linwid:blue:circle:0.3:blue",
 	   "fftw3-impatient in-place" => "blue:dot:1:blue:triangle-up:0.3:none",
 	   "fftw3-estimate in-place" => "blue:dot:1:blue:circle:0.3:none",
 	   "fftw3-r2r" => "blue:dash:1:blue:square:0.5:blue",
@@ -116,13 +118,13 @@ while (@ARGV) {
 	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
 	   "gsl-radix2-dit" => "violet:dot:1:violet:circle:0.5:none",
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
-	   "hp-mlib" => "black:solid:1:black:star:0.5:none",
+	   "hp-mlib" => "black:solid:$linwid:black:star:0.5:none",
 	   "intel-ipps" => "black:solid:2:black:circle:0.2:black",
-	   "intel-mkl" => "black:solid:1:black:circle:0.5:black",
-	   "intel-mkl-dfti in-place" => "black:dot:1:black:square:0.3:black",
-	   "intel-mkl-dfti out-of-place" => "black:solid:1:black:square:0.5:none",
-	   "intel-mkl-dfti" => "black:solid:1:black:square:0.5:none",
-	   "intel-mkl-f" => "black:dash:1:black:circle:0.5:none",
+	   "intel-mkl" => "black:solid:$linwid:black:circle:0.5:black",
+	   "intel-mkl-dfti in-place" => "black:dot:$linwid:black:square:0.3:black",
+	   "intel-mkl-dfti out-of-place" => "black:solid:$linwid:black:square:0.5:none",
+	   "intel-mkl-dfti" => "black:solid:$linwid:black:square:0.5:none",
+	   "intel-mkl-f" => "black:dash:$linwid:black:circle:0.5:none",
 	   "jmfftc" => "turquoise:solid:2:turquoise:circle:0.5:turquoise",
 	   "kissfft" => "blue:dash:2:blue:none:0.5:none",
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
@@ -163,7 +165,7 @@ while (@ARGV) {
 	   "rmayer-unstable" => "orange:dash:2:orange:diamond:0.5:none",
 	   "rmayer-lookup" => "orange:solid:1:orange:triangle-down:0.5:none",
 	   "sciport" => "turquoise:solid:1:turquoise:triangle-down:0.4:none",
-	   "sgimath" => "black:solid:1:black:star:0.5:none",
+	   "sgimath" => "black:solid:$linwid:black:star:0.5:none",
 	   "singleton" => "red:solid:1:red:triangle-up:0.5:none",
 	   "singleton-3d" => "red:solid:1:red:triangle-up:0.5:none",
 	   "sorensen-ctfftsr" => "indigo:dot:2:indigo:none:0.25:none",
@@ -171,13 +173,13 @@ while (@ARGV) {
 	   "sorensen-sfftfu" => "indigo:dash:1:indigo:x:0.5:none",
 	   "spiral-fft" => "maroon:dot:1:maroon:star:0.5:none",
 	   "spiral-egner-fft" => "maroon:dot:1:maroon:star:0.5:none",
-	   "sunperf" => "black:solid:1:black:star:0.5:none",
+	   "sunperf" => "black:solid:$linwid:black:star:0.5:none",
 	   "temperton" => "grey:solid:2:black:circle:0.25:none",
 	   "teneyck" => "grey:dash:2:black:square:0.5:grey",
 	   "valkenburg" => "cyan:solid:1:cyan:star:0.5:none",
 	   "vbigdsp" => "red:solid:1:red:star:0.5:none",
-	   "vdsp out-of-place" => "black:solid:1:black:star:0.5:none",
-	   "vdsp in-place" => "black:dot:1:black:star:0.5:none",
+	   "vdsp out-of-place" => "black:solid:$linwid:black:star:0.5:none",
+	   "vdsp in-place" => "black:dot:$linwid:black:star:0.5:none",
 	   );
 
 # for publication, use black-and-white only and plot only a selected subset:
