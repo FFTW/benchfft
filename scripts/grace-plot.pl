@@ -87,14 +87,14 @@ while (@ARGV) {
 	   "fftw3-r2r in-place" => "blue:dotdash:1:blue:square:0.4:none",
 	   "fftw3-r2r out-of-place" => "blue:dash:1:blue:square:0.5:blue",
 	   "fftw3-r2r" => "blue:dash:1:blue:square:0.5:blue",
-	   "fxt-4step" => "yellow:solid:2:yellow:circle:0.25:none",
-	   "fxt-matrixfft" => "yellow:solid:2:yellow:circle:0.25:none",
-	   "fxt-dif" => "yellow:solid:1:yellow:circle:0.5:none",
-	   "fxt-dit" => "yellow:solid:1:yellow:circle:0.5:yellow",
-	   "fxt-fht" => "yellow:dot:1:yellow:triangle-up:0.5:none",
-	   "fxt-ndim" => "yellow:dash:1:yellow:star:1:none",
-	   "fxt-split" => "yellow:dotdotdash:1:yellow:square:0.7:none",
-	   "fxt-twodim" => "yellow:dot:1:yellow:diamond:0.7:none",
+	   "fxt-4step" => "yellow:solid:2:grey:circle:0.25:none",
+	   "fxt-matrixfft" => "yellow:solid:2:grey:circle:0.25:none",
+	   "fxt-dif" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-dit" => "grey:solid:1:yellow:grey:0.5:yellow",
+	   "fxt-fht" => "grey:solid:1:grey:triangle-up:0.7:yellow",
+	   "fxt-ndim" => "grey:solid:1:yellow:star:1:none",
+	   "fxt-split" => "grey:solid:1:grey:square:0.7:yellow",
+	   "fxt-twodim" => "grey:solid:1:grey:diamond:0.7:yellow",
 	   "goedecker" => "brown:solid:2:brown:circle:0.25:none",
 	   "gpfa" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
@@ -372,6 +372,8 @@ else {
     $legtop = 1.0 if ($legtop > 1.0);
     print "@ legend 0.98,$legtop\n";
 }
+print "@ legend box linestyle 0\n";
+
 print "@ view xmin 0.11\n"; # make space for the legend
 print "@ view xmax 0.96\n"; # make space for the legend
 
