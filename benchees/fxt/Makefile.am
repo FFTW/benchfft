@@ -42,6 +42,6 @@ doit_ndim_LDADD = $(LIBFXT) $(LIBBENCH)
 doit_ndim.o: doit.cc $(LIBFXT)
 
 $(LIBFXT): extract
-	cd $(PKG) && make CXX="@CXX@" CXXFLAGS="@CXXFLAGS@"
+	cd $(PKG) && $(MAKE) CXX="@CXX@" CXXFLAGS="@CXXFLAGS@"
 
 include ../Makefile.common
