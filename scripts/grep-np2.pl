@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 
-# print only power-of-two problems
+# print only non-power-of-two problems
 
 while (<>) {
   my ($nam, $prob, $siz, $mflops, $tim) = split / /;
