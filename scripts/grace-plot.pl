@@ -128,6 +128,7 @@
 	   "sunperf" => "black:solid:1:black:star:0.5:none",
 	   "temperton" => "grey:solid:2:black:circle:0.25:none",
 	   "teneyck" => "grey:dash:2:black:square:0.5:grey",
+	   "valkenburg" => "cyan:solid:1:cyan:star:0.5:none",
 	   "vdsp" => "black:solid:1:black:star:0.5:none",
 	   "vDSP" => "black:solid:1:black:star:0.5:none",
 	   );

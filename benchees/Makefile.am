@@ -2,7 +2,8 @@ SUBDIRS = arprec athfft bloodworth burrus cwplib dfftpack djbfft-0.76	\
 dsp dxml emayer essl fftpack fftw2 fxt goedecker gpfa green-ffts-2.0	\
 gsl harm imsl intel-mkl jmfft krukar mfft mixfft monnier mpfun77	\
 mpfun90 nag napack nr ooura qft ransom rmayer sciport sgimath		\
-singleton sorensen spiral-fft statlib sunperf temperton teneyck vdsp
+singleton sorensen spiral-fft statlib sunperf temperton teneyck		\
+valkenburg vdsp
 
 EXTRA_DIST = Makefile.common
 
