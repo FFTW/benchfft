@@ -39,7 +39,12 @@ int can_do(struct problem *p)
 	  );
 }
 
+#ifdef BENCHFFT_SINGLE
 #define HARM_F77 F77_FUNC(harm,HARM)
+#else
+#define HARM_F77 F77_FUNC(harmd,HARMD)
+#endif
+
 extern void HARM_F77(bench_complex *, int *, int *, bench_real *,
 		     int *, int *);
 
