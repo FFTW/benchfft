@@ -1,5 +1,5 @@
 #define NAME "fxt-matrixfft"
-#define NOTES "Four-step algorithm, real/imag arrays datatype, uses FHT for sub-FFTs."
+#define NOTES "Four-step algorithm, uses FHT for sub-FFTs."
 
 #define NO_Complex 1
 

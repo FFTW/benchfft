@@ -26,4 +26,7 @@ BENCH_DOC("copyright",
 BENCH_DOC("language", "C++")
 BENCH_DOC("notes", "We use whatever CXXFLAGS are selected by fxt's makefile")
 BENCH_DOC("notes", NOTES)
+#ifdef NO_Complex
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
+#endif
 END_BENCH_DOC

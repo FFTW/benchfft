@@ -1,5 +1,5 @@
 #define NAME "fxt-twodim"
-#define NOTES "Real/imag arrays datatype, uses FHT for 1d FFTs."
+#define NOTES "Uses FHT for 1d FFTs."
 
 #define NO_Complex 1
 
