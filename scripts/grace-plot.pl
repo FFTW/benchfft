@@ -85,6 +85,7 @@ while (@ARGV) {
 	   "fftw3-impatient in-place" => "blue:dot:1:blue:triangle-up:0.3:none",
 	   "fftw3-estimate in-place" => "blue:dot:1:blue:circle:0.3:none",
 	   "fxt-4step" => "yellow:solid:2:yellow:circle:0.25:none",
+	   "fxt-matrixfft" => "yellow:solid:2:yellow:circle:0.25:none",
 	   "fxt-dif" => "yellow:solid:1:yellow:circle:0.5:none",
 	   "fxt-dit" => "yellow:solid:1:yellow:circle:0.5:yellow",
 	   "fxt-fht" => "yellow:dot:1:yellow:triangle-up:0.5:none",
@@ -102,6 +103,7 @@ while (@ARGV) {
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
 	   "intel-ipps" => "black:solid:2:black:circle:0.2:black",
 	   "intel-mkl" => "black:solid:1:black:circle:0.5:black",
+	   "intel-mkl-dfti" => "black:solid:1:black:square:0.5:none",
 	   "intel-mkl-f" => "black:dash:1:black:circle:0.5:none",
 	   "jmfftc" => "turquoise:solid:2:turquoise:circle:0.5:turquoise",
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
@@ -345,6 +347,8 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     $transform = $transforms{$norm_val};
     ($nam, $prob) = split(/:/,$transform);
     $namleg = $nam;
+
+    $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
 
     # check if we have already output a relation of this transform
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
