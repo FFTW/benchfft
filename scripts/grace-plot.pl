@@ -226,6 +226,7 @@ while (<>) {
       ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
       $val = $mflops;
   }
+  next if ($val == 0.0 || $val eq "");
   $tot = $siz;
   $tot =~ s/x/*/g;
   $tot = eval($tot);
