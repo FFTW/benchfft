@@ -331,6 +331,7 @@ benchees/esrfft/Makefile
 benchees/essl/Makefile
 benchees/ffte/Makefile
 benchees/fftpack/Makefile
+benchees/fftreal/Makefile
 benchees/fftw2/Makefile
 benchees/fftw3/Makefile
 benchees/fxt/Makefile
