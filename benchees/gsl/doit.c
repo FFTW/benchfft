@@ -18,7 +18,7 @@ static const char *mkvers(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "gsl-mixed-radix")
-BENCH_DOC("package", "The GNU Scientific Library (GSL)")
+BENCH_DOC("package", "GNU Scientific Library (GSL)")
 BENCH_DOC("author", "Brian Gough")
 BENCH_DOC("year", "2002")
 BENCH_DOC("url", "http://sources.redhat.com/gsl")
