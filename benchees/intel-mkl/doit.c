@@ -46,7 +46,13 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
      }
 }
 
+#ifdef HAVE_MKL_FFT_H
+#include <mkl_fft.h>
+#endif
+
+#ifdef HAVE_MKL_FFTC_LN_H
 #include <mkl_fftc_ln.h>
+#endif
 
 static void *WSAVE;
 

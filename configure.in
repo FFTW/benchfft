@@ -115,6 +115,8 @@ AC_CHECK_LIB(mkl32_p3, zfft1d_, [have_mkl32_p3=yes])
 AM_CONDITIONAL(HAVE_MKL32_P3, test -n "$have_mkl32_p3")
 AC_CHECK_LIB(mkl32_p4, zfft1d_, [have_mkl32_p4=yes])
 AM_CONDITIONAL(HAVE_MKL32_P4, test -n "$have_mkl32_p4")
+AC_CHECK_HEADERS(mkl_fft.h)
+AC_CHECK_HEADERS(mkl_fftc_ln.h)
 
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
