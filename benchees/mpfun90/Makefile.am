@@ -12,7 +12,6 @@ LOCAL_COPIES = mpfun90.f90
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-nodist_doit_SOURCES=mpfun90.f
 doit_LDADD=$(LIBBENCH) @F90LIBS@
 
 # We need to extract just modules mpfuna and mpfung, and "unmodulize"
@@ -27,6 +26,6 @@ mpfun90.f90: extract
 	@PATCH@ $@ $(srcdir)/mpfun90.patch
 
 mpfun90.o: mpfun90.f90
-	$(F90) @F90FLAGS@ -c $<
+	$(F90) @F90FLAGS@ -c mpfun90.f90
 
 include ../Makefile.common
