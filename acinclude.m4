@@ -85,15 +85,12 @@ AC_SUBST(OCAMLLDFLAGS)
 AC_DEFUN(ACX_CHECK_CC_FLAGS,
 [
 AC_REQUIRE([AC_PROG_CC])
-ac_test_CFLAGS=${CFLAGS+set}
 ac_save_CFLAGS=$CFLAGS
 CFLAGS="$1"
 AC_CACHE_CHECK(whether $CC accepts $1, ac_$2,
                [AC_COMPILE_IFELSE([AC_LANG_PROGRAM()], [ac_$2=yes], 
 						       [ac_$2=no])])
-if test "$ac_test_CFLAGS" = set; then
-  CFLAGS=$ac_save_CFLAGS
-fi
+CFLAGS=$ac_save_CFLAGS
 if test "$ac_$2" = yes; then
 	:
 	$3
