@@ -4,6 +4,7 @@ PRG=doit
 endif
 endif
 
+EXTRA_DIST=fft_radix8_fwd_bench_rc.f90 fft_radix8_rev_bench_rc.f90
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES = doit.c
