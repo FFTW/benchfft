@@ -299,6 +299,14 @@ if test -n "$F90"; then
 		[Fortran 90 compiler name and flags])
 fi
 
+
+case $host_cpu in
+	i*86*) PFFTW_ARCH=pentium ;;
+	*sparc*) PFFTW_ARCH=ultrasparc ;;
+esac
+AC_SUBST(PFFTW_ARCH)
+AM_CONDITIONAL(HAVE_PFFTW_ARCH, test -n "$PFFTW_ARCH")
+
 dnl TODO
 ACX_GCC_ALIGNS_STACK()
 
@@ -346,6 +354,7 @@ benchees/napack/Makefile
 benchees/nr/Makefile
 benchees/numutils/Makefile
 benchees/ooura/Makefile
+benchees/pfftw/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
 benchees/rmayer/Makefile
