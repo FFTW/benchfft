@@ -33,7 +33,7 @@ static const char *mkcc(void)
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "fftw3")
 BENCH_DOCF("version", mkvers)
-BENCH_DOCF("fftw-compiled-by", mkcc)
+BENCH_DOCF("compiled-by", mkcc)
 END_BENCH_DOC
 
 int can_do(struct problem *p)
