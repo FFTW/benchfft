@@ -14,4 +14,6 @@ extract: $(TARFILE)
 pfafft.o: $(PKG)/pfafft.c
 	$(COMPILE) -c -o $@ $(PKG)/pfafft.c
 
-doit.o: extract
+$(PKG)/pfafft.c $(PKG)/cwp.h: extract
+
+doit.o: $(PKG)/cwp.h
