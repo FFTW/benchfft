@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.30 2001-07-24 05:39:46 stevenj Exp $ */
+/* $Id: bench-user.h,v 1.31 2001-07-28 16:39:24 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -59,6 +59,7 @@ struct problem {
      unsigned int size;  /* total size of input = PROD n[i] */
      unsigned int phys_size;  /* total size of allocated input */
      int sign;
+     int in_place;
      void *in;
      void *out;
      void *userinfo; /* user can store whatever */
@@ -69,7 +70,7 @@ extern void setup(struct problem *p);
 extern void doit(int iter, struct problem *p);
 extern void done(struct problem *p);
 
-extern void problem_alloc(struct problem *p, int in_place);
+extern void problem_alloc(struct problem *p);
 extern void problem_free(struct problem *p);
 extern void problem_zero(struct problem *p);
 extern void problem_ccopy_from(struct problem *p, bench_complex *in);

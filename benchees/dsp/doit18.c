@@ -22,11 +22,10 @@ int can_do(struct problem *p)
 	     p->n[0] <= 1024);
 }
 
-void problem_alloc(struct problem *p, int in_place)
+void problem_alloc(struct problem *p)
 {
      /* the routine expects arguments in common block AA */
      extern char F77_FUNC(aa, AA)[];
-     UNUSED(in_place);
 
      p->in = p->out = F77_FUNC(aa, AA);
 }

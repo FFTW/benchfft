@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.9 2001-07-24 19:38:46 athena Exp $ */
+/* $Id: problem.c,v 1.10 2001-07-28 16:39:24 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -32,7 +32,6 @@
 struct problem *problem_parse(const char *s)
 {
      int n;
-     int in_place = 0;
      struct problem *p;
 
      p = bench_malloc(sizeof(struct problem));
@@ -41,14 +40,15 @@ struct problem *problem_parse(const char *s)
      p->sign = -1;
      p->in = 0;
      p->out = 0;
+     p->in_place = 0;
      p->userinfo = 0;
      p->rank = 0;
      p->size = 1;      /* the product of 0 things is 1 */
 
  L1:
      switch (tolower(*s)) {
-	 case 'i': in_place = 1; ++s; goto L1;
-	 case 'o': in_place = 0; ++s; goto L1;
+	 case 'i': p->in_place = 1; ++s; goto L1;
+	 case 'o': p->in_place = 0; ++s; goto L1;
 	 case 'f': 
 	 case '-': p->sign = -1; ++s; goto L1;
 	 case 'b': 
@@ -79,7 +79,6 @@ struct problem *problem_parse(const char *s)
 	  goto L2;
      }
 
-     problem_alloc(p, in_place);
      return p;
 }
 
@@ -95,11 +94,14 @@ int problem_power_of_two(struct problem *p, int in_place)
 {
      unsigned int i;
 
-     for (i = 0; i < p->rank; ++i)
+     for (i = 0; i < p->rank; ++i) {
+	  if (p->n[i] == 1)
+	       return 0; /* most routines choke for N=1 */
 	  if (!(power_of_two(p->n[i])))
 	       return 0;
+     }
 
-     return (in_place ? (p->in == p->out) : (p->in != p->out));
+     return (in_place ? p->in_place : !p->in_place);
 }
 
 int problem_complex_power_of_two(struct problem *p, int in_place)
@@ -120,5 +122,5 @@ int problem_real_power_of_two(struct problem *p, int in_place)
 
 int problem_in_place(struct problem *p)
 {
-     return (p->in == p->out);
+     return (p->in_place);
 }

@@ -127,7 +127,7 @@ void doit(int iter, struct problem *p)
      } else {
 	  if (p->sign == -1) {
 	       void *out = p->out;
- 	       char place = in == out ? 'i' : 'o';
+ 	       char place = p->in_place ? 'i' : 'o';
 	       int lda = 2 * (1 + m / 2);
 	       int ldb = lda / 2;
 	       for (i = 0; i < iter; ++i) {

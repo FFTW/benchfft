@@ -1,6 +1,6 @@
 /* not worth copyrighting */
 
-/* $Id: allocate.c,v 1.3 2001-07-13 13:39:22 athena Exp $ */
+/* $Id: allocate.c,v 1.4 2001-07-28 16:39:24 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -11,12 +11,12 @@
  * This is the default routine that can be overridden by the user in
  * complicated cases.
  */
-void problem_alloc(struct problem *p, int in_place)
+void problem_alloc(struct problem *p)
 {
      if (p->kind == PROBLEM_COMPLEX) {
 	  p->in = bench_malloc(p->size * sizeof(bench_complex));
 	  
-	  if (in_place)
+	  if (p->in_place)
 	       p->out = p->in;
 	  else
 	       p->out = bench_malloc(p->size * sizeof(bench_complex));
@@ -31,7 +31,7 @@ void problem_alloc(struct problem *p, int in_place)
 
 	  p->in = bench_malloc(s * sizeof(bench_real));
 	  
-	  if (in_place)
+	  if (p->in_place)
 	       p->out = p->in;
 	  else
 	       p->out = bench_malloc(s * sizeof(bench_real));

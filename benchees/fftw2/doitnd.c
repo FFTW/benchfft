@@ -38,7 +38,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 void copy_r2c(struct problem *p, bench_complex *out)
 {
-     if (p->in == p->out)
+     if (problem_in_place(p))
 	  copy_r2c_unpacked(p, out);	  
      else
 	  copy_r2c_packed(p, out);
@@ -46,7 +46,7 @@ void copy_r2c(struct problem *p, bench_complex *out)
 
 void copy_c2r(struct problem *p, bench_complex *in)
 {
-     if (p->in == p->out)
+     if (problem_in_place(p))
 	  copy_c2r_unpacked(p, in);
      else
 	  copy_c2r_packed(p, in);
