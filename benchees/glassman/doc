@@ -1,0 +1,67 @@
+
+from an email by Wayne Torrey [WAPHYLZ(AT)aol.com]:
+
+<cite>
+I happened upon your FFT page and noticed that you have a generalized radix
+FFT algorithm attributed to Glassman (listed as unknown).  I don't know if it
+is of any interest to you, but I can cite a reference by him which describes
+the algorithm.  It appeared in the IEEE Transactions on Computers in the
+February, 1970 issue.  It was written by J. A. Glassman who is listed as
+working at Hughes Aircraft in Canoga Park California.  The title of the paper
+is "A Generalization of the Fast Fourier Transform" and describes the
+calculation of a n-point FFT where n is not restricted to be a power of 2.
+He provides a Fortran listing of the algorithm as well as the mathematical
+development of it.
+
+I used this algorithm and a modification of the code to implement a piece of
+test equipment back in the early 1970's when I was working for IBM.  I have
+never seen another paper by Glassman, but I recently came across a reference
+to his generalized radix algorithm which provides an alternate (and perhaps
+simpler) derivation.  Here is the reference:
+ 
+W. E. Ferguson, Jr., "A simple derivation of Glassman general-n fast
+Fourier transform," Comput. and Math. with Appls., vol. 8, no. 6, pp.
+401-411, 1982.
+Also, in Report AD-A083 811, NTIS, Dec. 1979.
+
+Wayne Torrey
+</cite>
+
+Thanks go to for Wayne Torrey for this piece of information !
+
+
+----------
+
+
+TITLE: A generalization of the fast Fourier transform
+AUTHOR: Glassman,-J.-A.
+AUTHOR AFFILIATION: Hughes Aircraft Co., Canoga Park, CA, USA
+SOURCE: IEEE-Transactions-on-Computers. Feb. 1970; c-19(2): 105-16
+COUNTRY OF PUBLICATION: USA
+RECORD TYPE: Journal-Paper
+LANGUAGE: English
+
+ABSTRACT: A procedure for factoring of the N*N matrix representing the
+discrete fourier transform is presented which does not produce
+shuffled data. Exactly one factor is produced for each factor of N,
+resulting in a fast Fourier transform valid for any N. The factoring
+algorithm enables the fast Fourier transform to be implemented in
+general with four nested loops if N is a power of two. No special
+logical organization, such as binary indexing, is required to
+unshuffle data. Included are two FORTRAN programs, one which writes
+the equations of the matrix factors employing the four key loops, and
+one which implements the algorithm in a fast Fourier transform for N a
+power of two. The algorithm is shown to be most efficient for N power
+of two.
+
+DESCRIPTORS: complete-computer-programs; fast-Fourier-transforms
+CLASSIFICATIONS: C4120-Functional-analysis-numerical-analysis
+CLASSIFICATION CODES: C4; C4120; C41
+SUBFILE: Computers-and-Control-Technology
+INTERNATIONAL STANDARD SERIAL NUMBERS (Translation and Original): 0018-9340
+CODEN: ITCOB4
+PUBLICATION YEAR: 1970
+ACCESSION NUMBER: 113804
+SORT KEY: 0018-93400c-19000002000105
+COPYRIGHT STATEMENT: Copyright 1970, IEE
+UPDATE CODE: 1970003

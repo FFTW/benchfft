@@ -1,0 +1,165 @@
+--- glassman-fft.f	Wed Jun 23 09:17:42 1999
++++ fft.f	Sun Nov 17 22:23:09 2002
+@@ -31,23 +31,23 @@
+       IMPLICIT NONE
+ 
+       LOGICAL*1
+-     |  INU      ! Flag for calling SUBROUTINE SPCPFT( arguments ).
+-     | ,SCALE    ! .TRUE.=inverse transform -- .FALSE.=forward transform
++     |  INU      
++     | ,SCALE    
+ 
+       INTEGER*4
+-     |  A        ! After    \
+-     | ,B        ! Before    >  Factors of N.
+-     | ,C        ! Current  /
+-     | ,N        ! Length of the array to be transformed.
+-     | ,I        ! DO loop index.
+-     | ,ISIGN    ! sign of transform
++     |  A        
++     | ,B        
++     | ,C        
++     | ,N        
++     | ,I        
++     | ,ISIGN    
+ 
+       REAL*4
+-     |  INTERP   ! interpolation factor
++     |  INTERP   
+ 
+       COMPLEX*8
+-     |  U(*)            !  Vector to be transformed
+-     | ,WORK(*)         !  Working storage.
++     |  U(*)            
++     | ,WORK(*)         
+ 
+ *     Initialize parameters.
+ 
+@@ -163,25 +163,25 @@
+       IMPLICIT NONE
+ 
+       INTEGER*4
+-     |  ISIGN           !  ISIGN of the Fourier transform.
+-     | ,A               !  After   \
+-     | ,B               !  Before   >  Factors of N.
+-     | ,C               !  Current /
+-     | ,IA              !  \
+-     | ,IB              !   \  DO loop indicies.
+-     | ,IC              !   /
+-     | ,JCR             !  /
+-     | ,JC              !  Dummy index.
++     |  ISIGN           
++     | ,A               
++     | ,B               
++     | ,C               
++     | ,IA              
++     | ,IB              
++     | ,IC              
++     | ,JCR             
++     | ,JC              
+ 
+       REAL*8
+      |  ANGLE
+ 
+       COMPLEX*8
+-     |  UIN(B,C,A)      !  Input vector.
+-     | ,UOUT(B,A,C)     !  Output vector.
+-     | ,DELTA           !  Fourier transform kernel.
+-     | ,OMEGA           !  Multiples of exp( i TWOPI ).
+-     | ,SUM             !  Dummy register for addition for UOUT(B,A,C)
++     |  UIN(B,C,A)      
++     | ,UOUT(B,A,C)     
++     | ,DELTA           
++     | ,OMEGA           
++     | ,SUM             
+ 
+ * ALGORITHM
+ * ---------
+@@ -240,87 +240,3 @@
+       END
+ 
+ 
+-#ifdef FFT_TEST
+-
+-      program test
+-
+-      implicit none
+-
+-      integer*4 nmax
+-      parameter( nmax=10000 )
+-
+-      complex*8 input(nmax)
+-      complex*8 scratch(nmax)
+-
+-      real*4 a , b
+-
+-      integer*4 i
+-      integer*4 n
+-
+-      n = 0
+- 1000 format( 2e25.15 )
+-      do i=1, nmax
+-
+-         read( 5 ,1000 ,end=10 ) input(i)
+-         n = n + 1
+-
+-      end do
+-
+-   10 continue
+-
+-      call spcfft( input ,n ,0 ,scratch ,1.0 )
+-
+-      do i=1 ,n
+-
+-         write( 6 ,1000 ) real(input(i)) ,imag(input(i))
+-
+-      end do
+-
+-      call spcfft( input ,n ,1 ,scratch ,1.0 )
+-
+-      do i=1 ,n
+-
+-         write( 6 ,1000 ) real(input(i)) ,imag(input(i))
+-
+-      end do
+-
+-      end
+-
+-#endif
+-#ifdef TEST
+-
+-      program test
+-
+-      implicit none
+-
+-      real*4 data_in(10000)
+-      real*4 data_out(10000)
+-
+-      integer*4 i
+-      integer*4 m
+-      integer*4 n
+-
+-
+-      read( 5 ,* ) m ,n
+-
+-      do i=1,m
+-         read( 5 ,* ,end=10 ) data_in(i)
+-      end do
+-
+-   10 continue
+-
+-      write( 6 ,* ) '#input'
+-      do i=1 ,m
+-         write( 6 ,'(2f25.10)' ) real(i-1)/(m) ,data_in(i)
+-      end do
+-
+-      call resample( data_in ,m ,data_out ,n )
+-
+-      write( 6 ,* ) '#output'
+-      do i=1 ,n
+-         write( 6 ,'(2f25.10)' ) real(i-1)/(n) ,data_out(i)
+-      end do
+-
+-      end
+-
+-#endif

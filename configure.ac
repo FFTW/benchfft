@@ -295,6 +295,7 @@ benchees/essl/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
 benchees/fxt/Makefile
+benchees/glassman/Makefile
 benchees/goedecker/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
