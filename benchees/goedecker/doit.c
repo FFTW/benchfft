@@ -3,6 +3,8 @@
 #include "bench-user.h"
 #include <math.h>
 
+#define FFTCACHE 16
+
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "goedecker")
 BENCH_DOC("author", "Stefan Goedecker")
@@ -18,6 +20,8 @@ BENCH_DOC("notes",
 	  "This routine was downloaded as part of the ABINIT-3.1.3 software.\n")
 BENCH_DOC("notes",
 	  "Slightly modified for the benchmark.  See sgfft.tar.gz for the original code.")
+BENCH_DOC("notes",
+	  "The fftcache parameter is set to " #FFTCACHE ".  This may be wrong on your system.")
 END_BENCH_DOC
 
 #define SG_FFT_ F77_FUNC_(sg_fft, SG_FFT)
@@ -45,7 +49,7 @@ void doit(int iter, struct problem *p)
      int n1 = p->n[2];
      int n2 = p->n[1];
      int n3 = p->n[0];
-     int fftcache = 16;
+     int fftcache = FFTCACHE;
      void *in = p->in;
      void *out = p->out;
      double sign = p->sign;
