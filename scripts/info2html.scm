@@ -60,7 +60,63 @@
 
 (define packages (group-by-package (uniquify (readthem))))
 
-(define (htmlize name common-entries specific-entries)
-  'todo)
+(define (writeln . l)
+  (for-each display l)
+  (newline))
 
+(define (htmlize package-name common-entries specific-entries)
+  (begin (htmlize-one package-name common-entries)
+	 (if (not (every? null? specific-entries))
+	     (begin
+	       (writeln "<ul>")
+	       (for-each (lambda (e) (if (not (null? e)) (htmlize-one #f e)))
+			 specific-entries)
+	       (writeln "</ul>")))))
+
+(define (assoc* sym l)
+  (filter (lambda (x) (eq? sym (car x))) l))
+
+(define (htmlize-one name entries)
+  (let ((name (or name 
+		  (and (assoc 'name entries) (cadr (assoc 'name entries)))
+		  "unknown")))
+    (writeln "<li> " name)
+    (writeln "<ul>")
+    (let ((url (assoc 'url entries))
+	  (url-was-valid-on (assoc 'url-was-valid-on entries))
+	  )
+      (if url
+	  (begin
+	    (writeln "<li>URL: <a href=\"" (cadr url) "\">" (cadr url) "</a>")
+	    (if url-was-valid-on
+		(writeln "(was valid on " (cadr url-was-valid-on) ")"))))
+      (maybe-plural "Author" "Authors" 'author entries)
+      (maybe "Year" 'year entries)
+      (maybe "Version" 'version entries)
+      (maybe-plural "Language" "Languages" 'language entries)
+      (for-each (lambda (note) (writeln "<li>Note: " (cadr note)))
+		(assoc* 'notes entries))
+      )
+    (writeln "</ul>") ))
+
+(define (maybe name sym entries)
+  (let ((x (assoc sym entries)))
+    (if x (writeln "<li>" name ": " (cadr x)))))
+
+(define (maybe-plural singular plural sym entries)
+  (let ((things (assoc* sym entries)))
+    (cond ((= (length things) 1) 
+	   (apply writeln "<li>" singular ": " (map cadr things)))
+	  ((> (length things) 1)
+	   (apply writeln "<li>" plural ": " 
+		  (cadr (car things))
+		  (map (lambda (x) (string-append ", " (cadr x)))
+		       (cdr things)))))))
+
+(writeln "<html><body>")
+(writeln "<ul>")
 (for-each do-package packages)
+(writeln "</ul>")
+(writeln "</body></html>")
+
+
