@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.10 2001-07-08 15:26:01 athena Exp $ */
+/* $Id: verify.c,v 1.11 2001-07-08 20:22:34 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -92,6 +92,23 @@ static void mkreal(bench_complex *A, unsigned int n)
      }
 }
 
+/* make array hermitian */
+static void mkhermitian(bench_complex *A, unsigned int n)
+{
+     unsigned int i;
+
+     c_im(A[0]) = 0.0;
+
+     for (i = 1; 2 * i < n; ++i) {
+	  c_re(A[n - i]) = c_re(A[i]);
+	  c_im(A[n - i]) = -c_im(A[i]);
+     }
+     
+     if (2 * i == n) {
+	  c_im(A[i]) = 0.0;
+     }
+}
+
 
 /* C = A - B */
 static void asub(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
@@ -121,6 +138,29 @@ static void arol(bench_complex *B, bench_complex *A,
      }
 }
 
+static void aphase_shift(bench_complex *B, bench_complex *A,
+			 unsigned int n, 
+			 unsigned int n_before, unsigned int n_after,
+			 bench_real sign)
+{
+     unsigned int j, jb, ja;
+     const double k2pi = 6.2831853071795864769252867665590057683943388;
+     double twopin;
+     twopin = k2pi / n;
+
+     for (jb = 0; jb < n_before; ++jb)
+	  for (j = 0; j < n; ++j) {
+	       double s = sign * sin(j * twopin);
+	       double c = cos(j * twopin);
+
+	       for (ja = 0; ja < n_after; ++ja) {
+		    unsigned int index = (jb * n + j) * n_after + ja;
+		    c_re(B[index]) = c_re(A[index]) * c - c_im(A[index]) * s;
+		    c_im(B[index]) = c_re(A[index]) * s + c_im(A[index]) * c;
+	       }
+	  }
+}
+
 static void acmp(bench_complex *A, bench_complex *B, unsigned int n, 
 		 const char *test)
 {
@@ -128,7 +168,7 @@ static void acmp(bench_complex *A, bench_complex *B, unsigned int n,
      if (d > tolerance()) {
 	  fflush(stdout);
 	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
-	  BENCH_ASSERT(((void)"failure in Ergun's verification procedure\n",0));
+	  BENCH_ASSERT(((void)"failure in Ergun's verification procedure",0));
      }
 }
 
@@ -224,19 +264,19 @@ static void impulse(struct problem *p,
      }
 }
 
+enum { TIME_SHIFT, FREQ_SHIFT };
 
-static void time_shift(struct problem *p,
-		       bench_complex *inA,
-		       bench_complex *inB,
-		       bench_complex *outA,
-		       bench_complex *outB,
-		       bench_complex *tmp,
-		       unsigned int rounds)
+static void tf_shift(struct problem *p,
+		     bench_complex *inA,
+		     bench_complex *inB,
+		     bench_complex *outA,
+		     bench_complex *outB,
+		     bench_complex *tmp,
+		     unsigned int rounds,
+		     int which_shift)
 {
      double sign;
      unsigned int n, n_before, n_after, dim;
-     double twopin;
-     const double k2pi = 6.2831853071795864769252867665590057683943388;
      unsigned int i;
 
      n = p->size;
@@ -251,34 +291,29 @@ static void time_shift(struct problem *p,
 	  unsigned int n_cur = p->n[dim];
 
 	  n_after /= n_cur;
-	  twopin = k2pi / n_cur;
 
 	  for (i = 0; i < rounds; ++i) {
-	       unsigned int j, jb, ja;
-
 	       arand(inA, n);
-	       if (p->kind == PROBLEM_REAL) 
-		    mkreal(inA, n);
 
-	       arol(inB, inA, n_cur, n_before, n_after);
-	       do_fft(p, inA, outA);
-	       do_fft(p, inB, outB);
+	       if (which_shift == TIME_SHIFT) {
+		    if (p->kind == PROBLEM_REAL) 
+			 mkreal(inA, n);
 
-	       for (jb = 0; jb < n_before; ++jb)
-		    for (j = 0; j < n_cur; ++j) {
-			 double s = sign * sin(j * twopin);
-			 double c = cos(j * twopin);
+		    arol(inB, inA, n_cur, n_before, n_after);
+		    do_fft(p, inA, outA);
+		    do_fft(p, inB, outB);
+		    aphase_shift(tmp, outB, n_cur, n_before, n_after, sign);
+		    acmp(tmp, outA, n, "time shift");
+	       } else {
+		    if (p->kind == PROBLEM_REAL) 
+			 mkhermitian(inA, n);
 
-			 for (ja = 0; ja < n_after; ++ja) {
-			      unsigned int index = 
-				   (jb * n_cur + j) * n_after + ja;
-			      c_re(tmp[index]) = c_re(outB[index]) * c 
-				   - c_im(outB[index]) * s;
-			      c_im(tmp[index]) = c_re(outB[index]) * s
-				   + c_im(outB[index]) * c;
-			 }
-		    }
-	       acmp(tmp, outA, n, "time shift");
+		    aphase_shift(inB, inA, n_cur, n_before, n_after, -sign);
+		    do_fft(p, inA, outA);
+		    do_fft(p, inB, outB);
+		    arol(tmp, outB, n_cur, n_before, n_after);
+		    acmp(tmp, outA, n, "freq shift");
+	       }
 	  }
 
 	  n_before *= n_cur;
@@ -304,12 +339,10 @@ static void do_verify(struct problem *p, unsigned int rounds)
      linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
      impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
 
-     if (p->kind == PROBLEM_COMPLEX || p->sign == -1) 
-	  time_shift(p, inA, inB, outA, outB, tmp, rounds);
-
-     if (p->kind == PROBLEM_COMPLEX || p->sign == +1) {
-	  /* TODO: frequency shift */
-     }
+     if (p->kind == PROBLEM_COMPLEX || p->sign == -1)
+	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, TIME_SHIFT);
+     if (p->kind == PROBLEM_COMPLEX || p->sign == 1)
+	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, FREQ_SHIFT);
 
      bench_free(tmp);
      bench_free(outC);

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.11 2001-07-08 15:26:01 athena Exp $ */
+/* $Id: bench-user.h,v 1.12 2001-07-08 20:22:34 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -29,7 +29,7 @@
 #include <stddef.h>
 #endif
 
-typedef double bench_real;
+typedef float bench_real;
 
 typedef struct {
      bench_real re, im;
@@ -55,20 +55,13 @@ extern void setup(struct problem *p);
 extern void doit(int iter, struct problem *p);
 extern void done(struct problem *p);
 
-/* default routine in allocate.c */
 extern void problem_alloc(struct problem *p, int in_place);
-
-/* default routine in deallocate.c */
 extern void problem_free(struct problem *p);
-
-/* default routine in zero.c */
 extern void problem_zero(struct problem *p);
-
-/* default routine in ccopy-from.c */
 extern void problem_ccopy_from(struct problem *p, bench_complex *in);
-
-/* default routine in ccopy-to.c */
+extern void after_problem_ccopy_from(struct problem *p, bench_complex *in);
 extern void problem_ccopy_to(struct problem *p, bench_complex *out);
+extern void after_problem_ccopy_to(struct problem *p, bench_complex *out);
 
 void copy_c2r(struct problem *p, bench_complex *in);
 void copy_c2h(struct problem *p, bench_complex *in);

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.2 2001-07-06 18:50:05 athena Exp $ */
+/* $Id: timer.c,v 1.3 2001-07-08 20:22:34 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>
@@ -70,7 +70,24 @@ static double elapsed(mytime t1, mytime t0)
 /*
  * Routines to calibrate the slow timer.  Derived from Larry McVoy's
  * lmbench, distributed under the GNU General Public License.
- */
+ *
+ *
+
+From: "Staelin, Carl" <staelin@exch.hpl.hp.com>
+To: Larry McVoy <lm@bitmover.com>, athena@fftw.org, stevenj@alum.mit.edu
+Date: Sat, 7 Jul 2001 23:50:49 -0700 
+
+Matteo,
+
+You have my permission to use the enough_duration, 
+duration, time_N, find_N, test_time, and 
+compute_enough from lib_timing.c routines
+under the LGPL license.  You may also use the
+BENCH* macros from bench.h under the LGPL
+if you find them useful.
+
+*/
+
 
 typedef int TYPE;
 static const double tmin_try = 1.0e-6; /* seconds */

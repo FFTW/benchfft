@@ -1,5 +1,5 @@
 /* not worth copyrighting */
-/* $Id: ccopy-to.c,v 1.3 2001-07-07 22:34:23 athena Exp $ */
+/* $Id: ccopy-to.c,v 1.4 2001-07-08 20:22:34 athena Exp $ */
 #include "bench.h"
 
 /* default routine, can be overridden by user */
@@ -16,4 +16,5 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
 	       copy_r2c(p, out);
 	  }
      }
+     after_problem_ccopy_to(p, out);
 }
