@@ -1,12 +1,12 @@
-if SINGLE
-if HAVE_FFTW3F
-PRG=doit doitr
-FFTW3_LIBS=@LFFTW3F@
-endif
-else
+if DOUBLE
 if HAVE_FFTW3
 PRG=doit doitr
 FFTW3_LIBS=@LFFTW3@
+endif
+else
+if HAVE_FFTW3F
+PRG=doit doitr
+FFTW3_LIBS=@LFFTW3F@
 endif
 endif
 

@@ -16,10 +16,10 @@ doit_LDADD=$(LIBBENCH)
 if INFO_ONLY
 $(PKG)/vBigDSP.c: extract
 	rm -f $@
-	echo "void FFTComplex(void){} void FFT2DComplex(void){} void FFTRealForward(void){} void FFT2DRealForward(void){} void FFTRealInverse(void){} void FFT2DRealInverse(void){}" > $@
+	echo "void FFTComplex(void){} void FFT2DComplex(void){} void FFTRealForward(void){} void FFT2DRealForward(void){} void FFTRealInverse(void){} void FFT2DRealInverse(void){} void ShutdownFFT(void) {}" > $@
 else
 $(PKG)/vBigDSP.c: extract
-doit.o: extract
 endif
+doit.o: extract
 
 include ../Makefile.common
