@@ -17,7 +17,8 @@ while (@ARGV) {
 # which FFT is fairly arbitrary, but we should try to make FFTs that are
 # close in performance visually distinct on the graph.  We also make
 # FFTs of related heritage the same color.  Jokes wherever possible:
-# bloodworth is red, green is green, cross is a plus, etcetera.
+# bloodworth is red, green is green, cross is a plus, etcetera.  Vendor
+# codes are in black.
 
 # A style consists of (: separated):
 #   line-color:line-style:line-width
