@@ -21,6 +21,7 @@ BENCH_DOC("notes",
 	  "Part of Apple's vecLib, this library is designed for use with "
 	  "the AltiVec SIMD instructions on a PowerPC G4.")
 BENCH_DOC("notes", "The forward real transform is scaled by 2.")
+BENCH_DOC("notes", "Real data are split into even/odd arrays.")
 BENCH_DOC("url", "http://developer.apple.com/techpubs/macosx/CoreTechnologies/vDSP/vDSP.html")
 BENCH_DOC("url-was-valid-on", "Tue Jul 17 23:01:08 EDT 2001")
 BENCH_DOC("bibitem",
