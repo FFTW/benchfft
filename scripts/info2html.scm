@@ -175,10 +175,8 @@
 (define (compare-packages p1 p2)
   (string-ci<? (string-downcase (car p1)) (string-downcase (car p2))))
 
-(writeln "<html><body>")
 (writeln "<ul>")
 (for-each do-package (sort packages compare-packages))
 (writeln "</ul>")
-(writeln "</body></html>")
 
 
