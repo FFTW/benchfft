@@ -210,6 +210,8 @@ AC_CHECK_LIB(mkl_vml_itp, zfft1d_, [have_mkl_vml_itp=yes])
 AM_CONDITIONAL(HAVE_MKL_VML_ITP, test -n "$have_mkl_vml_itp")
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
+AC_CHECK_HEADERS(mkl_blas.h)
+AC_CHECK_LIB(mkl_def, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
 
 dnl Check for the GNU Scientific Library
 SAVE_LIBS=$LIBS

@@ -3,8 +3,25 @@
 #include "bench-user.h"
 #include <math.h>
 
+#if HAVE_MKL_BLAS_H
+#include <mkl_blas.h>
+#endif
+
+static const char *mkvers(void)
+{
+#if HAVE_MKLGETVERSIONSTRING
+     static char buf[60];
+     MKLGetVersionString(buf, 60);
+     return buf;
+#else
+     return "unknown"
+#endif
+}
+
+
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "backward transform is scaled")
 END_BENCH_DOC
 
