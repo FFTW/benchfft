@@ -7,6 +7,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("package", "FXT")
 BENCH_DOC("version", "26-August-2002")
 BENCH_DOC("author", "J&ouml;rg Arndt")
 BENCH_DOC("year", "2002")
