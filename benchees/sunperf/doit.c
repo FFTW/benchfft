@@ -36,9 +36,9 @@ END_BENCH_DOC
 #define FFTI cffti
 #define FFTF cfftf
 #define FFTB cfftb
-#define RFFTI sffti
-#define RFFTF sfftf
-#define RFFTB sfftb
+#define RFFTI rffti
+#define RFFTF rfftf
+#define RFFTB rfftb
 #else
 #define FFTI zffti
 #define FFTF zfftf
