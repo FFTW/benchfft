@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.17 2003-04-16 13:05:57 athena Exp $ */
+/* $Id: bench-main.c,v 1.18 2003-04-29 22:34:23 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -57,10 +57,9 @@ static struct option long_options[] =
   {0, no_argument, 0, 0}
 };
 
-static void check_alignment(void)
+static void check_alignment(double *x)
 {
-     double x;
-     BENCH_ASSERT((((long)&x) & 0x7) == 0);
+     BENCH_ASSERT((((long)x) & 0x7) == 0);
 }
 
 static int bench_main1(int argc, char *argv[])
@@ -74,7 +73,7 @@ static int bench_main1(int argc, char *argv[])
      int index;
      char *short_options = make_short_options(long_options);
 
-     check_alignment();
+     check_alignment(&tol);
 
      report = report_verbose; /* default */
      verbose = paranoid = 0;
