@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.14 2003-04-16 13:05:57 athena Exp $ */
+/* $Id: report.c,v 1.15 2003-04-16 19:10:59 stevenj Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -80,6 +80,7 @@ void report_mflops(const struct problem *p, double *t, int st)
 void report_time(const struct problem *p, double *t, int st)
 {
      struct stats s;
+     UNUSED(p);
      mkstat(t, st, &s);
      ovtpvt("(%g %g %g %g)\n", s.min, s.avg, s.max, s.median);
 }
