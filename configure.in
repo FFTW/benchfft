@@ -253,6 +253,7 @@ benchees/Makefile
 scripts/Makefile
 
 benchees/athfft/Makefile
+benchees/bloodworth/Makefile
 benchees/burrus/Makefile
 benchees/cwplib/Makefile
 benchees/dfftpack/Makefile
