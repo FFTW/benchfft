@@ -271,6 +271,7 @@ benchees/gsl/Makefile
 benchees/harm/Makefile
 benchees/intel-mkl/Makefile
 benchees/krukar/Makefile
+benchees/mfft/Makefile
 benchees/mixfft/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
