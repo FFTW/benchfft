@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.3 2001-07-08 20:22:34 athena Exp $ */
+/* $Id: timer.c,v 1.4 2001-07-23 14:43:04 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>
@@ -89,7 +89,7 @@ if you find them useful.
 */
 
 
-typedef int TYPE;
+typedef char *TYPE;
 static const double tmin_try = 1.0e-6; /* seconds */
 static const double tmax_try = 1.0;    /* seconds */
 static const double tolerance = 0.0025;
