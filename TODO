@@ -1,0 +1,33 @@
+FFTs to add:
+
+bloodworth
+burrus
+crandall
+edelblute
+emayer
+[newer emayer?]
+sciport
+gsl
+mfft
+monnier
+monro
+napack
+NR
+QFT
+rmayer
+sorensen
+valkenburg
+ESSL
+SCSL
+IMSL [if I can find a machine with it]
+NAG  [ditto]
+athfft
+pfftw
+ASCII Red
+
+Something by Goedecker (e.g. from ABINIT source?)
+
+files in ~fftw/more-ffts:
+JMFFT ? 
+trainoff ?
+o-hallaron ?
