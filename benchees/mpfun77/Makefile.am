@@ -4,7 +4,7 @@ endif
 
 PKG = f77-ieee
 TARFILE = $(PKG).tar.gz
-EXTRA_DIST = $(TARFILE)
+EXTRA_DIST = $(TARFILE) mpfun.patch
 LOCAL_COPIES = mpfun.f
 
 INCLUDES = $(INCLBENCH)
