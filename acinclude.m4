@@ -199,17 +199,19 @@ if test "$ac_test_CFLAGS" != "set"; then
 
    *-aix*)
 	if test "$CC" = cc -o "$CC" = xlc; then
-        	CFLAGS="-O3 -qansialias -w"
-		echo "*******************************************************"
-		echo "*  You seem to have AIX and the IBM compiler.  It is  *"
-		echo "*  recommended for best performance that you use:     *"
-		echo "*                                                     *"
-		echo "*    CFLAGS=-O3 -qarch=xxx -qtune=xxx -qansialias -w  *"
-		echo "*                      ^^^        ^^^                 *"
-		echo "*  where xxx is pwr2, pwr3, 604, or whatever kind of  *"
+                ACX_CHECK_CC_FLAGS(-qarch=auto -qtune=auto, qarch_auto,
+                        CFLAGS="-O3 -qansialias -w -qarch=auto -qtune=auto",
+                        CFLAGS="-O3 -qansialias -w"
+                echo "*******************************************************"
+                echo "*  You seem to have AIX and the IBM compiler.  It is  *"
+                echo "*  recommended for best performance that you use:     *"
+                echo "*                                                     *"
+                echo "*    CFLAGS=-O3 -qarch=xxx -qtune=xxx -qansialias -w  *"
+                echo "*                      ^^^        ^^^                 *"
+                echo "*  where xxx is pwr2, pwr3, 604, or whatever kind of  *"
                 echo "*  CPU you have.  (Set the CFLAGS environment var.    *"
                 echo "*  and re-run configure.)  For more info, man cc.     *"
-		echo "*******************************************************"
+                echo "*******************************************************")
         fi;;
   esac
 
