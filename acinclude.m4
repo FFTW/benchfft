@@ -242,7 +242,7 @@ if test "$ac_test_CFLAGS" != "set"; then
   CPU_FLAGS=""
   CPU_OPTIM=""
   if test "$GCC" = "yes"; then
-	  CPU_OPTIM=-O6
+	  CPU_OPTIM=-O3
 	  dnl try to guess correct CPU flags, at least for linux
 	  case "${host_cpu}" in
 	  i586*)  ACX_CHECK_CC_FLAGS(-mcpu=pentium,cpu_pentium,
