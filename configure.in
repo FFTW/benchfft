@@ -254,6 +254,7 @@ benchees/mpfun90/Makefile
 benchees/ooura/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
+benchees/sorensen/Makefile
 benchees/sunperf/Makefile
 benchees/temperton/Makefile
 benchees/vdsp/Makefile

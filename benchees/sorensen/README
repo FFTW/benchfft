@@ -1,0 +1,15 @@
+This directory contains various codes attributed to Henrik Sorensen.
+
+Subroutine CFFTSR is buggy at line 70: because I1 ranges up to N+J and
+J>=2, the routine overflows the input array.  We keep the routine for
+the historical record but do not benchmark it.  The same remark
+applies to subroutine ICSRFFT.
+
+Subroutine SFFTFU was modified by 
+<a href="mailto:kifowit@math.niu.edu">Steve Kifowit</a>, 1997
+
+
+Matteo Frigo
+Thu Jul 26 10:14:53 EDT 2001
+
+
