@@ -54,7 +54,12 @@ doitr_split_SOURCES = doitr_split.cc
 doitr_split_LDADD = $(LIBFXT) $(LIBBENCH)
 doitr_split.o: doitr.cc doit-doc.h $(LIBFXT)
 
+if CXX_GNU
 $(LIBFXT): extract
 	cd $(PKG) && (unset CXXFLAGS; $(MAKE))
+else
+$(LIBFXT): extract
+	cd $(PKG) && $(MAKE)
+endif
 
 include ../Makefile.common

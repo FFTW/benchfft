@@ -44,6 +44,8 @@ else
     AC_PROG_CXX
 fi
 
+AM_CONDITIONAL(CXX_GNU, test "x$ac_cv_cxx_compiler_gnu" = "xyes")
+
 AC_CHECK_PROG(GZIP, gzip, gzip)
 AC_CHECK_PROG(TAR, tar, tar)
 AC_CHECK_PROG(MKDIR, mkdir, mkdir)
