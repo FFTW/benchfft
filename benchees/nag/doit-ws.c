@@ -1,6 +1,6 @@
 #include "bench-user.h"
 
-#define NAME "nag"
+#define NAME "nag-workspace"
 #define NOTE "Uses c06fcf and friends (extra workspace supplied)."
 
 #define C06FCF F77_FUNC(c06fcf,C06FCF)

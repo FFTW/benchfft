@@ -1,6 +1,6 @@
 if DOUBLE
 if HAVE_NAG
-PRG = doit doit_ip doit_mult doit_cmplx
+PRG = doit_ws doit_ip doit_mult doit_cmplx
 endif
 endif
 
@@ -8,8 +8,8 @@ EXTRA_DIST = doit.c
 
 INCLUDES = $(INCLBENCH)
 
-doit_SOURCES = doit-ws.c
-doit_LDADD = @LIBNAG@ $(LIBBENCH) @FLIBS@
+doit_ws_SOURCES = doit-ws.c
+doit_ws_LDADD = @LIBNAG@ $(LIBBENCH) @FLIBS@
 doit-ws.o: doit.c
 
 doit_ip_SOURCES = doit-ip.c
