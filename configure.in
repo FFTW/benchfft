@@ -110,10 +110,11 @@ AC_CHECK_LIB(fftw, fftw_create_plan_specific,
 	[LFFTW="-lfftw"; have_fftw2=yes])
 AC_CHECK_LIB(rfftw, rfftw_create_plan_specific,
 	[LFFTW="-lrfftw $LFFTW"; have_rfftw2=yes],[],$LFFTW)
-AC_CHECK_HEADERS(fftw.h)
-AC_CHECK_HEADERS(rfftw.h)
+AC_CHECK_HEADERS(fftw.h, [have_fftw_h=yes])
+AC_CHECK_HEADERS(rfftw.h, [have_rfftw_h=yes])
 AC_SUBST(LFFTW)
-AM_CONDITIONAL(HAVE_FFTW2, test -n "$have_fftw2" -a -n "$have_rfftw2")
+AM_CONDITIONAL(HAVE_FFTW2, 
+	[test -n "$have_fftw2" -a -n "$have_rfftw2" -a -n "$have_fftw_h" -a -n "$have_rfftw_h"])
 AC_CHECK_LIB(sfftw, fftw_create_plan_specific,
 	[LSFFTW="-lsfftw"; have_sfftw2=yes])
 AC_CHECK_LIB(srfftw, rfftw_create_plan_specific,
