@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.23 2001-08-18 01:04:04 stevenj Exp $ */
+/* $Id: verify.c,v 1.24 2001-08-18 04:49:11 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -103,12 +103,8 @@ static void assign_conj(bench_complex *Ac, bench_complex *A,
 			unsigned int rank, unsigned int *n, int size)
 {
      if (rank == 0) {
-	  if (Ac == A)
-	       c_im(*Ac) = 0.0;
-	  else {
-	       c_re(*Ac) = c_re(*A);
-	       c_im(*Ac) = -c_im(*A);
-	  }
+	  c_re(*Ac) = c_re(*A);
+	  c_im(*Ac) = -c_im(*A);
      }
      else {
 	  unsigned int i, n0 = n[0];
