@@ -141,9 +141,10 @@ for place in $PLACE; do
            fi
 
 	   if test "$speed" = yes; then
-               time="`$program --report-benchmark --time-min $time_min --speed $problem` "
-           else
+               time="`$program --report-benchmark --time-min $time_min --speed $problem` " || 
                time="FAILED FAILED"
+           else
+               time=""
            fi
 
            echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"

@@ -11,4 +11,10 @@ autoconf
 
 rm -f config.cache
 
-./configure $*
+# Configure in separate directory so as not to mess source code
+(
+    rm -rf OBJ
+    mkdir OBJ
+    cd OBJ
+    ../configure $*
+)

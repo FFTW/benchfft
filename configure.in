@@ -231,6 +231,7 @@ libbench/Makefile
 benchees/Makefile
 scripts/Makefile
 
+benchees/burrus/Makefile
 benchees/cwplib/Makefile
 benchees/dfftpack/Makefile
 benchees/djbfft-0.76/Makefile
