@@ -81,3 +81,8 @@ sh $sd/standard-plots.sh data/${name}.speed |while read ps; do
 done
 
 rm -rf data
+
+cat >> index.html <<EOF
+</body>
+</html>
+EOF
