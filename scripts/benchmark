@@ -11,6 +11,7 @@ Usage: $0 [OPTION] program
   -h, --help         print this help, then exit
   --verify           verify each transform before timing
   --verify-only      verify each transform but do not time
+  -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
 "
@@ -22,6 +23,7 @@ verify="no"
 speed="yes"
 maxn=1048576
 time_min=""
+keep_going="no"
 
 for option
 do
@@ -38,6 +40,7 @@ do
   case $option in
 
     --help | --h* | -h ) echo "$usage"; exit 0 ;;
+    --keep-going | -k) keep_going=yes; shift;;
     --verify) verify=yes; shift;;
     --verify-only) verify=yes; speed=no; shift;;
     --time-min) prev=time_min; shift;;
@@ -124,8 +127,12 @@ for place in $PLACE; do
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
            if test "$verify" = "yes"; then
-               $program --verify $problem || exit 1
-	       echo "${name} ${precision}${reality}${place}${dir} ${size} ok"
+               { $program --verify $problem &&
+                echo "${name} ${precision}${reality}${place}${dir} ${size} ok"; } || 
+               { 
+                 echo "${name} ${precision}${reality}${place}${dir} ${size} bad"; 
+	         test "$keep_going" = "yes" || exit 1; 
+	       }
            fi
 
 	   if test "$speed" = yes; then
