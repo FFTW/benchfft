@@ -16,7 +16,7 @@ extract: $(TARFILE)
 
 # remove Macintosh newlines and C++-style  comments
 dxpose.c dxpose.h fft2d.c fft2d.h fftext.c fftext.h fftlib.c fftlib.h matlib.c matlib.h: extract
-	tr '\r' '\n' <$(PKG)/fft\ libraries/$@ | sed -e 's/\/\/.*$$//g' >$@
+	(tr '\r' '\n' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
 
 # explicit dependencies because source file need to be created
 dxpose.o: dxpose.c dxpose.h
