@@ -7,7 +7,7 @@ LIBFFTW=$(PKG)/src/libfftw.a
 if SINGLE
 CONFIGURE=./configure --enable-single
 else
-CONFIGURE=./configure --enable-single
+CONFIGURE=./configure
 endif
 
 doit_SOURCES=doit.c
