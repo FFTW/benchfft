@@ -231,6 +231,14 @@ while (<>) {
   }
 }
 
+# Compute x value (tick number) from sorted sizes:
+@sizes = sort { $tots{$a} - $tots{$b} } keys(%tots);
+$ticknum = 0;
+foreach $siz (@sizes) {
+    $xval{$siz} = $ticknum;
+    $ticknum = $ticknum + 1;
+}
+
 # Make sure results are sorted in increasing order of xval, or grace will
 # connect the dots strangely:
 foreach $transform (keys %results) {
@@ -349,16 +357,12 @@ else {
 print "@ xaxis ticklabel angle 270\n";
 print "@ xaxis ticklabel type spec\n";
 print "@ xaxis tick type spec\n";
-@sizes = sort { $tots{$a} - $tots{$b} } keys(%tots);
 print "@ xaxis tick spec ", 1 + $#sizes, "\n";
 $labelsize = 30.0 / (1 + $#sizes);
 if ($labelsize < 1.0) { print "@ xaxis ticklabel char size $labelsize\n"; }
-$ticknum = 0;
 foreach $siz (@sizes) {
-    print "@ xaxis tick major $ticknum, $ticknum\n";
+    print "@ xaxis tick major $ticknum, $xval{$siz}\n";
     print "@ xaxis ticklabel $ticknum, \"",$siz,"\"\n";
-    $xval{$siz} = $ticknum;
-    $ticknum = $ticknum + 1;
 }
 
 # Find the y axis scale from $best_val:
