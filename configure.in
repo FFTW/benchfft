@@ -99,15 +99,23 @@ dnl Check for installed libraries
 dnl check for pthreads library (required by MKL below)
 AC_CHECK_LIB(pthread, pthread_attr_init)
 
-dnl Checks for ESSL libraries: -lessl -lxlf -lxlf90 -lxlfutil
-AC_CHECK_LIB(xlf90, sqrt)
-AC_CHECK_LIB(xlf, sqrt)
+dnl Check for FFTW 2
+AC_CHECK_LIB(fftw, fftw_create_plan_specific,
+	[LIBS="-lfftw $LIBS"; have_fftw2=yes])
+AC_CHECK_LIB(rfftw, rfftw_create_plan_specific,
+	[LIBS="-lrfftw $LIBS"; have_rfftw2=yes])
+AC_CHECK_HEADERS(fftw.h)
+AC_CHECK_HEADERS(rfftw.h)
+AM_CONDITIONAL(HAVE_FFTW2, test -n "$have_fftw2" -a -n "$have_rfftw2")
+
+dnl Check for ESSL libraries
 AC_CHECK_LIB(essl, dcft)
 
 dnl Check for DEC Alpha DXML library
 AC_CHECK_LIB(dxml, zfft_,
 	[LIBS="-ldxml $LIBS"; have_dxml=yes])
 AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
+AC_CHECK_HEADERS(dxmldef.h)
 
 dnl Check for Sun Performance library:
 dnl AC_CHECK_LIB(SUNWPro_lic, __lsp_rethread_mn_ph_)
@@ -120,6 +128,7 @@ dnl Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d,
 	[LIBS="-lcomplib.sgimath $LIBS"; have_sgimath=yes])
 AM_CONDITIONAL(HAVE_SGIMATH, test -n "$have_sgimath")
+AC_CHECK_HEADERS(fft.h)
 
 dnl Check for Intel's MKL library:
 AC_CHECK_LIB(mkl32_def, zfft1d_, [have_mkl32_def=yes])
@@ -195,6 +204,7 @@ benchees/djbfft-0.76/Makefile
 benchees/dsp/Makefile
 benchees/dxml/Makefile
 benchees/fftpack/Makefile
+benchees/fftw2/Makefile
 benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile

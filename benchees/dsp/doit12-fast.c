@@ -22,12 +22,12 @@ int can_do(struct problem *p)
 
 void copy_h2c(struct problem *p, bench_complex *out)
 {
-     copy_h2c_1d_unpacked(p, out, -1.0);
+     copy_h2c_unpacked(p, out, -1.0);
 }
 
 void copy_c2h(struct problem *p, bench_complex *in)
 {
-     copy_c2h_1d_unpacked(p, in, -1.0);
+     copy_c2h_unpacked(p, in, -1.0);
 }
 
 void copy_r2c(struct problem *p, bench_complex *out)

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.27 2001-07-19 20:57:00 stevenj Exp $ */
+/* $Id: bench-user.h,v 1.28 2001-07-22 18:23:54 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -78,9 +78,15 @@ extern void problem_ccopy_to(struct problem *p, bench_complex *out);
 extern void after_problem_ccopy_to(struct problem *p, bench_complex *out);
 
 void copy_c2r(struct problem *p, bench_complex *in);
-void copy_c2h(struct problem *p, bench_complex *in);
+void copy_c2r_packed(struct problem *p, bench_complex *in);
+void copy_c2r_unpacked(struct problem *p, bench_complex *in);
 void copy_r2c(struct problem *p, bench_complex *out);
+void copy_r2c_unpacked(struct problem *p, bench_complex *out);
+void copy_r2c_packed(struct problem *p, bench_complex *out);
+
+void copy_c2h(struct problem *p, bench_complex *in);
 void copy_h2c(struct problem *p, bench_complex *out);
+
 void copy_c2h_1d_packed(struct problem *p, bench_complex *in,
 			bench_real sign_of_r2h_transform);
 void copy_h2c_1d_packed(struct problem *p, bench_complex *out, 
@@ -89,13 +95,17 @@ void copy_h2c_1d_fftpack(struct problem *p, bench_complex *out,
 			 bench_real sign_of_r2h_transform);
 void copy_c2h_1d_fftpack(struct problem *p, bench_complex *in,
 			 bench_real sign_of_r2h_transform);
-void copy_c2h_1d_unpacked(struct problem *p, bench_complex *in,
-			  bench_real sign_of_r2h_transform);
-void copy_h2c_1d_unpacked(struct problem *p, bench_complex *out, 
-			  bench_real sign_of_r2h_transform);
+void copy_c2h_unpacked(struct problem *p, bench_complex *in,
+		       bench_real sign_of_r2h_transform);
+void copy_h2c_unpacked(struct problem *p, bench_complex *out, 
+		       bench_real sign_of_r2h_transform);
 void copy_c2h_1d_unpacked_ri(struct problem *p, bench_complex *in,
 			     bench_real sign_of_r2h_transform);
 void copy_h2c_1d_unpacked_ri(struct problem *p, bench_complex *out, 
+			     bench_real sign_of_r2h_transform);
+void copy_h2c_1d_halfcomplex(struct problem *p, bench_complex *out, 
+			     bench_real sign_of_r2h_transform);
+void copy_c2h_1d_halfcomplex(struct problem *p, bench_complex *in,
 			     bench_real sign_of_r2h_transform);
 void copy_ri2c(bench_real *rin, bench_real *rout, bench_complex *out,
 	       unsigned int n);
