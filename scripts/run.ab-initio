@@ -5,12 +5,13 @@ HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
-CPPFLAGS='-I/homea/athena/fftw-2.1.3/fftw -I/homea/athena/fftw-2.1.3/rfftw -I/opt/intel/mkl/include' 
-LDFLAGS='-L/homea/athena/fftw-2.1.3/fftw/.libs -L/homea/athena/fftw-2.1.3/rfftw/.libs -L/opt/intel/mkl/lib/32' 
+CPPFLAGS='-I/homea/athena/mkl/include -I/homea/athena/fftw-2.1.3/fftw -I/homea/athena/fftw-2.1.3/rfftw -I/opt/intel/mkl/include' 
+LDFLAGS='-L/homea/athena/mkl/lib/32 -L/homea/athena/fftw-2.1.3/fftw/.libs -L/homea/athena/fftw-2.1.3/rfftw/.libs -L/opt/intel/mkl/lib/32' 
 MAKE=make
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
 
+LD_LIBRARY_PATH=/home/athena/mkl/lib/32; export LD_LIBRARY_PATH
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
