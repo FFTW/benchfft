@@ -8,14 +8,14 @@ case $problem in
     dco*) echo -n "double-precision complex, out-of-place" ;;
     sci*) echo -n "single-precision complex, in-place" ;;
     sco*) echo -n "single-precision complex, out-of-place" ;;
-    dri*) echo -n "double-precision real-input, in-place" ;;
-    dro*) echo -n "double-precision real-input, out-of-place" ;;
-    sri*) echo -n "single-precision real-input, in-place" ;;
-    sro*) echo -n "single-precision real-input, out-of-place" ;;
+    dri*) echo -n "double-precision real-data, in-place" ;;
+    dro*) echo -n "double-precision real-data, out-of-place" ;;
+    sri*) echo -n "single-precision real-data, in-place" ;;
+    sro*) echo -n "single-precision real-data, out-of-place" ;;
     dcx*) echo -n "double-precision complex" ;;
     scx*) echo -n "single-precision complex" ;;
-    drx*) echo -n "double-precision real-input" ;;
-    srx*) echo -n "single-precision real-input" ;;
+    drx*) echo -n "double-precision real-data" ;;
+    srx*) echo -n "single-precision real-data" ;;
 esac
 
 rank=$2
