@@ -332,7 +332,6 @@ scripts/Makefile
 
 benchees/acml/Makefile
 benchees/arprec/Makefile
-benchees/athfft/Makefile
 benchees/bloodworth/Makefile
 benchees/burrus/Makefile
 benchees/cross/Makefile
@@ -372,7 +371,6 @@ benchees/napack/Makefile
 benchees/nr/Makefile
 benchees/numutils/Makefile
 benchees/ooura/Makefile
-benchees/pfftw/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
 benchees/rmayer/Makefile
