@@ -11,6 +11,7 @@ BENCH_DOC("bibitem",
 	  "SCIPORT is a portable re-implementation of Cray's SCILIB; "
 	  "developed at General Electric, probably by Scott H. Lamson.")
 BENCH_DOC("notes", "Stockham auto-sort FFT, radix-2.")
+BENCH_DOC("notes", "Slightly modified to compile properly with g77.")
 END_BENCH_DOC
 
 int can_do(struct problem *p)
