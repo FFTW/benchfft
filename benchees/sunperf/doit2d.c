@@ -31,7 +31,6 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "sunperf")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("package", "Sun Performance Library (SUNPERF)")
-BENCH_DOC("notes", "2d transforms")
 END_BENCH_DOC
 
 #ifdef BENCHFFT_SINGLE

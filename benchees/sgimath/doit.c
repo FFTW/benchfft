@@ -6,7 +6,6 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "sgimath")
 BENCH_DOC("package", "Silicon Graphics Scientific Mathematical Library (complib.sgimath)")
-BENCH_DOC("notes", "1d transform")
 END_BENCH_DOC
 
 
