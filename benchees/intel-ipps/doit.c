@@ -45,7 +45,8 @@ static void *buffer;
 
 int can_do(struct problem *p)
 {
-    return (p->rank == 1 && problem_power_of_two(p, 0));
+    return (p->rank == 1 &&
+	    (problem_power_of_two(p, 0) || problem_power_of_two(p, 1)) );
 }
 
 void setup(struct problem *p)
