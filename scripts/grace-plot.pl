@@ -198,6 +198,11 @@ while (@ARGV) {
 	    "vdsp" => "black:solid:2:black:circle:0.2:black",
 	    "cxml" => "black:solid:2:black:circle:0.2:black",
 	    "intel-mkl-dfti" => "black:solid:2:black:circle:0.2:black",
+
+	    "g5" => "black:solid:2:black:circle:0.5:black",
+	    "g5-p4plan" => "black:solid:1:black:circle:0.5:none",
+	    "p4" => "black:dash:2:black:square:0.5:black",
+	    "p4-g5plan" => "black:dash:1:black:square:0.5:none",
 	    );
 
 %styles = %paper_styles if ($use_paper_styles);
