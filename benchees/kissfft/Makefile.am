@@ -1,5 +1,5 @@
 PRG=doit
-PKG=kiss_fft_03
+PKG=kiss_fft_04
 TARFILE=$(PKG).tar.gz
 INCLUDES = $(INCLBENCH) -I$(PKG)
 EXTRA_DIST = $(TARFILE)
