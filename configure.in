@@ -155,6 +155,7 @@ benchees/dfftpack/Makefile
 benchees/djbfft-0.76/Makefile
 benchees/dsp/Makefile
 benchees/fftpack/Makefile
+benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/mpfun77/Makefile
