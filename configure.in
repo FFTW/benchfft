@@ -118,11 +118,12 @@ AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
 AC_CHECK_HEADERS(dxmldef.h)
 
 dnl Check for Sun Performance library:
-dnl AC_CHECK_LIB(SUNWPro_lic, __lsp_rethread_mn_ph_)
-AC_CHECK_LIB(sunmath, acosp)
-AC_CHECK_LIB(sunperf, cfftf_,
-	[LIBS="-xlic_lib=sunperf $LIBS"; 
-	AC_DEFINE(HAVE_LIBSUNPERF, 1, [Define if you have the Sun Performance Library])])
+AC_CHECK_LIB(fsu, __f90_stop)
+AC_CHECK_LIB(sunperf, cfftf,
+	[LIBS="-lsunperf $LIBS";  have_sunperf=yes])
+AM_CONDITIONAL(HAVE_SUNPERF, test -n "$have_sunperf")
+AC_CHECK_HEADERS(sunperf.h)
+AC_CHECK_FUNCS(sunperf_version_)
 
 dnl Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d,
@@ -173,9 +174,6 @@ if test "${enable_debug}" = "yes"; then
 	CFLAGS="-g"
 fi
 
-
-AC_DEFINE_UNQUOTED(BENCH_HOST, "$host", [host type])
-AC_DEFINE_UNQUOTED(BENCH_HOSTNAME, "$ac_hostname", [host name])
 AC_DEFINE_UNQUOTED(BENCH_CC, "$CC $CFLAGS", [C compiler name and flags])
 if test -n "$CXX"; then
 	AC_DEFINE_UNQUOTED(BENCH_CXX, "$CXX $CXXFLAGS",

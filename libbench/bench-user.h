@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.28 2001-07-22 18:23:54 athena Exp $ */
+/* $Id: bench-user.h,v 1.29 2001-07-24 03:45:31 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -177,9 +177,10 @@ extern void bench_assertion_failed(const char *s, int line, char *file);
 struct bench_doc {
      const char *key;
      const char *val;
+     const char *(*f)(void);
 };
 
-extern const struct bench_doc bench_doc[];
+extern struct bench_doc bench_doc[];
 
 #ifdef CC
 #define CC_DOC BENCH_DOC("cc", CC)
@@ -213,31 +214,18 @@ extern const struct bench_doc bench_doc[];
 #define F90_DOC /* none */
 #endif
 
-#ifdef BENCH_HOST
-#define HOST_DOC BENCH_DOC("host", BENCH_HOST)
-#else
-#define HOST_DOC /* none */
-#endif
-
-#ifdef BENCH_HOSTNAME
-#define HOSTNAME_DOC BENCH_DOC("hostname", BENCH_HOSTNAME)
-#else
-#define HOSTNAME_DOC /* none */
-#endif
-
 #define BEGIN_BENCH_DOC						\
-const struct bench_doc bench_doc[] = {				\
+struct bench_doc bench_doc[] = {				\
     CC_DOC							\
     CXX_DOC							\
     F77_DOC							\
-    F90_DOC							\
-    HOST_DOC							\
-    HOSTNAME_DOC					
+    F90_DOC
 
-#define BENCH_DOC(key, val) { key, val },
+#define BENCH_DOC(key, val) { key, val, 0 },
+#define BENCH_DOCF(key, f) { key, 0, f },
 
 #define END_BENCH_DOC				\
-     {0, 0}};
+     {0, 0, 0}};
 
 #ifdef __cplusplus
 }                               /* extern "C" */

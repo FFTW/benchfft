@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: info.c,v 1.2 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: info.c,v 1.3 2001-07-24 03:45:31 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -27,17 +27,21 @@
 
 void report_info(const char *param)
 {
-     const struct bench_doc *p;
+     struct bench_doc *p;
 
      for (p = bench_doc; p->key; ++p) {
-	  if (!strcmp(param, p->key))
+	  if (!strcmp(param, p->key)) {
+	       if (!p->val)
+		    p->val = p->f();
+
 	       ovtpvt("%s\n", p->val);
+	  }
      }
 }
 
 void report_info_all(void)
 {
-     const struct bench_doc *p;
+     struct bench_doc *p;
 
      ovtpvt("(");
      /*
@@ -45,6 +49,8 @@ void report_info_all(void)
       * parseable if the info string contains double quotes.
       */
      for (p = bench_doc; p->key; ++p) {
+	  if (!p->val)
+	       p->val = p->f();
 	  ovtpvt("(%s \"%s\")\n", p->key, p->val);
      }
      ovtpvt(")\n");

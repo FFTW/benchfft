@@ -1,5 +1,13 @@
 #! /bin/sh
 
+# nonportable echo
+case `echo "testing\c"; echo 1,2,3`,`echo -n testing; echo 1,2,3` in
+  *c*,-n*) ECHO_N= ECHO_C='
+' ECHO_T='	' ;;
+  *c*,*  ) ECHO_N=-n ECHO_C= ECHO_T= ;;
+  *)      ECHO_N= ECHO_C='\c' ECHO_T= ;;
+esac
+
 # find out as much as we can about this system
 
 echo "-----------"
@@ -9,7 +17,7 @@ echo
 for prog in hostname "uname -n"; do
    x=`$prog 2>/dev/null | sed 1q`
    if test -n "$x"; then echo "$prog: $x";  fi
-done
+done 2>/dev/null
 
 echo
 echo "-----------"
@@ -19,7 +27,7 @@ echo
 for prog in "uname -a" "/usr/sbin/sizer -c"; do
    x=`$prog 2>/dev/null | sed 1q`
    if test -n "$x"; then echo "$prog: $x";  fi
-done
+done 2>/dev/null
 
 # Hardware information
 echo
@@ -32,7 +40,7 @@ echo
 for prog in arch "arch -k" machine "uname -X" "/usr/sbin/sizer -c" vmstat sys; do
    x=`$prog 2>/dev/null`
    if test -n "$x"; then echo "$prog: $x";  fi
-done
+done 2>/dev/null
 
 # programs with a more verbose output
 for prog in hinv /usr/sbin/sysdef; do
@@ -43,7 +51,7 @@ for prog in hinv /usr/sbin/sysdef; do
     echo "$x"
     echo
   fi
-done
+done 2>/dev/null
 
 for file in /proc/cpuinfo /proc/meminfo; do
   if test -r $file; then
@@ -52,7 +60,7 @@ for file in /proc/cpuinfo /proc/meminfo; do
     cat $file
     echo
   fi
-done
+done 2>/dev/null
 
 
 # Compilers
@@ -64,7 +72,7 @@ echo
 
 for compiler in gcc g77 g++ cc CC f77 F77; do
     for flag in --version -v -V -version; do
-       x=`$compiler $flag 2>&1` && (echo -n "$compiler $flag:"; echo "$x" | head -1)
+       x=`$compiler $flag 2>&1` && (echo $ECHO_N "$compiler $flag: $ECHO_C"; echo "$x" | head -1)
     done
 done 2>/dev/null
 

@@ -3,12 +3,18 @@
 #include "bench-user.h"
 #include <math.h>
 
-BEGIN_BENCH_DOC
-BENCH_DOC("name", NAME)
-END_BENCH_DOC
-
 #include <fftw.h>
 #include <rfftw.h>
+
+static const char *mkvers(void)
+{
+     return fftw_version;
+}
+
+BEGIN_BENCH_DOC
+BENCH_DOC("name", NAME)
+BENCH_DOCF("version", mkvers)
+END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
