@@ -292,7 +292,7 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     $nam0 = $nam if ($nam eq "fftw3-r2r");
     $nam0 = $nam if ($namleg eq "fxt-matrixfft");
     $nam0 = $nam if ($nam0 eq "dsp79");
-    if ($nam0 eq "fftw3" || $nam0 eq "fftw3-r2r") {
+    if ($nam0 eq "fftw3") {
 	if ($prob =~ /..i./) {
 	    $nam0 = "$nam0 in-place";
 	    $namleg = "$namleg in-place";
@@ -306,7 +306,7 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
 
-    if ($nam0 eq "fftw2" && $no_dups) {
+    if (($nam0 eq "fftw2" || $nam0 eq "fftw3-r2r") && $no_dups) {
 	if ($prob =~ /..i./) {
 	    $namleg = "$nam0 in-place";
 	} else {
