@@ -34,8 +34,8 @@ static int idlep(int idlemin)
 	  if (u->ut_type != USER_PROCESS)
 	       continue;
 
-	  if ((!u->ut_pid) || (kill(u->ut_pid, 0) == ESRCH)) /* no login process */
-	       continue;
+	  if (!u->ut_pid) continue;
+	  if (kill(u->ut_pid, 0) && errno == ESRCH) continue; /* no login process */
 
 	  for (i = 0; i < sizeof(u->ut_line); i++) /* clean up tty if garbled */
 	       if (isalnum(u->ut_line[i]) || (u->ut_line[i] == '/'))
