@@ -208,6 +208,7 @@ while (@ARGV) {
 	    "cxml" => "black:solid:2:black:circle:0.2:black",
 	    "intel-mkl-dfti out-of-place" => "black:solid:2:black:circle:0.2:black",
 	    "intel-mkl-dfti in-place" => "black:dash:2:black:circle:0.2:none",
+	    "intel-ipps" => "black:dot:2:black:circle:0.2:none",
 
 	    "g5" => "black:solid:2:black:circle:0.5:black",
 	    "g5-p4plan" => "black:solid:1:black:circle:0.5:none",
