@@ -13,6 +13,7 @@ fi
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_F77
 ACX_PROG_CC_EGCS
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -22,6 +23,10 @@ AC_PROG_AWK
 AC_CHECK_PROG(GZIP, gzip, gzip)
 AC_CHECK_PROG(TAR, tar, tar)
 AC_CHECK_PROG(TR, tr, tr)
+AC_F77_LIBRARY_LDFLAGS
+AC_F77_WRAPPERS
+
+AM_CONDITIONAL(HAVE_F77, test -n "$ac_ct_F77")
 
 dnl check for optimization options
 dnl This macro sets ANSI mode for certain compilers, and must
@@ -72,7 +77,7 @@ ACX_GCC_ALIGNS_STACK()
 AC_OUTPUT([
 Makefile
 libbench/Makefile
-ooura-sg/Makefile
+ooura/Makefile
 djbfft-0.76/Makefile
 green-ffts-2.0/Makefile
 ])

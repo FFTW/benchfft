@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.5 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: bench-main.c,v 1.6 2001-07-08 03:09:39 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -45,6 +45,7 @@ static struct option long_options[] =
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
   {"verify", required_argument, 0, 'v'},
+  {"verify-rounds", required_argument, 0, 401},
   {0, no_argument, 0, 0}
 };
 
@@ -52,6 +53,7 @@ static int bench_main1(int argc, char *argv[])
 {
      double tmin = 0.0;
      int repeat = 0;
+     int rounds = 10;
      int c;
      int index;
      char *short_options = make_short_options(long_options);
@@ -75,7 +77,7 @@ static int bench_main1(int argc, char *argv[])
 		   report_can_do(optarg);
 		   break;
 	      case 'v':
-		   verify(optarg);
+		   verify(optarg, rounds);
 		   break;
 	      case 'i':
 		   report_info(optarg);
@@ -114,6 +116,10 @@ static int bench_main1(int argc, char *argv[])
 	      case 400: /* --print-time-min */
 		   timer_init(tmin, repeat);
 		   ovtpvt("%g\n", time_min);
+
+	      case 401: /* --verify-rounds */
+		   rounds = atoi(optarg);
+		   break;
 		   
 	      case '?':
 		   /* `getopt_long' already printed an error message. */
