@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: speed.c,v 1.4 2001-07-28 16:39:24 athena Exp $ */
+/* $Id: speed.c,v 1.5 2001-08-01 22:01:30 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -28,6 +28,7 @@ void speed(const char *param)
      double *t;
      int iter, k;
      struct problem *p;
+     double x, y, l;
 
      t = bench_malloc(time_repeat * sizeof(double));
 
@@ -36,17 +37,27 @@ void speed(const char *param)
      problem_alloc(p);
      problem_zero(p);
      setup(p);
+     l = time_min * time_repeat;
 
+ start_over:
      for (iter = 1; ; iter *= 2) {
+	  x = 0;
 	  for (k = 0; k < time_repeat; ++k) {
 	       timer_start();
 	       doit(iter, p);
-	       t[k] = timer_stop();
+	       y = timer_stop();
+	       if (y < 0) /* yes, it happens */
+		    goto start_over;
+	       t[k] = y;
+	       x += y;
 	  }
 	  
-	  if (t[0] >= time_min)
+	  if (x >= l)
 	       break;
      }
+
+     if (x < l)
+	  goto start_over; /* this also happens */
 
      done(p);
 

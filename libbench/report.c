@@ -18,12 +18,13 @@
  *
  */
 
-/* $Id: report.c,v 1.6 2001-07-24 20:06:39 athena Exp $ */
+/* $Id: report.c,v 1.7 2001-08-01 22:01:30 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 void (*report)(const struct problem *p, double *t, int st);
 
@@ -36,42 +37,67 @@ enum {
 /* report HOW */
 enum { H_ALL, H_MIN, H_MAX, H_AVG };
 
-static void mkstat(double *t, int st, double *m, double *M, double *s)
+#undef min
+#undef max /* you never know */
+
+struct stats {
+     double min;
+     double max;
+     double avg;
+     double median;
+};
+
+static void mkstat(double *t, int st, struct stats *a)
 {
-     int i;
+     int i, j;
+     double err, x;
      
-     *m = t[0], *M = t[0], *s = 0.0;
+     a->min = t[0];
+     a->max = t[0];
+     a->avg = 0.0;
 
      for (i = 0; i < st; ++i) {
-	  if (t[i] < *m)
-	       *m = t[i];
-	  if (t[i] > *M)
-	       *M = t[i];
-	  *s += t[i];
+	  if (t[i] < a->min)
+	       a->min = t[i];
+	  if (t[i] > a->max)
+	       a->max = t[i];
+	  a->avg += t[i];
      }
-     *s /= (double)st;
+     a->avg /= (double)st;
+
+     /* compute median --- silly bubblesort algorithm */
+     for (i = st - 1; i > 1; --i) {
+	  for (j = 0; j < i - 1; ++j) {
+	       double y0, y1;
+	       if ((y0 = t[j]) > (y1 = t[j + 1])) {
+		    t[j] = y0;
+		    t[j + 1] = y1;
+	       }
+	  } 
+     }
+     a->median = t[st / 2];
 }
 
 static void report_generic(const struct problem *p, double *t, int st,
 			   int what, int how)
 {
-     double m, M, s;
+     struct stats s;
 
-     mkstat(t, st, &m, &M, &s);
+     mkstat(t, st, &s);
 
      if (what & W_TIME) {
 	  switch (how) {
 	      case H_ALL:
-		   ovtpvt("(%g %g %g)\n", m, s, M);
+		   ovtpvt("(%g %g %g %g)\n", s.min, s.avg, s.max, s.median);
 		   break;
 	      case H_MIN:
-		   ovtpvt("%g\n", m);
+		   ovtpvt("%g\n", s.min);
 		   break;
 	      case H_MAX:
-		   ovtpvt("%g\n", M);
+		   ovtpvt("%g\n", s.max);
 		   break;
 	      case H_AVG:
-		   ovtpvt("%g\n", s);
+		   ovtpvt("%g\n", s.avg);
 		   break;
 	  }
      }
@@ -80,16 +106,17 @@ static void report_generic(const struct problem *p, double *t, int st,
 	  switch (how) {
 	      case H_ALL:
 		   ovtpvt("(%g %g %g)\n", 
-			  mflops(p, M), mflops(p, s), mflops(p, m));
+			  mflops(p, s.max), mflops(p, s.avg), 
+			  mflops(p, s.min));
 		   break;
 	      case H_MIN:
-		   ovtpvt("%g\n", mflops(p, M));
+		   ovtpvt("%g\n", mflops(p, s.max));
 		   break;
 	      case H_MAX:
-		   ovtpvt("%g\n", mflops(p, m));
+		   ovtpvt("%g\n", mflops(p, s.max));
 		   break;
 	      case H_AVG:
-		   ovtpvt("%g\n", mflops(p, s));
+		   ovtpvt("%g\n", mflops(p, s.avg));
 		   break;
 	  }
      }
@@ -127,7 +154,7 @@ void report_avg_time(const struct problem *p, double *t, int st)
 
 void report_benchmark(const struct problem *p, double *t, int st)
 {
-     double m, M, s;
-     mkstat(t, st, &m, &M, &s);
-     ovtpvt("%.5g %.8g\n", mflops(p, m), m);
+     struct stats s;
+     mkstat(t, st, &s);
+     ovtpvt("%.5g %.8g %.8g\n", mflops(p, s.min), s.min);
 }
