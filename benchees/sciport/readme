@@ -1,0 +1,31 @@
+==== readme for scilib =====
+
+This directory contains software for the SCIPORT package.  SCIPORT is
+a portable FORTRAN emulation of CRAY SCILIB, a library of scientific
+applications subprograms developed by Cray Research, Inc. for use with
+its CRAY supercomputers.  SCIPORT was developed by the Information
+System Operation of Corporate Research and Development to enhance
+convertibility between local computers and CRAY supercomputers.  Due
+to its portability, SCIPORT allows development of applications
+software on almost any computer with desirable software development
+tools (e.g. IBM, VAX, SUN workstations).  The SCILIB-type calls of
+SCIPORT then allow the use of the CRAY supercomputer for production
+runs with no required changes in the applications software.  SCIPORT
+also provides a useful library of mathematical utilities for
+applications which do not require the use of a CRAY supercomputer.
+
+The SCIPORT tape (available from S. Lamson, Dialcomm 8*833-5795)
+contains single and double precision FORTRAN files, data files for
+testing, and a help file.  The FORTRAN files are used to create two
+object libraries, SCIPORTS for single precision and SCIPORTD for
+double precision, and executable images for the testing procedures.
+The data files contain test data with SCILIB results to be compared
+with the SCIPORT results obtained during the execution of the testing
+procedures.  The help file is used to create the on-line VMS help
+library or UNIX man pages to be used in conjunction with SCIPORT.
+
+Scott H. Lamson
+Information System Operation
+General Electric Corporate Research and Development
+Schenectady, New York 12301
+phone:  (518) 387-5795

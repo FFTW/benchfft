@@ -1,0 +1,59 @@
+13c13
+<       IF (L2 .NE. 1) CALL ABORT('CRFFT2')
+---
+>       IF (L2 .NE. 1) RETURN
+17c17
+<       IF (N .LT. 4) CALL ABORT('CRFFT2')
+---
+>       IF (N .LT. 4) RETURN
+166c166
+<       DATA TWOPI /6.28318530717958647692/
+---
+>       DATA TWOPI /6.28318530717958647692d0/
+188c188
+<       IF (L2 .NE. 1) CALL ABORT('RCFFT2')
+---
+>       IF (L2 .NE. 1) RETURN
+192c192
+<       IF (N .LT. 4) CALL ABORT('RCFFT2')
+---
+>       IF (N .LT. 4) RETURN
+310c310
+<       DATA TWOPI /6.28318530717958647692/
+---
+>       DATA TWOPI /6.28318530717958647692d0/
+390c390
+<       IF (L2 .NE. 1) CALL ABORT('CFFT2 ')
+---
+>       IF (L2 .NE. 1) RETURN
+402c402
+<       IF (N .LT. 4) CALL ABORT('CFFT2 ')
+---
+>       IF (N .LT. 4) RETURN
+525c525
+<       DATA TWOPI /6.28318530717958647692/
+---
+>       DATA TWOPI /6.28318530717958647692d0/
+533,554d532
+<       RETURN
+<       END
+< 
+< C-------------------------------------------------------------     ************
+< C                                                                      ABORT
+< C                                                                  ************
+<       SUBROUTINE ABORT(NME)
+< C
+< C     Routine to abort execution if N is not of the form 2**I.
+< C     Martin J. McBride.  2/27/86.
+< C     General Electric CRD, Information System Operation.
+< C
+<       CHARACTER*6 NME
+<       DOUBLE PRECISION DIV0,DEN,NUM
+< 
+<       PRINT*
+<       PRINT*,NME,' called with N not of the form N=2**I where I=>2.'
+<       PRINT*
+<       NUM = 1.0
+<       DEN = 0.0
+<       DIV0 = NUM/DEN
+< 

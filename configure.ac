@@ -302,6 +302,7 @@ benchees/nr/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
 benchees/rmayer/Makefile
+benchees/sciport/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
 benchees/sorensen/Makefile
