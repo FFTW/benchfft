@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.2 2001-07-05 16:49:43 athena Exp $ */
+/* $Id: verify.c,v 1.3 2001-07-05 18:58:45 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -233,27 +233,73 @@ static void impulse(struct problem *p,
 }
 
 
+static void time_shift(struct problem *p,
+		       bench_complex *inA,
+		       bench_complex *inB,
+		       bench_complex *outA,
+		       bench_complex *outB,
+		       bench_complex *tmp,
+		       int rounds)
+{
+     double sign;
+     int n, n_before, n_after, dim;
+     double twopin;
+     const double k2pi = 6.2831853071795864769252867665590057683943388;
+     int i;
+
+     n = p->size;
+     sign = p->p.complex.sign;
+
+     /* test 3: check the time-shift property */
+     /* the paper performs more tests, but this code should be fine too */
+
+     n_before = 1;
+     n_after = n;
+     for (dim = 0; dim < p->rank; ++dim) {
+	  int n_cur = p->n[dim];
+
+	  n_after /= n_cur;
+	  twopin = k2pi / n_cur;
+
+	  for (i = 0; i < rounds; ++i) {
+	       int j, jb, ja;
+
+	       arand(inA, n);
+	       arol(inB, inA, n_cur, n_before, n_after);
+	       do_fft(p, inA, outA);
+	       do_fft(p, inB, outB);
+
+	       for (jb = 0; jb < n_before; ++jb)
+		    for (j = 0; j < n_cur; ++j) {
+			 double s = sign * sin(j * twopin);
+			 double c = cos(j * twopin);
+
+			 for (ja = 0; ja < n_after; ++ja) {
+			      int index = (jb * n_cur + j) * n_after + ja;
+			      c_re(tmp[index]) = c_re(outB[index]) * c 
+				   - c_im(outB[index]) * s;
+			      c_im(tmp[index]) = c_re(outB[index]) * s
+				   + c_im(outB[index]) * c;
+			 }
+		    }
+	       acmp(tmp, outA, n);
+	  }
+
+	  n_before *= n_cur;
+     }
+}
+
 static void do_verify(struct problem *p, int rounds)
 {
      bench_complex *inA, *inB, *inC, *outA, *outB, *outC, *tmp;
-     int i;
-     double sign;
-     int n;
-     double twopin;
-     const double k2pi = 6.2831853071795864769252867665590057683943388;
+     int n = p->size;
 
      /* TODO: real case */
      BENCH_ASSERT(p->kind == PROBLEM_COMPLEX);
 
-     /* TODO: nd */
-     BENCH_ASSERT(p->rank == 1);
-
      if (rounds == 0)
 	  rounds = 20;  /* default value */
 
-     n = p->size;
-     twopin = k2pi / n;
-     sign = p->p.complex.sign;
 
      inA = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
      inB = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
@@ -265,26 +311,7 @@ static void do_verify(struct problem *p, int rounds)
 
      linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
      impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
-
-     /* test 3: check the time-shift property */
-     /* the paper performs more tests, but this code should be fine too */
-     for (i = 0; i < rounds; ++i) {
-	  int j;
-
-	  arand(inA, n);
-	  arol(inB, inA, n, 1, 1);
-	  do_fft(p, inA, outA);
-	  do_fft(p, inB, outB);
-
-	  for (j = 0; j < n; ++j) {
-	       double s = sign * sin(j * twopin);
-	       double c = cos(j * twopin);
-	       c_re(tmp[j]) = c_re(outB[j]) * c - c_im(outB[j]) * s;
-	       c_im(tmp[j]) = c_re(outB[j]) * s + c_im(outB[j]) * c;
-	  }
-
-	  acmp(tmp, outA, n);
-     }
+     time_shift(p, inA, inB, outA, outB, tmp, rounds);
 
      bench_free(tmp);
      bench_free(outC);

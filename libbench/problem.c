@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.2 2001-07-05 16:49:43 athena Exp $ */
+/* $Id: problem.c,v 1.3 2001-07-05 18:58:45 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -28,7 +28,7 @@
 
 
 /* parse a problem description, return a problem */
-/* TODO: only knows complex 1D for now */
+/* TODO: only knows about complex for now */
 struct problem *problem_parse(const char *s)
 {
      int n;
@@ -43,22 +43,11 @@ struct problem *problem_parse(const char *s)
      p->userinfo = 0;
 
      for (;;) {
-	  switch (*s) {
-	      case 'i':
-	      case 'I':
-		   in_place = 1;
-		   ++s;
-		   continue;
-	      case 'f':
-	      case 'F':
-		   sign = -1;
-		   ++s;
-		   continue;
-	      case 'b':
-	      case 'B':
-		   sign = 1;
-		   ++s;
-		   continue;
+	  switch (tolower(*s)) {
+	      case 'i': in_place = 1; ++s; continue;
+	      case 'o': in_place = 0; ++s; continue;
+	      case 'f': sign = -1; ++s; continue;
+	      case 'b': sign = 1; ++s; continue;
 	      default:
 		   ;
 	  }
