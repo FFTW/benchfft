@@ -11,7 +11,7 @@ include ../Makefile.common
 
 doit.o: doit.c extract $(CONFIG_HEADER) $(PKG)/djbfft.a
 	$(COMPILE) \
-	-DCC="\"`cat $(PKG)/conf-cc`\"" \
+	-DDJBFFT_CC="\"`cat $(PKG)/conf-cc`\"" \
 	-DCONF_OPT="\"`cat $(PKG)/conf-opt`\"" \
 	-DAUTO_OPT="\"`cat $(PKG)/auto_opt`\"" \
          -c $<

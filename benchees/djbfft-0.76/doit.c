@@ -11,9 +11,9 @@ BENCH_DOC("email", "djb@pobox.com")
 BENCH_DOC("url", "http://pobox.com/~djb/djbfft.html")
 BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
 BENCH_DOC("language", "C")
-BENCH_DOC("notes",
-	  "djbfft considers sign = +1 to be the forward transform")
-BENCH_DOC("notes", "out of order")
+BENCH_DOC("notes", "the forward transform has sign +1")
+BENCH_DOC("notes", "the output of the forward transform is out of order")
+BENCH_DOC("djbfft-compiled-by", DJBFFT_CC)
 BENCH_DOC("conf-opt", CONF_OPT)
 BENCH_DOC("auto-opt", AUTO_OPT)
 END_BENCH_DOC
