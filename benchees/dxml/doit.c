@@ -62,10 +62,8 @@ void setup(struct problem *p)
 void doit(int iter, struct problem *p)
 {
      int i;
-     int n = p->n[0];
      void *in = p->in;
      void *out = p->out;
-     int sign = p->sign;
      int stride = 1;
 
      if (p->kind == PROBLEM_COMPLEX) {

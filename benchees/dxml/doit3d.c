@@ -15,12 +15,32 @@ int can_do(struct problem *p)
 {
      return (p->rank == 3 && 
 	     /* N must be even for real transforms */
-	     (p->kind == PROBLEM_COMPLEX || !(p->n[0] & 1)));
+	     (p->kind == PROBLEM_COMPLEX || !(p->n[2] & 1)));
 }
 
 void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 {
      unnormalize(p, out, 1);
+}
+
+void copy_h2c(struct problem *p, bench_complex *out)
+{
+     copy_h2c_unpacked(p, out, -1.0);
+}
+
+void copy_c2h(struct problem *p, bench_complex *in)
+{
+     copy_c2h_unpacked(p, in, -1.0);
+}
+
+void copy_r2c(struct problem *p, bench_complex *out)
+{
+     copy_r2c_unpacked(p, out);	  
+}
+
+void copy_c2r(struct problem *p, bench_complex *in)
+{
+     copy_c2r_unpacked(p, in);
 }
 
 static DXML_C_FFT_STRUCTURE_3D fsc;
@@ -56,10 +76,8 @@ void setup(struct problem *p)
 void doit(int iter, struct problem *p)
 {
      int i;
-     int n = p->n[0];
      void *in = p->in;
      void *out = p->out;
-     int sign = p->sign;
      int stride = 1;
 
      if (p->kind == PROBLEM_COMPLEX) {
@@ -78,29 +96,33 @@ void doit(int iter, struct problem *p)
 	       }
 	  }
      } else {
-#if 0
+	  int lda = p->n[2] + 2;
+	  int ldb = p->n[1];
 	  if (p->sign == -1) {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_("R", "C", "F", in, out, &fss, &stride);
+			 sfft_apply_3d_("R", "C", "F", in, out, &lda, &ldb, &fss, 
+					&stride, &stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_("R", "C", "F", in, out, &fsd, &stride);
+			 dfft_apply_3d_("R", "C", "F", in, out, &lda, &ldb, &fsd, 
+					&stride, &stride, &stride);
 		    }
 	       }
 	  } else {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_("C", "R", "B", in, out, &fss, &stride);
+			 sfft_apply_3d_("C", "R", "B", in, out, &lda, &ldb, &fss,
+					&stride, &stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_("C", "R", "B", in, out, &fsd, &stride);
+			 dfft_apply_3d_("C", "R", "B", in, out, &lda, &ldb, &fsd,
+					&stride, &stride, &stride);
 		    }
 	       }
 	  }
-#endif
      }
 }
 
