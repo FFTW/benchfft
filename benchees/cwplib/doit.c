@@ -20,10 +20,17 @@ int can_do(struct problem *p)
 
      if (!SINGLE_PRECISION)
 	  return 0;
-     if (p->rank != 1 && p->rank != 2)
-	  return 0;
 
      if (p->kind == PROBLEM_COMPLEX) {
+	  /* 
+	   * CWPLIB does not really provide a 2D transform.
+	   * Nevertheless, source code comments provide instructions
+	   * on how to use CWPLIB to compute a 2D transform, which we
+	   * take as an implementation.
+	   */
+	  if (p->rank != 1 && p->rank != 2)
+	       return 0;
+
 	  /* must be in place */
 	  if (p->in != p->out)
 	       return 0;
@@ -33,28 +40,27 @@ int can_do(struct problem *p)
 		    return 0;
 	  } 
      } else {
-	  for (i = 0; i < p->rank; ++i) {
-	       if ((unsigned int)npfar(p->n[i]) != p->n[i])
-		    return 0;
-	  } 
+	  /* no 2D instructions are provided */
+	  if (p->rank != 1)
+	       return 0;
+
+	  /* can be either in place or out of place */
+
+	  if ((unsigned int)npfar(p->n[0]) != p->n[0])
+	       return 0;
      }
 
      return 1;
 }
 
-/* override default problem_alloc */
-void problem_alloc(struct problem *p, int in_place)
+void copy_h2c(struct problem *p, bench_complex *out)
 {
-     if (p->kind == PROBLEM_COMPLEX) {
-	  p->in = bench_malloc(p->size * sizeof(bench_complex));
-	  
-	  if (in_place)
-	       p->out = p->in;
-	  else
-	       p->out = bench_malloc(p->size * sizeof(bench_complex));
-     } else {
-	  /* TODO */
-     }
+     copy_h2c_1d_unpacked(p, out, -1.0);
+}
+
+void copy_c2h(struct problem *p, bench_complex *in)
+{
+     copy_c2h_1d_unpacked(p, in, -1.0);
 }
 
 void setup(struct problem *p)
@@ -69,27 +75,42 @@ void doit(int iter, struct problem *p)
      int sign = p->sign;
      void *in = p->in;
 
-     switch (p->rank) {
-     case 1:
-     {
-	  int n = p->n[0];
-	  for (i = 0; i < iter; ++i) 
-	       pfacc(sign, n, in);
-	  break;
-     }
-     case 2:
-     {
-	  int n0 = p->n[0];
-	  int n1 = p->n[1];
-	  for (i = 0; i < iter; ++i) { 
-	       pfa2cc(sign, 1, n1, n0, in);
-	       pfa2cc(sign, 2, n1, n0, in);
-	  }
-	  break;
-     }
+     if (p->kind == PROBLEM_COMPLEX) {
+	  switch (p->rank) {
+	      case 1:
+	      {
+		   int n = p->n[0];
+		   for (i = 0; i < iter; ++i) 
+			pfacc(sign, n, in);
+		   break;
+	      }
+	      case 2:
+	      {
+		   int n0 = p->n[0];
+		   int n1 = p->n[1];
+		   for (i = 0; i < iter; ++i) { 
+			pfa2cc(sign, 1, n1, n0, in);
+			pfa2cc(sign, 2, n1, n0, in);
+		   }
+		   break;
+	      }
      
-     default:
-	  BENCH_ASSERT(0);
+	      default:
+		   BENCH_ASSERT(0);
+	  }
+     } else {
+	  /* p->rank == 1*/
+	  int n = p->n[0];
+	  void *out = p->out;
+
+	  if (sign == -1) {
+	       /* real->complex */
+	       for (i = 0; i < iter; ++i) 
+		    pfarc(sign, n, in, out);
+	  } else {
+	       for (i = 0; i < iter; ++i) 
+		    pfacr(sign, n, in, out);
+	  }
      }
 }
 

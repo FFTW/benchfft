@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.17 2001-07-12 23:23:52 athena Exp $ */
+/* $Id: bench-user.h,v 1.18 2001-07-13 00:02:10 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -29,7 +29,7 @@
 #include <stddef.h>
 #endif
 
-typedef double bench_real;
+typedef float bench_real;
 
 typedef struct {
      bench_real re, im;
@@ -78,6 +78,11 @@ void copy_h2c_1d_fftpack(struct problem *p, bench_complex *out,
 			 bench_real sign_of_r2h_transform);
 void copy_c2h_1d_fftpack(struct problem *p, bench_complex *in,
 			 bench_real sign_of_r2h_transform);
+void copy_c2h_1d_unpacked(struct problem *p, bench_complex *in,
+			  bench_real sign_of_r2h_transform);
+void copy_h2c_1d_unpacked(struct problem *p, bench_complex *out, 
+			  bench_real sign_of_r2h_transform);
+
 
 extern int power_of_two(unsigned int n);
 extern int problem_power_of_two(struct problem *p, int in_place);
