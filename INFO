@@ -1,0 +1,22 @@
+The following are standard tags that are included in the --info for
+FFTs.  All FFTs must include the "name" tag; others are optional.
+Note that tags can be repeated for multiple items (e.g. multiple
+"notes").
+
+name: unique name of FFT (or author's last name)
+version: version number, if any
+author: author name
+email: author/contact email address
+year: (4-digit) year written
+
+language: source-code language
+
+url: URL of download or web site
+url-was-valid-on: date on which URL was valid (formatted as Unix 'date')
+
+copyright: copyright/license
+bibitem: bibliographic info, references, etcetera
+
+notes: miscellaneous comments
+
+compiled-by: FFT code compiler & flags, if different from benchfft
