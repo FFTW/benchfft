@@ -12,8 +12,8 @@ INCLUDES = $(INCLBENCH)
 doit_SOURCES=doit.c mpfun.f
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
-mpfun.f: extract $(CONFIG_HEADER)
-	cp -f $(PKG)/mpfun.f $@
+mpfun.f: extract
+	cp -f $(PKG)/$@ $@
 	patch $@ $(srcdir)/mpfun.patch
 
 include ../Makefile.common
