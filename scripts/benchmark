@@ -183,7 +183,7 @@ for place in $PLACE; do
 	if test "$doable" = "#t"; then
 	  print="yes"
 	  if test "$verify" = "yes"; then
-	    acc=`$program $vflags --verbose --verify $problem | tail -1`||
+	    acc=`$program $vflags --verbose --verify $problem | tail -n 1`||
 	    { acc="FAILED FAILED FAILED"; 
 	      test "$keep_going" = "yes" || exit 1; }
 	  else
@@ -191,7 +191,7 @@ for place in $PLACE; do
 	  fi
 
 	  if test "$speed" = yes; then
-	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -1` " || 
+	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -n 1` " || 
 	    time="FAILED FAILED"
 	    if test "x$time" = "x "; then time="FAILED FAILED"; fi
 	  else
@@ -200,7 +200,7 @@ for place in $PLACE; do
 
 	  if test "$accuracy" = "yes"; then
 	    if test "$oned" = "yes"; then
-	       acc=`$program $useropt $aflags --accuracy $problem | tail -1`
+	       acc=`$program $useropt $aflags --accuracy $problem | tail -n 1`
 	    else
 	       print="no"
 	    fi
