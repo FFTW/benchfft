@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.5 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: bench-user.h,v 1.6 2001-07-07 20:01:11 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -29,7 +29,7 @@
 #include <stddef.h>
 #endif
 
-typedef double bench_real;
+typedef float bench_real;
 
 typedef struct {
      bench_real re, im;
@@ -77,6 +77,12 @@ extern void aset(bench_real *A, unsigned int n, bench_real x);
 extern void caset(bench_complex *A, unsigned int n, bench_complex x);
 extern void acopy(bench_real *A, bench_real *B, unsigned int n);
 extern void cacopy(bench_complex *A, bench_complex *B, unsigned int n);
+
+extern void cascale(bench_complex *A, unsigned int n, bench_complex alpha);
+extern void caadd(bench_complex *C, bench_complex *A, 
+		  bench_complex *B, unsigned int n);
+extern void casub(bench_complex *C, bench_complex *A, 
+		  bench_complex *B, unsigned int n);
 
 /**************************************************************
  * malloc

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.4 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: verify.c,v 1.5 2001-07-07 20:01:11 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -82,17 +82,6 @@ static void arand(bench_complex *A, unsigned int n)
      }
 }
 
-/* C = A + B */
-static void aadd(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
-{
-     unsigned int i;
-
-     for (i = 0; i < n; ++i) {
-	  c_re(C[i]) = c_re(A[i]) + c_re(B[i]);
-	  c_im(C[i]) = c_im(A[i]) + c_im(B[i]);
-     }
-}
-
 
 /* C = A - B */
 static void asub(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
@@ -119,18 +108,6 @@ static void arol(bench_complex *B, bench_complex *A,
 
 	  for (ia = 0; ia < n_after; ++ia)
 	       B[(ib * n + n - 1) * n_after + ia] = A[ib * n * n_after + ia];
-     }
-}
-
-/* A = alpha * A  (in place) */
-static void ascale(bench_complex *A, bench_complex alpha, unsigned int n)
-{
-     unsigned int i;
-
-     for (i = 0; i < n; ++i) {
-	  bench_complex a = A[i];
-	  c_re(A[i]) = c_re(a) * c_re(alpha) - c_im(a) * c_im(alpha);
-	  c_im(A[i]) = c_re(a) * c_im(alpha) + c_im(a) * c_re(alpha);
      }
 }
 
@@ -185,12 +162,12 @@ static void linear(struct problem *p,
 	  do_fft(p, inA, outA);
 	  do_fft(p, inB, outB);
 
-	  ascale(outA, alpha, N);
-	  ascale(outB, beta, N);
-	  aadd(tmp, outA, outB, N);
-	  ascale(inA, alpha, N);
-	  ascale(inB, beta, N);
-	  aadd(inC, inA, inB, N);
+	  cascale(outA, N, alpha);
+	  cascale(outB, N, beta);
+	  caadd(tmp, outA, outB, N);
+	  cascale(inA, N, alpha);
+	  cascale(inB, N, beta);
+	  caadd(inC, inA, inB, N);
 	  do_fft(p, inC, outC);
 
 	  acmp(outC, tmp, N);
@@ -227,7 +204,7 @@ static void impulse(struct problem *p,
 	  asub(inC, inA, inB, n);
 	  do_fft(p, inB, outB);
 	  do_fft(p, inC, outC);
-	  aadd(tmp, outB, outC, n);
+	  caadd(tmp, outB, outC, n);
 	  acmp(tmp, outA, n);
      }
 }

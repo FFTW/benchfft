@@ -19,6 +19,9 @@ AC_PROG_LN_S
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 AC_PROG_AWK
+AC_CHECK_PROG(GZIP, gzip, gzip)
+AC_CHECK_PROG(TAR, tar, tar)
+AC_CHECK_PROG(TR, tr, tr)
 
 dnl check for optimization options
 dnl This macro sets ANSI mode for certain compilers, and must
@@ -70,4 +73,5 @@ Makefile
 libbench/Makefile
 ooura-sg/Makefile
 djbfft-0.76/Makefile
+green-ffts-2.0/Makefile
 ])
