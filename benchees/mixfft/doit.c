@@ -10,8 +10,8 @@ BENCH_DOC("author", "Jens Joergen Nielsen")
 BENCH_DOC("year", "2000")
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "jjn@get2net.dk")
-BENCH_DOC("url", "http://hjem.get2net.dk/jjn/images/a1a.gif")
-BENCH_DOC("url-was-valid-on", "Sun Jul 15 22:43:09 EDT 2001")
+BENCH_DOC("url", "http://hjem.get2net.dk/jjn/fft.htm")
+BENCH_DOC("url-was-valid-on", "Mon Feb 10 01:19:57 EST 2003")
 BENCH_DOC("copyright",
 "The source code in this packet is copyrighted material.\n"
 "\n"
