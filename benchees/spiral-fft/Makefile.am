@@ -15,6 +15,6 @@ doit_LDADD=$(SPIRAL) $(LIBBENCH) @FLIBS@
 doit.o: $(SPIRAL)
 
 $(SPIRAL): extract
-	cd $(PKG) && ./configure --prefix=`pwd` && $(MAKE) && $(MAKE) install
+	cd $(PKG) && touch fft_pclprof && ./configure --prefix=`pwd` && $(MAKE) && $(MAKE) install
 
 include ../Makefile.common
