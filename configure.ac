@@ -110,6 +110,9 @@ AC_CHECK_DECLS(hypot,[],[],[#include <math.h>])
 # check for pthreads library (required by MKL below)
 AC_CHECK_LIB(pthread, pthread_attr_init)
 
+# check for libdl (required by MKL-6.0)
+AC_CHECK_LIB(dl, dlopen)
+
 # Check for FFTW 2
 AC_CHECK_LIB(fftw, fftw_create_plan_specific,
 	[LFFTW="-lfftw"; have_fftw2=yes])
@@ -357,7 +360,6 @@ benchees/jmfft/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
 benchees/mixfft/Makefile
-benchees/mkl-dfti/Makefile
 benchees/monnier/Makefile
 benchees/morris/Makefile
 benchees/mpfun77/Makefile
