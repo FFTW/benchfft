@@ -72,7 +72,7 @@ echo "COMPILERS"
 echo "---------"
 echo
 
-for compiler in $CC $CXX $F77 gcc g77 g++ cc CC f77 F77; do
+for compiler in $CC $CXX $F77 gcc g77 g++ cc CC f77 F77 f90 F90 f95 F95; do
     for flag in --version -v -V -version; do
        x=`$compiler $flag 2>&1` && (echo $ECHO_N "$compiler $flag: $ECHO_C"; echo "$x" | head -1)
     done
