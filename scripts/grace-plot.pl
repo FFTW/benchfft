@@ -61,8 +61,11 @@ while (@ARGV) {
 	   "ffte" => "indigo:solid:2:indigo:none:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
 	   "fftreal" => "red:dash:1:red:circle:0.5:none",
+	   "fftw2 in-place" => "cyan:solid:1:cyan:circle:0.5:cyan",
+	   "fftw2 out-of-place" => "cyan:solid:1:cyan:circle:0.5:cyan",
 	   "fftw2-measure" => "cyan:solid:1:cyan:circle:0.5:cyan",
 	   "fftw2-estimate" => "cyan:solid:1:cyan:circle:0.5:none",
+	   "fftw2-nd" => "cyan:dash:1:cyan:circle:0.5:cyan",
 	   "fftw2-nd-measure" => "cyan:dash:1:cyan:circle:0.5:cyan",
 	   "fftw2-nd-estimate" => "cyan:dash:1:cyan:circle:0.5:none",
 	   "fftw3_simd" => "black:solid:1:blue:circle:0.5:blue",
@@ -294,6 +297,14 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 	} else {
 	    $nam0 = "$nam0 out-of-place";
 	    $namleg = "$namleg out-of-place";
+	}
+    }
+
+    if ($nam0 eq "fftw2") {
+	if ($prob =~ /..i./) {
+	    $namleg = "$nam0 in-place";
+	} else {
+	    $namleg = "$nam0 out-of-place";
 	}
     }
 
