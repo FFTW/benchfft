@@ -92,7 +92,7 @@ PLACE="i o"
 REALITY="c r"
 ALL_SIZES="$SIZES_1D $SIZES_2D $SIZES_3D"
 
-if ! test -x "$program"; then
+if test ! -x "$program"; then
     echo "``$program'' is not executable!" >&2
     exit 1
 fi

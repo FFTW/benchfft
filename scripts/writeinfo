@@ -66,7 +66,7 @@ esac
 
 program="$1"
 
-if ! test -x "$program"; then
+if test ! -x "$program"; then
     echo "``$program'' is not executable!" >&2
     exit 1
 fi
