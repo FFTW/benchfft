@@ -16,12 +16,23 @@ BENCH_DOC("bibitem",
 	  "L. F. Ten Eyck,  Crystallographic Fast Fourier Transforms, Acta Cryst. A29, 183-191 (1973).")
 END_BENCH_DOC
 
+int n_ok(unsigned int rank, unsigned int *n)
+{
+     unsigned int i;
+     for (i = 0; i < rank; ++i) {
+	  int num_facts = check_prime_factors(n[i], 19);
+	  if (!num_facts || num_facts > 14)
+               return 0;
+     }
+     return 1;
+}
+
 int can_do(struct problem *p)
 {
      return (SINGLE_PRECISION &&
 	     p->rank >= 1 && p->rank <= 3 &&
 	     p->kind == PROBLEM_COMPLEX &&
-	     check_prime_factors(p->n[0], 19) &&
+	     n_ok(p->rank, p->n) &&
 	     problem_in_place(p)
 	  );
 }
