@@ -1,14 +1,13 @@
 /* this program is in the public domain */
 
-#include "bench-user.h"
 #include <math.h>
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "nag")
+BENCH_DOC("name", NAME)
 BENCH_DOC("author", "Numerical Algorithms Group")
 BENCH_DOC("url", "http://www.nag.com/")
 BENCH_DOC("url-was-valid-on", "Wed Aug 15 13:43:43 EDT 2001")
-BENCH_DOC("notes", "benchmark uses functions c06frf and friends: precomputed trig. tables and extra workspace (which is supposedly faster)")
+BENCH_DOC("notes", NOTE)
 BENCH_DOC("notes", "both forward and backward transforms are scaled")
 BENCH_DOC("notes", "forwards and backwards real transforms have the same sign")
 BENCH_DOC("copyright", "Proprietary, commercial software.")
@@ -19,12 +18,6 @@ static int ifail = 0;
 static char INIT = 'I', SUBS = 'S';
 
 /* Don't you love the beautiful 6-character Fortran-77 identifiers? */
-
-#define C06FRF F77_FUNC(c06frf,C06FRF)
-extern void C06FRF(unsigned int *m, unsigned int *n, double *x, double *y, char *init,
-		   double *trig, double *work, int *ifail);
-#define fft(n,x,y,trig,work) C06FRF(&one, &n, x, y, &SUBS, trig, work, &ifail)
-#define init(n,x,y,trig,work) C06FRF(&one, &n, x, y, &INIT, trig, work, &ifail)
 
 #define C06FUF F77_FUNC(c06fuf,C06FUF)
 extern void C06FUF(unsigned int *m, unsigned int *n, double *x, double *y, char *init,
@@ -38,18 +31,6 @@ extern void C06FXF(unsigned int *n1, unsigned int *n2, unsigned int *n3, double 
 		   double *work, int *ifail);
 #define fft3(n0,n1,n2,x,y,t0,t1,t2,w) C06FXF(&n2,&n1,&n0, x, y, &SUBS, t2,t1,t0, w, &ifail)
 #define init3(n0,n1,n2,x,y,t0,t1,t2,w) C06FXF(&n2,&n1,&n0, x, y, &INIT, t2,t1,t0, w, &ifail)
-
-#define C06FPF F77_FUNC(c06fpf,C06FPF)
-extern void C06FPF(unsigned int *m, unsigned int *n, double *x, char *init,
-		   double *trig, double *work, int *ifail);
-#define fftrc(n,x,t,work) C06FPF(&one, &n, x, &SUBS, t, work, &ifail)
-#define initrc(n,x,t,work) C06FPF(&one, &n, x, &INIT, t, work, &ifail)
-
-#define C06FQF F77_FUNC(c06fqf,C06FQF)
-extern void C06FQF(unsigned int *m, unsigned int *n, double *x, char *init,
-		   double *trig, double *work, int *ifail);
-#define fftcr(n,x,t,work) C06FQF(&one, &n, x, &SUBS, t, work, &ifail)
-#define initcr(n,x,t,work) C06FQF(&one, &n, x, &INIT, t, work, &ifail)
 
 #define C06GQF F77_FUNC(c06gqf,C06GQF)
 extern void C06GQF(unsigned int *m, unsigned int *n, double *x, int *ifail);
@@ -69,6 +50,9 @@ int can_do(struct problem *p)
      return (DOUBLE_PRECISION &&
 	     p->rank >= 1 &&
 	     ((p->rank <= 3 && p->kind == PROBLEM_COMPLEX) || (p->rank == 1))
+#ifdef ONLY_1D
+	     && p->rank == 1
+#endif
 	     && problem_in_place(p) && n_ok(p->rank, p->n));
 }
 
@@ -181,7 +165,7 @@ void done(struct problem *p)
      UNUSED(p);
      bench_free(trig1);
      bench_free(trig0);
-     free(work);
+     bench_free(work);
 }
 
 /* Undo normalization: */
