@@ -50,21 +50,24 @@ int can_do(struct problem *p)
    external parameter that we can allocate. */
 
 #define MPINIX_F77 F77_FUNC(mpinix, MPINIX)
-extern void MPINIX_F77(int *m);
+extern void MPINIX_F77(int *m, bench_real *u);
 
 /* Bailey complex FFT: */
 #define MPCFFT_F77 F77_FUNC(mpcfft, MPCFFT)
-extern void MPCFFT_F77(int *is, int *m, bench_real *x, bench_real *y);
+extern void MPCFFT_F77(int *is, int *m, bench_real *x, bench_real *y,
+		       bench_real *u);
 
 /* Bailey real<->complex FFT routines.  These just wrap around the
    complex FFT with the usual n/2 trick, so I'm not sure they're worth
    benchmarking separately. */
 #define MPRCFT_F77 F77_FUNC(mprcft, MPRCFT)
-extern void MPRCFT_F77(int *is, int *m, bench_real *x, bench_real *y);
+extern void MPRCFT_F77(int *is, int *m, bench_real *x, bench_real *y,
+		       bench_real *u);
 #define MPCRFT_F77 F77_FUNC(mpcrft, MPCRFT)
-extern void MPCRFT_F77(int *is, int *m, bench_real *x, bench_real *y);
+extern void MPCRFT_F77(int *is, int *m, bench_real *x, bench_real *y,
+		       bench_real *u);
 
-static bench_real *y = 0;
+static bench_real *y = 0, *u = 0;
 static int m;
 
 void setup(struct problem *p)
@@ -72,8 +75,9 @@ void setup(struct problem *p)
      unsigned int n = p->n[0];
      BENCH_ASSERT(can_do(p));
      y = (bench_real *) bench_malloc(n * 2 * sizeof(bench_real));
+     u = (bench_real *) bench_malloc(n * 8 * sizeof(bench_real));
      m = log_2(n);
-     MPINIX_F77(&m);
+     MPINIX_F77(&m, u);
 }
 
 void problem_ccopy_from(struct problem *p, bench_complex *in)
@@ -95,12 +99,13 @@ void doit(int iter, struct problem *p)
      int i;
 
      for (i = 0; i < iter; ++i) {
-	  MPCFFT_F77(&is, &m, in, y);
+	  MPCFFT_F77(&is, &m, in, y, u);
      }
 }
 
 void done(struct problem *p)
 {
      UNUSED(p);
+     bench_free(u);
      bench_free(y);
 }
