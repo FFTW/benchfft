@@ -98,11 +98,11 @@ int n_ok(int rank, unsigned int *n, int is_real)
 	  if (N > 37748736)
 	       return 0;
 
-	  for (log2 = 0; N > 1 && N % 2 == 0; N /= 2, log2 += 1);
-	  if (log2 < 1 || log2 > 25)
+	  if (!check_prime_factors(N, 11))
 	       return 0;
 
-	  if (!check_prime_factors(N, 11))
+	  for (log2 = 0; N > 1 && N % 2 == 0; N /= 2, log2 += 1);
+	  if (log2 < 1 || log2 > 25)
 	       return 0;
 
 	  if (N % (3*3*3) == 0 ||
