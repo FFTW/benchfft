@@ -16,7 +16,12 @@ BENCH_DOC("bibitem",
 BENCH_DOC("bibitem",
 	  "See J. W. Cooley and J. W. Tukey, An algorithm for the "
 	  "machine calculation of complex Fourier series, "
-	  "Mathematics of Computations 19, p. 297 (Apr. 1965).")
+	  "Mathematics of Computation 19, p. 297-301 (Apr. 1965): "
+	  "``A computer program for the IBM 7094 has been written which "
+	  "calculates three-dimensional Fourier sums by the above method.'' "
+	  "They go on to list times of 6 and 7.2 seconds for transforms of "
+	  "sizes 32x16x16 and 8192, respectively.")
+
 BENCH_DOC("copyright", "THIS ROUTINE IS PUBLIC DOMAIN")
 BENCH_DOC("notes", "The backward transform is scaled")
 END_BENCH_DOC
@@ -25,17 +30,17 @@ int ok_sizes(int rank, unsigned int *n)
 {
      int i;
      for (i = 0; i < rank; ++i)
-	  if ((1 << 3) > n[i] || (1 << 20) < n[i])
+	  if ((1 << 20) < n[i])
 	       return 0;
      return 1;
 }
 
 int can_do(struct problem *p)
 {
-     return (p->rank == 3 &&
+     return (p->rank >= 1 && p->rank <= 3 &&
 	     p->kind == PROBLEM_COMPLEX &&
-	     problem_power_of_two(p, 1) &&
-	     ok_sizes(p->rank, p->n)
+	     power_of_two(p->size) &&
+	     problem_in_place(p)
 	  );
 }
 
@@ -53,12 +58,13 @@ bench_real *s;
 
 void setup(struct problem *p)
 {
-     int i, ifset = 0, iferr = 0;
-     unsigned int maxdim = 0;
+     int ifset = 0, iferr = 0;
+     unsigned int i, maxdim = 0;
      bench_complex *a = (bench_complex *) p->in;
      BENCH_ASSERT(can_do(p));
 
-     for (i = 0; i < 3; ++i) {
+     m[0] = m[1] = m[2] = 0;
+     for (i = 0; i < p->rank; ++i) {
 	  m[i] = log_2(p->n[p->rank - 1 - i]);
 	  if (p->n[i] > maxdim)
 	       maxdim = p->n[i];
