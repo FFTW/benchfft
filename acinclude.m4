@@ -185,7 +185,7 @@ if test "$ac_test_CFLAGS" != "set"; then
 
   *linux*)
 	;;
-  sparc-solaris2*) if test "$CC" = cc; then
+  sparc-solaris2*) if test `basename "$CC"` = cc; then
                     CFLAGS="-native -fast -xO5 -dalign"
                  fi;;
 
@@ -194,7 +194,7 @@ if test "$ac_test_CFLAGS" != "set"; then
                 fi;;
 
   hppa*-hpux*)  if test "$ac_compiler_gnu" != yes; then
-                    CFLAGS="-Ae +O3 +Oall"
+                    CFLAGS="+O3 +Oall +Ofltacc"
                 fi;;
 
    *-aix*)
@@ -269,7 +269,10 @@ if test "$ac_test_CFLAGS" != "set"; then
 	            CPU_OPTIM=-O2
                   fi
 		  ;;
-	  alphaev67)  ACX_CHECK_CC_FLAGS(-mcpu=ev6,cpu_ev67,
+	  sparc*)  ACX_CHECK_CC_FLAGS(-mcpu=ultrasparc,cpu_ultrasparc,
+			[CPU_FLAGS=-mcpu=ultrasparc])
+		  ;;
+	  alphaev67)  ACX_CHECK_CC_FLAGS(-mcpu=ev67,cpu_ev67,
 			[CPU_FLAGS=-mcpu=ev67])
 		  ;;
 	  alphaev6)  ACX_CHECK_CC_FLAGS(-mcpu=ev6,cpu_ev6,
@@ -285,17 +288,20 @@ if test "$ac_test_CFLAGS" != "set"; then
 		  ;;
 
 	  powerpc*)
-		cputype=`(grep cpu /proc/cpuinfo | head -1 | cut -d: -f2 | sed 's/ //g') 2> /dev/null`
-		is60x=`echo $cputype | egrep "^60[0-9]e?$"`
-		is7x0=`echo $cputype | egrep "750"`
+		cputype=`((grep cpu /proc/cpuinfo | head -1 | cut -d: -f2 | sed 's/ //g') ; /usr/bin/machine ; /bin/machine) 2> /dev/null`
+		cputype=`echo $cputype | sed -e s/ppc//g`
+		is60x=`echo $cputype | egrep "^60[[0-9]]e?$"`
+		is750=`echo $cputype | grep "750"`
+		is74xx=`echo $cputype | egrep "^74[[0-9]][[0-9]]$"`
 		if test -n "$is60x"; then
 			ACX_CHECK_CC_FLAGS(-mcpu=$cputype,m_cpu_60x,
 				CPU_FLAGS=-mcpu=$cputype)
-		elif test -n "$is7x0"; then
-			# TODO: why are we testing for gcc 2.95?
-                        ACX_PROG_GCC_VERSION(2,95,
-                                ACX_CHECK_CC_FLAGS(-mcpu=750,m_cpu_750,
-					CPU_FLAGS=-mcpu=750))
+		elif test -n "$is750"; then
+			ACX_CHECK_CC_FLAGS(-mcpu=750,m_cpu_750,
+				CPU_FLAGS=-mcpu=750)
+		elif test -n "$is74xx"; then
+			ACX_CHECK_CC_FLAGS(-mcpu=$cputype,m_cpu_74xx,
+				CPU_FLAGS=-mcpu=$cputype)
 		fi
 		if test -z "$CPU_FLAGS"; then
 		        ACX_CHECK_CC_FLAGS(-mcpu=powerpc,m_cpu_powerpc,
