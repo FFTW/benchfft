@@ -1,5 +1,4 @@
-# allow user to set BENCHEES in the environment
-BENCHEES = acml arprec athfft bloodworth burrus cross cwplib dfftpack	\
+SUBDIRS = acml arprec athfft bloodworth burrus cross cwplib dfftpack	\
 djbfft-0.76 dsp dxml emayer esrfft essl ffte fftpack fftreal fftw2	\
 fftw3 fxt glassman goedecker gpfa green-ffts-2.0 gsl harm imsl		\
 intel-mkl intel-ipps jmfft krukar mfft mixfft monnier morris mpfun77	\
@@ -7,7 +6,6 @@ mpfun90 nag napack nr numutils ooura pfftw qft ransom rmayer sciport	\
 sgimath singleton sorensen spiral-fft statlib sunperf temperton		\
 teneyck valkenburg vbigdsp vdsp
 
-SUBDIRS = $(BENCHEES)
 EXTRA_DIST = Makefile.common
 
 distclean-local:
