@@ -7,12 +7,14 @@ vdsp
 EXTRA_DIST = Makefile.common
 
 distclean-local:
-	rm -f *.info *.data *.sysinfo
+	rm -f *.info *.speed *.accuracy *.sysinfo
 
 # this is a hack
 RECURSIVE_TARGETS =
-RECURSIVE_TARGETS += benchmark-recursive
+RECURSIVE_TARGETS += benchmark-recursive accuracy-recursive
 benchmark: benchmark-recursive
 benchmark-am:
+accuracy: accuracy-recursive
+accuracy-am:
 
 

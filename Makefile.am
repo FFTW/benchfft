@@ -9,7 +9,9 @@ collect:
 
 # this is a hack
 RECURSIVE_TARGETS =
-RECURSIVE_TARGETS += benchmark-recursive
+RECURSIVE_TARGETS += benchmark-recursive accuracy-recursive
 benchmark: benchmark-recursive
 benchmark-am:
+accuracy: accuracy-recursive
+accuracy-am:
 

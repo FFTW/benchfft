@@ -12,6 +12,8 @@ Usage: $0 [OPTION] program
   --verify           verify each transform before timing
   --verify-only      verify each transform but do not time
   --verify-tolerance set error tolerance for --verify
+  --accuracy         run accuracy test
+  --accuracy-rounds  set number of rounds for --accuracy
   -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
@@ -21,12 +23,14 @@ help="
 Try \`$me --help' for more information."
 
 verify="no"
+accuracy="no"
 speed="yes"
 maxn=1048576
 time_min=""
 keep_going="no"
 tolerance=""
 rounds=""
+arounds=""
 
 for option
 do
@@ -44,12 +48,14 @@ do
 
     --help | --h* | -h ) echo "$usage"; exit 0 ;;
     --keep-going | -k) keep_going=yes; shift;;
+    --accuracy) accuracy=yes; speed=no; shift;;
     --verify) verify=yes; shift;;
     --verify-only) verify=yes; speed=no; shift;;
     --verify-tolerance) prev=tolerance; shift;;
     --verify-tolerance=*) tolerance=$optarg; shift;;
     --verify-rounds) prev=rounds; shift;;
     --verify-rounds=*) rounds=$optarg; shift;;
+    --accuracy-rounds=*) arounds=$optarg; shift;;
     --time-min) prev=time_min; shift;;
     --time-min=*) time_min=$optarg; shift;;
     --maxn) prev=maxn; shift;;
@@ -144,7 +150,9 @@ esac
 name=`$program --info name`
 test -z "$tolerance" || tolerance="--verify-tolerance $tolerance"
 test -z "$rounds" || rounds="--verify-rounds $rounds"
+test -z "$arounds" || arounds="--accuracy-rounds $arounds"
 vflags="$tolerance $rounds"
+aflags="$arounds"
 
 for place in $PLACE; do
   for reality in $REALITY; do
@@ -153,6 +161,11 @@ for place in $PLACE; do
       if test `eval "expr $s"` -gt $maxn; then
          continue
       fi
+
+      case $size in
+	  *x*) oned=no;;
+	  *)   oned=yes;;
+      esac
 
       for dir in $DIRECTIONS; do
         problem=${place}${reality}${dir}${size}
@@ -171,6 +184,10 @@ for place in $PLACE; do
                time="FAILED FAILED"
            else
                time=""
+           fi
+
+           if test "$accuracy" = "yes" -a "$oned" = "yes"; then
+               acc=`$program $aflags --verbose --accuracy $problem`
            fi
 
            echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"

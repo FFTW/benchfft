@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.27 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: verify.c,v 1.28 2002-08-18 21:53:00 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -437,7 +437,7 @@ static void do_verify(struct problem *p, unsigned int rounds, double tol)
 				 tmp, rounds, tol, FREQ_SHIFT));
 
      if (verbose)
-	  ovtpvt("%g %g %g\n", el, ei, es);
+	  ovtpvt("%g %g %g\n", (double)el, (double)ei, (double)es);
 
      bench_free(tmp);
      bench_free(outC);
@@ -508,8 +508,7 @@ static void do_accuracy(struct problem *p, int rounds)
      t1 /= rounds;
      t2 = sqrt(t2 / rounds);
 
-     printf("%10d %6.2e %6.2e %6.2e\n",
-	    n, (double)t1, (double)t2, (double)tinf);
+     ovtpvt("%6.2e %6.2e %6.2e\n", (double)t1, (double)t2, (double)tinf);
 }
 
 void verify(const char *param, int rounds, double tol)
