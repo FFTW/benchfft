@@ -161,7 +161,6 @@ while (<>) {
   $tot =~ s/x/*/g;
   $tot = eval($tot);
 
-  $sizes{$tot} = $siz;
   $tots{$siz} = $tot;
 
   if (! exists($best_mflops{$siz}) || $best_mflops{$siz} < $mflops) {
@@ -185,13 +184,13 @@ while (<>) {
 print "@ xaxis ticklabel angle 270\n";
 print "@ xaxis ticklabel type spec\n";
 print "@ xaxis tick type spec\n";
-@totals = sort { $a - $b } keys(%sizes);
-print "@ xaxis tick spec ", 1 + $#totals, "\n";
+@sizes = sort { $tots{$a} - $tots{$b} } keys(%tots);
+print "@ xaxis tick spec ", 1 + $#sizes, "\n";
 $ticknum = 0;
-foreach $tot (@totals) {
+foreach $siz (@sizes) {
     print "@ xaxis tick major $ticknum, $ticknum\n";
-    print "@ xaxis ticklabel $ticknum, \"",$sizes{$tot},"\"\n";
-    $xval{$tot} = $ticknum;
+    print "@ xaxis ticklabel $ticknum, \"",$siz,"\"\n";
+    $xval{$siz} = $ticknum;
     $ticknum = $ticknum + 1;
 }
 
@@ -221,7 +220,7 @@ foreach $transform (keys %results) {
     $results{$transform} = join(" ", sort { 
 	($siz_a, $mflops_a) = split(/:/,$a);
 	($siz_b, $mflops_b) = split(/:/,$b);
-	$xval{$tots{$siz_a}} - $xval{$tots{$siz_b}};
+	$xval{$siz_a} - $xval{$siz_b};
     } split(/ /,$results{$transform}));
 }
 
@@ -261,7 +260,7 @@ foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
     print "@ target s$setnum\n";
     foreach $speed (split(/ /, $results{$transform})) {
 	($siz, $mflops) = split(/:/,$speed);
-	print "$xval{$tots{$siz}} $mflops\n";
+	print "$xval{$siz} $mflops\n";
     }
     print "&\n";
 
