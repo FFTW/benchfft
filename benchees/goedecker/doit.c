@@ -21,7 +21,7 @@ BENCH_DOC("notes",
 BENCH_DOC("notes",
 	  "Slightly modified for the benchmark.  See sgfft.tar.gz for the original code.")
 BENCH_DOC("notes",
-	  "The fftcache parameter is set to " #FFTCACHE ".  This may be wrong on your system.")
+	  "The fftcache parameter is set to " #FFTCACHE "KB.  This may be wrong on your system.")
 END_BENCH_DOC
 
 #define SG_FFT_ F77_FUNC_(sg_fft, SG_FFT)
