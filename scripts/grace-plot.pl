@@ -79,6 +79,7 @@
 	   "intel-mkl32-f-p4" => "black:dot:1:black:triangle-up:0.5:none",
 	   "intel-mkl64-itp" => "black:dotdash:1:black:triangle-up:0.5:black",
 	   "intel-mkl64-f-itp" => "black:dot:1:black:triangle-up:0.5:none",
+	   "jmfftc" => "turquoise:solid:2:turquoise:circle:0.5:turquoise",
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
 	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
