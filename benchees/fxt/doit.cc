@@ -31,6 +31,7 @@ BENCH_DOC("copyright",
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n")
 BENCH_DOC("language", "C++")
+BENCH_DOC("notes", "We use whatever CXXFLAGS are selected by fxt's makefile")
 BENCH_DOC("notes", NOTES)
 END_BENCH_DOC
 
