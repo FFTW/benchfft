@@ -155,13 +155,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 {
-     if (p->sign == 1) { 	  /* undo the scaling */
-	  bench_complex x;
-	  c_re(x) = p->size;
-	  c_im(x) = 0;
-
-	  cascale(out, p->size, x);
-     }
+     unnormalize(p, out, 1);
 }
 
 void setup(struct problem *p)

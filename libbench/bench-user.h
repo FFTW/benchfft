@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.20 2001-07-13 13:39:22 athena Exp $ */
+/* $Id: bench-user.h,v 1.21 2001-07-13 14:17:52 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -87,6 +87,7 @@ void copy_ri2c(bench_real *rin, bench_real *rout, bench_complex *out,
 	       unsigned int n);
 void copy_c2ri(bench_complex *in, bench_real *rout, bench_real *iout,
 	       unsigned int n);
+void unnormalize(struct problem *p, bench_complex *out, int which_sign);
 
 
 extern int power_of_two(unsigned int n);

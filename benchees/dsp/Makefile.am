@@ -1,5 +1,5 @@
 if HAVE_F77
-PRG=doit11 doit12 doit12-fast doit12-ffa
+PRG=doit11 doit12 doit12-fast doit12-ffa doit14
 noinst_LIBRARIES=libdsp.a
 endif
 
@@ -19,6 +19,11 @@ doit12_fast_LDADD=sect12.o libdsp.a $(LIBBENCH) @FLIBS@
 
 doit12_ffa_SOURCES=doit12-ffa.c
 doit12_ffa_LDADD=sect12.o libdsp.a $(LIBBENCH) @FLIBS@
+
+# Section 1.3: real symmetric transforms.  Not benchmarked.
+
+doit14_SOURCES=doit14.c
+doit14_LDADD=sect14.o libdsp.a $(LIBBENCH) @FLIBS@
 
 libdsp_a_SOURCES=sect01.f
 

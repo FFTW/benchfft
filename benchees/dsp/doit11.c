@@ -9,6 +9,7 @@ BENCH_DOC("author", "C. M. Rader, after Brenner")
 BENCH_DOC("year", "1979, after Brenner 1967")
 BENCH_DOC("language", "FORTRAN")
 BENCH_DOC("notes", "The backward transform is scaled")
+BENCH_DOC("notes", "DSP Section 1.1")
 END_BENCH_DOC
 
 int can_do(struct problem *p)
@@ -21,13 +22,7 @@ int can_do(struct problem *p)
 
 void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 {
-     if (p->sign == 1) { 	  /* undo the scaling */
-	  bench_complex x;
-	  c_re(x) = p->size;
-	  c_im(x) = 0;
-
-	  cascale(out, p->size, x);
-     }
+     unnormalize(p, out, 1);
 }
 
 extern void F77_FUNC(fourea, FOUREA)();
