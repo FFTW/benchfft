@@ -96,6 +96,7 @@ AC_CHECK_FUNCS(hypot)
 AC_CHECK_FUNCS(sqrt)
 AC_CHECK_FUNCS(strtod)
 AC_CHECK_FUNCS(memset)
+AC_CHECK_FUNCS(memalign)
 
 dnl Check for installed libraries
 dnl check for pthreads library (required by MKL below)

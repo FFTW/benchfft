@@ -164,7 +164,16 @@ void *bench_malloc(size_t n)
 {
      void *p;
      if (n == 0) n = 1;
+
+#ifdef HAVE_MEMALIGN
+     {
+	  const int alignment = 16; /* power of 2 */
+	  p = memalign(alignment, n);
+     }
+#else
      p = malloc(n);
+#endif
+
      BENCH_ASSERT(p);
      return p;
 }
