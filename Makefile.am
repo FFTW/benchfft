@@ -1,17 +1,5 @@
-AUTOMAKE_OPTIONS=gnu
+AUTOMAKE_OPTIONS = gnu
 
-SUBDIRS=libbench				\
-						\
-	cwplib					\
-	dfftpack				\
-	djbfft-0.76				\
-	dsp					\
-	fftpack					\
-	gpfa					\
-	green-ffts-2.0				\
-	ooura					\
-	sgimath					\
-	singleton
+SUBDIRS = libbench benchees
 
-
-EXTRA_DIST=COPYRIGHT bootstrap.sh Makefile.common
+EXTRA_DIST = COPYRIGHT bootstrap.sh
