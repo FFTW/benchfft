@@ -18,7 +18,7 @@ doit.o: extract
 
 # remove Macintosh newlines and C++-style  comments
 $(LOCAL_COPIES): extract
-	(echo "#include <config.h>"; tr '\r' '\n' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
+	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
 
 # explicit dependencies because source file need to be created
 dxpose.o: dxpose.c dxpose.h

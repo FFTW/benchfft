@@ -13,6 +13,6 @@ nodist_doit_SOURCES=$(LOCAL_COPIES)
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
 $(LOCAL_COPIES): extract
-	(echo "#include <config.h>"; tr '\r' ' ' <$(PKG)/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
+	(echo "#include <config.h>"; tr '\015' ' ' <$(PKG)/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
 
 include ../Makefile.common
