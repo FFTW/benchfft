@@ -17,6 +17,6 @@ doit.o: doit.c extract $(CONFIG_HEADER) $(PKG)/djbfft.a
          -c $<
 
 $(PKG)/djbfft.a: extract
-	(cd $(PKG); make)
+	(cd $(PKG); make djbfft.a)
 
 $(PKG)/fftc4.h $(PKG)/fftc8.h $(PKG)/fftfreq.h: extract

@@ -8,9 +8,11 @@ MAXN=262144
 BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark --maxn=$(MAXN) $(BENCHMARK_FLAGS)
 WRITEINFO=$(SHELL) ${top_srcdir}/scripts/writeinfo
 
-# ``make list'' prints a list of available programs
-list:
-	@echo $(PRG)
+if SINGLE
+PRECISION=single
+else
+PRECISION=double
+endif
 
 # extract TARFILE
 extract: $(TARFILE)
@@ -27,20 +29,24 @@ distclean-local:
 	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES)
 	rm -f benchmark *.info *.data
 
+clean-local:
+	rm -f benchmark
+
 check-local: $(PRG)
-	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
-	  test ! -x $$prog ||                              \
-	  echo "Testing $$prog";                           \
-	  $(BENCHMARK) --verify-only `pwd`/$$prog || exit 1; \
+	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do	\
+	  test ! -x $$prog || {					\
+	  echo "Testing $$prog";				\
+	  $(BENCHMARK) --verify-only `pwd`/$$prog || exit 1; }	\
 	done)
 
 benchmark:
-	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
-	  test ! -x $$prog ||                              \
-	  echo "Benchmarking $$prog";                      \
-	  time_min=`./$$prog --print-time-min`;              \
-	  $(WRITEINFO) --time-min $$time_min `pwd`/$$prog  >$$prog.info; \
-	  ($(BENCHMARK) --time-min $$time_min `pwd`/$$prog  | \
-           tee $$prog.data); \
+	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do	\
+	  test ! -x $$prog || {					\
+	  echo "Benchmarking $$prog";				\
+	  time_min=`./$$prog --print-time-min`;			\
+	  $(WRITEINFO) --time-min $$time_min `pwd`/$$prog  |	\
+           tee $$prog.$(PRECISION).info;			\
+	  ($(BENCHMARK) --time-min $$time_min `pwd`/$$prog  |	\
+           tee $$prog.$(PRECISION).data); }			\
 	done)
 	echo done >$@

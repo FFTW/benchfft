@@ -1,4 +1,4 @@
-#define NAME "arndt_twodim"
+#define NAME "arndt-twodim"
 #define NOTES "Real/imag arrays datatype, uses FHT for 1d FFTs."
 
 #define NO_Complex 1

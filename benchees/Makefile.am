@@ -4,6 +4,9 @@ sgimath singleton temperton vdsp fftw2 sunperf gsl sorensen goedecker
 
 EXTRA_DIST = Makefile.common
 
+distclean-local:
+	rm -f *.info *.data *.sysinfo
+
 # this is a hack
 RECURSIVE_TARGETS =
 RECURSIVE_TARGETS += benchmark-recursive

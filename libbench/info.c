@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: info.c,v 1.4 2001-07-25 01:07:44 athena Exp $ */
+/* $Id: info.c,v 1.5 2001-07-28 14:56:00 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -52,4 +52,6 @@ void report_info_all(void)
 	       p->val = p->f();
 	  ovtpvt("(%s \"%s\")\n", p->key, p->val);
      }
+     ovtpvt("(benchmark-precision \"%s\")\n", 
+	    SINGLE_PRECISION ? "single" : "double");
 }
