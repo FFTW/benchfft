@@ -186,6 +186,8 @@ print "@ xaxis ticklabel type spec\n";
 print "@ xaxis tick type spec\n";
 @sizes = sort { $tots{$a} - $tots{$b} } keys(%tots);
 print "@ xaxis tick spec ", 1 + $#sizes, "\n";
+$labelsize = 30.0 / (1 + $#sizes);
+if ($labelsize < 1.0) { print "@ xaxis ticklabel char size $labelsize\n"; }
 $ticknum = 0;
 foreach $siz (@sizes) {
     print "@ xaxis tick major $ticknum, $ticknum\n";
