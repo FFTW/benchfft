@@ -20,7 +20,6 @@ int can_do(struct problem *p)
      return (SINGLE_PRECISION &&
 	     p->rank == 1 &&
 	     p->kind == PROBLEM_COMPLEX &&
-	     problem_in_place(p) &&
 	     check_prime_factors(p->n[0], 23) &&
 	     problem_in_place(p)
 	     /* && if n has more than one square-free factor, the
