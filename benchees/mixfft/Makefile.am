@@ -5,13 +5,14 @@ endif
 PKG = mixfft05
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
-
+LOCAL_COPIES = Mixfft.c
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-nodist_doit_SOURCES=$(PKG)/Mixfft.c
+nodist_doit_SOURCES=$(LOCAL_COPIES)
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
-$(PKG)/Mixfft.c: extract
+$(LOCAL_COPIES): extract
+	(echo "#include <config.h>"; tr '\r' ' ' <$(PKG)/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
 
 include ../Makefile.common
