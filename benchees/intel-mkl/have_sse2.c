@@ -16,7 +16,7 @@ int have_sse(void)
      if (setjmp(jb)) {
 	  return 0;
      } else {
-	  __asm__ __volatile__ ("xorps %xmm0, %xmm0");
+	  __asm__ __volatile__ ("xorpd %xmm0, %xmm0");
 	  return 1;
      }
 }
