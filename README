@@ -71,7 +71,7 @@ Free software:
 	FFTW 2.x and/or FFTW 3.x (double and/or single precision): www.fftw.org
 	GNU Scientific Library: sources.redhat.com/gsl
 
-Hardware/Vendor-specific:
+Hardware/vendor-specific:
 	Intel Math Kernel Library: www.intel.com/software/products/mkl
 	Intel IPPS
 	AMD Core Math Library
@@ -81,7 +81,7 @@ Hardware/Vendor-specific:
 	SUNPERF (SPARC only)
 	DXML/CXML (Alpha only)
 
-Proprietary Software:
+Proprietary software:
 	Numerical Recipes: copy .c and .f files into benchees/nr
 	NAG
 	IMSL
