@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS=-I ./m4
 
 SUBDIRS = libbench benchees scripts
 
-EXTRA_DIST = COPYRIGHT bootstrap.sh acx_f77_cmain_fflags.m4
+EXTRA_DIST = COPYRIGHT bootstrap.sh
 
 OUTFILE=
 
