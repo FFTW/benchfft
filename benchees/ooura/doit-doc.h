@@ -1,6 +1,7 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
 BENCH_DOC("author", "Takuya Ooura")
+BENCH_DOC("version", "2001/11/22")
 BENCH_DOC("year", "2001")
 BENCH_DOC("email", "ooura@mmm.t.u-tokyo.ac.jp")
 BENCH_DOC("url", "http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html")
