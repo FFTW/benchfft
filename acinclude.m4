@@ -225,7 +225,7 @@ if test "$ac_test_CFLAGS" != "set"; then
   # scheduling pass (after register reload) is ok.
   if test "$acx_prog_egcs" = yes; then
      if test "$1" = fftw; then
-        CFLAGS="$CFLAGS -fno-schedule-insns -fschedule-insns2"
+        CFLAGS="$CFLAGS -fno-schedule-insns"
      fi
   fi
 
