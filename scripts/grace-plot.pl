@@ -120,7 +120,7 @@ while (@ARGV) {
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
 	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
 	   "morris82" => "turquoise:solid:1:turquoise:star:0.4:blue",
-	   "mixfft" => "blue:dot:1:blue:star:0.5:none",
+	   "mixfft" => "blue:dash:1:blue:star:0.5:none",
 	   "bailey" => "green4:dot:1:green4:square:0.5:green4",
 	   "mpfun77" => "green4:dot:1:green4:square:0.5:green4",
 	   "mpfun90" => "green4:dash:1:green4:square:0.5:none",
