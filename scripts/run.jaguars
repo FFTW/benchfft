@@ -4,7 +4,7 @@
 HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
-CXXLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
+CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CPPFLAGS="-I$HOME/i386/include" 
 LDFLAGS="-L$HOME/i386/lib" 
 MAKE=make

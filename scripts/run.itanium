@@ -4,7 +4,7 @@
 HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer'
-CXXLAGS='-O2 -fomit-frame-pointer'
+CXXFLAGS='-O2 -fomit-frame-pointer'
 CPPFLAGS="-I$HOME/ia64/include"
 LDFLAGS="-I$HOME/ia64/lib"
 MAKE=make

@@ -4,7 +4,7 @@
 HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
-CXXLAGS='-O2 -fomit-frame-pointer -mcpu=750'
+CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
 CPPFLAGS="-I$HOME/ppc/include" 
 LDFLAGS="-L$HOME/ppc/lib" 
 MAKE=make
