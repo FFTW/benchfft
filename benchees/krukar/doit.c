@@ -38,7 +38,7 @@ krukar_fft_t krukar_fft;
 void setup(struct problem *p)
 {
      BENCH_ASSERT(can_do(p));
-     if (p->sign = +1)
+     if (p->sign == +1)
 	  krukar_fft = ifft;
      else
 	  krukar_fft = fft;
