@@ -1,11 +1,8 @@
 FFTs to possibly add:
 
-pdqfft
-
 NFFT (probably slow, but interesting for academic reasons)
-
+pdqfft
 edelblute
-[newer emayer?]
 monro [superseded by statlib?]
 SCSL
 ASCI Red
