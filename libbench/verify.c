@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.32 2002-09-02 06:49:40 stevenj Exp $ */
+/* $Id: verify.c,v 1.33 2003-05-04 23:41:05 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -429,6 +429,8 @@ static void do_accuracy(struct problem *p, int rounds)
      extern void fftaccuracy(unsigned int n, 
 			     bench_complex *a, bench_complex *ffta,
 			     int sign, double err[6]);
+     extern void fftaccuracy_done(void);
+     
      unsigned int n, i;
      int r;
      bench_complex *a, *b;
@@ -473,6 +475,8 @@ static void do_accuracy(struct problem *p, int rounds)
      t[1] = sqrt(t[1] / rounds);
      t[3] /= rounds;
      t[4] = sqrt(t[4] / rounds);
+
+     fftaccuracy_done();
 
      ovtpvt("%6.2e %6.2e %6.2e %6.2e %6.2e %6.2e\n", 
 	    t[0], t[1], t[2], t[3], t[4], t[5]);
