@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.5 2001-07-08 03:09:39 athena Exp $ */
+/* $Id: bench.h,v 1.6 2001-07-19 17:47:25 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -26,6 +26,7 @@
 
 extern double time_min;
 extern int time_repeat;
+extern int verbose;
 
 extern void timer_init(double tmin, int repeat);
 extern void timer_start(void);

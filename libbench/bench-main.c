@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.7 2001-07-08 15:26:01 athena Exp $ */
+/* $Id: bench-main.c,v 1.8 2001-07-19 17:47:25 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -26,6 +26,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
+
+int verbose;
 
 static struct option long_options[] =
 {
@@ -45,7 +47,8 @@ static struct option long_options[] =
   {"speed", required_argument, 0, 's'},
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
-  {"verify", required_argument, 0, 'v'},
+  {"verbose", no_argument, 0, 'v'},
+  {"verify", required_argument, 0, 'y'},
   {"verify-rounds", required_argument, 0, 401},
   {0, no_argument, 0, 0}
 };
@@ -60,6 +63,7 @@ static int bench_main1(int argc, char *argv[])
      char *short_options = make_short_options(long_options);
 
      report = report_time; /* default */
+     verbose = 0;
 
      while ((c = getopt_long (argc, argv, short_options,
 			      long_options, &index)) != -1) {
@@ -78,6 +82,9 @@ static int bench_main1(int argc, char *argv[])
 		   report_can_do(optarg);
 		   break;
 	      case 'v':
+		   ++verbose;
+		   break;
+	      case 'y':
 		   verify(optarg, rounds);
 		   break;
 	      case 'i':

@@ -25,45 +25,20 @@ void copy_c2h(struct problem *p, bench_complex *in)
      copy_c2h_1d_unpacked_ri(p, in, -1.0);
 }
 
-void problem_ccopy_from(struct problem *p, bench_complex *in)
+
+void copy_c2c_from(struct problem *p, bench_complex *in)
 {
-     BENCH_ASSERT(p->rank == 1);
-     if (p->kind == PROBLEM_COMPLEX) 
-	  copy_c2ri(in, p->in, ((bench_real *)p->in) + p->n[0], p->n[0]);
-     else {
-	  if (p->sign == -1) {
-	       /* forward real->hermitian transform */
-	       copy_c2r(p, in);
-	  } else {
-	       /* backward hermitian->real transform */
-	       copy_c2h(p, in);
-	  }
-     }
+     copy_c2ri(in, p->in, ((bench_real *)p->in) + p->n[0], p->n[0]);
 }
 
-void problem_ccopy_to(struct problem *p, bench_complex *out)
+void copy_c2c_to(struct problem *p, bench_complex *out)
 {
-     BENCH_ASSERT(p->rank == 1);
+     copy_ri2c(p->out, ((bench_real *)p->out) + p->n[0], out, p->n[0]);
+}
 
-     if (p->kind == PROBLEM_COMPLEX) {
-	  copy_ri2c(p->out, ((bench_real *)p->out) + p->n[0], out, p->n[0]);
-     } else {
-	  if (p->sign == -1) {
-	       /* forward real->hermitian transform */
-	       copy_h2c(p, out);
-	  } else {
-	       /* backward hermitian->real transform */
-	       copy_r2c(p, out);
-	  }
-     }
-
-     if (p->sign == 1) { 	  /* undo the scaling */
-	  bench_complex x;
-	  c_re(x) = p->size;
-	  c_im(x) = 0;
-
-	  cascale(out, p->size, x);
-     }
+void after_problem_ccopy_to(struct problem *p, bench_complex *out)
+{
+     unnormalize(p, out, 1);
 }
 
 #ifdef HAVE_MKL_FFT_H
@@ -87,7 +62,11 @@ void setup(struct problem *p)
 	  bench_real *rin = p->in;
 	  bench_real *iin = rin + n;
 
-          WSAVE = bench_malloc((3 * n) * sizeof(bench_real));
+	  /*
+	   * example code says that wsave consists of 3 * n
+	   * locations, but the code dumps core for n == 4
+	   */
+          WSAVE = bench_malloc((3 * n + 4) * sizeof(bench_real));
 	  if (SINGLE_PRECISION) 
 	       CFFT1DC(rin, iin, n, 0, WSAVE);
 	  else	       

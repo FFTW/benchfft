@@ -1,12 +1,12 @@
 /* not worth copyrighting */
-/* $Id: ccopy-to.c,v 1.4 2001-07-08 20:22:34 athena Exp $ */
+/* $Id: ccopy-to.c,v 1.5 2001-07-19 17:47:25 athena Exp $ */
 #include "bench.h"
 
 /* default routine, can be overridden by user */
 void problem_ccopy_to(struct problem *p, bench_complex *out)
 {
      if (p->kind == PROBLEM_COMPLEX)
-	  cacopy(p->out, out, p->size);
+	  copy_c2c_to(p, out);
      else {
 	  if (p->sign == -1) {
 	       /* forward real->hermitian transform */

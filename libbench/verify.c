@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.11 2001-07-08 20:22:34 athena Exp $ */
+/* $Id: verify.c,v 1.12 2001-07-19 17:47:25 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -166,9 +166,8 @@ static void acmp(bench_complex *A, bench_complex *B, unsigned int n,
 {
      double d = cerror(A, B, n);
      if (d > tolerance()) {
-	  fflush(stdout);
-	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
-	  BENCH_ASSERT(((void)"failure in Ergun's verification procedure",0));
+	  printf("Found relative error %e (%s)\n", d, test);
+	  exit(EXIT_FAILURE);
      }
 }
 
@@ -361,5 +360,6 @@ void verify(const char *param, int rounds)
      setup(p);
      do_verify(p, rounds);
      problem_destroy(p);
-     ovtpvt("ok\n");
+     if (verbose)
+	  ovtpvt("#t\n");
 }

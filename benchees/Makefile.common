@@ -21,3 +21,16 @@ extract-mkdir: $(TARFILE)
 
 distclean-local:
 	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES)
+
+check-local: $(PRG)
+	test -z "$(PRG)" || \
+	(for prog in `echo $(PRG)`; do \
+	 test ! -x $$pr || echo "testing $$prog"; \
+	 for prob in f b if ib rf rb rif rib; do \
+	   for siz in 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 32 64 1024; do \
+             p=$$prob$$siz; pr=./$$prog; \
+             test ! -x $$pr || test "`$$pr --can-do $$p`" != '#t' || $$pr --verify $$p || exit 1; \
+           done;\
+         done;\
+        done)
+

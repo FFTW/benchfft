@@ -19,6 +19,10 @@ int can_do(struct problem *p)
 
      if (!(SINGLE_PRECISION && p->rank == 1))
 	  return 0;
+     if (!problem_in_place(p))
+	  return 0;
+     if (p->kind != PROBLEM_COMPLEX)
+	  return 0;
 
      n = p->n[0];
 
@@ -53,13 +57,7 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
      copy_ri2c(p->out, ((bench_real *)p->out) + p->n[0], out,
 	       p->n[0]);
 
-     if (p->sign == 1) { 	  /* undo the scaling */
-	  bench_complex x;
-	  c_re(x) = p->size;
-	  c_im(x) = 0;
-
-	  cascale(out, p->size, x);
-     }
+     unnormalize(p, out, 1);
 }
 
 extern void F77_FUNC(wfta, WFTA)();
