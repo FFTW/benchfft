@@ -168,8 +168,8 @@ while (@ARGV) {
 	   "teneyck" => "grey:dash:2:black:square:0.5:grey",
 	   "valkenburg" => "cyan:solid:1:cyan:star:0.5:none",
 	   "vbigdsp" => "red:solid:1:red:star:0.5:none",
-	   "vdsp" => "black:solid:1:black:star:0.5:none",
-	   "vDSP" => "black:solid:1:black:star:0.5:none",
+	   "vdsp out-of-place" => "black:solid:1:black:star:0.5:none",
+	   "vdsp in-place" => "black:dot:1:black:star:0.5:none",
 	   );
 
 # for publication, use black-and-white only and plot only a selected subset:
