@@ -10,6 +10,7 @@ BENCH_DOC("year", "1997")
 BENCH_DOC("language", "C")
 BENCH_DOC("notes", "Received in personal communication with the author.")
 BENCH_DOC("notes", "Uses a six-step FFT algorithm.  Derived from Mikko Tommila's Apfloat arbitrary-precision arithmetic package, which performed a six-step number-theoretic transform.")
+BENCH_DOC("notes", "Inverse transform works by two extra passes to conjugate input and output.")
 BENCH_DOC("copyright",
 "         Copyright (c) 1997 Scott M. Ransom\n"
 "\n"
