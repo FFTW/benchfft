@@ -5,6 +5,4 @@
 
 medir=`echo "$0" | sed -e 's,/[^/]*$,,'`
 
-perl -w $medir/sort-by-problem.pl |  
-  perl -w $medir/insnl.pl |  
-  tr ' ' '\t'  | expand -t 20,30,45,60
+perl -w $medir/sort-by-problem.pl | perl -w $medir/group-by-problem.pl
