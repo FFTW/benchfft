@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.7 2001-07-09 01:13:40 athena Exp $ */
+/* $Id: problem.c,v 1.8 2001-07-12 23:23:52 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -42,26 +42,22 @@ struct problem *problem_parse(const char *s)
      p->in = 0;
      p->out = 0;
      p->userinfo = 0;
-
-     for (;;) {
-	  switch (tolower(*s)) {
-	      case 'i': in_place = 1; ++s; continue;
-	      case 'o': in_place = 0; ++s; continue;
-	      case 'f': 
-	      case '-': p->sign = -1; ++s; continue;
-	      case 'b': 
-	      case '+': p->sign = 1; ++s; continue;
-	      case 'r': p->kind = PROBLEM_REAL; ++s; continue;
-	      default:
-		   ;
-	  }
-	  break;
-     }
-
      p->rank = 0;
      p->size = 1;      /* the product of 0 things is 1 */
 
- accept_digit:
+ L1:
+     switch (tolower(*s)) {
+	 case 'i': in_place = 1; ++s; goto L1;
+	 case 'o': in_place = 0; ++s; goto L1;
+	 case 'f': 
+	 case '-': p->sign = -1; ++s; goto L1;
+	 case 'b': 
+	 case '+': p->sign = 1; ++s; goto L1;
+	 case 'r': p->kind = PROBLEM_REAL; ++s; goto L1;
+	 default : goto L2;
+     }
+
+ L2:
      n = 0;
 
      BENCH_ASSERT(isdigit(*s));
@@ -79,7 +75,7 @@ struct problem *problem_parse(const char *s)
 
      if (*s == 'x' || *s == 'X' || *s == '*' || *s == ',') {
 	  ++s;
-	  goto accept_digit;
+	  goto L2;
      }
 
      problem_alloc(p, in_place);

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.16 2001-07-10 00:45:10 athena Exp $ */
+/* $Id: bench-user.h,v 1.17 2001-07-12 23:23:52 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -29,7 +29,7 @@
 #include <stddef.h>
 #endif
 
-typedef float bench_real;
+typedef double bench_real;
 
 typedef struct {
      bench_real re, im;
