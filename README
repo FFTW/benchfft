@@ -131,7 +131,7 @@ do:
 	sh standard-plots.sh foo.speed
 	sh standard-plots.sh foo.accuracy
 
-and the output will be a set of PostsSript files (which, for the web,
+and the output will be a set of PostScript files (which, for the web,
 we convert to .png via ImageMagick).
 
 ----------------------------------------------------------------------------
