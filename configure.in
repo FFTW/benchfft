@@ -239,6 +239,7 @@ benchees/dsp/Makefile
 benchees/dxml/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
+benchees/fftw3/Makefile
 benchees/fxt/Makefile
 benchees/goedecker/Makefile
 benchees/gpfa/Makefile
