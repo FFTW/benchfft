@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.1 2001-07-04 22:50:21 athena Exp $ */
+/* $Id: timer.c,v 1.2 2001-07-06 18:50:05 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>
@@ -73,6 +73,9 @@ static double elapsed(mytime t1, mytime t0)
  */
 
 typedef int TYPE;
+static const double tmin_try = 1.0e-6; /* seconds */
+static const double tmax_try = 1.0;    /* seconds */
+static const double tolerance = 0.0025;
 
 static TYPE **work(int n, TYPE **p)
 {
@@ -122,7 +125,7 @@ static int find_n(double tmin)
      for (tries = 0; tries < 10; ++tries) {
 	  if (0.98 * tmin < t && t < 1.02 * tmin)
 	       return n;
-	  if (t < 1.0e-3)
+	  if (t < tmin_try)
 	       n *= 10;
 	  else {
 	       double k = n;
@@ -154,19 +157,19 @@ static int acceptable(double tmin)
 	  double usecs = time_n((int)((double) n * test_points[i]));
 	  double expected = baseline * test_points[i];
 	  double diff = expected > usecs ? expected - usecs : usecs - expected;
-	  if (diff / expected > 0.0025)
+	  if (diff / expected > tolerance)
 	       return 0;
      }
      return 1;
 }
 
-static void calibrate(void)
+static double calibrate(void)
 {
      double tmin;
 
-     for (tmin = 1.0e-3; tmin < 1.0 && !acceptable(tmin); tmin *= 2.0)
+     for (tmin = tmin_try; tmin < tmax_try && !acceptable(tmin); tmin *= 2.0)
 	  ;
-     time_min = tmin;
+     return tmin;
 }
 
 
@@ -179,7 +182,7 @@ void timer_init(double tmin, int repeat)
      if (tmin > 0)
 	  time_min = tmin;
      else
-	  calibrate();
+	  time_min = calibrate();
 }
 
 static mytime t0;

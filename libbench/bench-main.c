@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.3 2001-07-05 14:27:19 athena Exp $ */
+/* $Id: bench-main.c,v 1.4 2001-07-06 18:50:05 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -33,6 +33,7 @@ static struct option long_options[] =
   {"help", no_argument, 0, 'h'},
   {"info", required_argument, 0, 'i'},
   {"info-all", no_argument, 0, 'I'},
+  {"print-time-min", no_argument, 0, 400},
   {"report-avg-mflops", no_argument, 0, 302},
   {"report-avg-time", no_argument, 0, 312},
   {"report-full", no_argument, 0, 320},
@@ -56,7 +57,6 @@ static int bench_main1(int argc, char *argv[])
      char *short_options = make_short_options(long_options);
 
      report = report_time; /* default */
-     opterr = 0;
 
      while ((c = getopt_long (argc, argv, short_options,
 			      long_options, &index)) != -1) {
@@ -111,6 +111,10 @@ static int bench_main1(int argc, char *argv[])
 		   report = report_full;
 		   break;
 
+	      case 400: /* --print-time-min */
+		   timer_init(tmin, repeat);
+		   printf("%g\n", time_min);
+		   
 	      case '?':
 		   /* `getopt_long' already printed an error message. */
 		   break;
@@ -119,6 +123,14 @@ static int bench_main1(int argc, char *argv[])
 		   abort ();
 
 	  }
+     }
+
+     /* Print any remaining command line arguments (not options). */
+     if (optind < argc) {
+	  fprintf(stderr, "unrecognized non-option arguments: ");
+	  while (optind < argc)
+	       fprintf(stderr, "%s ", argv[optind++]);
+	  fprintf(stderr, "\n");
      }
      
      return 0;
