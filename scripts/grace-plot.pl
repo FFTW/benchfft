@@ -41,7 +41,7 @@ while (@ARGV) {
 # (The default symbol-size/line-width is 1.0.)
 
 %styles = (
-	   "acml" => "grey:solid:2:black:star:0.5:black",
+	   "acml" => "black:solid:1:black:triangle-up:0.7:none",
 	   "arprec" => "green4:solid:1:green4:circle:0.5:none",
 	   "as83" => "maroon:solid:1:maroon:none:0.5:none",
 	   "as97" => "orange:solid:1:orange:none:0.5:none",
