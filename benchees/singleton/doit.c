@@ -11,6 +11,7 @@ BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.netlib.org/go/fft.f")
 BENCH_DOC("url", "http://www.netlib.org/go/realtr.f")
 BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
+BENCH_DOC("notes", "Used complex data format (alternating real/imag. parts), which usually seems to be faster.")
 BENCH_DOC("bibitem", 
 	  "R. C. Singleton, An algorithm for computing the mixed radix fast Fourier transform, IEEE Trans. on Audio and Electroacoustics AU-17, no. 2, p. 93-103 (June, 1969).")
 END_BENCH_DOC
