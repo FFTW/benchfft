@@ -8,9 +8,11 @@ BENCH_DOC("name", "gpfa")
 BENCH_DOC("author", "Clive Temperton")
 BENCH_DOC("year", "1992 (?)")
 BENCH_DOC("language", "Fortran 77")
+BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/gpfa.tar.gz")
+BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:37:44 EDT 2002")
 BENCH_DOC("bibitem", 
-	  "C. Temperton, A Generalized Prime Factor Fft Algorithm "
-	  "For Any N = (2**P)(3**Q)(5**R), SIAM J. Sci. Stat. Comp. 13 (3),"
+	  "C. Temperton, A Generalized Prime Factor FFT Algorithm "
+	  "for Any N = (2**P)(3**Q)(5**R), SIAM J. Sci. Stat. Comp. 13 (3),"
 	  "p. 676-686 (May 1992).")
 END_BENCH_DOC
 
