@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.15 2001-07-27 11:56:16 athena Exp $ */
+/* $Id: verify.c,v 1.16 2001-07-27 12:02:18 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -163,7 +163,7 @@ static double acmp(bench_complex *A, bench_complex *B, unsigned int n,
 {
      double d = cerror(A, B, n, tol);
      if (d > tol) {
-	  printf("Found relative error %e (%s)\n", d, test);
+	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
 	  exit(EXIT_FAILURE);
      }
      return d;
