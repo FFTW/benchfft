@@ -2,7 +2,7 @@ PRG=doit
 PKG=djbfft-0.76
 INCLUDES = $(INCLBENCH) -I$(PKG)
 TARFILE=$(PKG).tar.gz
-EXTRA_DIST = $(TARFILE)
+# EXTRA_DIST = $(TARFILE)
 
 doit_SOURCES=doit.c
 doit_LDADD=$(PKG)/djbfft.a $(LIBBENCH)

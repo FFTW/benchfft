@@ -223,6 +223,9 @@ nr_dir=$srcdir/benchees/nr
 test -r $nr_dir/four1.c && test -r $nr_dir/fourn.c && test -r $nr_dir/realft.c && test -r $nr_dir/rlft3.c && have_nrc=yes
 test -r $nr_dir/four1.f && test -r $nr_dir/fourn.f && test -r $nr_dir/realft.f && test -r $nr_dir/rlft3.f && have_nrf=yes
 
+# check for djbfft
+test -r $srcdir/benchees/djbfft-0.76/djbfft-0.76.tar.gz && have_djbfft=yes
+
 dnl Check for the GNU Scientific Library
 SAVE_LIBS=$LIBS
 AC_CHECK_LIB(gslcblas, cblas_dsdot) dnl why on the hell does it use cblas?
@@ -347,6 +350,7 @@ cat <<EOF
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
 Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
+                        djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
                FFTW 2.x single-precision (free, www.fftw.org): ${have_sfftw2_all-no}
