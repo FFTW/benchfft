@@ -191,23 +191,7 @@ sub printstyle {
 }
 
 #############################################################################
-
-# Put the legend in a good(?) place:
-print "@ legend char size 0.75\n";
-print "@ legend 1.02,0.85\n";
-print "@ view xmax 1.0\n"; # make space for the legend
-
-# print "@ xaxis label \"transform size\"\n";
-if ($accuracy) {
-    print "@ yaxis label \"relative rms error\"\n";
-    $best_val = -1;
-    $worst_val = 0;
-}
-else {
-    print "@ yaxis label \"speed (mflops)\"\n";
-    $best_val = 0;
-    $worst_val = 1e20;
-}
+# Read and process the data.
 
 # Collect the data:
 while (<>) {
@@ -234,8 +218,6 @@ while (<>) {
   if (! exists($worst_vals{$siz}) || $worst_vals{$siz} > $val) {
       $worst_vals{$siz} = $val;
   }
-  if ($val > $best_val) { $best_val = $val };
-  if ($val < $worst_val) { $worst_val = $val };
 
   if (! exists($problems{$nam})) { $problems{$nam} = $prob; }
   elsif ($problems{$nam} ne $prob) { $problems{$nam} = "several"; }
@@ -247,6 +229,111 @@ while (<>) {
   else {
       $results{$transform} = $results{$transform} . " $siz:$val";
   }
+}
+
+# Make sure results are sorted in increasing order of xval, or grace will
+# connect the dots strangely:
+foreach $transform (keys %results) {
+    $results{$transform} = join(" ", sort { 
+	($siz_a, $val_a) = split(/:/,$a);
+	($siz_b, $val_b) = split(/:/,$b);
+	$xval{$siz_a} - $xval{$siz_b};
+    } split(/ /,$results{$transform}));
+}
+
+# Compute median "normalized value" of each transform, for sorting purposes:
+@norm_vals = ();
+foreach $transform (keys %results) {
+    @nvs = ();
+    foreach $speed (split(/ /, $results{$transform})) {
+	($siz, $val) = split(/:/,$speed);
+	if ($accuracy) {
+	    $val = log(-$val) / log(-$best_vals{$siz});
+	}
+	else {
+	    $val = $val / $best_vals{$siz};
+	}
+	$nvs[$#nvs + 1] = $val;
+    }
+    @nvs = sort { 100000 * ($b - $a) } @nvs;
+    $norm_val = $nvs[($#nvs + 1) / 2];
+    $norm_val = $norm_val - 1e-10 if (exists($transforms{$norm_val}));
+    $norm_vals[$#norm_vals + 1] = $norm_val;
+    $transforms{$norm_val} = $transform;
+}
+
+# Figure out which transforms to plot (and under what legend):
+%done = ();
+%namlegends = ();
+@plot_transforms = ();
+foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
+    $transform = $transforms{$norm_val};
+    ($nam, $prob) = split(/:/,$transform);
+    $namleg = $nam;
+
+    $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
+
+    # get transform "family"
+    ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
+    $nam0 = $nam if ($nam eq "intel-ipps");
+    $nam0 = $nam if ($nam eq "fftw3-r2r");
+    $nam0 = $nam if ($namleg eq "fxt-matrixfft");
+    $nam0 = $nam if ($nam0 eq "dsp79");
+    if ($nam0 eq "fftw3" || $nam0 eq "fftw3-r2r") {
+	if ($prob =~ /..i./) {
+	    $nam0 = "$nam0 in-place";
+	    $namleg = "$namleg in-place";
+	} else {
+	    $nam0 = "$nam0 out-of-place";
+	    $namleg = "$namleg out-of-place";
+	}
+    }
+
+    # check if we have already output a relation of this transform
+    next if ($no_dups && exists($done{$nam0}));
+    $done{$nam0} = 1;
+
+    # legend should include the problem if this transform solves more than
+    # one problem in this data:
+    if (!$no_dups and $problems{$nam} ne $prob) {
+	$namleg = $transform;
+    }
+
+    $namlegends{$transform} = $namleg;
+    $plot_transforms[$#plot_transforms + 1] = $transform;
+}
+
+# get plot range
+if ($accuracy) {
+    $best_val = -1;
+    $worst_val = 0;
+}
+else {
+    $best_val = 0;
+    $worst_val = 1e20;
+}
+foreach $transform (@plot_transforms) {
+    foreach $result (split(/ /,$results{$transform})) {
+	($siz, $val) = split(/:/, $result);
+	if ($val > $best_val) { $best_val = $val };
+	if ($val < $worst_val) { $worst_val = $val };
+    }
+}
+
+#############################################################################
+# Output the plot in Grace format.
+
+# Put the legend in a good(?) place:
+print "@ legend char size 0.75\n";
+print "@ legend 1.02,0.85\n";
+print "@ view xmax 1.0\n"; # make space for the legend
+
+# print "@ xaxis label \"transform size\"\n";
+if ($accuracy) {
+    print "@ yaxis label \"relative rms error\"\n";
+}
+else {
+    print "@ yaxis label \"speed (mflops)\"\n";
 }
 
 # Set x axis ticks and labels:
@@ -269,7 +356,7 @@ foreach $siz (@sizes) {
 if ($accuracy) {
     $val_increment = 1;
     $best_val = -log(-$best_val) / log(10) + 1.0;
-    $worst_val = -log(-$worst_val) / log(10) - 1.0;
+    $worst_val = -log(-$worst_val) / log(10);
 }
 else {
     $val_increment = 100; # increment for y-axis labels
@@ -306,75 +393,13 @@ print "@ autoscale onread none\n";  # requires recent version of Grace
 
 # add grid lines?
 
-# Make sure results are sorted in increasing order of xval, or grace will
-# connect the dots strangely:
-foreach $transform (keys %results) {
-    $results{$transform} = join(" ", sort { 
-	($siz_a, $val_a) = split(/:/,$a);
-	($siz_b, $val_b) = split(/:/,$b);
-	$xval{$siz_a} - $xval{$siz_b};
-    } split(/ /,$results{$transform}));
-}
-
-# Compute median "normalized value" of each transform, for sorting purposes:
-@norm_vals = ();
-foreach $transform (keys %results) {
-    @nvs = ();
-    foreach $speed (split(/ /, $results{$transform})) {
-	($siz, $val) = split(/:/,$speed);
-	if ($accuracy) {
-	    $val = log(-$val) / log(-$best_vals{$siz});
-	}
-	else {
-	    $val = $val / $best_vals{$siz};
-	}
-	$nvs[$#nvs + 1] = $val;
-    }
-    @nvs = sort { 100000 * ($b - $a) } @nvs;
-    $norm_val = $nvs[($#nvs + 1) / 2];
-    $norm_val = $norm_val - 1e-10 if (exists($transforms{$norm_val}));
-    $norm_vals[$#norm_vals + 1] = $norm_val;
-    $transforms{$norm_val} = $transform;
-}
-
 # Print out the data sets for each transform, in descending order of "value":
 $setnum = 0;
-%done = ();
-foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
-    $transform = $transforms{$norm_val};
+foreach $transform (@plot_transforms) {
     ($nam, $prob) = split(/:/,$transform);
-    $namleg = $nam;
 
-    $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
-
-    # get transform "family"
-    ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
-    $nam0 = $nam if ($nam eq "intel-ipps");
-    $nam0 = $nam if ($nam eq "fftw3-r2r");
-    $nam0 = $nam if ($namleg eq "fxt-matrixfft");
-    $nam0 = $nam if ($nam0 eq "dsp79");
-    if ($nam0 eq "fftw3" || $nam0 eq "fftw3-r2r") {
-	if ($prob =~ /..i./) {
-	    $nam0 = "$nam0 in-place";
-	    $namleg = "$namleg in-place";
-	} else {
-	    $nam0 = "$nam0 out-of-place";
-	    $namleg = "$namleg out-of-place";
-	}
-    }
-
-    # check if we have already output a relation of this transform
-    next if ($no_dups && exists($done{$nam0}));
-    $done{$nam0} = 1;
-
-    # legend should include the problem if this transform solves more than
-    # one problem in this data:
-    if (!$no_dups and $problems{$nam} ne $prob) {
-	print "@ s$setnum legend \"$transform\"\n";
-    }
-    else {
-	print "@ s$setnum legend \"$namleg\"\n";
-    }
+    $namleg = $namlegends{$transform};
+    print "@ s$setnum legend \"$namleg\"\n";
 
     if (exists($styles{$transform})) {
 	printstyle($styles{$transform}, $setnum);
