@@ -1,6 +1,7 @@
 #! /usr/bin/perl
 
 $no_dups = 0;
+$colon_only = 0;
 $accuracy = 0;
 $accurate_only = 0;
 $plot_worst = 0;
@@ -9,6 +10,7 @@ $use_paper_styles = 0;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
+    $colon_only = 1 if ($arg eq "--colon-only");
     $accuracy = 1 if ($arg eq "--accuracy");
     $accurate_only = 1 if ($arg eq "--accurate-only");
     $plot_worst = 1 if ($arg eq "--plot-worst");
@@ -344,7 +346,12 @@ foreach $norm_val (@sorted_norm_vals) {
     $namleg = "cxml" if ($namleg eq "dxml");
     
     # get transform "family"
-    ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
+    if ($colon_only) {
+	($nam0,$namrest) = split(/:/, $nam);
+    }
+    else {
+	($nam0,$namrest) = split(/\-|:|77|90/, $nam);
+    }
     $nam0 = $nam if (exists($distinct_ffts{$namleg}));
     $nam0 = $nam if ($nam0 eq "dsp79");
     $nam0 = rmayer-buneman if ($accuracy && ($nam eq "rmayer-buneman" || $nam eq "rmayer-buneman2" || $nam eq "rmayer-buneman3"));
