@@ -120,16 +120,17 @@ void doit(int iter, struct problem *p)
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  bench_complex *x = (bench_complex *) p->in;
+	  bench_complex *y = (bench_complex *) p->out;
 	  switch (p->rank) {
 	      case 1:
 	      {
 		   unsigned int n = p->size;
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i)
-			     F2TCF(&n, x, x, trig, work);
+			     F2TCF(&n, x, y, trig, work);
 		   else
 			for (i = 0; i < iter; ++i)
-			     F2TCB(&n, x, x, trig, work);
+			     F2TCB(&n, x, y, trig, work);
 		   break;
 	      }
 	      case 2:
@@ -138,11 +139,11 @@ void doit(int iter, struct problem *p)
 		   bench_complex cwork;
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i)
-			     F2T2F(&n1, &n2, x, &n1, x, &n1,
+			     F2T2F(&n1, &n2, x, &n1, y, &n1,
 				   trig, trig2, &cwork, work);
 		   else
 			for (i = 0; i < iter; ++i)
-			     F2T2B(&n1, &n2, x, &n1, x, &n1,
+			     F2T2B(&n1, &n2, x, &n1, y, &n1,
 				   trig, trig2, &cwork, work);
 		   break;
 	      }
@@ -151,11 +152,11 @@ void doit(int iter, struct problem *p)
 		   unsigned int n1 = p->n[2], n2 = p->n[1], n3 = p->n[0];
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i)
-			     F2T3F(&n1, &n2, &n3, x, &n1, &n2, x, &n1, &n2,
+			     F2T3F(&n1, &n2, &n3, x, &n1, &n2, y, &n1, &n2,
 				   trig, trig2, trig3, work);
 		   else
 			for (i = 0; i < iter; ++i)
-			     F2T3B(&n1, &n2, &n3, x, &n1, &n2, x, &n1, &n2,
+			     F2T3B(&n1, &n2, &n3, x, &n1, &n2, y, &n1, &n2,
 				   trig, trig2, trig3, work);
 		   break;
 	      }
@@ -165,13 +166,14 @@ void doit(int iter, struct problem *p)
      }
      else /* PROBLEM_REAL */ {
 	  bench_real *x = (bench_real *) p->in;
+	  bench_real *y = (bench_real *) p->out;
 	  unsigned int n = p->size;
 	  if (p->sign == -1)
 	       for (i = 0; i < iter; ++i)
-		    F2TRF(&n, x, x, trig);
+		    F2TRF(&n, x, y, trig);
 	  else
 	       for (i = 0; i < iter; ++i)
-		    F2TRB(&n, x, x, trig);
+		    F2TRB(&n, x, y, trig);
      }
 }
 
