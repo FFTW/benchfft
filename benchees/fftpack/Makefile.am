@@ -7,7 +7,7 @@ INCLUDES = -I${top_srcdir}/libbench
 EXTRA_DIST=test.f
 
 doit_SOURCES=doit.c
-doit_LDADD=libfftpack.a ${top_builddir}/libbench/libbench.a
+doit_LDADD=libfftpack.a ${top_builddir}/libbench/libbench.a @FLIBS@
 
 libfftpack_a_SOURCES=cfftb.f cfftb1.f cfftf.f cfftf1.f cffti.f		\
 cffti1.f cosqb.f cosqb1.f cosqf.f cosqf1.f cosqi.f cost.f costi.f	\
