@@ -189,23 +189,24 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 #endif
 
 #ifdef HAVE_MKL_FFTC_LN_H
-#include <mkl_fftc_ln.h>
+/* seems to break gcc */
+/* #include <mkl_fftc_ln.h> */
 #endif
 
 #ifdef BENCHFFT_SINGLE
-#define _CFFT1DC CFFT1DC
-#define _SCFFT1DC SCFFT1DC
-#define _CSFFT1DC CSFFT1DC
-#define _CFFT2DC CFFT2DC
-#define _SCFFT2DC SCFFT2DC
-#define _CSFFT2DC CSFFT2DC
+#define _CFFT1DC cfft1dc
+#define _SCFFT1DC scfft1dc
+#define _CSFFT1DC csfft1dc
+#define _CFFT2DC cfft2dc
+#define _SCFFT2DC scfft2dc
+#define _CSFFT2DC csfft2dc
 #else
-#define _CFFT1DC ZFFT1DC
-#define _SCFFT1DC DZFFT1DC
-#define _CSFFT1DC ZDFFT1DC
-#define _CFFT2DC ZFFT2DC
-#define _SCFFT2DC DZFFT2DC
-#define _CSFFT2DC ZDFFT2DC
+#define _CFFT1DC zfft1dc
+#define _SCFFT1DC dzfft1dc
+#define _CSFFT1DC zdfft1dc
+#define _CFFT2DC zfft2dc
+#define _SCFFT2DC dzfft2dc
+#define _CSFFT2DC zdfft2dc
 #endif
 
 static void *WSAVE;
