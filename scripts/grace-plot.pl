@@ -333,6 +333,7 @@ foreach $transform (keys %results) {
     }
     nvs = sort { 100000 * ($b - $a) } @nvs;
     $norm_val = $nvs[($#nvs + 1) / 2];
+    $norm_val = $norm_val - 1e-10 if (exists($transforms{$norm_val}));
     $norm_vals[$#norm_vals + 1] = $norm_val;
     $transforms{$norm_val} = $transform;
 }
@@ -357,7 +358,6 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 	    $nam0 = "fftw3 out-of-place";
 	    $namleg = "$namleg out-of-place";
 	}
-	
     }
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
