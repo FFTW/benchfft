@@ -1,26 +1,25 @@
 #! /usr/bin/perl -w
 
-# inefficient
-sub byproblem {
-  my ($anam, $aprob, $asiz, $amflops, $atim) = split / /,$a;
-  my ($bnam, $bprob, $bsiz, $bmflops, $btim) = split / /,$b;
-  my $arank = ($asiz =~ s/x/*/g);
-  my $brank = ($bsiz =~ s/x/*/g);
-  my $atot = eval($asiz);
-  my $btot = eval($bsiz);
-
-  $aprob cmp $bprob ||    # sort problem kind
-  $arank <=> $brank ||    # if tie, sort by rank
-  $atot <=> $btot ||      # if tie, sort by total transform size
-  $asiz cmp $bsiz ||      # if tie, sort alphabetically on problem description
-  $bmflops <=> $amflops;  # if tie, reverse sort by speed
-}
-
 while (<>) {
   push(@records, $_);
+  my ($nam, $prob, $siz, $mflops, $tim) = split / /;
+  my $rank = ($siz =~ s/x/*/g);
+  my $tot = eval($siz);
+  push(@probs, $prob);
+  push(@ranks, $rank);
+  push(@tots, $tot);
+  push(@sizs, $siz);
+  push(@mflopss, $mflops);
 }
 
-@records = sort byproblem @records;
+@records = @records[ sort {
+  $probs[$a] cmp $probs[$b] ||    # sort by problem kind
+  $ranks[$a] <=> $ranks[$b] ||    # if tie, sort by rank
+  $tots[$a] <=> $tots[$b] ||      # if tie, sort by total transform size
+  $sizs[$a] cmp $sizs[$b] ||      # if tie, sort alphabetically on problem description
+  $mflopss[$b] <=> $mflopss[$a];  # if tie, reverse sort by speed
+  } 0..$#records
+];
 
 for (@records) {
   print;
