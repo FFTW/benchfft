@@ -18,8 +18,8 @@ mkdir $HOSTNAME
 ( 
   cd $HOSTNAME
   ../configure --disable-single
-  make -k; make -k; make benchmark; make clean
+  make -k; make -k; make -k benchmark; make clean
   ../configure --enable-single
-  make -k; make -k; make benchmark; make clean
+  make -k; make -k; make -k benchmark; make clean
   make collect
 )
