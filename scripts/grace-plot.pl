@@ -5,7 +5,8 @@
 # Here, we make a map from transform names to line styles, so that each
 # transform is plotted in a consistent style.  Which style we assign to
 # which FFT is fairly arbitrary, but we should try to make FFTs that are
-# close in performance visually distinct on the graph.
+# close in performance visually distinct on the graph.  We also make
+# FFTs of related heritage the same color.
 
 # A style consists of (: separated):
 #   line-color:line-style:line-width
@@ -108,6 +109,7 @@
 	   "ooura-4g" => "magenta:dash:1:magenta:triangle-up:0.5:none",
 	   "ooura-4gf" => "magenta:dash:1:magenta:triangle-up:0.5:magenta",
 	   "qft" => "violet:solid:1:violet:plus:0.5:none",
+	   "ransom" => "green4:solid:1:green4:star:0.5:none",
 	   "rmayer-ctrig" => "orange:solid:1:orange:circle:0.25:none",
 	   "rmayer-buneman" => "orange:dot:1:orange:circle:0.5:none",
 	   "rmayer-buneman2" => "orange:dot:1:orange:triangle-up:0.5:none",

@@ -310,6 +310,7 @@ benchees/napack/Makefile
 benchees/nr/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
+benchees/ransom/Makefile
 benchees/rmayer/Makefile
 benchees/sciport/Makefile
 benchees/sgimath/Makefile
