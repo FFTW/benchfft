@@ -8,7 +8,7 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "vbigdsp")
 BENCH_DOC("author", "Apple Computer, Inc.")
-BENCH_DOC("author", "Greg Allan")
+BENCH_DOC("author", "Greg Allen")
 BENCH_DOC("email", "gallen@arlut.utexas.edu")
 BENCH_DOC("version", "20030322")
 BENCH_DOC("year", "2003")
@@ -52,7 +52,7 @@ BENCH_DOC("copyright",
 "HOWEVER CAUSED AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING\n"
 "NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN\n"
 "ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n")
-BENCH_DOC("notes", "Sample code provided by Apple, modified by Greg Allan to work on Linux/PowerPC.")
+BENCH_DOC("notes", "Sample code provided by Apple, modified by Greg Allen to work on Linux/PowerPC.")
 BENCH_DOC("notes",
 	  "Apple's description: Though arbitrary signal lengths (i.e. all powers of 2) are handled, our design emphasis is on very long signals (length N >= 2^16 and on into the millions), for which cache considerations are paramount. The core of the library is a particular variant of full-complex FFT that for signal length N = 2^10 executes at 1.15 giga ops (500 MHz G4). This cache-friendly, core FFT plays a dominant role in the long-signal cases such as two-dimensional FFT and convolution. More important perhaps than the core performance benchmark is the manner in which one can sift through the myriad prevailing (and new) FFT frameworks, to arrive at a suitable such framework for the Velocity Engine.")
 BENCH_DOC("url", "http://findsabrina.org/altivec/")
