@@ -150,6 +150,19 @@ fi
 AC_CHECK_LIB(essl, ${essl_prefix}cft, [have_essl=yes], [], $FLIBS)
 AM_CONDITIONAL(HAVE_ESSL, test -n "$have_essl")
 
+dnl Check for NAG library:
+AC_F77_FUNC(c06frf)
+if test "x$LIBNAG" = x; then
+	AC_CHECK_LIB(nag, $c06frf, [have_nag=yes; LIBNAG=-lnag], [], $FLIBS)
+else # user-specified $LIBNAG
+	my_LIBS="$LIBS"
+	LIBS="$LIBNAG $LIBS $FLIBS"
+	AC_CHECK_FUNC($c06frf, [have_nag=yes])
+	LIBS="$my_LIBS"
+fi
+AM_CONDITIONAL(HAVE_NAG, test -n "$have_nag")
+AC_SUBST(LIBNAG)
+
 dnl Check for Apple's vDSP/vecLib library:
 xsave_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="-I/System/Library/Frameworks/vecLib.framework/Headers"
@@ -196,9 +209,6 @@ AC_CHECK_LIB(sci, CCFFT)
 
 dnl Check for IMSL library:
 AC_CHECK_LIB(imsl, imsl_fftf)
-
-dnl Check for NAG library:
-AC_CHECK_LIB(nag, c06fcf)
 
 AC_MSG_CHECKING([for isnan])
 AC_TRY_LINK([#include <math.h>
@@ -264,6 +274,7 @@ benchees/krukar/Makefile
 benchees/mixfft/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
+benchees/nag/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
 benchees/sgimath/Makefile

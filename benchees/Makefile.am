@@ -1,7 +1,7 @@
 SUBDIRS = burrus cwplib dfftpack djbfft-0.76 dsp dxml essl fftpack	\
 fftw2 fxt goedecker gpfa green-ffts-2.0 gsl harm intel-mkl krukar	\
-mixfft mpfun77 mpfun90 ooura qft sgimath singleton sorensen sunperf	\
-temperton vdsp fftw3 athfft
+mixfft mpfun77 mpfun90 nag ooura qft sgimath singleton sorensen		\
+sunperf temperton vdsp fftw3 athfft
 
 EXTRA_DIST = Makefile.common
 
