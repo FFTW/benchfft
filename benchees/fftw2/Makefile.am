@@ -11,7 +11,7 @@ endif
 endif
 
 INCLUDES = $(INCLBENCH)
-EXTRA_DIST = doit.c doitnd.c
+EXTRA_DIST = doit.c doitnd.c doit-doc.h
 
 doitm_SOURCES=doitm.c
 doitm_LDADD=$(FFTW_LIBS) $(LIBBENCH) @FLIBS@
