@@ -4,7 +4,8 @@
 #include <math.h>
 
 #define FFTCACHE 16
-#define STRINGIFY(X) #X
+#define STRINGIFYx(X) #X
+#define STRINGIFY(X) STRINGIFYx(X)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "goedecker")
