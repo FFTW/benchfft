@@ -26,7 +26,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "intel-mkl-dfti")
 BENCH_DOC("package", "Intel Math Kernel Library (MKL), DFTI interface")
 BENCH_DOCF("version", mkvers)
-BENCH_DOCF("notes", "Using the default CCS storage for hermitian data.")
+BENCH_DOC("notes", "Using the default CCS storage for hermitian data.")
 END_BENCH_DOC
 
 DFTI_DESCRIPTOR *the_descriptor;
