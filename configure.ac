@@ -283,7 +283,6 @@ benchees/emayer/Makefile
 benchees/essl/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
-benchees/fftw3/Makefile
 benchees/fxt/Makefile
 benchees/goedecker/Makefile
 benchees/gpfa/Makefile
