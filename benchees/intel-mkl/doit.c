@@ -16,7 +16,7 @@ static const char *mkvers(void)
 
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", NAME)
+BENCH_DOC("name", "intel-mkl")
 BENCH_DOC("package", "Intel Math Kernel Library (MKL)")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
@@ -189,11 +189,6 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 
 #ifdef HAVE_MKL_FFT_H
 #include <mkl_fft.h>
-#endif
-
-#ifdef HAVE_MKL_FFTC_LN_H
-/* seems to break gcc */
-/* #include <mkl_fftc_ln.h> */
 #endif
 
 #ifdef BENCHFFT_SINGLE

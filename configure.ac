@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 AC_INIT(libbench/bench.h)
 AC_PREREQ(2.50)
 AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(benchfft, 3.0)
+AM_INIT_AUTOMAKE(benchfft, 3.1)
 AM_CONFIG_HEADER(config.h)
 
 # configure options
@@ -236,13 +236,10 @@ fi
 AC_CHECK_LIB(guide, omp_in_parallel)
 AC_CHECK_LIB(mkl, zfft1d_, [have_mkl=yes])
 AM_CONDITIONAL(HAVE_MKL, test -n "$have_mkl")
-AC_CHECK_LIB(mkl_itp, zfft1d_, [have_mkl_itp=yes])
-AM_CONDITIONAL(HAVE_MKL_ITP, test -n "$have_mkl_itp")
-AC_CHECK_LIB(mkl_ia32, DftiCreateDescriptor, [have_mkl_dfti=yes])
+AC_CHECK_LIB(mkl, DftiCreateDescriptor, [have_mkl_dfti=yes])
 AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
 
 AC_CHECK_HEADERS(mkl_fft.h)
-AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 
 
@@ -250,6 +247,8 @@ AC_CHECK_HEADERS(mkl_blas.h)
 AC_CHECK_HEADERS(ipps.h)
 AC_CHECK_LIB(ipps, ippsGetLibVersion, [have_ipps=yes])
 AM_CONDITIONAL(HAVE_IPPS, test -n "$have_ipps")
+AC_CHECK_LIB(ipps64, ippsGetLibVersion, [have_ipps64=yes])
+AM_CONDITIONAL(HAVE_IPPS64, test -n "$have_ipps64")
 
 # check for Numerical Recipes source in benchees/nr
 nr_dir=$srcdir/benchees/nr
@@ -404,9 +403,10 @@ cat <<EOF
              Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
-      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-${have_mkl_itp-no}}
+      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                                           Intel IPPS (gratis): ${have_ipps-no}
+                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
                                             AMD ACML (gratis): ${have_acml-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}

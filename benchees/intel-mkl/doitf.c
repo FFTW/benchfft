@@ -16,7 +16,7 @@ static const char *mkvers(void)
 }
 
 BEGIN_BENCH_DOC 
-BENCH_DOC("name", NAME)
+BENCH_DOC("name", "intel-mkl-f")
 BENCH_DOC("package", "Intel Math Kernel Library (MKL)")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "backward transform is scaled")
@@ -244,9 +244,6 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
      unnormalize(p, out, 1);
 }
 
-#ifdef HAVE_MKL_FFTC_LN_H
-#include <mkl_fftc_ln.h>
-#endif
 #ifdef HAVE_MKL_FFT_H
 #include <mkl_fft.h>
 #endif
