@@ -281,6 +281,7 @@ benchees/arprec/Makefile
 benchees/athfft/Makefile
 benchees/bloodworth/Makefile
 benchees/burrus/Makefile
+benchees/cross/Makefile
 benchees/cwplib/Makefile
 benchees/dfftpack/Makefile
 benchees/djbfft-0.76/Makefile

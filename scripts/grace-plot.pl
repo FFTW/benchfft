@@ -6,7 +6,8 @@
 # transform is plotted in a consistent style.  Which style we assign to
 # which FFT is fairly arbitrary, but we should try to make FFTs that are
 # close in performance visually distinct on the graph.  We also make
-# FFTs of related heritage the same color.
+# FFTs of related heritage the same color.  Jokes wherever possible:
+# bloodworth is red, green is green, cross is a plus, etcetera.
 
 # A style consists of (: separated):
 #   line-color:line-style:line-width
@@ -39,6 +40,7 @@
 	   "bloodworth" => "red:dot:1:red:square:0.5:none",
 	   "bloodworth-fht" => "red:solid:1:red:square:0.5:red",
 	   "burrus-sffteu" => "green:solid:1:green:circle:0.5:none",
+	   "cross" => "black:solid:1:black:plus:0.5:none",
 	   "cwplib" => "orange:dotdash:1:orange:square:0.5:none",
 	   "dfftpack" => "brown:dash:1:brown:triangle-right:0.5:none",
 	   "djbfft-0.76" => "maroon:solid:1:maroon:square:0.5:none",
