@@ -68,7 +68,7 @@ echo '</code>' >> index.html
 
 echo '</ul>' >> index.html
 
-echo '<p>Raw data files: <a href="'$tgz'">'$tgz'</a>' >> index.html
+echo '<p>Raw data files: <a href="ftp://ftp.fftw.org/pub/fftw/numbers/'$tgz'">'$tgz'</a>' >> index.html
 
 echo '<hr>' >> index.html
 
@@ -81,7 +81,8 @@ sh $sd/standard-plots.sh data/${name}.${type} |while read ps; do
     echo '<p align="center"><img src="'$png'" width="'$width'" height="'$height'">' >> index.html
 done
 
-rm -rf data
+cp -f $tgz /home/fftw/ftp/numbers/$tgz
+rm -rf data $tgz
 
 cat >> index.html <<EOF
 </body>
