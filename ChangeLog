@@ -1,3 +1,70 @@
+2002-12-02  Steven G. Johnson  <stevenj@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/scripts/grace-plot.pl,
+	/home/fftw/Repository/nbenchfft/benchees/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/numutils/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/numutils/doit.c,
+	/home/fftw/Repository/nbenchfft/benchees/numutils/numutil.tar.gz,
+	/home/fftw/Repository/nbenchfft/configure.ac: added numutils
+
+2002-11-18  Steven G. Johnson  <stevenj@ab-initio>
+
+	*
+	/home/fftw/Repository/nbenchfft/benchees/djbfft-0.76/Makefile.am,
+	/home/fftw/Repository/nbenchfft/configure.ac: djbfft cannot be
+	distributed
+
+	* /home/fftw/Repository/nbenchfft/TODO,
+	/home/fftw/Repository/nbenchfft/benchees/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/glassman/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/glassman/doc,
+	/home/fftw/Repository/nbenchfft/benchees/glassman/doit.c,
+	/home/fftw/Repository/nbenchfft/benchees/glassman/glassman-fft.f,
+	/home/fftw/Repository/nbenchfft/benchees/glassman/glassman-fft.patch,
+	/home/fftw/Repository/nbenchfft/configure.ac: added glassman
+
+2002-11-06  Matteo Frigo  <athena@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/benchees/gpfa/Makefile.am:
+	libgpfa_a_SOURCES should be nodist_
+
+	* /home/fftw/Repository/nbenchfft/benchees/valkenburg/Makefile.am:
+	doit.c depends on complex.h which depends on extract
+
+2002-09-25  Matteo Frigo  <athena@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/scripts/benchmark: Added
+	--paranoid flag
+
+2002-09-22  Steven G. Johnson  <stevenj@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/Makefile.common: info
+	target -> fftinfo, since automake has its own info target
+
+	* /home/fftw/Repository/nbenchfft/TODO: updated
+
+	* /home/fftw/Repository/nbenchfft/benchees/fxt/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/fxt/doit.cc,
+	/home/fftw/Repository/nbenchfft/benchees/fxt/fxt-2001.06.16.tar.gz,
+	/home/fftw/Repository/nbenchfft/benchees/fxt/fxt-2002.08.26.tar.gz:
+	updated to latest
+
+2002-09-17  Steven G. Johnson  <stevenj@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/TODO: added NFFT
+
+	* /home/fftw/Repository/nbenchfft/TODO: need newer FXT
+
+	* /home/fftw/Repository/nbenchfft/benchees/monnier/Makefile.am,
+	/home/fftw/Repository/nbenchfft/benchees/monnier/fft.c,
+	/home/fftw/Repository/nbenchfft/benchees/monnier/fftoptim.c:
+	renamed file to original name
+
+2002-09-05  Steven G. Johnson  <stevenj@ab-initio>
+
+	* /home/fftw/Repository/nbenchfft/ChangeLog: updated
+
 2002-09-03  Steven G. Johnson  <stevenj@ab-initio>
 
 	* /home/fftw/Repository/nbenchfft/benchees/valkenburg/doit.c:
@@ -37,27 +104,6 @@
 	/home/fftw/Repository/nbenchfft/benchees/sunperf/doit3d.c,
 	/home/fftw/Repository/nbenchfft/benchees/vdsp/doit.c: added more
 	DOC info
-
-	* /home/fftw/Repository/nbenchfft/Makefile.am,
-	/home/fftw/Repository/nbenchfft/benchees/Makefile.common,
-	/home/fftw/Repository/nbenchfft/configure.ac: added
-	--with-bothprec and make info to get info for all FFTs in the
-	benchmark
-
-	* /home/fftw/Repository/nbenchfft/scripts/collect: output $usage,
-	not $help
-
-	* /home/fftw/Repository/nbenchfft/benchees/gsl/doit.c: mixed-radix
-	ffts have new interface (sigh)
-
-	* /home/fftw/Repository/nbenchfft/TODO: note
-
-	* /home/fftw/Repository/nbenchfft/benchees/Makefile.am,
-	/home/fftw/Repository/nbenchfft/benchees/cross/Makefile.am,
-	/home/fftw/Repository/nbenchfft/benchees/cross/doit.c,
-	/home/fftw/Repository/nbenchfft/benchees/cross/fft.tar.gz,
-	/home/fftw/Repository/nbenchfft/configure.ac,
-	/home/fftw/Repository/nbenchfft/scripts/grace-plot.pl: added cross
 
 2002-09-02  Steven G. Johnson  <stevenj@ab-initio>
 
