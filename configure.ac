@@ -237,6 +237,10 @@ AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 AC_CHECK_LIB(mkl_def, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
 
+# Check for Intel's IPP library:
+AC_CHECK_HEADERS(ipps.h)
+AC_CHECK_LIB(ipps, ippsGetLibVersion, [have_ipps=yes])
+AM_CONDITIONAL(HAVE_IPPS, test -n "$have_ipps")
 
 # check for Numerical Recipes source in benchees/nr
 nr_dir=$srcdir/benchees/nr
@@ -346,6 +350,7 @@ benchees/green-ffts-2.0/Makefile
 benchees/gsl/Makefile
 benchees/harm/Makefile
 benchees/imsl/Makefile
+benchees/intel-ipps/Makefile
 benchees/intel-mkl/Makefile
 benchees/jmfft/Makefile
 benchees/krukar/Makefile
@@ -397,6 +402,7 @@ cat <<EOF
 
 Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl_def-no}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
+                                          Intel IPPS (gratis): ${have_ipps-no}
                         djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
