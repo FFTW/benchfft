@@ -133,8 +133,8 @@ for place in $PLACE; do
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
            if test "$verify" = "yes"; then
-               { $program $tolerance --verify $problem &&
-                echo "${name} ${precision}${reality}${place}${dir} ${size} ok"; } || 
+               { x=`$program $tolerance --verbose --verify $problem` &&
+                echo "${name} ${precision}${reality}${place}${dir} ${size} ${x}"; } || 
                { 
                  echo "${name} ${precision}${reality}${place}${dir} ${size} bad"; 
 	         test "$keep_going" = "yes" || exit 1; 
