@@ -239,6 +239,7 @@ benchees/dxml/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
 benchees/fxt/Makefile
+benchees/goedecker/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/gsl/Makefile
