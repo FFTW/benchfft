@@ -12,12 +12,22 @@
 	      (loop (cdr l) done result)
 	      (loop (cdr l) (cons (cadr n) done) (cons (car l) result)))))))
 
+(define (name2package n)
+  (if n
+      (let* ((ns (cadr n))
+	     (hyphen (string-index ns #\-)))
+	(list 'package (if hyphen
+			   (substring ns 0 hyphen)
+			   ns)))
+      #f))
+
 (define (group-by-package l)
   (let loop ((l l) (groups '()))
     (if (null? l)
 	groups
 	(let* ((c (car l))
-	       (p (assoc 'package c)))
+	       (p0 (assoc 'package c))
+	       (p (if p0 p0 (name2package (assoc 'name c)))))
 	  (if p
 	      (let ((e (assoc (cadr p) groups)))
 		(if e
