@@ -18,7 +18,6 @@ fi
 dnl Checks for programs.
 AC_PROG_CC
 AC_PROG_CC_STDC
-AC_PROG_F77
 ACX_PROG_CC_EGCS
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -30,10 +29,28 @@ AC_CHECK_PROG(TAR, tar, tar)
 AC_CHECK_PROG(MKDIR, mkdir, mkdir)
 AC_CHECK_PROG(TR, tr, tr)
 AC_CHECK_PROG(CP, cp, cp)
+AC_CHECK_PROG(PATCH, patch, patch)
+
+# Until autoconf gets separate F90 support, we must require that *all*
+# .f files be compiled F90 if we want anything to be compiled with F90.
+AC_ARG_WITH(f90, [  --with-f90              use F90 compiler for Fortran],
+	ok=$withval, ok=no)
+if test "x$ok" = "xyes"; then
+	AC_CHECK_PROGS(F90, f90 xlf90 pgf90 fort f95 xlf95 g95)
+	test -n "$F90" && F77="$F90"
+fi
+
+AC_PROG_F77
 AC_F77_LIBRARY_LDFLAGS
 AC_F77_WRAPPERS
 
+test "x$F90FLAGS" = x && F90FLAGS="$FFLAGS"
+test "x$F90LIBS" = x && F90LIBS="$FLIBS"
+AC_SUBST(F90FLAGS)
+AC_SUBST(F90LIBS)
+
 AM_CONDITIONAL(HAVE_F77, test -n "$F77")
+AM_CONDITIONAL(HAVE_F90, test -n "$F90")
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -139,6 +156,7 @@ benchees/fftpack/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/mpfun77/Makefile
+benchees/mpfun90/Makefile
 benchees/ooura/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile

@@ -14,6 +14,6 @@ doit_LDADD=$(LIBBENCH) @FLIBS@
 
 mpfun.f: extract
 	@CP@ -f $(PKG)/$@ $@
-	patch $@ $(srcdir)/mpfun.patch
+	@PATCH@ $@ $(srcdir)/mpfun.patch
 
 include ../Makefile.common
