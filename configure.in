@@ -45,7 +45,14 @@ fi
 
 AC_PROG_F77
 AC_F77_LIBRARY_LDFLAGS
-AC_F77_WRAPPERS
+AC_F77_DUMMY_MAIN([], bench_f77_fails=yes)
+if test "x$bench_f77_fails" = xyes; then
+	AC_MSG_WARN([Cannot figure out how to link C code with Fortran libs.])
+	F77=""  # disable F77 benchmarks
+	F90=""  # F90 too, since they use the same compiler
+else
+	AC_F77_WRAPPERS
+fi
 
 test "x$F90FLAGS" = x && F90FLAGS="$FFLAGS"
 test "x$F90LIBS" = x && F90LIBS="$FLIBS"
