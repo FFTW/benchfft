@@ -15,18 +15,16 @@ AC_ARG_ENABLE(single, [AC_HELP_STRING([--enable-single],[compile single-precisio
 if test "$benchfft_single" = "yes"; then
 	AC_DEFINE(BENCHFFT_SINGLE,1,[Define to benchmark in single precision.])
 fi
-AC_ARG_WITH(bothprec, [AC_HELP_STRING([--with-bothprec],[compile doits for both precisions])], benchfft_bothprec=$withval, benchfft_bothprec=no)
 
 AC_ARG_WITH(info-only, [AC_HELP_STRING([--with-info-only],[compile doits for info purposes only])], benchfft_info_only=$withval, benchfft_info_only=no)
 
 if test "$benchfft_info_only" = yes; then
-	benchfft_bothprec=yes
 	AC_DEFINE(INFO_ONLY, 1, [define to compile for info only])
 fi
 AM_CONDITIONAL(INFO_ONLY, test "$benchfft_info_only" = "yes")
 
-AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes" || test "$benchfft_bothprec" = "yes")
-AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_bothprec" = "yes")
+AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes" || test "$benchfft_info_only" = "yes")
+AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_info_only" = "yes")
 
 # Checks for programs.
 AC_PROG_CC
