@@ -52,7 +52,6 @@ while (@ARGV) {
 	   "cross" => "black:solid:1:black:plus:0.5:none",
 	   "cwplib" => "orange:dotdash:1:orange:square:0.5:none",
 	   "dfftpack" => "brown:dash:1:brown:triangle-right:0.5:none",
-	   "djbfft-0.76" => "maroon:solid:1:maroon:square:0.5:none",
 	   "dsp79-rader" => "yellow:solid:1:yellow:circle:0.5:none",
 	   "dsp79-FAST" => "yellow:dot:1:yellow:circle:0.5:yellow",
 	   "dsp79-FFA" => "yellow:solid:1:yellow:x:0.5:none",
