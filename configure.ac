@@ -160,6 +160,20 @@ AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
 AC_SUBST(DXML_LIB)
 AC_CHECK_HEADERS(dxmldef.h cxmldef.h)
 
+# Check for HP MLIB (either 32-bit or 64-bit version)
+AC_CHECK_LIB(cl, ZEXP, [:], [have_mlib=no])
+if test "x$have_mlib" = x; then
+    AC_CHECK_LIB(veclib, src3ft, 
+       [AC_CHECK_HEADER(veclib.h, [have_mlib=yes; MLIB_LIB="-lveclib -lcl"])])
+fi
+if test "x$have_mlib" = x; then
+    AC_CHECK_LIB(veclib8, src3ft, 
+       [AC_CHECK_HEADER(veclib8.h, [have_mlib=yes; MLIB_LIB="-lveclib8 -lcl"
+	  AC_DEFINE(HAVE_VECLIB8, 1, [yes if linking -lveclib8])])])
+fi
+AM_CONDITIONAL(HAVE_MLIB, test "x$have_mlib" = xyes)
+AC_SUBST(MLIB_LIB)
+
 # Check for Sun Performance library:
 SAVE_LIBS=$LIBS
 LIBS="-xlic_lib=sunperf $LIBS"
@@ -339,6 +353,36 @@ AM_CONDITIONAL(HAVE_PFFTW_ARCH, test -n "$PFFTW_ARCH")
 dnl TODO
 ACX_GCC_ALIGNS_STACK()
 
+cat <<EOF
+*******************************************************************************
+		    Optional FFT libraries Found:
+
+                                       DXML/CXML (Alpha only): ${have_dxml-no}
+                                    HP MLIB (PA-RISC/Itanium): ${have_mlib-no}
+                         Sun Performance Library (SPARC only): ${have_sunperf-no}
+                                      sgimath (SGI/MIPS only): ${have_sgimath-no}
+                                          ESSL (IBM/AIX only): ${have_essl-no}
+                                  Apple VDSP (Macintosh only): ${have_vdsp-no}
+
+                               NAG (proprietary, www.nag.com): ${have_nag-no}
+                              IMSL (proprietary, www.vni.com): ${have_imsl-no}
+             Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
+       Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
+
+      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
+                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
+                                          Intel IPPS (gratis): ${have_ipps-no}
+                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
+                                            AMD ACML (gratis): ${have_acml-no}
+
+                                FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
+               FFTW 2.x single precision (free, www.fftw.org): ${have_sfftw2_all-no}
+                                FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
+               FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
+  GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
+*******************************************************************************
+EOF
+
 AC_OUTPUT([
 Makefile
 libbench/Makefile
@@ -369,6 +413,7 @@ benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/gsl/Makefile
 benchees/harm/Makefile
+benchees/hp-mlib/Makefile
 benchees/imsl/Makefile
 benchees/intel-ipps/Makefile
 benchees/intel-mkl/Makefile
@@ -403,31 +448,3 @@ benchees/vbigdsp/Makefile
 benchees/vdsp/Makefile
 
 ])
-
-cat <<EOF
-*******************************************************************************
-		    Optional FFT libraries Found:
-
-                                       DXML/CXML (Alpha only): ${have_dxml-no}
-                         Sun Performance Library (SPARC only): ${have_sunperf-no}
-                                      sgimath (SGI/MIPS only): ${have_sgimath-no}
-                                          ESSL (IBM/AIX only): ${have_essl-no}
-                                  Apple VDSP (Macintosh only): ${have_vdsp-no}
-
-                               NAG (proprietary, www.nag.com): ${have_nag-no}
-                              IMSL (proprietary, www.vni.com): ${have_imsl-no}
-             Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
-       Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
-
-      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
-                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
-                                          Intel IPPS (gratis): ${have_ipps-no}
-                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
-                                            AMD ACML (gratis): ${have_acml-no}
-
-                                FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
-               FFTW 2.x single precision (free, www.fftw.org): ${have_sfftw2_all-no}
-                                FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
-               FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
-  GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
-EOF
