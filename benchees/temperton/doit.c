@@ -5,7 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "temperton")
-BENCH_DOC("author", "Clive Temperton, modified by Russ Rew and Dave Fulker")
+BENCH_DOC("author", "Clive Temperton, modified by Russ Rew")
 BENCH_DOC("year", "1980")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("bibitem", 
