@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.7 2001-08-01 22:01:30 athena Exp $ */
+/* $Id: report.c,v 1.8 2001-08-01 22:02:17 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -50,7 +50,6 @@ struct stats {
 static void mkstat(double *t, int st, struct stats *a)
 {
      int i, j;
-     double err, x;
      
      a->min = t[0];
      a->max = t[0];
