@@ -6,8 +6,8 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "harm")
 BENCH_DOC("language", "Fortran 77")
-BENCH_DOC("url", "http://risc1.numis.nwu.edu/fft/")
-BENCH_DOC("url-was-valid-on", "Mon Jul 16 01:32:49 EDT 2001")
+BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/")
+BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:37:44 EDT 2002")
 BENCH_DOC("bibitem", 
 	  "May be related to PK HARM subroutine mentioned in "
 	  "J. W. Cooley and P. A. W. Lewis and P. D. Welch, "

@@ -8,8 +8,8 @@ BENCH_DOC("name", "mfft")
 BENCH_DOC("author", "A. Nobile and V. Roberto")
 BENCH_DOC("year", "1987")
 BENCH_DOC("language", "Fortran 77")
-BENCH_DOC("url", "http://risc1.numis.nwu.edu/fft/mfft.tar.gz")
-BENCH_DOC("url-was-valid-on", "Wed Aug 15 22:39:07 EDT 2001")
+BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/mfft.tar.gz")
+BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:35:13 EDT 2002")
 BENCH_DOC("bibitem", 
 	  "A. Nobile and V. Roberto, MFFT: A package for two- and three-dimensional vectorized discrete Fourier transforms, Computer Physics Communications 42, p. 233 (1986).")
 END_BENCH_DOC

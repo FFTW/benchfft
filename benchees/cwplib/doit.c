@@ -8,8 +8,8 @@ BENCH_DOC("name", "cwplib")
 BENCH_DOC("author", "Dave Hale")
 BENCH_DOC("year", "1989")
 BENCH_DOC("language", "C")
-BENCH_DOC("url", "http://risc1.numis.nwu.edu/ftp/pub/transforms/cwplib.tar.gz")
-BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
+BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/cwplib.tar.gz")
+BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:39:12 EDT 2002")
 BENCH_DOC("copyright", "Copyright (c) Colorado School of Mines, 1995.")
 END_BENCH_DOC
 

@@ -9,8 +9,8 @@ BENCH_DOC("author", "Richard H. Krukar")
 BENCH_DOC("year", "1990")
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "krukar@ectopia.com")
-BENCH_DOC("url", "http://risc1.numis.nwu.edu/fft/ffts_in_C.tar.gz")
-BENCH_DOC("url-was-valid-on", "Sun Jul 15 22:43:09 EDT 2001")
+BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/ffts_in_C.tar.gz")
+BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:36:36 EDT 2002")
 BENCH_DOC("notes", "The backward transform is scaled")
 BENCH_DOC("copyright",
 "copyright 1990  Richard H. Krukar all rights reserved\n"
