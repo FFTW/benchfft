@@ -336,7 +336,7 @@ foreach $transform (keys %results) {
 	}
 	$nvs[$#nvs + 1] = $val;
     }
-    nvs = sort { 100000 * ($b - $a) } @nvs;
+    @nvs = sort { 100000 * ($b - $a) } @nvs;
     $norm_val = $nvs[($#nvs + 1) / 2];
     $norm_val = $norm_val - 1e-10 if (exists($transforms{$norm_val}));
     $norm_vals[$#norm_vals + 1] = $norm_val;
