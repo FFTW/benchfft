@@ -1,6 +1,7 @@
 if DOUBLE
 if HAVE_F77
 PRG=doit
+noinst_LIBRARIES=libfft.a
 endif
 endif
 
@@ -12,8 +13,9 @@ LOCAL_COPIES = mpfun.f
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-nodist_doit_SOURCES=mpfun.f
-doit_LDADD=$(LIBBENCH) @FLIBS@
+doit_LDADD=libfft.a $(LIBBENCH) @FLIBS@
+
+nodist_libfft_a_SOURCES=mpfun.f
 
 mpfun.f: extract
 	@CP@ -f $(PKG)/$@ $@
