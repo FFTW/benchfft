@@ -4,7 +4,7 @@
 
 while (<>) {
   my ($nam, $prob, $siz, $mflops, $tim) = split / /;
-  my $rank = ($siz =~ s/x/*/g);
+  $siz =~ s/x/*/g;
   my $tot = eval($siz);
 
   if (($tot & ($tot - 1)) != 0) {
