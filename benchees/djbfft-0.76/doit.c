@@ -33,23 +33,41 @@ int can_do(struct problem *p)
 
 void copy_c2c_from(struct problem *p, bench_complex *in)
 {
-     if (p->sign == 1)
-	  /* in-order input for backward transforms */
+     bench_complex *pin = p->in;
+
+     if (p->sign == -1)
+	  /* in-order input for forward transforms */
 	  cacopy(in, p->in, p->n[0]);
      else {
 	  unsigned int i;
-	  bench_complex *pin = p->in;
 	  for (i = 0; i < p->n[0]; ++i) {
 	       pin[i] = in[fftfreq_c(i, p->n[0])];
+	  }
+     }
+
+     /* conjugate the input because of opposite sign convention */
+     {
+	  unsigned int i;
+	  for (i = 0; i < p->n[0]; ++i) {
+	       c_im(pin[i]) = -c_im(pin[i]);
 	  }
      }
 }
 
 void copy_c2c_to(struct problem *p, bench_complex *out)
 {
-     if (p->sign == 1) {
+     bench_complex *pout = p->out;
+
+     /* conjugate the output because of opposite sign convention */
+     {
 	  unsigned int i;
-	  bench_complex *pout = p->out;
+	  for (i = 0; i < p->n[0]; ++i) {
+	       c_im(pout[i]) = -c_im(pout[i]);
+	  }
+     }
+
+     if (p->sign == -1) {
+	  unsigned int i;
 	  for (i = 0; i < p->n[0]; ++i) {
 	       out[fftfreq_c(i, p->n[0])] = pout[i];
 	  }
@@ -156,13 +174,13 @@ void setup(struct problem *p)
 {
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (SINGLE_PRECISION) {
-	       if (p->sign == 1) {
+	       if (p->sign == -1) {
 		    CASE(p, fft, fftc4_);
 	       } else {
 		    CASE(p, fft, fftc4_un);
 	       }
 	  } else {
-	       if (p->sign == 1) {
+	       if (p->sign == -1) {
 		    CASE(p, fft, fftc8_);
 	       } else {
 		    CASE(p, fft, fftc8_un);
