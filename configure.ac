@@ -126,9 +126,9 @@ test -n "$have_sfftw2" && test -n "$have_srfftw2" && have_sfftw2_all=yes
 AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2_all")
 
 # Check for DEC Alpha DXML library
-AC_CHECK_LIB(dxml, zfft_, [have_dxml=yes])
+AC_CHECK_LIB(dxml, zfft_, [have_dxml=yes], [AC_CHECK_LIB(cxml, zfft_, [have_dxml=yes])])
 AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
-AC_CHECK_HEADERS(dxmldef.h)
+AC_CHECK_HEADERS(dxmldef.h cxmldef.h)
 
 # Check for Sun Performance library:
 AC_CHECK_LIB(fsu, __f90_stop)

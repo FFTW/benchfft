@@ -5,11 +5,15 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dxml")
-BENCH_DOC("notes", "using complex array format")
+BENCH_DOC("notes", "Compaq eXtended Math Library (CXML), formerly the Digital eXtended Math Library (DXML).")
+BENCH_DOC("notes", "We benchmark using the complex array format.")
 END_BENCH_DOC
 
-
-#include <dxmldef.h>
+#if defined(HAVE_DXMLDEF_H)
+#  include <dxmldef.h>
+#elif defined(HAVE_CXMLDEF_H)
+#  include <cxmldef.h>
+#endif
 
 int can_do(struct problem *p)
 {
