@@ -185,6 +185,7 @@ while (@ARGV) {
 # for publication, use black-and-white only and plot only a selected subset:
 %paper_styles = (
 	    "fftw3" => "black:solid:1:black:circle:0.5:black",
+	    "fftw3-patient" => "black:solid:1:black:circle:0.5:black",
 	    "fftw3-no-simd" => "black:dash:1:black:circle:0.5:none",
 	    "fftw3-impatient" => "black:dash:1:black:triangle-up:0.5:none",
 	    "fftw3-estimate" => "black:dot:1:black:circle:0.5:none",
