@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.31 2001-07-28 16:39:24 athena Exp $ */
+/* $Id: bench-user.h,v 1.32 2001-07-31 15:15:43 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -31,6 +31,10 @@ extern "C" {
 
 #if HAVE_STDDEF_H
 #include <stddef.h>
+#endif
+
+#if HAVE_STDLIB_H
+#include <stdlib.h>
 #endif
 
 #ifdef BENCHFFT_SINGLE

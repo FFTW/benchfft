@@ -10,13 +10,15 @@ else
 CONFIGURE=./configure
 endif
 
+CC_FOR_FFTW3=@CC@
+
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBFFTW) $(LIBBENCH) @FLIBS@
 
 doit.o: doit.c $(LIBFFTW)
 
 $(LIBFFTW): extract
-	(cd $(PKG) && (CC="$(CC)" CFLAGS="$(CFLAGS)" $(CONFIGURE)) && $(MAKE))
+	(cd $(PKG) && (CC="$(CC_FOR_FFTW3)" $(CONFIGURE)) && $(MAKE))
 
 include ../Makefile.common
 

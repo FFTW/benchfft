@@ -160,17 +160,24 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
      unnormalize(p, out, 1);
 }
 
+static int m0, m1, m2;
 void setup(struct problem *p)
 {
      switch (p->rank) {
 	 case 1: 
-	      fftInit(log_2(p->n[0]));
+	      m0 = log_2(p->n[0]);
+	      fftInit(m0);
 	      break;
 	 case 2: 
-	      fft2dInit(log_2(p->n[0]), log_2(p->n[1]));
+	      m0 = log_2(p->n[0]);
+	      m1 = log_2(p->n[1]);
+	      fft2dInit(m0, m1);
 	      break;
 	 case 3:
-	      fft3dInit(log_2(p->n[0]), log_2(p->n[1]), log_2(p->n[2]));
+	      m0 = log_2(p->n[0]);
+	      m1 = log_2(p->n[1]);
+	      m2 = log_2(p->n[2]);
+	      fft3dInit(m0, m1, m2); 
 	      break;
 	 default:
 	      BENCH_ASSERT(/* can't happen */ 0);
@@ -187,8 +194,6 @@ void doit(int iter, struct problem *p)
 	  switch (p->rank) {
 	      case 1: 
 	      {
-		   int m0 = log_2(p->n[0]);
-
 		   if (p->sign == -1) {
 			for (i = 0; i < iter; ++i) {
 			     ffts(in, m0, 1);
@@ -202,9 +207,6 @@ void doit(int iter, struct problem *p)
 	      }
 	      case 2: 
 	      {
-		   int m0 = log_2(p->n[0]);
-		   int m1 = log_2(p->n[1]);
-
 		   if (p->sign == -1) {
 			for (i = 0; i < iter; ++i) {
 			     fft2d(in, m0, m1);
@@ -218,10 +220,6 @@ void doit(int iter, struct problem *p)
 	      }
 	      case 3: 
 	      {
-		   int m0 = log_2(p->n[0]);
-		   int m1 = log_2(p->n[1]);
-		   int m2 = log_2(p->n[2]);
-
 		   if (p->sign == -1) {
 			for (i = 0; i < iter; ++i) {
 			     fft3d(in, m0, m1, m2);
@@ -238,8 +236,6 @@ void doit(int iter, struct problem *p)
 	  switch (p->rank) {
 	      case 1: 
 	      {
-		   int m0 = log_2(p->n[0]);
-
 		   if (p->sign == -1) {
 			for (i = 0; i < iter; ++i) {
 			     rffts(in, m0, 1);
@@ -253,9 +249,6 @@ void doit(int iter, struct problem *p)
 	      }
 	      case 2: 
 	      {
-		   int m0 = log_2(p->n[0]);
-		   int m1 = log_2(p->n[1]);
-
 		   if (p->sign == -1) {
 			for (i = 0; i < iter; ++i) {
 			     rfft2d(in, m0, m1);
