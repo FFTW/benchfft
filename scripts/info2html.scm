@@ -87,9 +87,11 @@
   (filter (lambda (x) (eq? sym (car x))) l))
 
 (define (htmlize-one name entries)
-  (let ((name (or name 
-		  (and (assoc 'name entries) (cadr (assoc 'name entries)))
-		  "unknown")))
+  (let* ((name0 (and (assoc 'name entries) (cadr (assoc 'name entries))))
+	 (name1 (or name name0 "unknown"))
+	 (name (if (and name0 (equal? (cadr (name2package (list 'name name0)))
+				      name1))
+		   name0 name1)))
     (writeln "<li> " name)
     (writeln "<ul>")
     (let ((url (assoc 'url entries))
@@ -100,10 +102,11 @@
 	    (writeln "<li>URL: <a href=\"" (cadr url) "\">" (cadr url) "</a>")
 	    (if url-was-valid-on
 		(writeln "(was valid on " (cadr url-was-valid-on) ")"))))
-      (let ((x (assoc 'name entries)))
-	(if (and x (not (equal? (cadr x) name)))
-	    (writeln "<li>" "Benchmark label" ": " (cadr x))))
+      (maybe "Benchmark label" 'name entries
+	     (lambda (x) (if (and x (not (equal? (cadr x) name))) x #f)))
       (maybe-plural "Author" "Authors" 'author entries)
+      (maybe-plural "Email address" "Email addresses" 'email entries
+		    obfuscate-email)
       (maybe "Year" 'year entries)
       (maybe "Version" 'version entries)
       (maybe-plural "Language" "Languages" 'language entries)
@@ -113,12 +116,39 @@
       )
     (writeln "</ul>") ))
 
-(define (maybe name sym entries)
-  (let ((x (assoc sym entries)))
+(define (fold-left op init list)
+  (if (null? list)
+      init
+      (fold-left op (op init (car list)) (cdr list))))
+
+(define (apply-filters x filters)
+  (fold-left (lambda (y f) (f y)) x filters))
+
+(define (replace-char c cs s)
+  (let ((i (string-index s c)))
+    (if i
+	(replace-char c cs
+		      (string-append
+		       (substring s 0 i)
+		       cs
+		       (substring s (+ i 1) (string-length s))))
+	s)))
+
+(define (obfuscate-email x)
+  (if x
+      (list (car x)
+	    (replace-char #\@ " atta " 
+			  (replace-char #\. " dotta " (cadr x))))))
+
+(define (maybe name sym entries . filters)
+  (let ((x (apply-filters (assoc sym entries) filters)))
     (if x (writeln "<li>" name ": " (cadr x)))))
 
-(define (maybe-plural singular plural sym entries)
-  (let ((things (assoc* sym entries)))
+(define (maybe-plural singular plural sym entries . filters)
+  (let ((things 
+	 (filter (lambda (x) x) 
+		 (map (lambda (x) (apply-filters x filters))
+		      (assoc* sym entries)))))
     (cond ((= (length things) 1) 
 	   (apply writeln "<li>" singular ": " (map cadr things)))
 	  ((> (length things) 1)
