@@ -344,6 +344,11 @@ foreach $transform (@plot_transforms) {
     }
 }
 
+# reverse legend for accuracy plot, to correspond with data ordering
+if ($accuracy) {
+    @plot_transforms = reverse @plot_transforms;
+}
+
 #############################################################################
 # Output the plot in Grace format.
 
