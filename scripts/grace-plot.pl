@@ -99,7 +99,7 @@ while (@ARGV) {
 	   "gpfa" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "green-ffts-2.0" => "green:solid:2:green:circle:0.25:green",
-	   "gsl-mixed-radix" => "violet:solid:2:violet:circle:0.25:none",
+	   "gsl-mixed-radix" => "violet:solid:2:violet:circle:0.4:none",
 	   "gsl-radix2" => "violet:dash:1:violet:circle:0.5:violet",
 	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
 	   "gsl-radix2-dit" => "violet:dot:1:violet:circle:0.5:none",
