@@ -114,6 +114,7 @@
 	   "sorensen-ctfftsr" => "indigo:dot:2:indigo:none:0.25:none",
 	   "sorensen-rsrfft" => "indigo:solid:1:indigo:diamond:0.5:indigo",
 	   "sorensen-sfftfu" => "indigo:dash:1:indigo:x:0.5:none",
+	   "spiral-fft" => "maroon:dot:1:maroon:star:0.5:none",
 	   "sunperf" => "black:solid:1:black:star:0.5:none",
 	   "temperton" => "grey:solid:2:black:circle:0.25:none",
 	   "teneyck" => "grey:dash:2:black:square:0.5:grey",

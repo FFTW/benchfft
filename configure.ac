@@ -308,6 +308,7 @@ benchees/sciport/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
 benchees/sorensen/Makefile
+benchees/spiral-fft/Makefile
 benchees/statlib/Makefile
 benchees/sunperf/Makefile
 benchees/temperton/Makefile
