@@ -74,6 +74,7 @@ while (@ARGV) {
 	   "esrfft" => "indigo:dash:1:indigo:square:0.4:indigo",
 	   "essl" => "black:solid:1:black:star:0.5:none",
 	   "ffte" => "indigo:solid:2:indigo:none:0.5:none",
+	   "ffte-sse2" => "indigo:dash:2:indigo:none:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
 	   "fftreal" => "red:dash:1:red:circle:0.5:none",
 	   "fftw2" => "cyan:solid:1:cyan:circle:0.5:cyan",
