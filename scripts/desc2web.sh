@@ -16,9 +16,12 @@ dir=${2-`pwd`}
 name=`basename $desc .desc`
 type=${3-speed}
 
-rm -rf $dir/$name
+abbrevname=`head -1 $desc | cut -d: -f1`
+
+rm -rf $dir/$name $dir/$abbrevname
 mkdir $dir/$name || exit 1
 mkdir $dir/$name/data
+ln -s $dir/$name $dir/$abbrevname
 
 cp $tgz $dir/$name/data
 
@@ -30,7 +33,7 @@ cat > $dir/$name/index.html <<EOF
 EOF
 
 echo '<title>' >> $dir/$name/index.html
-head -1 $desc >> $dir/$name/index.html
+head -1 $desc |sed 's/^.*: *//' >> $dir/$name/index.html
 echo '</title>' >> $dir/$name/index.html
 
 # fixme: add bookmark links, favicon, "go back" link, etcetera
@@ -40,7 +43,7 @@ cat >> $dir/$name/index.html <<EOF
 EOF
 
 echo '<h1 align="center">' >> $dir/$name/index.html
-head -1 $desc >> $dir/$name/index.html
+head -1 $desc |sed 's/^.*: *//' >> $dir/$name/index.html
 echo '</h1>' >> $dir/$name/index.html
 
 echo "<p>" >> $dir/$name/index.html
