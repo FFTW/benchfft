@@ -13,19 +13,9 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return (p->rank == 1 && 
+     return (p->rank == 3 && 
 	     /* N must be even for real transforms */
 	     (p->kind == PROBLEM_COMPLEX || !(p->n[0] & 1)));
-}
-
-void copy_h2c(struct problem *p, bench_complex *out)
-{
-     copy_h2c_1d_unpacked(p, out, -1.0);
-}
-
-void copy_c2h(struct problem *p, bench_complex *in)
-{
-     copy_c2h_1d_unpacked(p, in, -1.0);
 }
 
 void after_problem_ccopy_to(struct problem *p, bench_complex *out)
@@ -33,29 +23,33 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
      unnormalize(p, out, 1);
 }
 
-static DXML_C_FFT_STRUCTURE fsc;
-static DXML_Z_FFT_STRUCTURE fsz;
-static DXML_S_FFT_STRUCTURE fss;
-static DXML_D_FFT_STRUCTURE fsd;
+static DXML_C_FFT_STRUCTURE_3D fsc;
+static DXML_Z_FFT_STRUCTURE_3D fsz;
+static DXML_S_FFT_STRUCTURE_3D fss;
+static DXML_D_FFT_STRUCTURE_3D fsd;
 
 void setup(struct problem *p)
 {
-     int n;
+     int ni;
+     int nj;
+     int nk;
      int stride1 = 1;
 
      BENCH_ASSERT(can_do(p));
-     n = p->n[0];
+     ni = p->n[2];
+     nj = p->n[1];
+     nk = p->n[0];
  
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (SINGLE_PRECISION) 
-	       cfft_init_(&n, &fsc, &stride1);
+	       cfft_init_3d_(&ni, &nj, &nk, &fsc, &stride1);
 	  else	       
-	       zfft_init_(&n, &fsz, &stride1);
+	       zfft_init_3d_(&ni, &nj, &nk, &fsz, &stride1);
      } else {
 	  if (SINGLE_PRECISION) 
-	       sfft_init_(&n, &fss, &stride1);
+	       sfft_init_3d_(&ni, &nj, &nk, &fss, &stride1);
 	  else	       
-	       dfft_init_(&n, &fsd, &stride1);
+	       dfft_init_3d_(&ni, &nj, &nk, &fsd, &stride1);
      }
 }
 
@@ -70,16 +64,21 @@ void doit(int iter, struct problem *p)
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  char *dir = p->sign == -1 ? "F" : "B";
+	  int lda = p->n[2];
+	  int ldb = p->n[1];
 	  if (SINGLE_PRECISION) {
 	       for (i = 0; i < iter; ++i) {
-		    cfft_apply_("C", "C", dir, in, out, &fsc, &stride);
+		    cfft_apply_3d_("C", "C", dir, in, out, &lda, &ldb, &fsc, &stride,
+				   &stride, &stride);
 	       }
 	  } else {
 	       for (i = 0; i < iter; ++i) {
-		    zfft_apply_("C", "C", dir, in, out, &fsz, &stride);
+		    zfft_apply_3d_("C", "C", dir, in, out, &lda, &ldb, &fsz, &stride, 
+				   &stride, &stride);
 	       }
 	  }
      } else {
+#if 0
 	  if (p->sign == -1) {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
@@ -101,6 +100,7 @@ void doit(int iter, struct problem *p)
 		    }
 	       }
 	  }
+#endif
      }
 }
 
@@ -109,14 +109,14 @@ void done(struct problem *p)
      UNUSED(p); 
      if (p->kind == PROBLEM_COMPLEX) { 
 	  if (SINGLE_PRECISION)  
-	       cfft_exit_(&fsc); 
+	       cfft_exit_3d_(&fsc); 
 	  else          
-	       zfft_exit_(&fsz); 
+	       zfft_exit_3d_(&fsz); 
      } else { 
 	  if (SINGLE_PRECISION)  
-	       sfft_exit_(&fss); 
+	       sfft_exit_3d_(&fss); 
 	  else             
-	       dfft_exit_(&fsd); 
+	       dfft_exit_3d_(&fsd); 
      } 
 } 
  
