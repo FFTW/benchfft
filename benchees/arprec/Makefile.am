@@ -15,9 +15,12 @@ doit_SOURCES=doit.cc $(FFT)
 doit_LDADD=$(ARPREC) $(LIBBENCH)
 doit.o: $(ARPREC)
 
-$(ARPREC): extract
+$(ARPREC): extract-and-patch
+	cd $(PKG) && ./configure && $(MAKE)
+
+extract-and-patch: $(TARFILE)
+	(@GZIP@ -dc ${srcdir}/$(TARFILE) | @TAR@ xf -) && echo timestamp >$@
 	$(PATCH) $(PKG)/include/mp/mp.h < $(srcdir)/mp.h.patch
 	$(PATCH) $(PKG)/include/mp/mpreal.h < $(srcdir)/mpreal.h.patch
-	cd $(PKG) && ./configure && $(MAKE)
 
 include ../Makefile.common
