@@ -15,12 +15,12 @@ int can_do(struct problem *p)
 
 void copy_h2c(struct problem *p, bench_complex *out)
 {
-     copy_h2c_1d_fftpack(p, out, -1.0);
+     copy_h2c_1d_unpacked(p, out, -1.0);
 }
 
 void copy_c2h(struct problem *p, bench_complex *in)
 {
-     copy_c2h_1d_fftpack(p, in, -1.0);
+     copy_c2h_1d_unpacked(p, in, -1.0);
 }
 
 #include <fft.h>
@@ -43,7 +43,7 @@ void setup(struct problem *p)
      } else {
           WSAVE = bench_malloc((n + 15) * sizeof(bench_real));
 	  if (SINGLE_PRECISION) 
-	       scfft1dui(n, WSAVE);
+	       scfft1dui(n, WSAVE); /* works for both directions */
 	  else	       
 	       dzfft1dui(n, WSAVE);
      }
@@ -68,6 +68,25 @@ void doit(int iter, struct problem *p)
 	       }
 	  }
      } else {
+	  if (p->sign == -1) {
+	       if (SINGLE_PRECISION) 
+		    for (i = 0; i < iter; ++i) {
+			 scfft1du(sign, n, in, 1,wsave);
+		    }
+	       else	
+		    for (i = 0; i < iter; ++i) {
+			 dzfft1du(sign, n, in, 1,wsave);
+		    }
+	  } else {
+	       if (SINGLE_PRECISION) 
+		    for (i = 0; i < iter; ++i) {
+			 csfft1du(sign, n, in, 1,wsave);
+		    }
+	       else	
+		    for (i = 0; i < iter; ++i) {
+			 zdfft1du(sign, n, in, 1,wsave);
+		    }
+	  }
      }
 }
 
