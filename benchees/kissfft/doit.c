@@ -8,7 +8,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "1.1.0")
+BENCH_DOC("version", "1.1.1")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
@@ -29,8 +29,7 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return ((p->kind == PROBLEM_COMPLEX && (!problem_in_place(p) ||
-					     p->rank % 2 == 0))||
+     return ((p->kind == PROBLEM_COMPLEX) ||
 	     (p->rank == 1 && p->n[0] % 2 == 0 && p->kind == PROBLEM_REAL));
 }
 
