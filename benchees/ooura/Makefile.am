@@ -16,7 +16,7 @@ endif
 
 PRG=doit_sg doit_8g doit_4g doit_sg2d doit_4f2d doit_sg3d $(FORTRAN_PRG)
 INCLUDES = $(INCLBENCH)
-EXTRA_DIST = $(TARFILE) $(TARFILE2) doit.c doit-doc.h
+EXTRA_DIST = $(TARFILE) $(TARFILE2) doit.c doit-doc.h doit2d.c doit3d.c
 
 doit_sg_SOURCES=doit_sg.c
 nodist_doit_sg_SOURCES=$(PKG)/fftsg.c
