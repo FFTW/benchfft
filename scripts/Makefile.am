@@ -1,1 +1,1 @@
-EXTRA_DIST = sysinfo benchmark
+EXTRA_DIST = sysinfo benchmark writeinfo

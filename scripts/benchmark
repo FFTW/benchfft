@@ -10,6 +10,8 @@ Usage: $0 [OPTION] program
 
   -h, --help         print this help, then exit
   --verify           verify each transform before timing
+  --time-min=X       set minimum measurement time
+  --maxn=N           set maximum allowed problem size
 "
 
 help="
@@ -17,16 +19,29 @@ Try \`$me --help' for more information."
 
 verify="no"
 maxn=1048576
+time_min=""
 
-while test $# -gt 0 ; do
-  case $1 in
-    --help | --h* | -h )
-       echo "$usage"; exit 0 ;;
-    --verify)
-       verify=yes;
-       shift;; 
-    -- )     # Stop option processing
-       shift; break ;;
+for option
+do
+  # If the previous option needs an argument, assign it.
+  if test -n "$prev"; then
+    eval "$prev=\$option"
+    prev=
+    shift
+    continue
+  fi
+
+  optarg=`expr "x$option" : 'x[^=]*=\(.*\)'`
+
+  case $option in
+
+    --help | --h* | -h ) echo "$usage"; exit 0 ;;
+    --verify) verify=yes; shift;;
+    --time-min) prev=time_min; shift;;
+    --time-min=*) time_min=$optarg; shift;;
+    --maxn) prev=maxn; shift;;
+    --maxn=*) maxn=$optarg; shift;;
+    -- ) break ;; # Stop option processing
     -* )
        echo "$me: invalid option $1$help"
        exit 1 ;;
@@ -35,6 +50,13 @@ while test $# -gt 0 ; do
        break ;;
   esac
 done
+
+
+if test -n "$prev"; then
+  option=--`echo $prev | sed 's/_/-/g'`
+  echo "$me: error: missing argument to $option" >&2
+  exit 1
+fi
 
 case $# in
  0) echo "$me: missing argument$help" >&2
@@ -71,7 +93,7 @@ REALITY="c r"
 ALL_SIZES="$SIZES_1D $SIZES_2D $SIZES_3D"
 
 if ! test -x "$program"; then
-    echo "``$program'' does is not executable!" >&2
+    echo "``$program'' is not executable!" >&2
     exit 1
 fi
 

@@ -5,7 +5,9 @@ sgimath singleton temperton vdsp fftw2 sunperf
 EXTRA_DIST = Makefile.common
 
 # this is a hack
-benchmark: benchmark-recursive
-
 RECURSIVE_TARGETS =
 RECURSIVE_TARGETS += benchmark-recursive
+benchmark: benchmark-recursive
+benchmark-am:
+
+

@@ -6,7 +6,7 @@ EXTRA_DIST = COPYRIGHT bootstrap.sh
 
 
 # this is a hack
-benchmark: benchmark-recursive
-
 RECURSIVE_TARGETS =
 RECURSIVE_TARGETS += benchmark-recursive
+benchmark: benchmark-recursive
+benchmark-am:

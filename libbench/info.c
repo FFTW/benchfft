@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: info.c,v 1.3 2001-07-24 03:45:31 athena Exp $ */
+/* $Id: info.c,v 1.4 2001-07-25 01:07:44 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -43,7 +43,6 @@ void report_info_all(void)
 {
      struct bench_doc *p;
 
-     ovtpvt("(");
      /*
       * TODO: escape quotes?  The format is not unambigously
       * parseable if the info string contains double quotes.
@@ -53,5 +52,4 @@ void report_info_all(void)
 	       p->val = p->f();
 	  ovtpvt("(%s \"%s\")\n", p->key, p->val);
      }
-     ovtpvt(")\n");
 }

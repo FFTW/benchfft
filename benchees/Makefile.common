@@ -4,7 +4,9 @@ noinst_PROGRAMS=$(PRG)
 LIBBENCH=${top_builddir}/libbench/libbench.a
 INCLBENCH=-I${top_srcdir}/libbench
 
-BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark
+MAXN=262144
+BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark --maxn=$(MAXN)
+WRITEINFO=$(SHELL) ${top_srcdir}/scripts/writeinfo
 
 # ``make list'' prints a list of available programs
 list:
@@ -22,20 +24,22 @@ extract-mkdir: $(TARFILE)
 	echo timestamp >$@
 
 distclean-local:
-	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES) benchmark-local
+	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES) benchmark
 
 check-local: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
 	  test ! -x $$prog ||                              \
 	  echo "Testing $$prog";                           \
-	  $(BENCHMARK) --verify ./$$prog;                  \
+	  $(BENCHMARK) --verify $$PWD/$$prog;              \
 	done)
 
 benchmark: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
 	  test ! -x $$prog ||                              \
 	  echo "Benchmarking $$prog";                      \
-	  ./$$prog --info-all >$$prog.info;                \
-	  $(BENCHMARK) ./$$prog >$$prog.data;              \
+	  time_min=`./$$prog --print-time-min`;              \
+	  $(WRITEINFO) --time-min $$time_min $$PWD/$$prog  >$$prog.info; \
+	  ($(BENCHMARK) --time-min $$time_min $$PWD/$$prog  | \
+           tee $$prog.data); \
 	done)
 	echo done >$@
