@@ -67,7 +67,7 @@ while (@ARGV) {
 	   "essl" => "black:solid:1:black:star:0.5:none",
 	   "ffte" => "indigo:solid:2:indigo:none:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
-	   "fftreal" => "red:dash:1:red:circle:0.5:red",
+	   "fftreal" => "red:dash:1:red:circle:0.5:none",
 	   "fftw2-measure" => "cyan:solid:1:cyan:circle:0.5:cyan",
 	   "fftw2-estimate" => "cyan:solid:1:cyan:circle:0.5:none",
 	   "fftw2-nd-measure" => "cyan:dash:1:cyan:circle:0.5:cyan",
