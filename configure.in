@@ -13,6 +13,7 @@ fi
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_PROG_CC_STDC
 AC_PROG_F77
 ACX_PROG_CC_EGCS
 AC_PROG_INSTALL
@@ -27,17 +28,6 @@ AC_F77_LIBRARY_LDFLAGS
 AC_F77_WRAPPERS
 
 AM_CONDITIONAL(HAVE_F77, test -n "$F77")
-
-dnl check for optimization options
-dnl This macro sets ANSI mode for certain compilers, and must
-dnl thus come before the subsequenct checks
-ACX_PROG_CC_MAXOPT(benchfft)
-
-dnl override CFLAGS selection when debugging
-if test "${enable_debug}" = "yes"; then
-	CFLAGS="-g"
-fi
-
 
 dnl Checks for header files.
 AC_HEADER_STDC
@@ -109,12 +99,23 @@ if test "$ok" = "yes"; then
 fi
 AC_MSG_RESULT(${ok})
 
+
+dnl check for optimization options
+dnl This macro sets ANSI mode for certain compilers, and must
+dnl thus come before the subsequenct checks
+ACX_PROG_CC_MAXOPT(benchfft)
+
+dnl override CFLAGS selection when debugging
+if test "${enable_debug}" = "yes"; then
+	CFLAGS="-g"
+fi
+
+
 AC_DEFINE_UNQUOTED(BENCH_HOST, "$host", [host type])
 AC_DEFINE_UNQUOTED(BENCH_HOSTNAME, "$ac_hostname", [host name])
 AC_DEFINE_UNQUOTED(BENCH_CC, "$CC $CFLAGS", [C compiler name and flags])
 AC_DEFINE_UNQUOTED(BENCH_F77, "$F77 $FFLAGS", 
 	[FORTRAN compiler name and flags])
-
 
 dnl TODO
 ACX_GCC_ALIGNS_STACK()
