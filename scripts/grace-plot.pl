@@ -3,11 +3,13 @@
 $no_dups = 0;
 $accuracy = 0;
 $accurate_only = 0;
+$plot_worst = 0;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
     $accuracy = 1 if ($arg eq "--accuracy");
     $accurate_only = 1 if ($arg eq "--accurate-only");
+    $plot_worst = 1 if ($arg eq "--plot-worst");
 }
 
 #############################################################################
@@ -90,7 +92,7 @@ while (@ARGV) {
 	   "fxt-4step" => "yellow:solid:2:grey:circle:0.25:none",
 	   "fxt-matrixfft" => "yellow:solid:2:grey:circle:0.25:none",
 	   "fxt-dif" => "grey:solid:1:yellow:circle:0.5:grey",
-	   "fxt-dit" => "grey:solid:1:yellow:grey:0.5:yellow",
+	   "fxt-dit" => "grey:solid:1:yellow:square:0.5:yellow",
 	   "fxt-fht" => "grey:solid:1:grey:triangle-up:0.7:yellow",
 	   "fxt-fht-real" => "grey:solid:1:grey:triangle-up:0.7:yellow",
 	   "fxt-ndim" => "grey:solid:1:yellow:star:1:none",
@@ -292,7 +294,13 @@ foreach $transform (keys %results) {
 %done = ();
 %namlegends = ();
 @plot_transforms = ();
-foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
+if ($plot_worst) {
+    @sorted_norm_vals = sort { 100000 * ($a - $b) } @norm_vals;
+}
+else {
+    @sorted_norm_vals = sort { 100000 * ($b - $a) } @norm_vals;
+}
+foreach $norm_val (@sorted_norm_vals) {
     $transform = $transforms{$norm_val};
     ($nam, $prob) = split(/:/,$transform);
     $namleg = $nam;
@@ -307,6 +315,7 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     $nam0 = $nam if ($nam eq "fftw3-r2r");
     $nam0 = $nam if ($namleg eq "fxt-matrixfft");
     $nam0 = $nam if ($nam0 eq "dsp79");
+    $nam0 = rmayer-buneman if ($accuracy && ($nam eq "rmayer-buneman" || $nam eq "rmayer-buneman2" || $nam eq "rmayer-buneman3"));
     if ($nam0 eq "fftw3" || $nam0 eq "intel-mkl-dfti") {
 	if ($prob =~ /..i./) {
 	    $nam0 = "$nam0 in-place";
@@ -356,8 +365,8 @@ foreach $transform (@plot_transforms) {
     }
 }
 
-# reverse legend for accuracy plot, to correspond with data ordering
-if ($accuracy) {
+# reverse legend, if necessary, to correspond with data ordering
+if ($accuracy xor $plot_worst) {
     @plot_transforms = reverse @plot_transforms;
 }
 

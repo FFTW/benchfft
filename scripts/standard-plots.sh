@@ -54,7 +54,7 @@ for problem in dcxx drxx scxx srxx; do
     (sh $sd/plot-title.sh $problem $rank;
     egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank |
-	perl $sd/grace-plot.pl --no-dups --accuracy) |
+	perl $sd/grace-plot.pl --no-dups --plot-worst --accuracy) |
 	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.ps
     echo "${dname}.${rank}d.${problem}.ps"
 
@@ -62,7 +62,7 @@ for problem in dcxx drxx scxx srxx; do
      echo "@subtitle \"enlargement of most accurate FFTs\"";
      egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank |
-	perl $sd/grace-plot.pl --no-dups --accuracy --accurate-only) |
+	perl $sd/grace-plot.pl --no-dups --plot-worst --accuracy --accurate-only) |
 	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.acc.ps
     echo "${dname}.${rank}d.${problem}.acc.ps"
 
@@ -70,7 +70,7 @@ for problem in dcxx drxx scxx srxx; do
      echo "@subtitle \"enlargement of most accurate FFTs, powers of two only\"";
      egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank | perl $sd/grep-p2.pl |
-	perl $sd/grace-plot.pl --no-dups --accuracy --accurate-only) |
+	perl $sd/grace-plot.pl --no-dups --plot-worst --accuracy --accurate-only) |
 	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.acc.p2.ps
     echo "${dname}.${rank}d.${problem}.acc.p2.ps"
 done
