@@ -75,12 +75,13 @@
   (newline))
 
 (define (htmlize package-name common-entries specific-entries)
-  (begin (htmlize-one package-name common-entries #t)
+  (begin (htmlize-one package-name common-entries "h2" #t)
 	 (if (not (every? null? specific-entries))
 	     (begin
 	       (writeln "<li>Benchmarked variants:")
 	       (writeln "<ul>")
-	       (for-each (lambda (e) (if (not (null? e)) (htmlize-one #f e)))
+	       (for-each (lambda (e) (if (not (null? e))
+					 (htmlize-one #f e "b")))
 			 (sort specific-entries compare-entries))
 	       (writeln "</ul>")))
 	 (writeln "</ul>")))
@@ -92,13 +93,16 @@
 (define (assoc* sym l)
   (filter (lambda (x) (eq? sym (car x))) l))
 
-(define (htmlize-one name entries . no:/ul)
+(define (tag-string t s) (string-append "<" t ">" s "</" t ">"))
+(define (tag t x) (list (car x) (tag-string t (cadr x))))
+
+(define (htmlize-one name entries nametag . no:/ul)
   (let* ((name0 (and (assoc 'name entries) (cadr (assoc 'name entries))))
 	 (name1 (or name name0 "unknown"))
 	 (name (if (and name0 (equal? (cadr (name2package (list 'name name0)))
 				      name1))
 		   name0 name1)))
-    (writeln "<li> " name)
+    (writeln "<li>" (tag-string nametag name))
     (writeln "<ul>")
     (let ((url (assoc 'url entries))
 	  (url-was-valid-on (assoc 'url-was-valid-on entries))
@@ -109,7 +113,8 @@
 	    (if url-was-valid-on
 		(writeln "(was valid on " (cadr url-was-valid-on) ")"))))
       (maybe "Benchmark label" 'name entries
-	     (lambda (x) (if (and x (not (equal? (cadr x) name))) x #f)))
+	     (lambda (x) (if (and x (not (equal? (cadr x) name))) 
+			     (tag "b" x) #f)))
       (maybe-plural "Author" "Authors" 'author entries)
       (maybe-plural "Email address" "Email addresses" 'email entries
 		    obfuscate-email)
