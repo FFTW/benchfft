@@ -102,6 +102,8 @@ while (@ARGV) {
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
 	   "intel-ipps" => "black:solid:2:black:circle:0.2:black",
 	   "intel-mkl" => "black:solid:1:black:circle:0.5:black",
+	   "intel-mkl-dfti in-place" => "black:dot:1:black:square:0.3:black",
+	   "intel-mkl-dfti out-of-place" => "black:solid:1:black:square:0.5:none",
 	   "intel-mkl-dfti" => "black:solid:1:black:square:0.5:none",
 	   "intel-mkl-f" => "black:dash:1:black:circle:0.5:none",
 	   "jmfftc" => "turquoise:solid:2:turquoise:circle:0.5:turquoise",
@@ -115,7 +117,7 @@ while (@ARGV) {
 	   "mpfun90" => "green4:dash:1:green4:square:0.5:none",
 	   "nag-cmplx" => "red:dot:1:red:square:0.5:red",
 	   "nag-workspace" => "red:dash:1:red:square:0.5:none",
-	   "nag-inplace" => "red:dot:1:red:triangle-right:0.5:red",
+	   "nag-in-place" => "red:dot:1:red:triangle-right:0.5:red",
 	   "nag-multiple" => "red:dash:1:red:circle:0.5:none",
 	   "napack" => "green4:dot:2:green4:none:0.5:none",
 	   "nr-c" => "brown:dot:1:brown:square:0.5:none",
@@ -289,10 +291,11 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     # get transform "family"
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
     $nam0 = $nam if ($nam eq "intel-ipps");
+    $nam0 = $nam if ($nam eq "intel-mkl-dfti");
     $nam0 = $nam if ($nam eq "fftw3-r2r");
     $nam0 = $nam if ($namleg eq "fxt-matrixfft");
     $nam0 = $nam if ($nam0 eq "dsp79");
-    if ($nam0 eq "fftw3") {
+    if ($nam0 eq "fftw3" || $nam0 eq "intel-mkl-dfti") {
 	if ($prob =~ /..i./) {
 	    $nam0 = "$nam0 in-place";
 	    $namleg = "$namleg in-place";
@@ -348,15 +351,16 @@ foreach $transform (@plot_transforms) {
 print "@ legend char size 0.75\n";
 if ($#plot_transforms < 31) {
     # legend aligned with top of plot
-    print "@ legend 1.02,0.85\n";
+    print "@ legend 0.97,0.85\n";
 }
 else {
     # squeeze a few more items into the legend
     $legtop = 0.5 + (0.85/31/2) * $#plot_transforms;
     $legtop = 1.0 if ($legtop > 1.0);
-    print "@ legend 1.02,$legtop\n";
+    print "@ legend 0.97,$legtop\n";
 }
-print "@ view xmax 1.0\n"; # make space for the legend
+print "@ view xmin 0.1\n"; # make space for the legend
+print "@ view xmax 0.95\n"; # make space for the legend
 
 # print "@ xaxis label \"transform size\"\n";
 if ($accuracy) {
