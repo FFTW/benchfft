@@ -9,7 +9,7 @@ my @mflops=();
 my @nams=();
 while (<>) {
   push(@records, $_);
-  my ($nam, $prob, $siz, $mflops, $tim) = split / /;
+  my ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
   my $rank = ($siz =~ s/x/*/g);
   my $tot = eval($siz);
   push(@nams, $nam);

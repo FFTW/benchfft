@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.12 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: report.c,v 1.13 2003-03-30 14:41:44 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -155,5 +155,5 @@ void report_benchmark(const struct problem *p, double *t, int st)
 {
      struct stats s;
      mkstat(t, st, &s);
-     ovtpvt("%.5g %.8g\n", mflops(p, s.min), s.min);
+     ovtpvt("%.5g %.8g %g\n", mflops(p, s.min), s.min, p->setup_time);
 }

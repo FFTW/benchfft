@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: speed.c,v 1.10 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: speed.c,v 1.11 2003-03-30 14:41:44 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -36,7 +36,10 @@ void speed(const char *param)
      BENCH_ASSERT(can_do(p));
      problem_alloc(p);
      problem_zero(p);
+
+     timer_start();
      setup(p);
+     p->setup_time = timer_stop();
 
  start_over:
      for (iter = 1; iter < (1<<30); iter *= 2) {

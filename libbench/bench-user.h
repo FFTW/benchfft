@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.36 2003-03-22 11:53:48 athena Exp $ */
+/* $Id: bench-user.h,v 1.37 2003-03-30 14:41:44 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -77,6 +77,9 @@ struct problem {
      void *in;
      void *out;
      void *userinfo; /* user can store whatever */
+
+     /* internal hack to avoid passing around too many parameters */
+     double setup_time;  
 };
 
 extern int can_do(struct problem *p);
