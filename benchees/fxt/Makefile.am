@@ -6,7 +6,7 @@ endif
 
 INCLUDES = $(INCLBENCH)
 PKG=fxt
-TARFILE=$(PKG)-2002.08.26.tar.gz
+TARFILE=$(PKG)-2003.03.26.tar.gz
 EXTRA_DIST = $(TARFILE) doit.cc
 
 CPPFLAGS = @CPPFLAGS@ -I$(PKG)/include -I$(PKG)/auxil -I$(PKG)/permute -I$(PKG)/auxbit
