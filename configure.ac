@@ -54,7 +54,7 @@ fi
 AC_PROG_F77
 if test -n "$F77"; then
 	dnl replace with AC_F77_LIBRARY_LDFLAGS when autoconf is fixed. 
-	ACX_F77_LIBRARY_LDFLAGS
+	AC_F77_LIBRARY_LDFLAGS
 	AC_F77_DUMMY_MAIN([], bench_f77_fails=yes)
 	if test "x$bench_f77_fails" = xyes; then
 		AC_MSG_WARN([Cannot figure out how to link C code with Fortran libraries.])

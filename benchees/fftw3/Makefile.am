@@ -3,6 +3,7 @@ PKG=fftw-3.0-attempt2
 TARFILE=$(PKG).tar.gz
 INCLUDES = $(INCLBENCH) -I$(PKG)/src
 LIBFFTW=$(PKG)/src/libfftw.a
+EXTRA_DIST=$(PKG).tar.gz
 
 if SINGLE
 CONFIGURE=./configure --enable-single
