@@ -25,15 +25,20 @@ int can_do(struct problem *p)
 	      (p->kind == PROBLEM_REAL && p->rank >= 1 && p->rank < 3)));
 }
 
+
 void problem_ccopy_to(struct problem *p, bench_complex *out)
 {
-     cacopy(p->out, out, p->size);
-     if (p->sign == 1) { 	  /* undo the scaling */
-	  bench_complex x;
-	  c_re(x) = p->size;
-	  c_im(x) = 0;
+     if (p->kind == PROBLEM_COMPLEX) {
+	  cacopy(p->out, out, p->size);
+	  if (p->sign == 1) { 	  /* undo the scaling */
+	       bench_complex x;
+	       c_re(x) = p->size;
+	       c_im(x) = 0;
 
-	  cascale(out, p->size, x);
+	       cascale(out, p->size, x);
+	  }
+     } else {
+	  BENCH_ASSERT(0);
      }
 }
 

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.7 2001-07-07 21:56:10 athena Exp $ */
+/* $Id: verify.c,v 1.8 2001-07-07 22:34:23 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -290,7 +290,12 @@ static void do_verify(struct problem *p, unsigned int rounds)
 
      linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
      impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
-     time_shift(p, inA, inB, outA, outB, tmp, rounds);
+
+     if (p->kind == PROBLEM_COMPLEX) 
+	  time_shift(p, inA, inB, outA, outB, tmp, rounds);
+     else {
+	  /* TODO */
+     }
 
      bench_free(tmp);
      bench_free(outC);

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.8 2001-07-07 21:56:10 athena Exp $ */
+/* $Id: bench-user.h,v 1.9 2001-07-07 22:34:23 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -69,6 +69,11 @@ extern void problem_ccopy_from(struct problem *p, bench_complex *in);
 
 /* default routine in ccopy-to.c */
 extern void problem_ccopy_to(struct problem *p, bench_complex *out);
+
+void copy_c2r(struct problem *p, bench_complex *in);
+void copy_c2h(struct problem *p, bench_complex *in);
+void copy_r2c(struct problem *p, bench_complex *out);
+void copy_h2c(struct problem *p, bench_complex *out);
 
 extern int power_of_two(unsigned int n);
 extern int problem_power_of_two(struct problem *p, int in_place);
