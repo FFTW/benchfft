@@ -1,4 +1,4 @@
-#define NAME "fxt-fht"
+#define NAME "fxt-fht-real"
 #define NOTES "FFT by FHT algorithm."
 
 #define DOIT_FFT fht_real_complex_fft(in, m, -1)

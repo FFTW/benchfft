@@ -1,4 +1,4 @@
-#define NAME "fxt-wrap"
+#define NAME "fxt-wrap-real"
 #define NOTES "Real-data FFT by wrapping half-size complex FFT."
 
 #define DOIT_FFT wrap_real_complex_fft(in, m, -1)
