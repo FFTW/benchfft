@@ -9,18 +9,10 @@ BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/")
 BENCH_DOC("url-was-valid-on", "Sat Aug 31 16:37:44 EDT 2002")
 BENCH_DOC("bibitem", 
-	  "May be related to PK HARM subroutine mentioned in "
+	  "May be related to radix-4 PK HARM subroutine mentioned in "
 	  "J. W. Cooley and P. A. W. Lewis and P. D. Welch, "
 	  "The Fast Fourier Transform Algorithm and Its Applications "
 	  "(IBM Research, 1967).")
-BENCH_DOC("bibitem",
-	  "See J. W. Cooley and J. W. Tukey, An algorithm for the "
-	  "machine calculation of complex Fourier series, "
-	  "Mathematics of Computation 19, p. 297-301 (Apr. 1965): "
-	  "``A computer program for the IBM 7094 has been written which "
-	  "calculates three-dimensional Fourier sums by the above method.'' "
-	  "They go on to list times of 6 and 7.2 seconds for transforms of "
-	  "sizes 32x16x16 and 8192, respectively.")
 
 BENCH_DOC("copyright", "THIS ROUTINE IS PUBLIC DOMAIN")
 BENCH_DOC("notes", "The backward transform is scaled")
