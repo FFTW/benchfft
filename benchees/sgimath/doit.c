@@ -27,6 +27,21 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 static void *WSAVE;
 
+#ifdef BENCHFFT_SINGLE
+#define CFFT1DI cfft1di
+#define CFFT1D cfft1d
+#define SCFFT1DUI scfft1dui
+#define SCFFT1DU scfft1du
+#define CSFFT1DU csfft1du
+#else
+#define CFFT1DI zfft1di
+#define CFFT1D zfft1d
+#define SCFFT1DUI dzfft1dui
+#define SCFFT1DU dzfft1du
+#define CSFFT1DU zdfft1du
+#endif
+
+
 void setup(struct problem *p)
 {
      int n;
@@ -36,16 +51,10 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
           WSAVE = bench_malloc((n + 15) * sizeof(bench_complex));
-	  if (SINGLE_PRECISION) 
-	       cfft1di(n, WSAVE);
-	  else	       
-	       zfft1di(n, WSAVE);
+	  CFFT1DI(n, WSAVE);
      } else {
           WSAVE = bench_malloc((n + 15) * sizeof(bench_real));
-	  if (SINGLE_PRECISION) 
-	       scfft1dui(n, WSAVE); /* works for both directions */
-	  else	       
-	       dzfft1dui(n, WSAVE);
+	  SCFFT1DUI(n, WSAVE); /* works for both directions */
      }
 }
 
@@ -58,34 +67,18 @@ void doit(int iter, struct problem *p)
      void *wsave = WSAVE;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  if (SINGLE_PRECISION) {
-	       for (i = 0; i < iter; ++i) {
-		    cfft1d(sign, n, in, 1, wsave);
-	       }
-	  } else {
-	       for (i = 0; i < iter; ++i) {
-		    zfft1d(sign, n, in, 1, wsave);
-	       }
+	  for (i = 0; i < iter; ++i) {
+	       CFFT1D(sign, n, in, 1, wsave);
 	  }
      } else {
 	  if (p->sign == -1) {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 scfft1du(sign, n, in, 1,wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 dzfft1du(sign, n, in, 1,wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    SCFFT1DU(sign, n, in, 1,wsave);
+	       }
 	  } else {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 csfft1du(sign, n, in, 1,wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 zdfft1du(sign, n, in, 1,wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    CSFFT1DU(sign, n, in, 1,wsave);
+	       }
 	  }
      }
 }

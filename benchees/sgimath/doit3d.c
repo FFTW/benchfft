@@ -38,6 +38,21 @@ void copy_c2r(struct problem *p, bench_complex *in)
 
 static void *WSAVE;
 
+
+#ifdef BENCHFFT_SINGLE
+#define CFFT3DI cfft3di
+#define CFFT3D cfft3d
+#define SCFFT3DUI scfft3dui
+#define SCFFT3DU scfft3du
+#define CSFFT3DU csfft3du
+#else
+#define CFFT3DI zfft3di
+#define CFFT3D zfft3d
+#define SCFFT3DUI dzfft3dui
+#define SCFFT3DU dzfft3du
+#define CSFFT3DU zdfft3du
+#endif
+
 void setup(struct problem *p)
 {
      int n1, n2, n3;
@@ -49,17 +64,11 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
           WSAVE = bench_malloc((n1 + n2 + n3 + 45) * sizeof(bench_complex));
-	  if (SINGLE_PRECISION) 
-	       cfft3di(n1, n2, n3, WSAVE);
-	  else	       
-	       zfft3di(n1, n2, n3, WSAVE);
+	  CFFT3DI(n1, n2, n3, WSAVE);
      } else {
           WSAVE = bench_malloc((n1 + 2 * n2 + 2 * n3 + 75)
 			       * sizeof(bench_real));
-	  if (SINGLE_PRECISION) 
-	       scfft3dui(n1, n2, n3, WSAVE); /* works for both directions */
-	  else	       
-	       dzfft3dui(n1, n2, n3, WSAVE);
+	  SCFFT3DUI(n1, n2, n3, WSAVE); /* works for both directions */
      }
 }
 
@@ -74,35 +83,19 @@ void doit(int iter, struct problem *p)
      void *wsave = WSAVE;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  if (SINGLE_PRECISION) {
-	       for (i = 0; i < iter; ++i) {
-		    cfft3d(sign, n1, n2, n3, in, n1, n2, wsave);
-	       }
-	  } else {
-	       for (i = 0; i < iter; ++i) {
-		    zfft3d(sign, n1, n2, n3, in, n1, n2, wsave);
-	       }
+	  for (i = 0; i < iter; ++i) {
+	       CFFT3D(sign, n1, n2, n3, in, n1, n2, wsave);
 	  }
      } else {
           int lda = 2 * (1 + n1 / 2);
 	  if (p->sign == -1) {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 scfft3du(sign, n1, n2, n3, in, lda, n2, wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 dzfft3du(sign, n1, n2, n3, in, lda, n2, wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    SCFFT3DU(sign, n1, n2, n3, in, lda, n2, wsave);
+	       }
 	  } else {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 csfft3du(sign, n1, n2, n3, in, lda, n2, wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 zdfft3du(sign, n1, n2, n3, in, lda, n2, wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    CSFFT3DU(sign, n1, n2, n3, in, lda, n2, wsave);
+	       }
 	  }
      }
 }

@@ -36,6 +36,21 @@ void copy_c2r(struct problem *p, bench_complex *in)
 
 #include <fft.h>
 
+
+#ifdef BENCHFFT_SINGLE
+#define CFFT2DI cfft2di
+#define CFFT2D cfft2d
+#define SCFFT2DUI scfft2dui
+#define SCFFT2DU scfft2du
+#define CSFFT2DU csfft2du
+#else
+#define CFFT2DI zfft2di
+#define CFFT2D zfft2d
+#define SCFFT2DUI dzfft2dui
+#define SCFFT2DU dzfft2du
+#define CSFFT2DU zdfft2du
+#endif
+
 static void *WSAVE;
 
 void setup(struct problem *p)
@@ -48,16 +63,10 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
           WSAVE = bench_malloc((n1 + n2 + 30) * sizeof(bench_complex));
-	  if (SINGLE_PRECISION) 
-	       cfft2di(n1, n2, WSAVE);
-	  else	       
-	       zfft2di(n1, n2, WSAVE);
+	  CFFT2DI(n1, n2, WSAVE);
      } else {
           WSAVE = bench_malloc((n1 + 2 * n2 + 45) * sizeof(bench_real));
-	  if (SINGLE_PRECISION) 
-	       scfft2dui(n1, n2, WSAVE); /* works for both directions */
-	  else	       
-	       dzfft2dui(n1, n2, WSAVE);
+	  SCFFT2DUI(n1, n2, WSAVE); /* works for both directions */
      }
 }
 
@@ -71,35 +80,19 @@ void doit(int iter, struct problem *p)
      void *wsave = WSAVE;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  if (SINGLE_PRECISION) {
-	       for (i = 0; i < iter; ++i) {
-		    cfft2d(sign, n1, n2, in, n1, wsave);
-	       }
-	  } else {
-	       for (i = 0; i < iter; ++i) {
-		    zfft2d(sign, n1, n2, in, n1, wsave);
-	       }
+	  for (i = 0; i < iter; ++i) {
+	       CFFT2D(sign, n1, n2, in, n1, wsave);
 	  }
      } else {
           int lda = 2 * (1 + n1 / 2);
 	  if (p->sign == -1) {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 scfft2du(sign, n1, n2, in, lda, wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 dzfft2du(sign, n1, n2, in, lda, wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    SCFFT2DU(sign, n1, n2, in, lda, wsave);
+	       }
 	  } else {
-	       if (SINGLE_PRECISION) 
-		    for (i = 0; i < iter; ++i) {
-			 csfft2du(sign, n1, n2, in, lda, wsave);
-		    }
-	       else	
-		    for (i = 0; i < iter; ++i) {
-			 zdfft2du(sign, n1, n2, in, lda, wsave);
-		    }
+	       for (i = 0; i < iter; ++i) {
+		    CSFFT2DU(sign, n1, n2, in, lda, wsave);
+	       }
 	  }
      }
 }
