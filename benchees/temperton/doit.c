@@ -15,6 +15,7 @@ BENCH_DOC("bibitem",
 BENCH_DOC("url", "http://www.caps.ou.edu/ARPS/")
 BENCH_DOC("url-was-valid-on", "Mon Jul 16 00:03:31 EDT 2001")
 BENCH_DOC("notes", "Can be found online in the ARPS weather-simulator")
+BENCH_DOC("notes", "The forward (real->complex) transform is scaled.")
 END_BENCH_DOC
 
 

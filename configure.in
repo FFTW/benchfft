@@ -170,6 +170,7 @@ benchees/fftpack/Makefile
 benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
+benchees/harm/Makefile
 benchees/krukar/Makefile
 benchees/mixfft/Makefile
 benchees/mpfun77/Makefile
