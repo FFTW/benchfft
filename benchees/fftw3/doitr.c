@@ -18,11 +18,11 @@ static const char *mkcc(void) { return FFTW(cc); }
 static const char *mkcodelet_optim(void) { return FFTW(codelet_optim); }
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "fftw3")
+BENCH_DOC("name", "fftw3-r2r")
 BENCH_DOCF("version", mkversion)
 BENCH_DOCF("fftw-cc", mkcc)
 BENCH_DOCF("fftw-codelet-optim", mkcodelet_optim)
-BENCH_DOC("package", "FFTW 3")
+BENCH_DOC("package", "FFTW 3 Real Transform Interface")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Matteo Frigo")
 BENCH_DOC("author", "Steven G. Johnson")
@@ -66,60 +66,33 @@ void useropt(const char *arg)
 
 int can_do(struct problem *p)
 {
-     UNUSED(p);
-     return 1;
+     return (p->rank == 1 && p->kind == PROBLEM_REAL);
 }
 
 void copy_h2c(struct problem *p, bench_complex *out)
 {
-     copy_h2c_unpacked(p, out, -1.0);
+     copy_h2c_1d_halfcomplex(p, out, -1.0);
 }
 
 void copy_c2h(struct problem *p, bench_complex *in)
 {
-     copy_c2h_unpacked(p, in, -1.0);
-}
-
-void copy_r2c(struct problem *p, bench_complex *out)
-{
-     if (problem_in_place(p))
-	  copy_r2c_unpacked(p, out);	  
-     else
-	  copy_r2c_packed(p, out);
-}
-
-void copy_c2r(struct problem *p, bench_complex *in)
-{
-     if (problem_in_place(p))
-	  copy_c2r_unpacked(p, in);
-     else
-	  copy_c2r_packed(p, in);
+     copy_c2h_1d_halfcomplex(p, in, -1.0);
 }
 
 void setup(struct problem *p)
 {
+     unsigned flags = the_flags;  
      BENCH_ASSERT(can_do(p));
  
-     if (p->kind == PROBLEM_COMPLEX) {
-	  the_plan = FFTW(plan_dft)(
-	       p->rank, p->n,
-	       p->in, p->out,
-	       p->sign, the_flags);
-     } else {
-	  if (p->sign == -1) {
-	       the_plan = FFTW(plan_dft_r2c)(
-		    p->rank, p->n,
-		    p->in, p->out,
-		    the_flags);
-	  } else {
-	       the_plan = FFTW(plan_dft_c2r)(
-		    p->rank, p->n,
-		    p->in, p->out,
-		    the_flags);
-	  }
-     }
-     BENCH_ASSERT(the_plan);
+     if (p->sign == 1)
+	  the_flags |= FFTW_DESTROY_INPUT;
 
+     the_plan = FFTW(plan_r2r_1d)(p->n[0], p->in, p->out,
+				  (p->sign == -1 ? FFTW_R2HC : FFTW_HC2R),
+				  the_flags);
+
+     BENCH_ASSERT(the_plan);
+     
      if (verbose >= 2) {
 	  FFTW(print_plan)(the_plan);
 	  printf("\n");
