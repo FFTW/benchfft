@@ -19,6 +19,7 @@ static const char *mkvers(void)
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
 BENCH_DOCF("version", mkvers)
+#include "doit-doc.h"
 END_BENCH_DOC
 
 int can_do(struct problem *p)
