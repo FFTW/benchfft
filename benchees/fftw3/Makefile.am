@@ -19,3 +19,6 @@ $(LIBFFTW): extract
 	(cd $(PKG) && $(CONFIGURE) && $(MAKE))
 
 include ../Makefile.common
+
+clean-local:
+	rm -rf benchmark extract $(PKG)
