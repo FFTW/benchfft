@@ -7,6 +7,7 @@ $accurate_only = 0;
 $plot_worst = 0;
 $skip_missing_styles = 0;
 $use_paper_styles = 0;
+$dxleg = 0;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
@@ -16,6 +17,9 @@ while (@ARGV) {
     $plot_worst = 1 if ($arg eq "--plot-worst");
     $skip_missing_styles = 1 if ($arg eq "--skip-missing-styles");
     $use_paper_styles = 1 if ($arg eq "--use-paper-styles");
+    if ($arg =~ /^--dxleg=.*$/) {
+	($arg, $dxleg) = split(/=/,$arg);
+    }
 }
 
 #############################################################################
@@ -197,7 +201,8 @@ while (@ARGV) {
 	    
 	    "vdsp" => "black:solid:2:black:circle:0.2:black",
 	    "cxml" => "black:solid:2:black:circle:0.2:black",
-	    "intel-mkl-dfti" => "black:solid:2:black:circle:0.2:black",
+	    "intel-mkl-dfti out-of-place" => "black:solid:2:black:circle:0.2:black",
+	    "intel-mkl-dfti in-place" => "black:dash:2:black:circle:0.2:none",
 
 	    "g5" => "black:solid:2:black:circle:0.5:black",
 	    "g5-p4plan" => "black:solid:1:black:circle:0.5:none",
@@ -239,6 +244,36 @@ sub printstyle {
 	    print "@ s$setnum symbol fill color \"$symbolfillcolor\"\n";
 	}
     }
+}
+
+#############################################################################
+
+# legend renaming map:
+
+if ($use_paper_styles) {
+    %legend_map = (
+		   "fftw3" => "fftw",
+		   "fftw3-no-simd" => "fftw, no simd",
+		   "fftw3-impatient" => "fftw, impatient mode",
+		   "fftw3-estimate" => "fftw, estimate mode",
+		   "fftw3 out-of-place" => "fftw, out of place",
+		   "fftw3 in-place" => "fftw, in place",
+
+		   "ffte" => "takahashi",
+		   "sorensen-ctfftsr" => "sorensen",
+		   "nr-c" => "numerical recipes",
+
+		   "intel-mkl-dfti out-of-place" => "mkl, out of place",
+		   "intel-mkl-dfti in-place" => "mkl, in place",
+
+		   "g5" => "G5",
+		   "g5-p4plan" => "G5, plan from Pentium IV",
+		   "p4" => "Pentium IV",
+		   "p4-g5plan" => "Pentium IV, plan from G5",
+                  );
+}
+else{
+    %legend_map = ();
 }
 
 # transforms that we always plot separate from their "family" even if 
@@ -419,11 +454,11 @@ if ($accuracy xor $plot_worst) {
 # Put the legend in a good(?) place:
 if ($use_paper_styles) {
     print "@ legend char size 0.95\n";
-    $xleg = 0.73;
+    $xleg = 0.7 + $dxleg;
     $yleg = 0.86;
 } else {
     print "@ legend char size 0.75\n";
-    $xleg = 0.98;
+    $xleg = 0.98 + $dxleg;
     $yleg = 0.85;
 }
 
@@ -533,7 +568,13 @@ foreach $transform (@plot_transforms) {
     ($nam, $prob) = split(/:/,$transform);
 
     $namleg = $namlegends{$transform};
-    print "@ s$setnum legend \"$namleg\"\n";
+    if (exists($legend_map{$namleg})) {
+	$namleg2 = $legend_map{$namleg};
+    }
+    else {
+	$namleg2 = $namleg;
+    }
+    print "@ s$setnum legend \"$namleg2\"\n";
 
     if (exists($styles{$transform})) {
 	printstyle($styles{$transform}, $setnum);
