@@ -1,10 +1,3 @@
-/**************************************************************************/
-/* NOTE to users: this is the FFTW self-test and benchmark program.
-   It is probably NOT a good place to learn FFTW usage, since it has a
-   lot of added complexity in order to exercise and test the full API,
-   etcetera.  We suggest reading the manual. */
-/**************************************************************************/
-
 #include "bench-user.h"
 #include <math.h>
 #include <stdio.h>
