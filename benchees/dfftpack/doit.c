@@ -12,6 +12,7 @@ BENCH_DOC("language", "FORTRAN")
 BENCH_DOC("url", "ftp://ftp.netlib.org:/fftpack/dp.tgz")
 BENCH_DOC("bibitem", 
 	  "P. N. Swarztrauber, Vectorizing the FFTs, Parallel Computations, p. 51-83 (1982).")
+BENCH_DOC("copyright", "Public domain")
 END_BENCH_DOC
 
 
