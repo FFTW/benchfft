@@ -1,0 +1,100 @@
+1899c1899
+<       subroutine mpcfft (is, m, x, y)
+---
+>       subroutine mpcfft (is, m, x, y, u)
+1933c1933
+<         call mpfft1 (is, l, m, x, y)
+---
+>         call mpfft1 (is, l, m, x, y, u)
+1935c1935
+<         call mpfft1 (is, l + 1, m, y, x)
+---
+>         call mpfft1 (is, l + 1, m, y, x, u)
+1945c1945
+<         call mpfft2 (is, l, m, y, x)
+---
+>         call mpfft2 (is, l, m, y, x, u)
+1947c1947
+<         call mpfft2 (is, l + 1, m, x, y)
+---
+>         call mpfft2 (is, l + 1, m, x, y, u)
+1959c1959
+<         call mpfft2 (is, l, m, x, y)
+---
+>         call mpfft2 (is, l, m, x, y, u)
+1961c1961
+<         call mpfft2 (is, l + 1, m, y, x)
+---
+>         call mpfft2 (is, l + 1, m, y, x, u)
+2877c2877
+<       subroutine mpcrft (is, m, x, y)
+---
+>       subroutine mpcrft (is, m, x, y, u)
+2896c2896
+<       common /mpcom5/ u(4100)
+---
+>       dimension u(*)
+2953c2953
+<       call mpcfft (is, m - 1, y, x)
+---
+>       call mpcfft (is, m - 1, y, x, u)
+4615c4615
+<       subroutine mpfft1 (is, l, m, x, y)
+---
+>       subroutine mpfft1 (is, l, m, x, y, u)
+4623c4623
+<       common /mpcom5/ u(4100)
+---
+>       dimension u(*)
+4662c4662
+<       subroutine mpfft2 (is, l, m, x, y)
+---
+>       subroutine mpfft2 (is, l, m, x, y, u)
+4670c4670
+<       common /mpcom5/ u(4100)
+---
+>       dimension u(*)
+4808c4808
+<       subroutine mpinix (m)
+---
+>       subroutine mpinix (m, u)
+4826c4826
+<       common /mpcom5/ u(4100)
+---
+>       dimension u(*)
+6795a6796,6797
+>       double precision u
+>       common /mpcom5/ u(4100)
+6889,6890c6891,6892
+<       call mprcft (1, m2, d, d(n84+1))
+<       call mprcft (1, m2, d(n42+1), d(n84+1))
+---
+>       call mprcft (1, m2, d, d(n84+1), u)
+>       call mprcft (1, m2, d(n42+1), d(n84+1), u)
+6906c6908
+<       call mpcrft (-1, m2, d(n42+1), d(n84+1))
+---
+>       call mpcrft (-1, m2, d(n42+1), d(n84+1), u)
+8742c8744
+<       subroutine mprcft (is, m, x, y)
+---
+>       subroutine mprcft (is, m, x, y, u)
+8761c8763
+<       common /mpcom5/ u(4100)
+---
+>       dimension u(*)
+8799c8801
+<       call mpcfft (is, m - 1, y, x)
+---
+>       call mpcfft (is, m - 1, y, x, u)
+9417a9420,9421
+>       double precision u
+>       common /mpcom5/ u(4100)
+9485c9489
+<       call mprcft (1, m2, d, d(n42+1))
+---
+>       call mprcft (1, m2, d, d(n42+1), u)
+9499c9503
+<       call mpcrft (-1, m2, d(n42+1), d)
+---
+>       call mpcrft (-1, m2, d(n42+1), d, u)
