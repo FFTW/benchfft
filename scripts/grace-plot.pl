@@ -198,7 +198,7 @@ $max_mflops = 0;
 
 # Collect the data:
 while (<>) {
-  ($nam, $prob, $siz, $mflops, $tim) = split / /;
+  ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
   $tot = $siz;
   $tot =~ s/x/*/g;
   $tot = eval($tot);
