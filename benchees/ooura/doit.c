@@ -73,7 +73,7 @@ void setup(struct problem *p)
  
      w = bench_malloc((n / 2) * sizeof(double));
 
-     sip = 2+(1<<(int)(log(n+0.5)/log(2))/2);
+     sip = 2+(1<<(int)(log(n+0.5)/log(2.0))/2);
      ip = bench_malloc(sip * sizeof(int));
 
      ip[0] = 0;
