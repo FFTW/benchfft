@@ -17,6 +17,14 @@ if test "$benchfft_single" = "yes"; then
 fi
 AC_ARG_WITH(bothprec, [AC_HELP_STRING([--with-bothprec],[compile doits for both precisions])], benchfft_bothprec=$enableval, benchfft_bothprec=no)
 
+AC_ARG_WITH(info-only, [AC_HELP_STRING([--with-info-only],[compile doits for info purposes only])], benchfft_info_only=$enableval, benchfft_info_only=no)
+
+if test "$benchfft_info_only" = yes; then
+	benchfft_bothprec=yes
+	AC_DEFINE(INFO_ONLY, 1, [define to compile for info only])
+fi
+AM_CONDITIONAL(INFO_ONLY, test "$benchfft_info_only" = "yes")
+
 AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes" || test "$benchfft_bothprec" = "yes")
 AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_bothprec" = "yes")
 

@@ -13,7 +13,13 @@ doit_SOURCES=doit.c
 nodist_doit_SOURCES = $(PKG)/vBigDSP.c
 doit_LDADD=$(LIBBENCH)
 
+if INFO_ONLY
+$(PKG)/vBigDSP.c: extract
+	rm -f $@
+	echo "void FFTComplex(void){} void FFT2DComplex(void){} void FFTRealForward(void){} void FFT2DRealForward(void){} void FFTRealInverse(void){} void FFT2DRealInverse(void){}" > $@
+else
 $(PKG)/vBigDSP.c: extract
 doit.o: extract
+endif
 
 include ../Makefile.common

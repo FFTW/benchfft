@@ -1,0 +1,28 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+
+CFLAGS=''
+FFLAGS=''
+CXXFLAGS=''
+CPPFLAGS='-I/opt/intel/mkl60/include -I/opt/intel/ipp/include -I/usr/local/include -I/home/fftw/fakelibs' 
+LDFLAGS='-L/opt/intel/mkl60/lib/32 -L/opt/intel/ipp/sharedlib -L/usr/local/lib -L/home/fftw/fakelibs' 
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
+
+VECLIB=-lvdsp; export VECLIB
+
+LD_LIBRARY_PATH=/usr/local/gcc-3.2/lib:/opt/intel/mkl60/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
+
+rm -rf ${HOSTNAME}-info
+mkdir ${HOSTNAME}-info
+
+( 
+  cd ${HOSTNAME}-info
+  ../configure --with-info-only --with-f90
+  $MAKE && $MAKE fftinfo && $MAKE collect
+)
