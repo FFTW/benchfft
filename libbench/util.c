@@ -19,6 +19,11 @@
  */
 
 #include "config.h"
+
+#ifdef malloc
+#  undef malloc
+#endif
+
 #include "bench.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -193,4 +198,14 @@ void bench_free(void *p)
      free(p);
 }
 
+#endif
+
+/* malloc(0) fails */
+#if !HAVE_MALLOC
+void *rpl_malloc(size_t n)
+{
+     if (n == 0)
+          n = 1;
+     return malloc (n);
+}
 #endif
