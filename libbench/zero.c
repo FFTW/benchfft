@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: zero.c,v 1.1 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: zero.c,v 1.2 2001-07-13 13:39:22 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -28,10 +28,10 @@ void problem_zero(struct problem *p)
 {
      if (p->kind == PROBLEM_COMPLEX) {
 	  const bench_complex czero = {0, 0};
-	  caset(p->out, p->size, czero);
-	  caset(p->in, p->size, czero);
+	  caset(p->out, p->phys_size, czero);
+	  caset(p->in, p->phys_size, czero);
      } else {
-	  aset(p->out, p->size, 0.0);
-	  aset(p->in, p->size, 0.0);
+	  aset(p->out, p->phys_size, 0.0);
+	  aset(p->in, p->phys_size, 0.0);
      }
 }

@@ -1,5 +1,5 @@
 if HAVE_F77
-PRG=doit11 doit12
+PRG=doit11 doit12 doit12-fast doit12-ffa
 noinst_LIBRARIES=libdsp.a
 endif
 
@@ -13,6 +13,12 @@ doit11_LDADD=sect11.o libdsp.a $(LIBBENCH) @FLIBS@
 
 doit12_SOURCES=doit12.c
 doit12_LDADD=sect12.o libdsp.a $(LIBBENCH) @FLIBS@
+
+doit12_fast_SOURCES=doit12-fast.c
+doit12_fast_LDADD=sect12.o libdsp.a $(LIBBENCH) @FLIBS@
+
+doit12_ffa_SOURCES=doit12-ffa.c
+doit12_ffa_LDADD=sect12.o libdsp.a $(LIBBENCH) @FLIBS@
 
 libdsp_a_SOURCES=sect01.f
 

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.19 2001-07-13 12:49:29 athena Exp $ */
+/* $Id: bench-user.h,v 1.20 2001-07-13 13:39:22 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -47,6 +47,7 @@ struct problem {
      unsigned int rank;
      unsigned n[MAX_RANK];  
      unsigned int size;  /* total size of input = PROD n[i] */
+     unsigned int phys_size;  /* total size of allocated input */
      int sign;
      void *in;
      void *out;
