@@ -16,6 +16,7 @@ if test "$ok" = "yes"; then
 fi
 
 dnl Checks for programs.
+AC_PROG_CXX
 AC_PROG_CC
 AC_PROG_CC_STDC
 ACX_PROG_CC_EGCS
@@ -49,6 +50,7 @@ test "x$F90LIBS" = x && F90LIBS="$FLIBS"
 AC_SUBST(F90FLAGS)
 AC_SUBST(F90LIBS)
 
+AM_CONDITIONAL(HAVE_CXX, test -n "$CXX")
 AM_CONDITIONAL(HAVE_F77, test -n "$F77")
 AM_CONDITIONAL(HAVE_F90, test -n "$F90")
 
@@ -153,6 +155,7 @@ benchees/dfftpack/Makefile
 benchees/djbfft-0.76/Makefile
 benchees/dsp/Makefile
 benchees/fftpack/Makefile
+benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/mpfun77/Makefile
