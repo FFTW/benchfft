@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.21 2001-08-18 01:01:46 athena Exp $ */
+/* $Id: verify.c,v 1.22 2001-08-18 01:02:41 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -100,20 +100,45 @@ static void mkreal(bench_complex *A, unsigned int n)
      }
 }
 
-/* make array hermitian */
-static void mkhermitian(bench_complex *A, unsigned int n)
+static void assign_conj(bench_complex *Ac, bench_complex *A,
+			unsigned int rank, unsigned int *n, int size)
 {
-     unsigned int i;
-
-     c_im(A[0]) = 0.0;
-
-     for (i = 1; 2 * i < n; ++i) {
-	  c_re(A[n - i]) = c_re(A[i]);
-	  c_im(A[n - i]) = -c_im(A[i]);
+     if (rank == 0) {
+	  if (Ac == A)
+	       c_im(*Ac) = 0.0;
+	  else {
+	       c_re(*Ac) = c_re(*A);
+	       c_im(*Ac) = -c_im(*A);
+	  }
      }
-     
-     if (2 * i == n) {
-	  c_im(A[i]) = 0.0;
+     else {
+	  unsigned int i, n0 = n[0];
+	  rank -= 1;
+	  n += 1;
+	  size /= n0;
+	  assign_conj(Ac, A, rank, n, size);
+	  for (i = 1; i < n0; ++i)
+	       assign_conj(Ac + (n0 - i) * size, A + i * size, rank, n, size);
+     }
+}
+
+/* make array hermitian */
+static void mkhermitian(bench_complex *A, 
+			unsigned int rank, unsigned int *n)
+{
+     if (rank == 0)
+	  c_im(*A) = 0.0;
+     else {
+	  unsigned int i, n0 = n[0], size;
+	  rank -= 1;
+	  n += 1;
+	  mkhermitian(A, rank, n);
+	  for (i = 0, size = 1; i < rank; ++i)
+	       size *= n[i];
+	  for (i = 1; 2*i < n0; ++i)
+	       assign_conj(A + (n0 - i) * size, A + i * size, rank, n, size);
+	  if (2*i == n0)
+	       mkhermitian(A + i*size, rank, n);
      }
 }
 
@@ -322,7 +347,7 @@ static double tf_shift(struct problem *p,
 		    e = dmax(e, acmp(tmp, outA, n, "time shift", tol));
 	       } else {
 		    if (p->kind == PROBLEM_REAL) 
-			 mkhermitian(inA, n);
+			 mkhermitian(inA, p->rank, p->n);
 
 		    aphase_shift(inB, inA, n_cur, n_before, n_after, -sign);
 		    do_fft(p, inA, outA);
