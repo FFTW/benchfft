@@ -7,6 +7,8 @@ PKG=dsp
 TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) sect17.f sect18.f
 INCLUDES = $(INCLBENCH)
+LOCAL_COPIES=sect04.f sect11.f sect12.f sect13.f sect14.f sect16.f	\
+sect19.f
 
 doit11_SOURCES=doit11.c
 doit11_LDADD=sect11.o libdsp.a $(LIBBENCH) @FLIBS@
@@ -43,7 +45,7 @@ libdsp_a_LIBADD=sect04.o
 
 include ../Makefile.common
 
-sect04.f sect11.f sect12.f sect13.f sect14.f sect16.f sect19.f: extract-mkdir
+$(LOCAL_COPIES): extract-mkdir
 	@CP@ $(PKG)/$@ $@
 
 
