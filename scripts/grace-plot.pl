@@ -176,8 +176,8 @@ while (@ARGV) {
 %paper_styles = (
 	    "fftw3" => "black:solid:1:black:circle:0.5:black",
 	    "fftw3-no-simd" => "black:dash:1:black:circle:0.5:none",
-	    "fftw3-impatient" => "black:solid:1:black:triangle-up:0.5:none",
-	    "fftw3-estimate" => "black:solid:1:black:circle:0.5:none",
+	    "fftw3-impatient" => "black:dash:1:black:triangle-up:0.5:none",
+	    "fftw3-estimate" => "black:dot:1:black:circle:0.5:none",
 	    "fftw3 out-of-place" => "black:solid:1:black:circle:0.5:black",
 	    "fftw3 in-place" => "black:dot:1:black:circle:0.3:black",
 
