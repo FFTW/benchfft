@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.22 2001-08-18 01:02:41 stevenj Exp $ */
+/* $Id: verify.c,v 1.23 2001-08-18 01:04:04 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -51,8 +51,7 @@ static double dmin(double a, double b)
      return a > b ? a : b;
 }
 
-static double cerror(bench_complex *A, bench_complex *B, unsigned int n,
-		     double tol)
+static double cerror(bench_complex *A, bench_complex *B, unsigned int n)
 {
      /* compute the relative error */
      double error = 0.0;
@@ -197,7 +196,7 @@ static void aphase_shift(bench_complex *B, bench_complex *A,
 static double acmp(bench_complex *A, bench_complex *B, unsigned int n, 
 		   const char *test, double tol)
 {
-     double d = cerror(A, B, n, tol);
+     double d = cerror(A, B, n);
      if (d > tol) {
 	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
 	  exit(EXIT_FAILURE);
