@@ -67,6 +67,7 @@ void setup(struct problem *p)
 	  ri, ii, ro, io);
      plan = planner->plan(planner, problem);
      BENCH_ASSERT(plan);
+     plan->awake(plan, PLAN_AWAKE);
 }
 
 void doit(int iter, struct problem *p)
