@@ -15,6 +15,7 @@ BENCH_DOC("bibitem",
   "D. H. Bailey, Intl. J. of Supercomp. Appl., p. 82-87 (Spring 1988).")
 BENCH_DOC("notes", "Part of the MPFUN multi-precision arithmetic library.")
 BENCH_DOC("notes", "Employs 4-step and Stockham FFT algorithms.")
+BENCH_DOC("notes", "Patched by S. G. Johnson to allow arrays to be allocated from C caller.")
 BENCH_DOC("copyright",
 "This software was written while the author was an employee of NASA.\n"
 "This software has been approved by NASA for unrestricted distribution.\n"
@@ -56,7 +57,8 @@ extern void MPINIX_F77(int *m);
 extern void MPCFFT_F77(int *is, int *m, bench_real *x, bench_real *y);
 
 /* Bailey real<->complex FFT routines.  These just wrap around the
-   complex FFT with the usual n/2 trick. */
+   complex FFT with the usual n/2 trick, so I'm not sure they're worth
+   benchmarking separately. */
 #define MPRCFT_F77 F77_FUNC(mprcft, MPRCFT)
 extern void MPRCFT_F77(int *is, int *m, bench_real *x, bench_real *y);
 #define MPCRFT_F77 F77_FUNC(mpcrft, MPCRFT)
