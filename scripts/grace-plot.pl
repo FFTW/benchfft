@@ -90,6 +90,7 @@ while (@ARGV) {
 	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
 	   "gsl-radix2-dit" => "violet:dot:1:violet:circle:0.5:none",
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
+	   "intel-ipps" => "black:solid:2:black:circle:0.2:black",
 	   "intel-mkl32-def" => "black:solid:1:black:circle:0.5:black",
 	   "intel-mkl32-f-def" => "black:dash:1:black:circle:0.5:none",
 	   "intel-mkl32-p3" => "black:dotdash:1:black:triangle-up:0.5:black",
@@ -102,6 +103,7 @@ while (@ARGV) {
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
 	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
+	   "morris82" => "turquoise:solid:1:turquoise:blue:0.3:blue",
 	   "mixfft" => "blue:dot:1:blue:star:0.5:none",
 	   "bailey" => "green4:dot:1:green4:square:0.5:green4",
 	   "mpfun77" => "green4:dot:1:green4:square:0.5:green4",
@@ -293,6 +295,7 @@ foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
 
     # check if we have already output a relation of this transform
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
+    $nam0 = $nam if ($nam eq "intel-ipps");
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
 
