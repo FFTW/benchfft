@@ -18,8 +18,6 @@ ESSL
 SCSL
 IMSL [if I can find a machine with it]
 NAG  [ditto]
-athfft
-pfftw
 ASCII Red
 
 
