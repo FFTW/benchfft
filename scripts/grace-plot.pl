@@ -144,6 +144,11 @@ sub printstyle {
 
 #############################################################################
 
+# Put the legend in a good(?) place:
+print "@ legend char size 0.75\n";
+print "@ legend 1.02,0.85\n";
+print "@ view xmax 1.0\n"; # make space for the legend
+
 # print "@ xaxis label \"transform size\"\n";
 print "@ yaxis label \"speed (mflops)\"\n";
 
@@ -176,20 +181,6 @@ while (<>) {
   }
 }
 
-# Set y axis scale from $max_mflops:
-$mflops_increment = 100; # increment for y-axis labels
-$max_mflops =~ s/\..*//;
-$max_mflops = $max_mflops + $mflops_increment - 1 - ($max_mflops + $mflops_increment - 1) % $mflops_increment;
-print "@ world ymin 0\n";
-print "@ world ymax $max_mflops\n";
-print "@ yaxis tick major $mflops_increment\n";
-print "@ yaxis tick minor color \"grey\"\n";
-print "@ yaxis tick major color \"grey\"\n";
-print "@ yaxis tick major grid on\n";
-print "@ xaxis tick major color \"grey\"\n";
-print "@ xaxis tick major grid on\n";
-print "@ autoscale onread xaxes\n";  # requires recent version of Grace
-
 # Set x axis ticks and labels:
 print "@ xaxis ticklabel angle 270\n";
 print "@ xaxis ticklabel type spec\n";
@@ -203,6 +194,24 @@ foreach $tot (@totals) {
     $xval{$tot} = $ticknum;
     $ticknum = $ticknum + 1;
 }
+
+# Find the y axis scale from $max_mflops:
+$mflops_increment = 100; # increment for y-axis labels
+$max_mflops =~ s/\..*//;
+$max_mflops = $max_mflops + $mflops_increment - 1 - ($max_mflops + $mflops_increment - 1) % $mflops_increment;
+
+# Set axis scales, grids, and colors:
+print "@ world xmin 0\n";
+print "@ world xmax ",$ticknum-1,"\n";
+print "@ world ymin 0\n";
+print "@ world ymax $max_mflops\n";
+print "@ yaxis tick major $mflops_increment\n";
+print "@ yaxis tick minor color \"grey\"\n";
+print "@ yaxis tick major color \"grey\"\n";
+print "@ yaxis tick major grid on\n";
+print "@ xaxis tick major color \"grey\"\n";
+print "@ xaxis tick major grid on\n";
+print "@ autoscale onread none\n";  # requires recent version of Grace
 
 # add grid lines?
 
