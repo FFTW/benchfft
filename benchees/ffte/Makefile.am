@@ -5,9 +5,9 @@ noinst_LIBRARIES=libfft.a
 endif
 endif
 
-PKG = ffte-1.0
+PKG = ffte-2.0
 TARFILE = $(PKG).tgz
-EXTRA_DIST = $(TARFILE)
+EXTRA_DIST = $(TARFILE) ffte-1.0.tgz
 LOCAL_COPIES = param.h
 
 INCLUDES = $(INCLBENCH)
