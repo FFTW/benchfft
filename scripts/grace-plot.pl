@@ -325,7 +325,16 @@ foreach $transform (@plot_transforms) {
 
 # Put the legend in a good(?) place:
 print "@ legend char size 0.75\n";
-print "@ legend 1.02,0.85\n";
+if ($#plot_transforms < 31) {
+    # legend aligned with top of plot
+    print "@ legend 1.02,0.85\n";
+}
+else {
+    # squeeze a few more items into the legend
+    $legtop = 0.5 + (0.85/31/2) * $#plot_transforms;
+    $legtop = 1.0 if ($legtop > 1.0);
+    print "@ legend 1.02,$legtop\n";
+}
 print "@ view xmax 1.0\n"; # make space for the legend
 
 # print "@ xaxis label \"transform size\"\n";
