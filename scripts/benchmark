@@ -18,7 +18,8 @@ usage="\
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
   --maxnd=N          set maximum allowed multi-dimensional problem size
-  -o=X, --user-option=X  undocumented
+  -w=N, --wait-for-idle=N  set wait-for-idle time
+  -o=X, --user-option=X    undocumented
   "
 
 help="
@@ -35,6 +36,7 @@ keep_going="no"
 tolerance=""
 rounds=""
 arounds=""
+idletime="0"
 
 for option
  do
@@ -67,6 +69,8 @@ for option
    --maxn=*) maxn=$optarg; shift;;
    --maxnd=*) maxnd=$optarg; shift;;
    --user-option=* | -o=*) useropt="$useropt --user-option=$optarg"; shift;;
+   -w=* | --wait-for-idle=*) idletime=$optarg; shift;;
+   -w | --wait-for-idle) prev=idletime; shift;;
    -- ) break ;; # Stop option processing
    -* )
    echo "$me: invalid option $1$help"
@@ -191,7 +195,7 @@ for place in $PLACE; do
 	  fi
 
 	  if test "$speed" = yes; then
-	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -1` " || 
+	    time="`$program -w$idletime $useropt --report-benchmark --time-min $time_min --speed $problem | tail -1` " || 
 	    time="FAILED FAILED"
 	  else
 	    time=""
