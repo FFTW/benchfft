@@ -75,10 +75,10 @@ void copy_h2c(struct problem *p, bench_complex *out)
 	       R(C(k1,n1),n2-k2,0) = a[k1][k2][0];
 	       I(k1,k2,0) = -a[k1][k2][1];
 	       I(C(k1,n1),n2-k2,0) = a[k1][k2][1];
-	       R(k1,k2,n3/2) = a[k1][n2-k2][1];
-	       R(C(k1,n1),n2-k2,n3/2) = a[k1][n2-k2][1];
-	       I(k1,k2,n3/2) = a[k1][n2-k2][0];
-	       I(C(k1,n1),n2-k2,n3/2) = -a[k1][n2-k2][0];
+	       R(C(k1,n1),k2,n3/2) = a[k1][n2-k2][1];
+	       R(k1,n2-k2,n3/2) = a[k1][n2-k2][1];
+	       I(C(k1,n1),k2,n3/2) = a[k1][n2-k2][0];
+	       I(k1,n2-k2,n3/2) = -a[k1][n2-k2][0];
 	  }
 
      for (k1 = 1; k1 < n1/2; ++k1) {
@@ -144,8 +144,8 @@ void copy_c2h(struct problem *p, bench_complex *in)
 	  for (k2 = 1; k2 < n2/2; ++k2) {
 	       a[k1][k2][0] = R(k1,k2,0);
 	       a[k1][k2][1] = I(C(k1,n1),n2-k2,0); 
-	       a[k1][n2-k2][1] = R(k1,k2,n3/2);
-	       a[k1][n2-k2][0] = I(k1,k2,n3/2);
+	       a[k1][n2-k2][1] = R(C(k1,n1),k2,n3/2);
+	       a[k1][n2-k2][0] = I(C(k1,n1),k2,n3/2);
 	  }
 
      for (k1 = 1; k1 < n1/2; ++k1) {
