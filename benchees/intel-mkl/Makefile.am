@@ -10,7 +10,7 @@ endif
 
 PRG=$(PRG_DEF) $(PRG_P3) $(PRG_P4)
 INCLUDES = $(INCLBENCH)
-EXTRA_DIST = doit.c
+EXTRA_DIST = doit.c doitf.c
 
 doit32_def_SOURCES=doit32_def.c
 doit32_def_LDADD=-lmkl32_def $(LIBBENCH) @FLIBS@
