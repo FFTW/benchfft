@@ -13,8 +13,8 @@ nodist_doit_SOURCES = $(PKG)/vBigDSP.c $(PKG)/vBigDSP.h
 doit_CFLAGS=$(AM_CFLAGS) @ALTIVEC_CFLAGS@ -Dvalloc=bench_malloc
 doit_LDADD=$(LIBBENCH)
 
-# I don't understand this: automake produces the name doit-doit.o
-# internally
-doit-doit.o : extract
+doit.o: doit.c $(PKG)/vBigDSP.c $(PKG)/vBigDSP.h
+
+$(PKG)/vBigDSP.c $(PKG)/vBigDSP.h: extract
 
 include ../Makefile.common
