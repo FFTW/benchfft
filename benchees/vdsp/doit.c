@@ -14,7 +14,7 @@
 #endif
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "vDSP")
+BENCH_DOC("name", "vdsp")
 BENCH_DOC("author", "Apple Computer, Inc.")
 BENCH_DOC("copyright", "Bundled with MacOS 9.1 and later versions.")
 BENCH_DOC("notes",
