@@ -1,5 +1,10 @@
 #! /usr/bin/perl
 
+$no_dups = 0;
+foreach $arg (@ARGV) {
+    $no_dups = 1 if ($arg eq "--no-dups");
+}
+
 #############################################################################
 
 # Here, we make a map from transform names to line styles, so that each
@@ -276,9 +281,15 @@ foreach $transform (keys %results) {
 
 # Print out the data sets for each transform, in descending order of "speed":
 $setnum = 0;
+%done = ();
 foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
     $transform = $transforms{$norm_speed};
     ($nam, $prob) = split(/:/,$transform);
+
+    # check if we have already output a relation of this transform
+    ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
+    next if ($no_dups && exists($done{$nam0}));
+    $done{$nam0} = 1;
 
     # legend should include the problem if this transform solves more than
     # one problem in this data:
