@@ -20,4 +20,6 @@ doit_3d_LDADD=libgpfa.a $(LIBBENCH) @FLIBS@
 nodist_libgpfa_a_SOURCES = $(PKG)/gpfa.f $(PKG)/gpfa2f.f		\
 $(PKG)/gpfa3f.f $(PKG)/gpfa5f.f $(PKG)/setgpfa.f $(PKG)/gpfft3.f
 
+$(nodist_libgpfa_a_SOURCES) : extract
+
 include ../Makefile.common
