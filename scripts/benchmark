@@ -17,6 +17,7 @@ usage="\
   -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
+  --maxnd=N          set maximum allowed multi-dimensional problem size
   -o=X, --user-option=X  undocumented
   "
 
@@ -28,6 +29,7 @@ accuracy="no"
 useropt=""
 speed="yes"
 maxn=1048576
+maxnd=1048576
 time_min=""
 keep_going="no"
 tolerance=""
@@ -61,8 +63,10 @@ for option
    --time-min) prev=time_min; shift;;
    --time-min=*) time_min=$optarg; shift;;
    --maxn) prev=maxn; shift;;
+   --maxnd) prev=maxnd; shift;;
    --maxn=*) maxn=$optarg; shift;;
-   --user-option=* | -o=*) useropt="$useropt --user-option $optarg"; shift;;
+   --maxnd=*) maxnd=$optarg; shift;;
+   --user-option=* | -o=*) useropt="$useropt --user-option=$optarg"; shift;;
    -- ) break ;; # Stop option processing
    -* )
    echo "$me: invalid option $1$help"
@@ -72,7 +76,6 @@ for option
    break ;;
  esac
 done
-
 
 if test -n "$prev"; then
   option=--`echo $prev | sed 's/_/-/g'`
@@ -160,8 +163,12 @@ aflags="$arounds"
 for place in $PLACE; do
   for reality in $REALITY; do
     for size in $ALL_SIZES; do
+      case $size in
+        *x*) curmaxn=$maxnd ;;
+        *) curmaxn=$maxn ;;
+      esac
       s=`echo $size | sed -e "s/x/ '*' /g"`
-      if test `eval "expr $s"` -gt $maxn; then
+      if test `eval "expr $s"` -gt $curmaxn; then
 	continue
       fi
 
@@ -172,7 +179,7 @@ for place in $PLACE; do
 
       for dir in $DIRECTIONS; do
 	problem=${place}${reality}${dir}${size}
-	doable=`$program --can-do $problem`
+	doable=`$program $useropt --can-do $problem`
 	if test "$doable" = "#t"; then
 	  print="yes"
 	  if test "$verify" = "yes"; then
@@ -184,7 +191,7 @@ for place in $PLACE; do
 	  fi
 
 	  if test "$speed" = yes; then
-	    time="`$program --report-benchmark --time-min $time_min --speed $problem | tail -1` " || 
+	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -100` " || 
 	    time="FAILED FAILED"
 	  else
 	    time=""
@@ -192,7 +199,7 @@ for place in $PLACE; do
 
 	  if test "$accuracy" = "yes"; then
 	    if test "$oned" = "yes"; then
-	       acc=`$program $aflags --accuracy $problem | tail -1`
+	       acc=`$program $useropt $aflags --accuracy $problem | tail -1`
 	    else
 	       print="no"
 	    fi
