@@ -8,6 +8,7 @@ BENCH_DOC("name", NAME)
 BENCH_DOC("notes", "backward transform is scaled")
 END_BENCH_DOC 
 
+extern int have_sse(void);
 static unsigned int cpuid_edx(unsigned int op)
 {
      unsigned int eax, ebx, ecx, edx;

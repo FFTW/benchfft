@@ -21,10 +21,10 @@ doit32_def_LDADD=-lmkl32_def $(LIBBENCH) @FLIBS@
 doit32f_def_SOURCES=doit32f_def.c
 doit32f_def_LDADD=-lmkl32_def $(LIBBENCH) @FLIBS@
 
-doit32_p3_SOURCES=doit32_p3.c
+doit32_p3_SOURCES=doit32_p3.c have-sse.c
 doit32_p3_LDADD=-lmkl32_p3 $(LIBBENCH) @FLIBS@
 
-doit32f_p3_SOURCES=doit32f_p3.c
+doit32f_p3_SOURCES=doit32f_p3.c have-sse.c
 doit32f_p3_LDADD=-lmkl32_p3 $(LIBBENCH) @FLIBS@
 
 doit32_p4_SOURCES=doit32_p4.c
