@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.32 2001-07-31 15:15:43 athena Exp $ */
+/* $Id: bench-user.h,v 1.33 2002-08-15 14:23:58 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -37,8 +37,10 @@ extern "C" {
 #include <stdlib.h>
 #endif
 
-#ifdef BENCHFFT_SINGLE
+#if defined(BENCHFFT_SINGLE)
 typedef float bench_real;
+#elif defined(BENCHFFT_LDOUBLE)
+typedef long double bench_real;
 #else
 typedef double bench_real;
 #endif
@@ -50,8 +52,12 @@ typedef struct {
 #define c_re(c)  ((c).re)
 #define c_im(c)  ((c).im)
 
-#define SINGLE_PRECISION (sizeof(bench_real) == sizeof(float))
+#undef DOUBLE_PRECISION
 #define DOUBLE_PRECISION (sizeof(bench_real) == sizeof(double))
+#undef SINGLE_PRECISION
+#define SINGLE_PRECISION (!DOUBLE_PRECISION && sizeof(bench_real) == sizeof(float))
+#undef LDOUBLE_PRECISION
+#define LDOUBLE_PRECISION (!DOUBLE_PRECISION && sizeof(bench_real) == sizeof(long double))
 
 typedef enum { PROBLEM_COMPLEX, PROBLEM_REAL } problem_kind_t;
 
@@ -59,11 +65,15 @@ typedef enum { PROBLEM_COMPLEX, PROBLEM_REAL } problem_kind_t;
 struct problem {
      problem_kind_t kind;
      unsigned int rank;
-     unsigned n[MAX_RANK];  
+     unsigned int n[MAX_RANK];  
      unsigned int size;  /* total size of input = PROD n[i] */
+     unsigned int vrank;
+     unsigned int vn[MAX_RANK];  
+     unsigned int vsize;  /* total vector size of input = PROD vn[i] */
      unsigned int phys_size;  /* total size of allocated input */
      int sign;
      int in_place;
+     int split;
      void *in;
      void *out;
      void *userinfo; /* user can store whatever */
@@ -73,6 +83,7 @@ extern int can_do(struct problem *p);
 extern void setup(struct problem *p);
 extern void doit(int iter, struct problem *p);
 extern void done(struct problem *p);
+extern void verify(const char *param, int rounds, double tol);
 
 extern void problem_alloc(struct problem *p);
 extern void problem_free(struct problem *p);
@@ -163,17 +174,8 @@ extern void bench_free(void *ptr);
 #include <alloca.h>
 #endif
 
-#ifdef HAVE_ALLOCA
-/* use alloca if available */
-#define STACK_MALLOC(x) alloca(x)
-#define STACK_FREE(x) 
-
-#else
-/* use malloc instead of alloca */
-#define STACK_MALLOC(x) bench_malloc(x)
-#define STACK_FREE(x) bench_free(x)
-#endif
-
+extern int verbose;
+extern int paranoid;
 
 /**************************************************************
  * assert

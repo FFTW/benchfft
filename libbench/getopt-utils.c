@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: getopt-utils.c,v 1.2 2001-07-08 22:24:26 athena Exp $ */
+/* $Id: getopt-utils.c,v 1.3 2002-08-15 14:23:58 athena Exp $ */
 #include "bench.h"
 #include "getopt.h"
 #include <ctype.h>

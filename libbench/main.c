@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: main.c,v 1.2 2001-07-18 19:18:36 stevenj Exp $ */
+/* $Id: main.c,v 1.3 2002-08-15 14:23:58 athena Exp $ */
 
 #include "bench.h"
 

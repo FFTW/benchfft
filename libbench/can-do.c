@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: can-do.c,v 1.3 2001-07-09 01:31:30 athena Exp $ */
+/* $Id: can-do.c,v 1.4 2002-08-15 14:23:58 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"

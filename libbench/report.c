@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.9 2001-08-02 00:34:37 athena Exp $ */
+/* $Id: report.c,v 1.10 2002-08-15 14:23:58 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"

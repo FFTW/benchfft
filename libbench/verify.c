@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.24 2001-08-18 04:49:11 stevenj Exp $ */
+/* $Id: verify.c,v 1.25 2002-08-15 14:23:58 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -30,16 +30,30 @@
 /*************************************************
  * complex correctness test
  *************************************************/
-#ifndef HAVE_HYPOT
+#ifdef BENCHFFT_LDOUBLE
+#  ifndef HAVE_HYPOTL
+static double hypotl(double a, double b)
+{
+     return sqrt(a * a + b * b);
+}
+#  else /* HAVE_HYPOTL */
+#    if !defined(HAVE_DECL_HYPOTL) || !HAVE_DECL_HYPOTL
+extern long double hypotl(long double a, long double b);
+#    endif
+#  endif
+#  define hypot hypotl
+#else /* !BENCHFFT_LDOUBLE */
+#  ifndef HAVE_HYPOT
 static double hypot(double a, double b)
 {
      return sqrt(a * a + b * b);
 }
-#else /* HAVE_HYPOT */
-#  if !defined(HAVE_DECL_HYPOT) || !HAVE_DECL_HYPOT
+#  else /* HAVE_HYPOT */
+#    if !defined(HAVE_DECL_HYPOT) || !HAVE_DECL_HYPOT
 extern double hypot(double a, double b);
+#    endif
 #  endif
-#endif
+#endif /* !BENCHFFT_LDOUBLE */
 
 static double dmax(double a, double b)
 {
@@ -166,20 +180,34 @@ static void arol(bench_complex *B, bench_complex *A,
      }
 }
 
+#ifdef BENCHFFT_LDOUBLE
+   typedef long double trigreal;
+#  define COS cosl
+#  define SIN sinl
+#  define TAN tanl
+#  define KTRIG(x) (x##L)
+#else
+   typedef double trigreal;
+#  define COS cos
+#  define SIN sin
+#  define TAN tan
+#  define KTRIG(x) (x)
+#endif
+#define K2PI KTRIG(6.2831853071795864769252867665590057683943388)
+
 static void aphase_shift(bench_complex *B, bench_complex *A,
 			 unsigned int n, 
 			 unsigned int n_before, unsigned int n_after,
 			 bench_real sign)
 {
      unsigned int j, jb, ja;
-     const double k2pi = 6.2831853071795864769252867665590057683943388;
-     double twopin;
-     twopin = k2pi / n;
+     trigreal twopin;
+     twopin = K2PI / n;
 
      for (jb = 0; jb < n_before; ++jb)
 	  for (j = 0; j < n; ++j) {
-	       double s = sign * sin(j * twopin);
-	       double c = cos(j * twopin);
+	       trigreal s = sign * SIN(j * twopin);
+	       trigreal c = COS(j * twopin);
 
 	       for (ja = 0; ja < n_after; ++ja) {
 		    unsigned int index = (jb * n + j) * n_after + ja;
@@ -395,6 +423,56 @@ static void do_verify(struct problem *p, unsigned int rounds, double tol)
      bench_free(inA);
 }
 
+static void do_accuracy(struct problem *p)
+{
+     extern void mfft(unsigned int n, bench_complex *a, int sign);
+     unsigned int n, i;
+     bench_complex *a, *b;
+     bench_real e1, n1, e2, n2, einf, ninf;
+
+     /* only works for these cases */
+     BENCH_ASSERT(p->rank == 1);
+     BENCH_ASSERT(p->vrank == 0);
+     BENCH_ASSERT(problem_power_of_two(p, 0) || problem_power_of_two(p, 1));
+
+     n = p->n[0],
+     a = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
+     b = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
+     
+     arand(a, n);
+     if (p->kind == PROBLEM_REAL) {
+	  if (p->sign == -1) 
+	       mkreal(a, n); 
+	  else
+	       mkhermitian(a, p->rank, p->n);
+     }
+
+     do_fft(p, a, b);
+     mfft(n, a, p->sign);
+
+     e1 = e2 = einf = 0.0;
+     n1 = n2 = ninf = 0.0;
+     for (i = 0; i < n; ++i) {
+
+#         define DO(x1, x2, xinf, var) {			\
+              bench_real d = var;				\
+	      if (d < 0) d = -d;				\
+	      x1 += d; x2 += d * d; if (d > xinf) xinf = d;	\
+          }
+	  DO(n1, n2, ninf, c_re(b[i]));
+	  DO(n1, n2, ninf, c_im(b[i]));
+	  DO(e1, e2, einf, c_re(a[i]) - c_re(b[i]));
+	  DO(e1, e2, einf, c_im(a[i]) - c_im(b[i]));
+#         undef DO
+     }
+     e1 /= n1;
+     e2 = sqrt(e2 / n1);
+     einf /= ninf;
+
+     printf("%10d %6.2e %6.2e %6.2e\n",
+	    n, (double)e1, (double)e2, (double)einf);
+}
+
 void verify(const char *param, int rounds, double tol)
 {
      struct problem *p;
@@ -404,5 +482,19 @@ void verify(const char *param, int rounds, double tol)
      problem_zero(p);
      setup(p);
      do_verify(p, rounds, tol);
+     done(p);
+     problem_destroy(p);
+}
+
+void accuracy(const char *param)
+{
+     struct problem *p;
+     p = problem_parse(param);
+     BENCH_ASSERT(can_do(p));
+     problem_alloc(p);
+     problem_zero(p);
+     setup(p);
+     do_accuracy(p);
+     done(p);
      problem_destroy(p);
 }

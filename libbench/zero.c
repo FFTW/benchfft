@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: zero.c,v 1.2 2001-07-13 13:39:22 athena Exp $ */
+/* $Id: zero.c,v 1.3 2002-08-15 14:23:58 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"

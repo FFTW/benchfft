@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: prime.c,v 1.1 2001-07-09 01:13:40 athena Exp $ */
+/* $Id: prime.c,v 1.2 2002-08-15 14:23:58 athena Exp $ */
 
 #include "bench.h"
 

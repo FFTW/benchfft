@@ -22,7 +22,6 @@
 #include "bench.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <stdlib.h>
 #include <stddef.h>
 #include <math.h>
 
@@ -50,11 +49,19 @@ double bench_drand(void)
 {
      return drand48() - 0.5;
 }
+void bench_srand(int seed)
+{
+     srand48(seed);
+}
 #else
 double bench_drand(void)
 {
      double d = rand();
      return (d / (double) RAND_MAX) - 0.5;
+}
+void bench_srand(int seed)
+{
+     srand(seed);
 }
 #endif
 

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.11 2001-08-18 01:01:46 athena Exp $ */
+/* $Id: bench-main.c,v 1.12 2002-08-15 14:23:58 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -28,26 +28,30 @@
 #include <ctype.h>
 
 int verbose;
+int paranoid;
 
 static struct option long_options[] =
 {
+  {"accuracy", required_argument, 0, 'a'},
   {"can-do", required_argument, 0, 'd'},
   {"help", no_argument, 0, 'h'},
   {"info", required_argument, 0, 'i'},
   {"info-all", no_argument, 0, 'I'},
-  {"print-time-min", no_argument, 0, 400},
+  {"paranoid", no_argument, 0, 'p'},
   {"print-precision", no_argument, 0, 402},
+  {"print-time-min", no_argument, 0, 400},
+  {"random-seed", required_argument, 0, 404},
   {"report-avg-mflops", no_argument, 0, 302},
   {"report-avg-time", no_argument, 0, 312},
+  {"report-benchmark", no_argument, 0, 320},
   {"report-max-mflops", no_argument, 0, 301},
   {"report-mflops", no_argument, 0, 300},
   {"report-min-time", no_argument, 0, 311},
   {"report-time", no_argument, 0, 310},
-  {"report-benchmark", no_argument, 0, 320},
   {"speed", required_argument, 0, 's'},
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
-  {"verbose", no_argument, 0, 'v'},
+  {"verbose", optional_argument, 0, 'v'},
   {"verify", required_argument, 0, 'y'},
   {"verify-rounds", required_argument, 0, 401},
   {"verify-tolerance", required_argument, 0, 403},
@@ -65,7 +69,7 @@ static int bench_main1(int argc, char *argv[])
      char *short_options = make_short_options(long_options);
 
      report = report_time; /* default */
-     verbose = 0;
+     verbose = paranoid = 0;
 
      tol = SINGLE_PRECISION ? 1.0e-3 : 1.0e-10;
 
@@ -86,10 +90,19 @@ static int bench_main1(int argc, char *argv[])
 		   report_can_do(optarg);
 		   break;
 	      case 'v':
-		   ++verbose;
+		   if (optarg)
+			verbose = atoi(optarg);
+		   else
+			++verbose;
+		   break;
+	      case 'p':
+		   ++paranoid;
 		   break;
 	      case 'y':
 		   verify(optarg, rounds, tol);
+		   break;
+	      case 'a':
+		   accuracy(optarg);
 		   break;
 	      case 'i':
 		   report_info(optarg);
@@ -135,9 +148,11 @@ static int bench_main1(int argc, char *argv[])
 		   break;
 
 	      case 402: /* --print-precision */
-		   if (sizeof(bench_real) == sizeof(float))
+		   if (SINGLE_PRECISION)
 			ovtpvt("single\n");
-		   else if (sizeof(bench_real) == sizeof(double))
+		   else if (LDOUBLE_PRECISION)
+			ovtpvt("long-double\n");
+		   else if (DOUBLE_PRECISION)
 			ovtpvt("double\n");
 		   else 
 			ovtpvt("unknown %d\n", sizeof(bench_real));
@@ -145,6 +160,10 @@ static int bench_main1(int argc, char *argv[])
 
 	      case 403: /* --verify-tolerance */
 		   tol = strtod(optarg, 0);
+		   break;
+
+	      case 404: /* --random-seed */
+		   bench_srand(atoi(optarg));
 		   break;
 		   
 	      case '?':
@@ -211,6 +230,16 @@ int bench_main(int argc, char *argv[])
 		*/
 	       __asm__ __volatile__ ("addl $-4, %esp");
 	  }
+     }
+#endif
+
+#ifdef __ICC /* Intel's compiler for ia32 */
+     {
+	  /*
+	   * Simply calling alloca seems to do the right thing. 
+	   * The size of the allocated block seems to be irrelevant.
+	   */
+	  _alloca(8);
      }
 #endif
 
