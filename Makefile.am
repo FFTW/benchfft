@@ -5,6 +5,7 @@ SUBDIRS=libbench				\
 	cwplib					\
 	dfftpack				\
 	djbfft-0.76				\
+	dsp					\
 	fftpack					\
 	gpfa					\
 	green-ffts-2.0				\
@@ -13,4 +14,4 @@ SUBDIRS=libbench				\
 	singleton
 
 
-EXTRA_DIST=COPYRIGHT bootstrap.sh
+EXTRA_DIST=COPYRIGHT bootstrap.sh Makefile.common

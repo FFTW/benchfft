@@ -1,18 +1,15 @@
-noinst_PROGRAMS=doit
-INCLUDES = -I${top_srcdir}/libbench -Ddouble_t=double
+PRG=doit
+INCLUDES = $(INCLBENCH) -Ddouble_t=double
 PKG=green-ffts-2.0
 TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) fp.h
 
 doit_SOURCES=doit.c
-doit_LDADD=dxpose.o fft2d.o fftext.o fftlib.o matlib.o	\
-${top_builddir}/libbench/libbench.a
+doit_LDADD=dxpose.o fft2d.o fftext.o fftlib.o matlib.o $(LIBBENCH)
+
+include ../Makefile.common
 
 doit.o: extract
-
-extract: $(TARFILE)
-	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
-	@echo timestamp >$@
 
 # remove Macintosh newlines and C++-style  comments
 dxpose.c dxpose.h fft2d.c fft2d.h fftext.c fftext.h fftlib.c fftlib.h matlib.c matlib.h: extract

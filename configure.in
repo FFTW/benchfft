@@ -23,7 +23,9 @@ AC_PROG_RANLIB
 AC_PROG_AWK
 AC_CHECK_PROG(GZIP, gzip, gzip)
 AC_CHECK_PROG(TAR, tar, tar)
+AC_CHECK_PROG(MKDIR, mkdir, mkdir)
 AC_CHECK_PROG(TR, tr, tr)
+AC_CHECK_PROG(CP, cp, cp)
 AC_F77_LIBRARY_LDFLAGS
 AC_F77_WRAPPERS
 
@@ -127,6 +129,7 @@ libbench/Makefile
 cwplib/Makefile
 dfftpack/Makefile
 djbfft-0.76/Makefile
+dsp/Makefile
 fftpack/Makefile
 gpfa/Makefile
 green-ffts-2.0/Makefile

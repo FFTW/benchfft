@@ -1,9 +1,11 @@
 if HAVE_SGIMATH
-noinst_PROGRAMS=doit
+PRG=doit
 else
 endif
 
-INCLUDES = -I${top_srcdir}/libbench
+INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-doit_LDADD=${top_builddir}/libbench/libbench.a @FLIBS@
+doit_LDADD=$(LIBBENCH) @FLIBS@
+
+include ../Makefile.common

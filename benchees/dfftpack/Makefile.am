@@ -1,13 +1,13 @@
 if HAVE_F77
-noinst_PROGRAMS=doit
+PRG=doit
 noinst_LIBRARIES=libdfftpack.a
 endif
 
-INCLUDES = -I${top_srcdir}/libbench
+INCLUDES = $(INCLBENCH)
 EXTRA_DIST=test.f
 
 doit_SOURCES=doit.c
-doit_LDADD=libdfftpack.a ${top_builddir}/libbench/libbench.a @FLIBS@
+doit_LDADD=libdfftpack.a $(LIBBENCH) @FLIBS@
 
 libdfftpack_a_SOURCES=cfftb1.f cfftf1.f cffti1.f cosqb1.f cosqf1.f	\
 dcosqb.f dcosqf.f dcosqi.f dcost.f dcosti.f dfftb.f dfftf.f dffti.f	\
@@ -16,3 +16,6 @@ ezfft1.f passb.f passb2.f passb3.f passb4.f passb5.f passf.f passf2.f	\
 passf3.f passf4.f passf5.f radb2.f radb3.f radb4.f radb5.f radbg.f	\
 radf2.f radf3.f radf4.f radf5.f radfg.f rfftb1.f rfftf1.f rffti1.f	\
 sint1.f zfftb.f zfftf.f zffti.f
+
+include ../Makefile.common
+

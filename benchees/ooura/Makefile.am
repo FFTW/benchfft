@@ -4,32 +4,30 @@ else
 FORTRAN_PRG=
 endif
 
-noinst_PROGRAMS=doit_sg doit_8g doit_4g $(FORTRAN_PRG)
-INCLUDES = -I${top_srcdir}/libbench
+PRG=doit_sg doit_8g doit_4g $(FORTRAN_PRG)
+INCLUDES = $(INCLBENCH)
 PKG=fft
 TARFILE=$(PKG).tgz
 EXTRA_DIST = $(TARFILE)
 
 doit_sg_SOURCES=
-doit_sg_LDADD=doit_sg.o fftsg.o ${top_builddir}/libbench/libbench.a
+doit_sg_LDADD=doit_sg.o fftsg.o $(LIBBENCH)
 EXTRA_doit_sg_SOURCES=doit.c
 
 doit_8g_SOURCES=
-doit_8g_LDADD=doit_8g.o fft8g.o ${top_builddir}/libbench/libbench.a
+doit_8g_LDADD=doit_8g.o fft8g.o $(LIBBENCH)
 
 doit_4g_SOURCES=
-doit_4g_LDADD=doit_4g.o fft4g.o ${top_builddir}/libbench/libbench.a
+doit_4g_LDADD=doit_4g.o fft4g.o $(LIBBENCH)
 
 doit_8gf_SOURCES=
-doit_8gf_LDADD=doit_8gf.o fft8gf.o ${top_builddir}/libbench/libbench.a
+doit_8gf_LDADD=doit_8gf.o fft8gf.o $(LIBBENCH)
 EXTRA_doit_8gf_SOURCES=dummy.f  # force automake to include FORTRAN support
 
 doit_4gf_SOURCES=
-doit_4gf_LDADD=doit_4gf.o fft4gf.o ${top_builddir}/libbench/libbench.a
+doit_4gf_LDADD=doit_4gf.o fft4gf.o $(LIBBENCH)
 
-extract: $(TARFILE)
-	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
-	@echo timestamp >$@
+include ../Makefile.common
 
 doit_sg.o: doit.c $(CONFIG_HEADER)
 	$(COMPILE) -c -o $@ -DNAME=\"ooura-sg\" ${srcdir}/doit.c
