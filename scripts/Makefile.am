@@ -1,1 +1,2 @@
-EXTRA_DIST = sysinfo benchmark writeinfo collect
+EXTRA_DIST = benchmark collect insnl.pl mktbl sort-by-problem.pl	\
+sysinfo writeinfo

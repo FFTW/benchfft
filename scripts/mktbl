@@ -1,0 +1,10 @@
+#! /bin/sh
+# format results in a nice table
+# 
+# Usage: sh mktbl <FILE.data
+
+medir=`echo "$0" | sed -e 's,/[^/]*$,,'`
+
+perl -w $medir/sort-by-problem.pl |  
+  perl -w $medir/insnl.pl |  
+  tr ' ' '\t'  | expand -t 20,30,45,60

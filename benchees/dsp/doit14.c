@@ -71,14 +71,18 @@ void doit(int iter, struct problem *p)
 
 	  if (p->sign == -1) {
 	       int isn = -2;
-	       /* calling sequence suggested by source code: */
-	       F77_FUNC(fft, FFT)(in, in + 1, &nseg, &n, &nspn, &isn);
-	       F77_FUNC(reals, REALS)(in, in + 1, &n, &isn);
+	       for (i = 0; i < iter; ++i) {
+		    /* calling sequence suggested by source code: */
+		    F77_FUNC(fft, FFT)(in, in + 1, &nseg, &n, &nspn, &isn);
+		    F77_FUNC(reals, REALS)(in, in + 1, &n, &isn);
+	       }
 	  } else {
 	       int isn = 2;
-	       /* calling sequence suggested by source code: */
-	       F77_FUNC(reals, REALS)(in, in + 1, &n, &isn);
-	       F77_FUNC(fft, FFT)(in, in + 1, &nseg, &n, &nspn, &isn);
+	       for (i = 0; i < iter; ++i) {
+		    /* calling sequence suggested by source code: */
+		    F77_FUNC(reals, REALS)(in, in + 1, &n, &isn);
+		    F77_FUNC(fft, FFT)(in, in + 1, &nseg, &n, &nspn, &isn);
+	       }
 	  }
      }
 }
