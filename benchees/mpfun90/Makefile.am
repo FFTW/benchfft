@@ -12,7 +12,7 @@ LOCAL_COPIES = mpfun90.f90
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-doit_LDADD=$(LIBBENCH) @F90LIBS@
+doit_LDADD=mpfun90.o $(LIBBENCH) @F90LIBS@
 
 # We need to extract just modules mpfuna and mpfung, and "unmodulize"
 # mpfung.  For one thing, autoconf doesn't know how to mangle
