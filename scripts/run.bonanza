@@ -10,11 +10,9 @@ FFLAGS="-newc -w0 -O5 -ansi_alias -ansi_args -fp_reorder -tune host -arch host"
 CXXLAGS="-newc -w0 -O5 -ansi_alias -ansi_args -fp_reorder -tune host -arch host"
 CPPFLAGS="-I$HOME/fftw-2.1.3/fftw -I$HOME/fftw-2.1.3/rfftw" 
 LDFLAGS="-L$HOME/fftw-2.1.3/fftw/.libs -L$HOME/fftw-2.1.3/rfftw/.libs" 
+MAKE=/usr/local/bin/make
 
-export CC F77 F90
-export FFLAGS
-export CPPFLAGS
-export CXXFLAGS
+export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME

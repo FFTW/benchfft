@@ -7,10 +7,10 @@ FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CXXLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CPPFLAGS='-I/homea/athena/fftw-2.1.3/fftw -I/homea/athena/fftw-2.1.3/rfftw -I /usr/local/intel/mkl/INCLUDE' 
 LDFLAGS='-L/homea/athena/fftw-2.1.3/fftw/.libs -L/homea/athena/fftw-2.1.3/rfftw/.libs -L/usr/local/intel/mkl/LIB' 
+MAKE=make
 
-export FFLAGS
-export CPPFLAGS
-export CXXFLAGS
+export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
