@@ -69,4 +69,5 @@ AC_OUTPUT([
 Makefile
 libbench/Makefile
 ooura-sg/Makefile
+djbfft-0.76/Makefile
 ])

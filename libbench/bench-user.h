@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.3 2001-07-05 16:49:43 athena Exp $ */
+/* $Id: bench-user.h,v 1.4 2001-07-07 00:16:14 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -41,9 +41,9 @@ typedef struct {
 #define MAX_RANK 20
 struct problem {
      enum { PROBLEM_COMPLEX, PROBLEM_REAL } kind;
-     int rank;
-     int n[MAX_RANK];  
-     int size;  /* total size of input = PROD n[i] */
+     unsigned int rank;
+     unsigned n[MAX_RANK];  
+     unsigned int size;  /* total size of input = PROD n[i] */
 
      union {
 	  struct {
