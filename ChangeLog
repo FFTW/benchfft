@@ -1,0 +1,70 @@
+2001-07-05  Matteo Frigo  <athena@fftw.org>
+
+	* libbench/bench-user.h, libbench/problem.c, libbench/speed.c, libbench/verify.c:
+	Parse ND problems
+
+	* configure.in, libbench/Makefile.am, libbench/bench-main.c, libbench/bench-user.h, libbench/bench.h, libbench/cacopy.c, libbench/verify.c:
+	Implemented --verify
+
+	* configure.in: Readded configure.in after cvs screwup
+
+	* acinclude.m4, configure.in:
+	Don't use -O -fno-schedule-insns in benchfft.
+
+	* libbench/bench-main.c: Fix stack alignment on x86
+
+2001-07-04  Matteo Frigo  <athena@fftw.org>
+
+	* ooura-sg/doit.c: Program is now in the public domain.
+
+	* libbench/getopt.c, libbench/getopt.h, libbench/getopt1.c:
+	Switched to LGPL version of getopt() to avoid copyright
+	problems.
+
+	* ooura-sg/Makefile.am, ooura-sg/doit.c, ooura-sg/fftsg.c:
+	Initial import of nbenchfft
+
+	* ooura-sg/Makefile.am, ooura-sg/doit.c, ooura-sg/fftsg.c: New file.
+
+	* libbench/info.c: Initial import of nbenchfft
+
+	* libbench/info.c: New file.
+
+	* libbench/caset.c, libbench/getopt-utils.c, libbench/getopt1.c, libbench/mflops.c, libbench/problem.c:
+	Initial import of nbenchfft
+
+	* libbench/caset.c, libbench/getopt-utils.c, libbench/getopt1.c, libbench/mflops.c, libbench/problem.c:
+	New file.
+
+	* libbench/bench-user.h, libbench/can-do.c, libbench/util.c:
+	Initial import of nbenchfft
+
+	* libbench/bench-user.h, libbench/can-do.c, libbench/util.c: New file.
+
+	* libbench/getopt.h, libbench/speed.c: Initial import of nbenchfft
+
+	* libbench/getopt.h, libbench/speed.c: New file.
+
+	* libbench/getopt.c: Initial import of nbenchfft
+
+	* libbench/getopt.c: New file.
+
+	* libbench/bench-main.c, libbench/main.c: Initial import of nbenchfft
+
+	* libbench/bench-main.c, libbench/main.c: New file.
+
+	* libbench/Makefile.am, libbench/bench.h, libbench/timer.c:
+	Initial import of nbenchfft
+
+	* libbench/Makefile.am, libbench/bench.h, libbench/timer.c: New file.
+
+	* AUTHORS, COPYRIGHT, ChangeLog, NEWS, README, acinclude.m4, configure.in, libbench/report.c:
+	Initial import of nbenchfft
+
+	* AUTHORS, COPYRIGHT, ChangeLog, NEWS, README, acinclude.m4, configure.in, libbench/report.c:
+	New file.
+
+	* Makefile.am, bootstrap.sh: Initial import of nbenchfft
+
+	* Makefile.am, bootstrap.sh: New file.
+
