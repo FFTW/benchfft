@@ -40,6 +40,7 @@ extern "C"
 int can_do(struct problem *p)
 {
      return (DOUBLE_PRECISION &&
+	     p->kind == PROBLEM_COMPLEX &&
 	     RANK_OK(p->rank) &&
 	     problem_power_of_two(p, 1));
 }
