@@ -6,16 +6,19 @@ AM_INIT_AUTOMAKE(benchfft, 3.0-alpha0)
 AM_CONFIG_HEADER(config.h)
 
 # configure options
-AC_ARG_ENABLE(debug, [  --enable-debug          compile benchfft with extra runtime checks for debugging], ok=$enableval, ok=no)
+AC_ARG_ENABLE(debug, [AC_HELP_STRING([--enable-debug],[compile benchfft with extra runtime checks for debugging])], ok=$enableval, ok=no)
 if test "$ok" = "yes"; then
 	AC_DEFINE(BENCHFFT_DEBUG,1,[Define to enable extra benchfft debugging code.])
 fi
-AC_ARG_ENABLE(single, [  --enable-single         compile single-precision benchmark], benchfft_single=$enableval, benchfft_single=no)
+
+AC_ARG_ENABLE(single, [AC_HELP_STRING([--enable-single],[compile single-precision benchmark])], benchfft_single=$enableval, benchfft_single=no)
 if test "$benchfft_single" = "yes"; then
 	AC_DEFINE(BENCHFFT_SINGLE,1,[Define to benchmark in single precision.])
 fi
-AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes")
-AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no")
+AC_ARG_WITH(bothprec, [AC_HELP_STRING([--with-bothprec],[compile doits for both precisions])], benchfft_bothprec=$enableval, benchfft_bothprec=no)
+
+AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes" || test "$benchfft_bothprec" = "yes")
+AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_bothprec" = "yes")
 
 # Checks for programs.
 AC_PROG_CC
@@ -44,7 +47,7 @@ AC_CHECK_PROG(PATCH, patch, patch)
 
 # Until autoconf gets separate F90 support, we must require that *all*
 # .f files be compiled F90 if we want anything to be compiled with F90.
-AC_ARG_WITH(f90, [  --with-f90              use F90 compiler for Fortran],
+AC_ARG_WITH(f90, [AC_HELP_STRING([--with-f90],[use F90 compiler for Fortran])],
 	ok=$withval, ok=no)
 if test "x$ok" = "xyes"; then
 	AC_CHECK_PROGS(F90, f90 xlf90 pgf90 fort f95 xlf95 g95)
@@ -331,7 +334,7 @@ cat <<EOF
 *******************************************************************************
 		    Optional FFT libraries Found:
 
-                                      DXML/CXML (Alphas only): ${have_dxml-no}
+                                       DXML/CXML (Alpha only): ${have_dxml-no}
                          Sun Performance Library (SPARC only): ${have_sunperf-no}
                                       sgimath (SGI/MIPS only): ${have_sgimath-no}
                                           ESSL (IBM/AIX only): ${have_essl-no}
