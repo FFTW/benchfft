@@ -353,10 +353,11 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 
     $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
 
-    # check if we have already output a relation of this transform
+    # get transform "family"
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
     $nam0 = $nam if ($nam eq "intel-ipps");
     $nam0 = $nam if ($nam eq "fftw3-r2r");
+    $nam0 = $nam if ($namleg eq "fxt-matrixfft");
     $nam0 = $nam if ($nam0 eq "dsp79");
     if ($nam0 eq "fftw3" || $nam0 eq "fftw3-r2r") {
 	if ($prob =~ /..i./) {
@@ -367,6 +368,8 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 	    $namleg = "$namleg out-of-place";
 	}
     }
+
+    # check if we have already output a relation of this transform
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
 
