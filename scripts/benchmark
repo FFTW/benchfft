@@ -6,7 +6,7 @@
 me=`echo "$0" | sed -e 's,.*/,,'`
 
 usage="\
-Usage: $0 [OPTION] program
+  Usage: $0 [OPTION] program
 
   -h, --help         print this help, then exit
   --verify           verify each transform before timing
@@ -17,7 +17,7 @@ Usage: $0 [OPTION] program
   -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
-"
+  "
 
 help="
 Try \`$me --help' for more information."
@@ -33,41 +33,41 @@ rounds=""
 arounds=""
 
 for option
-do
+ do
   # If the previous option needs an argument, assign it.
-  if test -n "$prev"; then
-    eval "$prev=\$option"
-    prev=
-    shift
-    continue
-  fi
+ if test -n "$prev"; then
+   eval "$prev=\$option"
+   prev=
+   shift
+   continue
+ fi
 
-  optarg=`expr "x$option" : 'x[^=]*=\(.*\)'`
+ optarg=`expr "x$option" : 'x[^=]*=\(.*\)'`
 
-  case $option in
+ case $option in
 
-    --help | --h* | -h ) echo "$usage"; exit 0 ;;
-    --keep-going | -k) keep_going=yes; shift;;
-    --accuracy) accuracy=yes; speed=no; shift;;
-    --verify) verify=yes; shift;;
-    --verify-only) verify=yes; speed=no; shift;;
-    --verify-tolerance) prev=tolerance; shift;;
-    --verify-tolerance=*) tolerance=$optarg; shift;;
-    --verify-rounds) prev=rounds; shift;;
-    --verify-rounds=*) rounds=$optarg; shift;;
-    --accuracy-rounds=*) arounds=$optarg; shift;;
-    --time-min) prev=time_min; shift;;
-    --time-min=*) time_min=$optarg; shift;;
-    --maxn) prev=maxn; shift;;
-    --maxn=*) maxn=$optarg; shift;;
-    -- ) break ;; # Stop option processing
-    -* )
-       echo "$me: invalid option $1$help"
-       exit 1 ;;
+   --help | --h* | -h ) echo "$usage"; exit 0 ;;
+   --keep-going | -k) keep_going=yes; shift;;
+   --accuracy) accuracy=yes; speed=no; shift;;
+   --verify) verify=yes; shift;;
+   --verify-only) verify=yes; speed=no; shift;;
+   --verify-tolerance) prev=tolerance; shift;;
+   --verify-tolerance=*) tolerance=$optarg; shift;;
+   --verify-rounds) prev=rounds; shift;;
+   --verify-rounds=*) rounds=$optarg; shift;;
+   --accuracy-rounds=*) arounds=$optarg; shift;;
+   --time-min) prev=time_min; shift;;
+   --time-min=*) time_min=$optarg; shift;;
+   --maxn) prev=maxn; shift;;
+   --maxn=*) maxn=$optarg; shift;;
+   -- ) break ;; # Stop option processing
+   -* )
+   echo "$me: invalid option $1$help"
+   exit 1 ;;
 
-    * )
-       break ;;
-  esac
+   * )
+   break ;;
+ esac
 done
 
 
@@ -78,11 +78,11 @@ if test -n "$prev"; then
 fi
 
 case $# in
- 0) echo "$me: missing argument$help" >&2
-    exit 1;;
- 1) ;;
- *) echo "$me: too many arguments$help" >&2
-    exit 1;;
+  0) echo "$me: missing argument$help" >&2
+  exit 1;;
+  1) ;;
+  *) echo "$me: too many arguments$help" >&2
+  exit 1;;
 esac
 
 program="$1"
@@ -134,8 +134,8 @@ REALITY="c r"
 ALL_SIZES="$SIZES_1D $SIZES_2D $SIZES_3D"
 
 if test ! -x "$program"; then
-    echo "``$program'' is not executable!" >&2
-    exit 1
+  echo "``$program'' is not executable!" >&2
+  exit 1
 fi
 
 test "$speed" = "no" || test -n "$time_min" || time_min=`$program --print-time-min`
@@ -159,39 +159,44 @@ for place in $PLACE; do
     for size in $ALL_SIZES; do
       s=`echo $size | sed -e "s/x/ '*' /g"`
       if test `eval "expr $s"` -gt $maxn; then
-         continue
+	continue
       fi
 
       case $size in
-	  *x*) oned=no;;
-	  *)   oned=yes;;
+	*x*) oned=no;;
+	*)   oned=yes;;
       esac
 
       for dir in $DIRECTIONS; do
-        problem=${place}${reality}${dir}${size}
-        doable=`$program --can-do $problem`
-        if test "$doable" = "#t"; then
-           if test "$verify" = "yes"; then
-               acc=`$program $vflags --verbose --verify $problem`||
-               { acc="FAILED FAILED FAILED"; 
-	         test "$keep_going" = "yes" || exit 1; }
-           else
-		acc=""
-           fi
+	problem=${place}${reality}${dir}${size}
+	doable=`$program --can-do $problem`
+	if test "$doable" = "#t"; then
+	  print="yes"
+	  if test "$verify" = "yes"; then
+	    acc=`$program $vflags --verbose --verify $problem`||
+	    { acc="FAILED FAILED FAILED"; 
+	      test "$keep_going" = "yes" || exit 1; }
+	  else
+	    acc=""
+	  fi
 
-	   if test "$speed" = yes; then
-               time="`$program --report-benchmark --time-min $time_min --speed $problem` " || 
-               time="FAILED FAILED"
-           else
-               time=""
-           fi
+	  if test "$speed" = yes; then
+	    time="`$program --report-benchmark --time-min $time_min --speed $problem` " || 
+	    time="FAILED FAILED"
+	  else
+	    time=""
+	  fi
 
-           if test "$accuracy" = "yes" -a "$oned" = "yes"; then
-               acc=`$program $aflags --accuracy $problem`
-           fi
+	  if test "$accuracy" = "yes" -a "$oned" = "yes"; then
+	    acc=`$program $aflags --accuracy $problem`
+	  else
+	    print="no"
+	  fi
 
-           echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"
-        fi
+	  if test "$print" = yes; then
+	    echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"
+	  fi
+	fi
       done
     done
   done
