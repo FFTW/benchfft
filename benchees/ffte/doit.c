@@ -69,7 +69,10 @@ int can_do(struct problem *p)
 	     p->rank >= 1 && p->rank <= 3 &&
 	     p->kind == PROBLEM_COMPLEX &&
 	     check_prime_factors(p->size, 5) &&
-             (problem_in_place(p) ^ (p->rank == 1)));
+             (problem_in_place(p) ^ (p->rank == 1)) &&
+	     (p->rank != 2 || maxdim(p) <= NDA2) &&
+	     (p->rank != 3 || maxdim(p) <= NDA3)
+	  );
 }
 
 void setup(struct problem *p)
