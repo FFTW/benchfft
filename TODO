@@ -1,6 +1,5 @@
 FFTs to add:
 
-New Intel MKL (includes mixed radix) (currently in beta)
 pdqfft
 
 NFFT (probably slow, but interesting for academic reasons)
