@@ -274,6 +274,7 @@ if ($use_paper_styles) {
 
 		   "intel-mkl-dfti out-of-place" => "mkl, out of place",
 		   "intel-mkl-dfti in-place" => "mkl, in place",
+		   "intel-ipps" => "ipps",
 
 		   "g5" => "G5",
 		   "g5-p4plan" => "G5, plan from Pentium IV",
