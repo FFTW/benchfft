@@ -100,6 +100,9 @@
 	    (writeln "<li>URL: <a href=\"" (cadr url) "\">" (cadr url) "</a>")
 	    (if url-was-valid-on
 		(writeln "(was valid on " (cadr url-was-valid-on) ")"))))
+      (let ((x (assoc 'name entries)))
+	(if (and x (not (equal? (cadr x) name)))
+	    (writeln "<li>" "Benchmark label" ": " (cadr x))))
       (maybe-plural "Author" "Authors" 'author entries)
       (maybe "Year" 'year entries)
       (maybe "Version" 'version entries)
