@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.8 2001-07-12 23:23:52 athena Exp $ */
+/* $Id: problem.c,v 1.9 2001-07-24 19:38:46 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -54,6 +54,7 @@ struct problem *problem_parse(const char *s)
 	 case 'b': 
 	 case '+': p->sign = 1; ++s; goto L1;
 	 case 'r': p->kind = PROBLEM_REAL; ++s; goto L1;
+	 case 'c': p->kind = PROBLEM_COMPLEX; ++s; goto L1;
 	 default : goto L2;
      }
 

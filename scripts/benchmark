@@ -1,0 +1,97 @@
+#! /bin/sh
+#
+# This shell script benchmarks a program on a series of test problems
+#
+
+me=`echo "$0" | sed -e 's,.*/,,'`
+
+usage="\
+Usage: $0 [OPTION] program
+
+  -h, --help         print this help, then exit
+  --verify           verify each transform before timing
+"
+
+help="
+Try \`$me --help' for more information."
+
+verify="no"
+
+while test $# -gt 0 ; do
+  case $1 in
+    --help | --h* | -h )
+       echo "$usage"; exit 0 ;;
+    --verify)
+       verify=yes;
+       shift;; 
+    -- )     # Stop option processing
+       shift; break ;;
+    -* )
+       echo "$me: invalid option $1$help"
+       exit 1 ;;
+
+    * )
+       break ;;
+  esac
+done
+
+case $# in
+ 0) echo "$me: missing argument$help" >&2
+    exit 1;;
+ 1) ;;
+ *) echo "$me: too many arguments$help" >&2
+    exit 1;;
+esac
+
+program="$1"
+
+SIZES_1D="2 4 6 8 9 12 15 16 18 24 32 36 64 80 108 128 210 256 504 512
+1000 1024 1960 2048 4096 4725 8192 10368 16384 27000 32768 65536 75600
+131072 165375 262144 362880 524288 1048576 2097152 4194304 8388608
+16777216 33554432"
+
+SIZES_2D="4x4 5x5 6x6 7x7 8x8 9x9 10x10 11x11 12x12 13x13 14x14 15x15
+16x16 25x24 32x32 48x48 49x49 60x60 72x56 64x64 75x75 80x80 84x84
+128x64 16x512 96x96 105x105 112x112 120x120 128x128 144x144 180x180
+512x64 256x128 240x240 256x256 64x1024 360x360 512x512 1000x1000
+1024x1024 1960x1960 2048x2048 3360x3360 4096x4096 4725x4725 8192x8192
+10368x10368 16384x16384 27000x27000 32768x32768"
+
+SIZES_3D="4x4x4 5x5x5 6x6x6 7x7x7 8x8x8 9x9x9 10x10x10 11x11x11
+12x12x12 13x13x13 14x14x14 15x15x15 16x16x16 24x25x28 32x32x32
+48x48x48 49x49x49 60x60x60 72x60x56 64x64x64 75x75x75 80x80x80
+256x64x32 84x84x84 96x96x96 16x1024x64 105x105x105 112x112x112
+120x120x120 128x128x128 144x144x144 512x128x64 180x180x180 256x128x256
+240x240x240 256x256x256 512x64x1024 360x360x360 512x512x512"
+
+DIRECTIONS="f b"
+PLACE="i o"
+REALITY="c r"
+ALL_SIZES="$SIZES_1D $SIZES_2D $SIZES_3D"
+
+if ! test -x "$program"; then
+    echo "``$program'' does is not executable!" >&2
+    exit 1
+fi
+
+test -n "$time_min" || time_min=`$program --print-time-min`
+precision=`$program --print-precision`
+name=`$program --info name`
+
+for place in $PLACE; do
+  for reality in $REALITY; do
+    for size in $ALL_SIZES; do
+      for dir in $DIRECTIONS; do
+        problem=${place}${reality}${dir}${size}
+        doable=`$program --can-do $problem`
+        if test "$doable" = "#t"; then
+	   test "$verify" = "no" || $program --verify $problem || exit 1
+           time=`$program --report-benchmark --time-min $time_min --speed $problem`
+	   echo "$name $problem $precision $time $program $time_min"
+        fi
+      done
+    done
+  done
+done
+
+
