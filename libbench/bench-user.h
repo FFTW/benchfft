@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.14 2001-07-09 01:13:40 athena Exp $ */
+/* $Id: bench-user.h,v 1.15 2001-07-09 17:00:03 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -37,6 +37,8 @@ typedef struct {
 
 #define c_re(c)  ((c).re)
 #define c_im(c)  ((c).im)
+
+#define SINGLE_PRECISION (sizeof(bench_real) == sizeof(float))
 
 #define MAX_RANK 20
 struct problem {

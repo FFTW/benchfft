@@ -85,7 +85,9 @@ AC_CHECK_LIB(sunperf, cfftf_,
 AC_CHECK_LIB(M77, __pow_ri)
 
 dnl Check for SGIMATH library:
-AC_CHECK_LIB(complib.sgimath, zfft1d)
+AC_CHECK_LIB(complib.sgimath, zfft1d,
+	[LIBS="-lcomplib.sgimath $LIBS"; have_sgimath=yes])
+AM_CONDITIONAL(HAVE_SGIMATH, test -n "$have_sgimath")
 
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
@@ -126,4 +128,5 @@ green-ffts-2.0/Makefile
 libbench/Makefile
 ooura/Makefile
 singleton/Makefile
+sgimath/Makefile
 ])
