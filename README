@@ -47,14 +47,18 @@ scripts/
 ----------------------------------------------------------------------------
 			LICENSE AND COPYRIGHT
 
-Files in the libbench directory are Copyright (c) 2003 Matteo Frigo,
+Files in the libbench/ directory are Copyright (c) 2003 Matteo Frigo,
 Copyright (c) 2003 Massachusetts Institute of Technology, and
 distributed under the terms of the GNU General Public License.  See
 file COPYING for details.
 
-FFT routines in the benchees directory are copyrighted by their
-respective authors.  We are distributing only those routines that
-are redistributable.
+FFT routines in the benchees/ directory are copyrighted by their
+respective authors.  We are distributing only those routines that are
+redistributable.  Please be advised that some routines may have
+licensing terms that are incompatible with the GPL, in which case you
+are not allowed to distribute the executable that results from linking
+libbench/ with that FFT routine.  This is not a problem in practice,
+because those executables are not meant to be distributed.
 
 The remaining files (in particular, all programs called doit*.[ch],
 and all scripts in the scripts/ directory) are hereby placed in the
