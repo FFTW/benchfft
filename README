@@ -83,8 +83,8 @@ Hardware/vendor-specific:
 
 Proprietary software:
 	Numerical Recipes: copy .c and .f files into benchees/nr
-	NAG
-	IMSL
+	NAG (Numerical Algorithms Group) Fortran Library
+	IMSL (International Mathematical and Statistical Library)
 
 ----------------------------------------------------------------------------
 			       Plotting
