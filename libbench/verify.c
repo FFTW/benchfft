@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.33 2003-05-04 23:41:05 athena Exp $ */
+/* $Id: verify.c,v 1.34 2003-05-20 21:32:46 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -218,6 +218,9 @@ static void do_fft(struct problem *p, bench_complex *in, bench_complex *out)
  * generator bottleneck. In Proceedings of the Twenty-Seventh Annual
  * ACM Symposium on the Theory of Computing, pages 407-416, Las Vegas,
  * Nevada, 29 May--1 June 1995.
+ *
+ * Also: F. Ergun, S. R. Kumar, and D. Sivakumar, "Self-testing without
+ * the generator bottleneck," SIAM J. on Computing 29 (5), 1630-51 (2000).
  */
 
 static double linear(struct problem *p,
