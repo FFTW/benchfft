@@ -8,9 +8,20 @@ BENCH_DOC("name", NAME)
 BENCH_DOC("notes", "backward transform is scaled")
 END_BENCH_DOC 
 
+static unsigned int cpuid_edx(unsigned int op)
+{
+     unsigned int eax, ebx, ecx, edx;
+
+     __asm__("cpuid"
+	     : "=a" (eax), "=b" (ebx), "=c" (ecx), "=d" (edx)
+	     : "a" (op));
+     return edx;
+}
+
 int can_do(struct problem *p)
 {
-     return (p->rank >= 1 && p->rank <= 2 && problem_power_of_two(p, 1));
+     return (RIGHT_PROCESSOR &&
+	     p->rank >= 1 && p->rank <= 2 && problem_power_of_two(p, 1));
 }
 
 
