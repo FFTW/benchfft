@@ -9,6 +9,7 @@ BENCH_DOC("author", "Dave Hale")
 BENCH_DOC("year", "1989")
 BENCH_DOC("language", "C")
 BENCH_DOC("url", "http://risc1.numis.nwu.edu/ftp/pub/transforms/cwplib.tar.gz")
+BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
 BENCH_DOC("copyright", "Copyright (c) Colorado School of Mines, 1995.")
 END_BENCH_DOC
 
@@ -32,7 +33,7 @@ int can_do(struct problem *p)
 	       return 0;
 
 	  /* must be in place */
-	  if (p->in != p->out)
+	  if (!problem_in_place(p))
 	       return 0;
 
 	  for (i = 0; i < p->rank; ++i) {

@@ -128,6 +128,7 @@ cwplib/Makefile
 dfftpack/Makefile
 djbfft-0.76/Makefile
 fftpack/Makefile
+gpfa/Makefile
 green-ffts-2.0/Makefile
 ooura/Makefile
 sgimath/Makefile

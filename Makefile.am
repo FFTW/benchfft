@@ -6,6 +6,7 @@ SUBDIRS=libbench				\
 	dfftpack				\
 	djbfft-0.76				\
 	fftpack					\
+	gpfa					\
 	green-ffts-2.0				\
 	ooura					\
 	sgimath					\

@@ -9,6 +9,7 @@ BENCH_DOC("author", "D. J. Bernstein")
 BENCH_DOC("year", "1999")
 BENCH_DOC("email", "djb@pobox.com")
 BENCH_DOC("url", "http://pobox.com/~djb/djbfft.html")
+BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
 BENCH_DOC("language", "C")
 BENCH_DOC("notes",
 	  "djbfft considers sign = +1 to be the forward transform")
