@@ -122,12 +122,15 @@ ACX_GCC_ALIGNS_STACK()
 
 AC_OUTPUT([
 Makefile
+libbench/Makefile
+
+cwplib/Makefile
+dfftpack/Makefile
 djbfft-0.76/Makefile
 fftpack/Makefile
-dfftpack/Makefile
 green-ffts-2.0/Makefile
-libbench/Makefile
 ooura/Makefile
-singleton/Makefile
 sgimath/Makefile
+singleton/Makefile
+
 ])

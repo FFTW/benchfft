@@ -1,5 +1,15 @@
 AUTOMAKE_OPTIONS=gnu
 
-SUBDIRS=libbench ooura djbfft-0.76 green-ffts-2.0 fftpack dfftpack	\
-singleton sgimath
+SUBDIRS=libbench				\
+						\
+	cwplib					\
+	dfftpack				\
+	djbfft-0.76				\
+	fftpack					\
+	green-ffts-2.0				\
+	ooura					\
+	sgimath					\
+	singleton
+
+
 EXTRA_DIST=COPYRIGHT bootstrap.sh
