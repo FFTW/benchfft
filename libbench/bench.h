@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.13 2003-04-30 13:26:07 athena Exp $ */
+/* $Id: bench.h,v 1.14 2003-05-01 10:50:34 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -63,4 +63,3 @@ extern struct problem *problem_parse(const char *desc);
 extern void problem_destroy(struct problem *p);
 
 extern void ovtpvt(const char *format, ...);
-extern void wait_for_idle(int idlemin);

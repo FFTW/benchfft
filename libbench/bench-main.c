@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.19 2003-04-30 13:26:07 athena Exp $ */
+/* $Id: bench-main.c,v 1.20 2003-05-01 10:50:34 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -54,7 +54,6 @@ static struct option long_options[] =
   {"verify", required_argument, 0, 'y'},
   {"verify-rounds", required_argument, 0, 401},
   {"verify-tolerance", required_argument, 0, 403},
-  {"wait-for-idle", optional_argument, 0, 'w'},
   {0, no_argument, 0, 0}
 };
 
@@ -106,12 +105,6 @@ static int bench_main1(int argc, char *argv[])
 			verbose = atoi(optarg);
 		   else
 			++verbose;
-		   break;
-	      case 'w':
-		   if (optarg)
-			wait_for_idle(atoi(optarg));
-		   else
-			wait_for_idle(60);
 		   break;
 	      case 'p':
 		   ++paranoid;
