@@ -19,8 +19,10 @@ END_BENCH_DOC
 int can_do(struct problem *p)
 {
      return (sizeof(bench_real) == sizeof(float) &&
-	     p->rank >= 1 && p->rank < 4 &&
-	     problem_complex_nd_power_of_two(p, 1));
+	     problem_power_of_two(p, 1) &&
+	     ((p->kind == PROBLEM_COMPLEX && p->rank >= 1 && p->rank < 4)
+	      ||
+	      (p->kind == PROBLEM_REAL && p->rank >= 1 && p->rank < 3)));
 }
 
 void problem_ccopy_to(struct problem *p, bench_complex *out)
@@ -58,55 +60,91 @@ void doit(int iter, struct problem *p)
      int i;
      void *in = p->in;
 
-     switch (p->rank) {
-	 case 1: 
-	 {
-	      int m0 = log_2(p->n[0]);
+     if (p->kind == PROBLEM_COMPLEX) {
+	  switch (p->rank) {
+	      case 1: 
+	      {
+		   int m0 = log_2(p->n[0]);
 
-	      if (p->sign == -1) {
-		   for (i = 0; i < iter; ++i) {
-			ffts(in, m0, 1);
+		   if (p->sign == -1) {
+			for (i = 0; i < iter; ++i) {
+			     ffts(in, m0, 1);
+			}
+		   } else {
+			for (i = 0; i < iter; ++i) {
+			     iffts(in, m0, 1);
+			}
 		   }
-	      } else {
-		   for (i = 0; i < iter; ++i) {
-			iffts(in, m0, 1);
-		   }
+		   break;
 	      }
-	      break;
-	 }
-	 case 2: 
-	 {
-	      int m0 = log_2(p->n[0]);
-	      int m1 = log_2(p->n[1]);
+	      case 2: 
+	      {
+		   int m0 = log_2(p->n[0]);
+		   int m1 = log_2(p->n[1]);
 
-	      if (p->sign == -1) {
-		   for (i = 0; i < iter; ++i) {
-			fft2d(in, m0, m1);
+		   if (p->sign == -1) {
+			for (i = 0; i < iter; ++i) {
+			     fft2d(in, m0, m1);
+			}
+		   } else {
+			for (i = 0; i < iter; ++i) {
+			     ifft2d(in, m0, m1);
+			}
 		   }
-	      } else {
-		   for (i = 0; i < iter; ++i) {
-			ifft2d(in, m0, m1);
-		   }
+		   break;
 	      }
-	      break;
-	 }
-	 case 3: 
-	 {
-	      int m0 = log_2(p->n[0]);
-	      int m1 = log_2(p->n[1]);
-	      int m2 = log_2(p->n[2]);
+	      case 3: 
+	      {
+		   int m0 = log_2(p->n[0]);
+		   int m1 = log_2(p->n[1]);
+		   int m2 = log_2(p->n[2]);
 
-	      if (p->sign == -1) {
-		   for (i = 0; i < iter; ++i) {
-			fft3d(in, m0, m1, m2);
+		   if (p->sign == -1) {
+			for (i = 0; i < iter; ++i) {
+			     fft3d(in, m0, m1, m2);
+			}
+		   } else {
+			for (i = 0; i < iter; ++i) {
+			     ifft3d(in, m0, m1, m2);
+			}
 		   }
-	      } else {
-		   for (i = 0; i < iter; ++i) {
-			ifft3d(in, m0, m1, m2);
-		   }
+		   break;
 	      }
-	      break;
-	 }
+	  }
+     } else {
+	  switch (p->rank) {
+	      case 1: 
+	      {
+		   int m0 = log_2(p->n[0]);
+
+		   if (p->sign == -1) {
+			for (i = 0; i < iter; ++i) {
+			     rffts(in, m0, 1);
+			}
+		   } else {
+			for (i = 0; i < iter; ++i) {
+			     riffts(in, m0, 1);
+			}
+		   }
+		   break;
+	      }
+	      case 2: 
+	      {
+		   int m0 = log_2(p->n[0]);
+		   int m1 = log_2(p->n[1]);
+
+		   if (p->sign == -1) {
+			for (i = 0; i < iter; ++i) {
+			     rfft2d(in, m0, m1);
+			}
+		   } else {
+			for (i = 0; i < iter; ++i) {
+			     rifft2d(in, m0, m1);
+			}
+		   }
+		   break;
+	      }
+	  }
      }
 }
 

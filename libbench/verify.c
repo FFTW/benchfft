@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.6 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: verify.c,v 1.7 2001-07-07 21:56:10 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -154,9 +154,14 @@ static void linear(struct problem *p,
      for (i = 0; i < rounds; ++i) {
 	  bench_complex alpha, beta;
 	  c_re(alpha) = bench_drand();
-	  c_im(alpha) = bench_drand();
 	  c_re(beta) = bench_drand();
-	  c_im(beta) = bench_drand();
+
+	  if (p->kind == PROBLEM_COMPLEX) {
+	       c_im(alpha) = bench_drand();
+	       c_im(beta) = bench_drand();
+	  } else {
+	       c_im(alpha) = c_im(beta) = 0;
+	  }
 	  arand(inA, N);
 	  arand(inB, N);
 	  do_fft(p, inA, outA);
@@ -272,12 +277,8 @@ static void do_verify(struct problem *p, unsigned int rounds)
      bench_complex *inA, *inB, *inC, *outA, *outB, *outC, *tmp;
      unsigned int n = p->size;
 
-     /* TODO: real case */
-     BENCH_ASSERT(p->kind == PROBLEM_COMPLEX);
-
      if (rounds == 0)
 	  rounds = 20;  /* default value */
-
 
      inA = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
      inB = (bench_complex *) bench_malloc(n * sizeof(bench_complex));

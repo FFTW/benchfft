@@ -22,19 +22,21 @@ static void (*fft)();
 
 int can_do(struct problem *p)
 {
-     return problem_complex_power_of_two(p, 1) && p->size <= 8192;
+     return p->rank == 1 &&
+	  problem_complex_power_of_two(p, 1) && 
+	  p->n[0] <= 8192;
 }
 
 void problem_ccopy_from(struct problem *p, bench_complex *in)
 {
      if (p->sign == 1)
 	  /* in-order input for backward transforms */
-	  cacopy(in, p->in, p->size);
+	  cacopy(in, p->in, p->n[0]);
      else {
 	  unsigned int i;
 	  bench_complex *pin = p->in;
-	  for (i = 0; i < p->size; ++i) {
-	       pin[i] = in[fftfreq_c(i, p->size)];
+	  for (i = 0; i < p->n[0]; ++i) {
+	       pin[i] = in[fftfreq_c(i, p->n[0])];
 	  }
      }
 }
@@ -44,12 +46,12 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
      if (p->sign == 1) {
 	  unsigned int i;
 	  bench_complex *pout = p->out;
-	  for (i = 0; i < p->size; ++i) {
-	       out[fftfreq_c(i, p->size)] = pout[i];
+	  for (i = 0; i < p->n[0]; ++i) {
+	       out[fftfreq_c(i, p->n[0])] = pout[i];
 	  }
      } else {
 	  /* in-order output for forward transforms */
-	  cacopy(p->out, out, p->size);
+	  cacopy(p->out, out, p->n[0]);
      }
 }
 

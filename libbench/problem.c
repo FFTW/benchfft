@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.5 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: problem.c,v 1.6 2001-07-07 21:56:10 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -47,8 +47,10 @@ struct problem *problem_parse(const char *s)
 	  switch (tolower(*s)) {
 	      case 'i': in_place = 1; ++s; continue;
 	      case 'o': in_place = 0; ++s; continue;
-	      case 'f': p->sign = -1; ++s; continue;
-	      case 'b': p->sign = 1; ++s; continue;
+	      case 'f': 
+	      case '-': p->sign = -1; ++s; continue;
+	      case 'b': 
+	      case '+': p->sign = 1; ++s; continue;
 	      case 'r': p->kind = PROBLEM_REAL; ++s; continue;
 	      default:
 		   ;
@@ -92,14 +94,9 @@ void problem_destroy(struct problem *p)
 }
 
 /* predicates for common cases */
-
-/* complex, any D, power of 2 */
-int problem_complex_nd_power_of_two(struct problem *p, int in_place)
+int problem_power_of_two(struct problem *p, int in_place)
 {
      unsigned int i;
-
-     if (p->kind != PROBLEM_COMPLEX)
-	  return 0;
 
      for (i = 0; i < p->rank; ++i)
 	  if (!(power_of_two(p->n[i])))
@@ -108,10 +105,18 @@ int problem_complex_nd_power_of_two(struct problem *p, int in_place)
      return (in_place ? (p->in == p->out) : (p->in != p->out));
 }
 
-/* complex, 1D, power of 2 */
 int problem_complex_power_of_two(struct problem *p, int in_place)
 {
-     return (p->rank == 1 &&
-	     problem_complex_nd_power_of_two(p, in_place));
+     if (p->kind != PROBLEM_COMPLEX)
+	  return 0;
+
+     return problem_power_of_two(p, in_place);
 }
 
+int problem_real_power_of_two(struct problem *p, int in_place)
+{
+     if (p->kind != PROBLEM_REAL)
+	  return 0;
+
+     return problem_power_of_two(p, in_place);
+}

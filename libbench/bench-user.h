@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.7 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: bench-user.h,v 1.8 2001-07-07 21:56:10 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -71,8 +71,9 @@ extern void problem_ccopy_from(struct problem *p, bench_complex *in);
 extern void problem_ccopy_to(struct problem *p, bench_complex *out);
 
 extern int power_of_two(unsigned int n);
+extern int problem_power_of_two(struct problem *p, int in_place);
 extern int problem_complex_power_of_two(struct problem *p, int in_place);
-extern int problem_complex_nd_power_of_two(struct problem *p, int in_place);
+extern int problem_real_power_of_two(struct problem *p, int in_place);
 extern int log_2(unsigned int n);
 
 extern void aset(bench_real *A, unsigned int n, bench_real x);
