@@ -357,6 +357,7 @@ benchees/imsl/Makefile
 benchees/intel-ipps/Makefile
 benchees/intel-mkl/Makefile
 benchees/jmfft/Makefile
+benchees/kissfft/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
 benchees/mixfft/Makefile
