@@ -17,6 +17,7 @@ usage="\
   -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
+  --paranoid         undocumented
   "
 
 help="
@@ -24,6 +25,7 @@ Try \`$me --help' for more information."
 
 verify="no"
 accuracy="no"
+paranoid=""
 speed="yes"
 maxn=1048576
 time_min=""
@@ -60,6 +62,7 @@ for option
    --time-min=*) time_min=$optarg; shift;;
    --maxn) prev=maxn; shift;;
    --maxn=*) maxn=$optarg; shift;;
+   --paranoid) paranoid="-p"; shift;;
    -- ) break ;; # Stop option processing
    -* )
    echo "$me: invalid option $1$help"
@@ -151,7 +154,7 @@ name=`$program --info name`
 test -z "$tolerance" || tolerance="--verify-tolerance $tolerance"
 test -z "$rounds" || rounds="--verify-rounds $rounds"
 test -z "$arounds" || arounds="--accuracy-rounds $arounds"
-vflags="$tolerance $rounds"
+vflags="$tolerance $rounds $paranoid"
 aflags="$arounds"
 
 for place in $PLACE; do
