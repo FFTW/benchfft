@@ -33,6 +33,7 @@
 	   "arndt-ndim" => "yellow:dash:1:yellow:star:1:none",
 	   "arndt-split" => "yellow:dotdotdash:1:yellow:square:0.7:none",
 	   "arndt-twodim" => "yellow:dot:1:yellow:diamond:0.7:none",
+	   "arprec" => "green4:solid:1:green4:circle:0.5:none",
 	   "athfft" => "indigo:dot:1:indigo:circle:0.5:none",
 	   "bloodworth" => "red:dot:1:red:square:0.5:none",
 	   "bloodworth-fht" => "red:solid:1:red:square:0.5:red",

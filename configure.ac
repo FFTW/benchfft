@@ -277,6 +277,7 @@ libbench/Makefile
 benchees/Makefile
 scripts/Makefile
 
+benchees/arprec/Makefile
 benchees/athfft/Makefile
 benchees/bloodworth/Makefile
 benchees/burrus/Makefile
