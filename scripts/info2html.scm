@@ -115,16 +115,16 @@
       (maybe "Benchmark label" 'name entries
 	     (lambda (x) (if (and x (not (equal? (cadr x) name))) 
 			     (tag "b" x) #f)))
-      (maybe-plural "Author" "Authors" 'author entries)
-      (maybe-plural "Email address" "Email addresses" 'email entries
+      (maybe-plural "Author" "Authors" ", " 'author entries)
+      (maybe-plural "Email address" "Email addresses" ", " 'email entries
 		    obfuscate-email)
       (maybe "Year" 'year entries)
       (maybe "Version" 'version entries
 	     (lambda (x) (if (or (not x)
 				 (equal? (cadr x) "unknown")
 				 (equal? (cadr x) "0.0")) #f x)))
-      (maybe-plural "Language" "Languages" 'language entries)
-      (maybe "References" 'bibitem entries)
+      (maybe-plural "Language" "Languages" ", " 'language entries)
+      (maybe-plural "References" "References" " " 'bibitem entries)
       (for-each (lambda (note) (writeln "<li>Note: " (cadr note)))
 		(assoc* 'notes entries))
       )
@@ -159,7 +159,7 @@
   (let ((x (apply-filters (assoc sym entries) filters)))
     (if x (writeln "<li>" name ": " (cadr x)))))
 
-(define (maybe-plural singular plural sym entries . filters)
+(define (maybe-plural singular plural join sym entries . filters)
   (let ((things 
 	 (filter (lambda (x) x) 
 		 (map (lambda (x) (apply-filters x filters))
@@ -169,7 +169,7 @@
 	  ((> (length things) 1)
 	   (apply writeln "<li>" plural ": " 
 		  (cadr (car things))
-		  (map (lambda (x) (string-append ", " (cadr x)))
+		  (map (lambda (x) (string-append join (cadr x)))
 		       (cdr things)))))))
 
 (define (compare-packages p1 p2)
