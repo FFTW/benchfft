@@ -15,6 +15,6 @@ doit_SOURCES=doit.c
 nodist_doit_SOURCES=$(KRUKAR)
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
-$(PKG)/Mixfft.c: extract
+$(KRUKAR): extract
 
 include ../Makefile.common
