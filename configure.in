@@ -81,6 +81,8 @@ AC_CHECK_FUNCS(strtod)
 AC_CHECK_FUNCS(memset)
 
 dnl Check for installed libraries
+dnl check for pthreads library (required by MKL below)
+AC_CHECK_LIB(pthread, pthread_attr_init)
 
 dnl Checks for ESSL libraries: -lessl -lxlf -lxlf90 -lxlfutil
 AC_CHECK_LIB(xlf90, sqrt)
@@ -105,6 +107,14 @@ dnl Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d,
 	[LIBS="-lcomplib.sgimath $LIBS"; have_sgimath=yes])
 AM_CONDITIONAL(HAVE_SGIMATH, test -n "$have_sgimath")
+
+dnl Check for Intel's MKL library:
+AC_CHECK_LIB(mkl32_def, zfft1d_, [have_mkl32_def=yes])
+AM_CONDITIONAL(HAVE_MKL32_DEF, test -n "$have_mkl32_def")
+AC_CHECK_LIB(mkl32_p3, zfft1d_, [have_mkl32_p3=yes])
+AM_CONDITIONAL(HAVE_MKL32_P3, test -n "$have_mkl32_p3")
+AC_CHECK_LIB(mkl32_p4, zfft1d_, [have_mkl32_p4=yes])
+AM_CONDITIONAL(HAVE_MKL32_P4, test -n "$have_mkl32_p4")
 
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
@@ -171,6 +181,7 @@ benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/harm/Makefile
+benchees/intel-mkl/Makefile
 benchees/krukar/Makefile
 benchees/mixfft/Makefile
 benchees/mpfun77/Makefile
