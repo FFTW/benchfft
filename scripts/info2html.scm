@@ -94,7 +94,7 @@
       (maybe "Year" 'year entries)
       (maybe "Version" 'version entries)
       (maybe-plural "Language" "Languages" 'language entries)
-      (maybe "References:" 'bibitem entries)
+      (maybe "References" 'bibitem entries)
       (for-each (lambda (note) (writeln "<li>Note: " (cadr note)))
 		(assoc* 'notes entries))
       )
