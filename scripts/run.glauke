@@ -1,0 +1,36 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+
+CC=gcc-3.2
+F77=g77-3.2
+CXX=g++-3.2
+FFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
+CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
+CPPFLAGS='-I/usr/local/include' 
+LDFLAGS='-L/usr/local/lib' 
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+export CXX CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
+MAXND=2097152; export MAXND
+
+LD_LIBRARY_PATH=/opt/intel/mkl/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
+
+rm -rf $HOSTNAME
+mkdir $HOSTNAME
+
+( 
+  cd $HOSTNAME
+  ../configure --disable-single
+  make -k; make -k benchmark; make clean
+  ../configure --enable-single
+  make -k; make -k benchmark; make clean
+  ../configure --disable-single
+  make -k; make -k accuracy; make clean
+  ../configure --enable-single
+  make -k; make -k accuracy; make clean
+  make collect
+)
