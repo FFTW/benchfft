@@ -38,7 +38,7 @@ int can_do(struct problem *p)
 	     (p->kind == PROBLEM_COMPLEX || (p->n[0] & 1) == 0) &&
 	     p->in == p->out &&
 	     problem_in_place(p) &&
-
+p->n[0] == 1960 &&   /* doesn't like this */
 	     /* not quite... also works for some N larger than 12754584 */
 	     p->n[0] < 12754584); 
 }

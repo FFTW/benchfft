@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.7 2001-07-23 21:39:10 athena Exp $ */
+/* $Id: bench.h,v 1.8 2001-07-26 21:29:26 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -50,7 +50,7 @@ void report_info_all(void);
 extern int bench_main(int argc, char *argv[]);
 
 extern void speed(const char *param);
-extern void verify(const char *param, int rounds);
+extern void verify(const char *param, int rounds, double tol);
 
 extern double mflops(const struct problem *p, double t);
 

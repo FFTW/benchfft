@@ -11,6 +11,7 @@ Usage: $0 [OPTION] program
   -h, --help         print this help, then exit
   --verify           verify each transform before timing
   --verify-only      verify each transform but do not time
+  --verify-tolerance set error tolerance for --verify
   -k, --keep-going   continue after verification error
   --time-min=X       set minimum measurement time
   --maxn=N           set maximum allowed problem size
@@ -24,6 +25,7 @@ speed="yes"
 maxn=1048576
 time_min=""
 keep_going="no"
+tolerance=""
 
 for option
 do
@@ -43,6 +45,8 @@ do
     --keep-going | -k) keep_going=yes; shift;;
     --verify) verify=yes; shift;;
     --verify-only) verify=yes; speed=no; shift;;
+    --verify-tolerance) prev=tolerance; shift;;
+    --verify-tolerance=*) tolerance=$optarg; shift;;
     --time-min) prev=time_min; shift;;
     --time-min=*) time_min=$optarg; shift;;
     --maxn) prev=maxn; shift;;
@@ -114,6 +118,7 @@ case $precision in
 esac
 
 name=`$program --info name`
+test -z "$tolerance" || tolerance="--verify-tolerance $tolerance"
 
 for place in $PLACE; do
   for reality in $REALITY; do
@@ -128,7 +133,7 @@ for place in $PLACE; do
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
            if test "$verify" = "yes"; then
-               { $program --verify $problem &&
+               { $program $tolerance --verify $problem &&
                 echo "${name} ${precision}${reality}${place}${dir} ${size} ok"; } || 
                { 
                  echo "${name} ${precision}${reality}${place}${dir} ${size} bad"; 

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.9 2001-07-23 21:39:10 athena Exp $ */
+/* $Id: bench-main.c,v 1.10 2001-07-26 21:29:26 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -50,12 +50,14 @@ static struct option long_options[] =
   {"verbose", no_argument, 0, 'v'},
   {"verify", required_argument, 0, 'y'},
   {"verify-rounds", required_argument, 0, 401},
+  {"verify-tolerance", required_argument, 0, 403},
   {0, no_argument, 0, 0}
 };
 
 static int bench_main1(int argc, char *argv[])
 {
      double tmin = 0.0;
+     double tol;
      int repeat = 0;
      int rounds = 10;
      int c;
@@ -64,6 +66,8 @@ static int bench_main1(int argc, char *argv[])
 
      report = report_time; /* default */
      verbose = 0;
+
+     tol = SINGLE_PRECISION ? 1.0e-2 : 1.0e-6;
 
      while ((c = getopt_long (argc, argv, short_options,
 			      long_options, &index)) != -1) {
@@ -85,7 +89,7 @@ static int bench_main1(int argc, char *argv[])
 		   ++verbose;
 		   break;
 	      case 'y':
-		   verify(optarg, rounds);
+		   verify(optarg, rounds, tol);
 		   break;
 	      case 'i':
 		   report_info(optarg);
@@ -139,6 +143,9 @@ static int bench_main1(int argc, char *argv[])
 			ovtpvt("unknown %d\n", sizeof(bench_real));
 		   break;
 
+	      case 403: /* --verify-tolerance */
+		   tol = strtod(optarg, 0);
+		   break;
 		   
 	      case '?':
 		   /* `getopt_long' already printed an error message. */

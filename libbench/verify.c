@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.13 2001-07-25 16:31:50 athena Exp $ */
+/* $Id: verify.c,v 1.14 2001-07-26 21:29:26 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -30,14 +30,6 @@
 /*************************************************
  * complex correctness test
  *************************************************/
-static double tolerance(void)
-{
-     if (sizeof(bench_real) == sizeof(float))
-	  return 1.0e-2;
-     else
-	  return 1.0e-6;
-}
-
 #ifndef HAVE_HYPOT
 static double hypot(double a, double b)
 {
@@ -45,11 +37,11 @@ static double hypot(double a, double b)
 }
 #endif
 
-static double cerror(bench_complex *A, bench_complex *B, unsigned int n)
+static double cerror(bench_complex *A, bench_complex *B, unsigned int n,
+		     double tol)
 {
      /* compute the relative error */
      double error = 0.0;
-     double tol = tolerance();
      unsigned int i;
 
      for (i = 0; i < n; ++i) {
@@ -162,10 +154,10 @@ static void aphase_shift(bench_complex *B, bench_complex *A,
 }
 
 static void acmp(bench_complex *A, bench_complex *B, unsigned int n, 
-		 const char *test)
+		 const char *test, double tol)
 {
-     double d = cerror(A, B, n);
-     if (d > tolerance()) {
+     double d = cerror(A, B, n, tol);
+     if (d > tol) {
 	  printf("Found relative error %e (%s)\n", d, test);
 	  exit(EXIT_FAILURE);
      }
@@ -195,7 +187,8 @@ static void linear(struct problem *p,
 		   bench_complex *outB,
 		   bench_complex *outC,
 		   bench_complex *tmp,
-		   unsigned int rounds)
+		   unsigned int rounds,
+		   double tol)
 {
      unsigned int N = p->size;
      unsigned int i;
@@ -225,7 +218,7 @@ static void linear(struct problem *p,
 	  caadd(inC, inA, inB, N);
 	  do_fft(p, inC, outC);
 
-	  acmp(outC, tmp, N, "linearity");
+	  acmp(outC, tmp, N, "linearity", tol);
      }
 }
 
@@ -237,7 +230,8 @@ static void impulse(struct problem *p,
 		    bench_complex *outB,
 		    bench_complex *outC,
 		    bench_complex *tmp,
-		    unsigned int rounds)
+		    unsigned int rounds,
+		    double tol)
 {
      unsigned int n = p->size;
      const bench_complex one = {1.0, 0.0};
@@ -251,7 +245,7 @@ static void impulse(struct problem *p,
 
      /* a simple test first, to help with debugging: */
      do_fft(p, inA, outB);
-     acmp(outB, outA, n, "impulse response");
+     acmp(outB, outA, n, "impulse response", tol);
 
      for (i = 0; i < rounds; ++i) {
 	  arand(inB, n);
@@ -259,7 +253,7 @@ static void impulse(struct problem *p,
 	  do_fft(p, inB, outB);
 	  do_fft(p, inC, outC);
 	  caadd(tmp, outB, outC, n);
-	  acmp(tmp, outA, n, "impulse response");
+	  acmp(tmp, outA, n, "impulse response", tol);
      }
 }
 
@@ -272,6 +266,7 @@ static void tf_shift(struct problem *p,
 		     bench_complex *outB,
 		     bench_complex *tmp,
 		     unsigned int rounds,
+		     double tol,
 		     int which_shift)
 {
      double sign;
@@ -302,7 +297,7 @@ static void tf_shift(struct problem *p,
 		    do_fft(p, inA, outA);
 		    do_fft(p, inB, outB);
 		    aphase_shift(tmp, outB, n_cur, n_before, n_after, sign);
-		    acmp(tmp, outA, n, "time shift");
+		    acmp(tmp, outA, n, "time shift", tol);
 	       } else {
 		    if (p->kind == PROBLEM_REAL) 
 			 mkhermitian(inA, n);
@@ -311,7 +306,7 @@ static void tf_shift(struct problem *p,
 		    do_fft(p, inA, outA);
 		    do_fft(p, inB, outB);
 		    arol(tmp, outB, n_cur, n_before, n_after);
-		    acmp(tmp, outA, n, "freq shift");
+		    acmp(tmp, outA, n, "freq shift", tol);
 	       }
 	  }
 
@@ -319,7 +314,7 @@ static void tf_shift(struct problem *p,
      }
 }
 
-static void do_verify(struct problem *p, unsigned int rounds)
+static void do_verify(struct problem *p, unsigned int rounds, double tol)
 {
      bench_complex *inA, *inB, *inC, *outA, *outB, *outC, *tmp;
      unsigned int n = p->size;
@@ -335,13 +330,13 @@ static void do_verify(struct problem *p, unsigned int rounds)
      outC = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
      tmp = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
 
-     linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
-     impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
+     linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds, tol);
+     impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds, tol);
 
      if (p->kind == PROBLEM_COMPLEX || p->sign == -1)
-	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, TIME_SHIFT);
+	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, tol, TIME_SHIFT);
      if (p->kind == PROBLEM_COMPLEX || p->sign == 1)
-	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, FREQ_SHIFT);
+	  tf_shift(p, inA, inB, outA, outB, tmp, rounds, tol, FREQ_SHIFT);
 
      bench_free(tmp);
      bench_free(outC);
@@ -352,14 +347,14 @@ static void do_verify(struct problem *p, unsigned int rounds)
      bench_free(inA);
 }
 
-void verify(const char *param, int rounds)
+void verify(const char *param, int rounds, double tol)
 {
      struct problem *p;
      p = problem_parse(param);
      BENCH_ASSERT(can_do(p));
      problem_zero(p);
      setup(p);
-     do_verify(p, rounds);
+     do_verify(p, rounds, tol);
      problem_destroy(p);
      if (verbose)
 	  ovtpvt("#t\n");

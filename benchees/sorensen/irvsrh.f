@@ -172,7 +172,7 @@ CC      this header is included and left intact                    CC
 CC                                                                 CC
 CC=================================================================CC
         SUBROUTINE RBITREV(X,M)
-        DIMENSION X(1),ITAB(1)
+        DIMENSION X(1),ITAB(256)
 C-------Initialization of ITAB array--------------------------------C
         M2 = M/2
         NBIT = 2**M2

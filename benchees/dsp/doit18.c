@@ -18,6 +18,7 @@ int can_do(struct problem *p)
 	     p->rank == 1 &&
 	     problem_complex_power_of_two(p, 1) &&
 	     ((log_2(p->n[0]) & 1) == 0) && 	     /* power of 4 */
+	     p->n[0] > 4 &&
 	     p->n[0] <= 1024);
 }
 
