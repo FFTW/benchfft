@@ -9,12 +9,15 @@ esac
 data=$1
 dname=`basename $data .speed`
 
+outoforder='djbfft|athfft|pfftw'
+
 for rank in 1 2 3; do
     for problem in dcxx drxx; do
 	for p2 in p2 np2; do
 	    pat=`echo $problem | sed 's/xx/[io][fb]/g'`
 	    (sh $sd/plot-title.sh $problem $rank $p2;
-		egrep "$pat" $data | perl $sd/grep-rank.pl $rank |
+		egrep "$pat" $data | egrep -v "$outoforder" |
+		perl $sd/grep-rank.pl $rank |
 		perl $sd/grep-${p2}.pl | perl $sd/grace-plot.pl --no-dups) |
 		gracebat -pipe -printfile ${dname}.${rank}d.${problem}.${p2}.ps
 	    echo "${dname}.${rank}d.${problem}.${p2}.ps"
@@ -27,7 +30,8 @@ for rank in 1 2 3; do
 	for p2 in p2 np2; do
 	    pat=`echo $problem | sed 's/xx/[io][fb]/g'`
 	    (sh $sd/plot-title.sh $problem $rank $p2;
-		egrep "$pat" $data | perl $sd/grep-rank.pl $rank |
+		egrep "$pat" $data | egrep -v "$outoforder" |
+		perl $sd/grep-rank.pl $rank |
 		perl $sd/grep-${p2}.pl | perl $sd/grace-plot.pl --no-dups) |
 		gracebat -pipe -printfile ${dname}.${rank}d.${problem}.${p2}.ps
 	    echo "${dname}.${rank}d.${problem}.${p2}.ps"
