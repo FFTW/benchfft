@@ -18,8 +18,9 @@ type=${3-speed}
 
 rm -rf $dir/$name
 mkdir $dir/$name || exit 1
+mkdir $dir/$name/data
 
-cp $tgz $dir/$name
+cp $tgz $dir/$name/data
 
 cat > $dir/$name/index.html <<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
@@ -45,12 +46,20 @@ echo '</h1>' >> $dir/$name/index.html
 echo "<p>" >> $dir/$name/index.html
 tail +2 $desc >> $dir/$name/index.html
 
-cd $dir/$name
+cd $dir/$name/data
 tgz=`basename $tgz`
-
 tar xzf $tgz
-mkdir data
-mv `ls $name.* |grep -v $tgz` data
+
+# sanitize
+verboten='djbfft athfft pfftw'
+for suff in speed accuracy config.h config.log config.status; do
+    egrep -i -v "$verboten" ${name}.${suff} > foo && mv -f foo ${name}.${suff}
+done
+guile -s $sd/sanitize.scm < ${name}.info > foo && mv -f foo ${name}.info
+rm $tgz
+tar czf $tgz ${name}.*
+
+cd ..
 
 echo '<p>Compilers and flags (unless overridden):</p> <ul>' >> index.html
 
@@ -81,8 +90,8 @@ sh $sd/standard-plots.sh data/${name}.${type} |while read ps; do
     echo '<p align="center"><img src="'$png'" width="'$width'" height="'$height'">' >> index.html
 done
 
-cp -f $tgz /home/fftw/ftp/numbers/$tgz
-rm -rf data $tgz
+cp -f data/$tgz /home/fftw/ftp/numbers/$tgz
+rm -rf data
 
 cat >> index.html <<EOF
 </body>
