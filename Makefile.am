@@ -3,7 +3,7 @@ ACLOCAL_AMFLAGS=-I ./m4
 
 SUBDIRS = libbench benchees scripts
 
-EXTRA_DIST = COPYRIGHT bootstrap.sh
+EXTRA_DIST = COPYRIGHT bootstrap.sh m4
 
 OUTFILE=
 
