@@ -116,6 +116,7 @@ while (@ARGV) {
 	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
 	   "gsl-radix2-dit" => "violet:dot:1:violet:circle:0.5:none",
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
+	   "hp-mlib" => "black:solid:1:black:star:0.5:none",
 	   "intel-ipps" => "black:solid:2:black:circle:0.2:black",
 	   "intel-mkl" => "black:solid:1:black:circle:0.5:black",
 	   "intel-mkl-dfti in-place" => "black:dot:1:black:square:0.3:black",
