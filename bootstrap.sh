@@ -1,13 +1,13 @@
 # script to initialize automake/autoconf etc
 echo "Please ignore warnings and errors"
-autoheader2.50
+autoheader
 aclocal
 automake --add-missing
-autoconf2.50
-autoheader2.50
+autoconf
+autoheader
 aclocal
 automake --add-missing
-autoconf2.50
+autoconf
 
 rm -f config.cache
 
