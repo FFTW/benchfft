@@ -2,6 +2,10 @@
 
 echo -n "@title \""
 
+if test $# -gt 3; then
+    echo -n "$4"
+fi
+
 problem=$1
 case $problem in
     dci*) echo -n "double-precision complex, in-place" ;;
