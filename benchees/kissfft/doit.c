@@ -8,13 +8,13 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "1.1.1")
-BENCH_DOC("year", "2003")
+BENCH_DOC("version", "1.2.1")
+BENCH_DOC("year", "2004")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
 BENCH_DOC("url", "http://sourceforge.net/projects/kissfft/")
 BENCH_DOC("copyright",
-"Copyright (c) 2003, Mark Borgerding\n"
+"Copyright (c) 2003-2004, Mark Borgerding\n"
 "\n"
 "All rights reserved.\n"
 "\n"
@@ -95,19 +95,19 @@ void doit(int iter, struct problem *p)
 	  if (p->in_place) {
 	       if (p->rank == 1)
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fft(cfg, in, in);
+			 kiss_fft((kiss_fft_cfg) cfg, in, in);
 	       else
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftnd(cfg, in, in);
+			 kiss_fftnd((kiss_fftnd_cfg) cfg, in, in);
 	  }
 	  else {
 	       kiss_fft_cpx *out = (kiss_fft_cpx *) p->out;
 	       if (p->rank == 1)
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fft(cfg, in, out);
+			 kiss_fft((kiss_fft_cfg) cfg, in, out);
 	       else
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftnd(cfg, in, out);
+			 kiss_fftnd((kiss_fftnd_cfg) cfg, in, out);
 	  }
      }
      else if (p->kind == PROBLEM_REAL) {
@@ -116,12 +116,13 @@ void doit(int iter, struct problem *p)
 
 	       if (p->in_place) {
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftri(cfg, in, (kiss_fft_scalar *) in);
+			 kiss_fftri((kiss_fftr_cfg) cfg, 
+				    in, (kiss_fft_scalar *) in);
 	       }
 	       else {
 		    kiss_fft_scalar *out = (kiss_fft_scalar *) p->out;
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftri(cfg, in, out);
+			 kiss_fftri((kiss_fftr_cfg) cfg, in, out);
 	       }
 	  }
 	  else {
@@ -129,12 +130,13 @@ void doit(int iter, struct problem *p)
 
 	       if (p->in_place) {
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftr(cfg, in, (kiss_fft_cpx *) in);
+			 kiss_fftr((kiss_fftr_cfg) cfg, 
+				   in, (kiss_fft_cpx *) in);
 	       }
 	       else {
 		    kiss_fft_cpx *out = (kiss_fft_cpx *) p->out;
 		    for (i = 0; i < iter; ++i) 
-			 kiss_fftr(cfg, in, out);
+			 kiss_fftr((kiss_fftr_cfg) cfg, in, out);
 	       }
 	  }
      }
