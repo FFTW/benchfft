@@ -38,13 +38,6 @@ while (@ARGV) {
 # (The default symbol-size/line-width is 1.0.)
 
 %styles = (
-	   "arndt-4step" => "yellow:solid:2:yellow:circle:0.25:none",
-	   "arndt-dif" => "yellow:solid:1:yellow:circle:0.5:none",
-	   "arndt-dit" => "yellow:solid:1:yellow:circle:0.5:yellow",
-	   "arndt-fht" => "yellow:dot:1:yellow:triangle-up:0.5:none",
-	   "arndt-ndim" => "yellow:dash:1:yellow:star:1:none",
-	   "arndt-split" => "yellow:dotdotdash:1:yellow:square:0.7:none",
-	   "arndt-twodim" => "yellow:dot:1:yellow:diamond:0.7:none",
 	   "arprec" => "green4:solid:1:green4:circle:0.5:none",
 	   "athfft" => "indigo:dot:1:indigo:circle:0.5:none",
 	   "bloodworth" => "red:dot:1:red:square:0.5:none",
