@@ -401,7 +401,7 @@ cat <<EOF
              Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
-Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
+Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-${have_mkl_itp-no}}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                                           Intel IPPS (gratis): ${have_ipps-no}
                                             AMD ACML (gratis): ${have_acml-no}
