@@ -1,0 +1,111 @@
+Dear Steven and Matteo: several people have suggested that I submit
+my Fortran-90 1-D FFT code for you to benchmark. The gzipped source
+files for the forward and inverse transforms are available via
+anonymous ftp to nigel.mae.cwru.edu, then
+
+cd /pub/archived
+get fft_radix8_fwd_bench_rc.f90.gz
+get fft_radix8_rev_bench_rc.f90.gz
+
+Some notes:
+
+- The above source files assume the forward transform is of a real
+  vector of length N, treated as a complex vector of length N/2,
+  and similarly for the inverse transform. To do a strictly complex
+  transform, simply delete the real/complex wrapper routines dfft_fwd
+  and dfft_rev at the beginning of each source file, and call the
+  remaining complex FFT routines, setting N (the real dimension)
+  equal to twice the complex vector length.
+
+- The routines are for power-of-2 lengths only, with (real-vector)
+  lengths ranging from 2^4 to 2^19. Longer vector lengths require
+  only minor modifications. I'm working on non-power-of-2 routines,
+  but they're not yet as efficient as I'd like.
+
+- The code is intended for applications where there are multiple
+  calls to the FFT routines with vectors of the same length. The
+  trigonometric initializations are thus done without recurrences
+  (and using extended-precision real arithmetic where available).
+  This is accurate but expensive, so the true speed of the algorithm
+  only emerges when several tens (or hundreds) of vectors are FFT'd.
+
+- Most of the code development has taken place on a DEC Alpha 21064,
+  but I have tried to make most of the optimizations be of a reasonably
+  generic variety (higher radices, good data locality, etc.)
+
+- I have tried the code on 3 platforms, here are the compile options
+  that seem to work best:
+
+   (1) Digital Equipment Corp. Fortran 90 V4.x compiler for DEC Unix V3+: use
+
+   f90 -O4 -Olimit 100000 -o {executable} {driver routine}.f90 fft_radix8_*_bench_rc.f90
+
+   (NOTE: DEC Fortran90 allows a -O5 optimization level, but it's still a
+    bit buggy. The code runs no faster with this optimization level than
+    with -O4, and may not run at all on some systems when -O5 is used.)
+
+   (2) SGI : compile using
+
+   f90 -O3 -static -mips3 -o ...
+
+   (3) Sparc : Fortran 90 V1.x compiler for Solaris. Compile using
+
+   f90 -O3 -o ...
+
+   (NOTE: Although the Sparc F77 compiler supports a 16-byte extended-
+   precision real data type, this does not appear to be supported on
+   their F90 compiler, at least not at this writing. The code should
+   compile o.k., but will be slightly less accurate than it would be
+   were real*16 supported. Speed should not be affected signifcantly.
+   Also, I found -O3 to give better results than higher optimization
+   levels (e.g. -fast), but this may be system-dependent.
+
+Here is a simple example of a driver routine I use to test the code
+for accuracy (DFFT_REF refers to some reference code):
+
+	program fft_test
+!...
+	implicit none
+	integer:: i,j,k,n,nh
+	real*8 :: tmp
+	real*8, allocatable :: a(:),b(:)
+
+	print*,'enter (real-vector) FFT length>'
+	read*,n
+	allocate(a(n),b(n))
+
+!...initialize arrays
+	do i=1,n
+	a(i)=i
+	enddo
+	b=a
+
+	call dfft_ref(a,n)
+	call dfft_fwd(b,n)
+
+	do i=1,n
+	tmp=abs(a(i)-b(i))
+	if(tmp>1d-8)print*,'difference: I=',i,tmp
+	enddo
+
+	end
+
+Let me know if you have any problems. I'll be interested to hear
+how the code times out vs. FFTW on various systems.
+
+Regards,
+Ernst
+
+p.s.: No relation to Ron, so far as I know. You may want to add
+a first initial to your benchmarks to differentiate us.
+
+Ernst Mayer
+Assistant Professor
+Dept. of Mechanical & Aerospace Engineering
+Case Western Reserve University
+10900 Euclid Avenue
+Cleveland, OH 44106-7222
+Phone: 216-368-6453
+Fax:   216-368-6445
+E-Mail: mayer@nigel.mae.cwru.edu
+Homepage: http://k2.scl.cwru.edu/cse/emae/faculty/mayer/
