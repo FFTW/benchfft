@@ -19,18 +19,18 @@ END_BENCH_DOC
 
 #include "fftc4.h"
 #include "fftc8.h"
+#include "fftr4.h"
+#include "fftr8.h"
 #include "fftfreq.h"
 
 static void (*fft)();
 
 int can_do(struct problem *p)
 {
-     return p->rank == 1 &&
-	  problem_complex_power_of_two(p, 1) && 
-	  p->n[0] <= 8192;
+     return p->rank == 1 && problem_power_of_two(p, 1) && p->n[0] <= 8192;
 }
 
-void problem_ccopy_from(struct problem *p, bench_complex *in)
+void copy_c2c_from(struct problem *p, bench_complex *in)
 {
      if (p->sign == 1)
 	  /* in-order input for backward transforms */
@@ -44,7 +44,7 @@ void problem_ccopy_from(struct problem *p, bench_complex *in)
      }
 }
 
-void problem_ccopy_to(struct problem *p, bench_complex *out)
+void copy_c2c_to(struct problem *p, bench_complex *out)
 {
      if (p->sign == 1) {
 	  unsigned int i;
@@ -55,6 +55,82 @@ void problem_ccopy_to(struct problem *p, bench_complex *out)
      } else {
 	  /* in-order output for forward transforms */
 	  cacopy(p->out, out, p->n[0]);
+     }
+}
+
+/* interleaved input and out of order output.  What a f*cking idiot */
+void copy_c2r(struct problem *p, bench_complex *in)
+{
+     unsigned int i;
+     unsigned int n = p->size;
+     bench_real *pin = p->in;
+
+     for (i = 0; i < n / 2; ++i) {
+	  pin[2 * i] = c_re(in[i]);
+	  pin[2 * i + 1] = c_re(in[i + n / 2]);
+     }
+}
+
+void copy_r2c(struct problem *p, bench_complex *out)
+{
+     unsigned int i;
+     unsigned int n = p->size;
+     bench_real *pout = p->out;
+
+     for (i = 0; i < n / 2; ++i) {
+	  c_re(out[i]) = pout[2 * i]; 
+	  c_im(out[i]) = 0;
+	  c_re(out[i + n / 2]) = pout[2 * i + 1];
+	  c_im(out[i + n / 2]) = 0;
+     }
+}
+
+void copy_h2c(struct problem *p, bench_complex *out) 
+{
+     unsigned int k, n;
+     bench_real *pout = p->out;
+
+     BENCH_ASSERT(p->rank == 1);
+     BENCH_ASSERT(p->kind == PROBLEM_REAL);
+
+     n = p->n[0];
+
+     if (n > 0) {
+	  c_re(out[0]) = pout[0];
+	  c_im(out[0]) = 0;
+
+	  c_re(out[n / 2]) = pout[1];
+	  c_im(out[n / 2]) = 0;
+     }
+
+     for (k = 2; k < n; k += 2) {
+          int f = fftfreq_r(k, n);
+	  c_re(out[f]) = pout[k];
+	  c_im(out[f]) = -pout[k + 1];
+	  c_re(out[n - f]) = pout[k];
+	  c_im(out[n - f]) = pout[k + 1];
+     }
+}
+
+void copy_c2h(struct problem *p, bench_complex *in) 
+{
+     unsigned int k, n;
+     bench_real *pin = p->in;
+
+     BENCH_ASSERT(p->rank == 1);
+     BENCH_ASSERT(p->kind == PROBLEM_REAL);
+
+     n = p->n[0];
+
+     if (n > 0) {
+	  pin[0] = c_re(in[0]);
+	  pin[1] = c_re(in[n / 2]);
+     }
+
+     for (k = 2; k < n; k += 2) {
+          int f = fftfreq_r(k, n);
+	  pin[k] = c_re(in[f]);
+	  pin[k + 1] = - c_im(in[f]);
      }
 }
 
@@ -77,17 +153,33 @@ switch (p->n[0]) {				\
 
 void setup(struct problem *p)
 {
-     if (SINGLE_PRECISION) {
-	  if (p->sign == 1) {
-	       CASE(p, fft, fftc4_);
+     if (p->kind == PROBLEM_COMPLEX) {
+	  if (SINGLE_PRECISION) {
+	       if (p->sign == 1) {
+		    CASE(p, fft, fftc4_);
+	       } else {
+		    CASE(p, fft, fftc4_un);
+	       }
 	  } else {
-	       CASE(p, fft, fftc4_un);
+	       if (p->sign == 1) {
+		    CASE(p, fft, fftc8_);
+	       } else {
+		    CASE(p, fft, fftc8_un);
+	       }
 	  }
      } else {
-	  if (p->sign == 1) {
-	       CASE(p, fft, fftc8_);
+	  if (SINGLE_PRECISION) {
+	       if (p->sign == -1) {
+		    CASE(p, fft, fftr4_);
+	       } else {
+		    CASE(p, fft, fftr4_un);
+	       }
 	  } else {
-	       CASE(p, fft, fftc8_un);
+	       if (p->sign == -1) {
+		    CASE(p, fft, fftr8_);
+	       } else {
+		    CASE(p, fft, fftr8_un);
+	       }
 	  }
      }
 }
@@ -95,7 +187,7 @@ void setup(struct problem *p)
 void doit(int iter, struct problem *p)
 {
      int i;
-     bench_complex *in = p->in;
+     void *in = p->in;
      void (*FFT)() = fft; /* cache */
 
      for (i = 0; i < iter; ++i) {
