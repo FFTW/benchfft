@@ -16,6 +16,7 @@ help="
 Try \`$me --help' for more information."
 
 verify="no"
+maxn=1048576
 
 while test $# -gt 0 ; do
   case $1 in
@@ -81,13 +82,18 @@ name=`$program --info name`
 for place in $PLACE; do
   for reality in $REALITY; do
     for size in $ALL_SIZES; do
+      s=`echo $size | sed -e "s/x/ '*' /g"`
+      if test `eval "expr $s"` -gt $maxn; then
+         continue
+      fi
+
       for dir in $DIRECTIONS; do
         problem=${place}${reality}${dir}${size}
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
 	   test "$verify" = "no" || $program --verify $problem || exit 1
            time=`$program --report-benchmark --time-min $time_min --speed $problem`
-	   echo "$name $problem $precision $time $program $time_min"
+	   echo "$name $precision $problem $time"
         fi
       done
     done
