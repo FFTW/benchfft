@@ -99,7 +99,7 @@ while (@ARGV) {
 	   "fxt-split" => "grey:solid:1:grey:square:0.7:yellow",
 	   "fxt-split-real" => "grey:solid:1:grey:square:0.7:yellow",
 	   "fxt-twodim" => "grey:solid:1:grey:diamond:0.7:yellow",
-	   "fxt-wrap-real" => "grey:solid:1:yellow:grey:0.5:yellow",
+	   "fxt-wrap-real" => "grey:solid:1:yellow:diamond:0.5:yellow",
 	   "goedecker" => "brown:solid:2:brown:circle:0.25:none",
 	   "gpfa" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
