@@ -81,9 +81,13 @@
 	       (writeln "<li>Benchmarked variants:")
 	       (writeln "<ul>")
 	       (for-each (lambda (e) (if (not (null? e)) (htmlize-one #f e)))
-			 specific-entries)
+			 (sort specific-entries compare-entries))
 	       (writeln "</ul>")))
 	 (writeln "</ul>")))
+
+(define (compare-entries e1 e2)
+  (define (n e) (cadr (assoc 'name e)))
+  (string-ci<? (string-downcase (n e1)) (string-downcase (n e2))))
 
 (define (assoc* sym l)
   (filter (lambda (x) (eq? sym (car x))) l))
