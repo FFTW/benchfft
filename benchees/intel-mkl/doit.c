@@ -10,8 +10,8 @@
 static const char *mkvers(void)
 {
 #if HAVE_MKLGETVERSIONSTRING
-     static char buf[60];
-     MKLGetVersionString(buf, 60);
+     static char buf[160];
+     MKLGetVersionString(buf, 160);
      return buf;
 #else
      return "unknown"
