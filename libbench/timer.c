@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.5 2002-08-15 14:23:58 athena Exp $ */
+/* $Id: timer.c,v 1.6 2002-08-16 12:09:55 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>

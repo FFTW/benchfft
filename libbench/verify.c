@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.25 2002-08-15 14:23:58 athena Exp $ */
+/* $Id: verify.c,v 1.26 2002-08-16 12:09:55 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -289,7 +289,7 @@ static double linear(struct problem *p,
      return e;
 }
 
-static double impulse(struct problem *p,
+static double impulse0(struct problem *p,
 		      bench_complex *inA,
 		      bench_complex *inB,
 		      bench_complex *inC,
@@ -301,15 +301,8 @@ static double impulse(struct problem *p,
 		      double tol)
 {
      unsigned int n = p->size;
-     const bench_complex one = {1.0, 0.0};
-     const bench_complex zero = {0.0, 0.0};
      unsigned int i;
      double e = 0.0;
-
-     /* test 2: check that the unit impulse is transformed properly */
-     caset(inA, n, zero);
-     inA[0] = one;
-     caset(outA, n, one);
 
      /* a simple test first, to help with debugging: */
      do_fft(p, inA, outB);
@@ -323,6 +316,38 @@ static double impulse(struct problem *p,
 	  caadd(tmp, outB, outC, n);
 	  e = dmax(e, acmp(tmp, outA, n, "impulse response", tol));
      }
+     return e;
+}
+
+static double impulse(struct problem *p,
+		      bench_complex *inA,
+		      bench_complex *inB,
+		      bench_complex *inC,
+		      bench_complex *outA,
+		      bench_complex *outB,
+		      bench_complex *outC,
+		      bench_complex *tmp,
+		      unsigned int rounds,
+		      double tol)
+{
+     double e;
+     const bench_complex one = {1.0, 0.0};
+     const bench_complex zero = {0.0, 0.0};
+     unsigned int n = p->size;
+
+     /* test 2: check that the unit impulse is transformed properly */
+     caset(inA, n, zero);
+     inA[0] = one;
+     caset(outA, n, one);
+     e = impulse0(p, inA, inB, inC, outA, outB, outC, tmp, rounds, tol);
+
+     /* check that ones(n, 1) is transformed properly */
+     caset(inA, n, one);
+     caset(outA, n, zero);
+     c_re(outA[0]) = n;
+     e = dmax(impulse0(p, inA, inB, inC, outA, outB, outC, tmp, rounds, tol),
+	      e);
+     
      return e;
 }
 
@@ -423,54 +448,68 @@ static void do_verify(struct problem *p, unsigned int rounds, double tol)
      bench_free(inA);
 }
 
-static void do_accuracy(struct problem *p)
+static void do_accuracy(struct problem *p, int rounds)
 {
      extern void mfft(unsigned int n, bench_complex *a, int sign);
      unsigned int n, i;
+     int r;
      bench_complex *a, *b;
      bench_real e1, n1, e2, n2, einf, ninf;
+     bench_real t1, t2, tinf;
 
      /* only works for these cases */
      BENCH_ASSERT(p->rank == 1);
      BENCH_ASSERT(p->vrank == 0);
-     BENCH_ASSERT(problem_power_of_two(p, 0) || problem_power_of_two(p, 1));
 
      n = p->n[0],
      a = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
      b = (bench_complex *) bench_malloc(n * sizeof(bench_complex));
      
-     arand(a, n);
-     if (p->kind == PROBLEM_REAL) {
-	  if (p->sign == -1) 
-	       mkreal(a, n); 
-	  else
-	       mkhermitian(a, p->rank, p->n);
-     }
+     t1 = t2 = tinf = 0.0;
+     for (r = 0; r < rounds; ++r) {
+	  e1 = e2 = einf = 0.0;
+	  n1 = n2 = ninf = 0.0;
 
-     do_fft(p, a, b);
-     mfft(n, a, p->sign);
+	  arand(a, n);
 
-     e1 = e2 = einf = 0.0;
-     n1 = n2 = ninf = 0.0;
-     for (i = 0; i < n; ++i) {
+	  if (p->kind == PROBLEM_REAL) {
+	       if (p->sign == -1) 
+		    mkreal(a, n); 
+	       else
+		    mkhermitian(a, p->rank, p->n);
+	  }
 
-#         define DO(x1, x2, xinf, var) {			\
-              bench_real d = var;				\
-	      if (d < 0) d = -d;				\
-	      x1 += d; x2 += d * d; if (d > xinf) xinf = d;	\
-          }
-	  DO(n1, n2, ninf, c_re(b[i]));
-	  DO(n1, n2, ninf, c_im(b[i]));
-	  DO(e1, e2, einf, c_re(a[i]) - c_re(b[i]));
-	  DO(e1, e2, einf, c_im(a[i]) - c_im(b[i]));
+	  do_fft(p, a, b);
+	  mfft(n, a, p->sign);
+
+	  for (i = 0; i < n; ++i) {
+
+#              define DO(x1, x2, xinf, var) {				\
+                    bench_real d = var;					\
+	            if (d < 0) d = -d;					\
+	            x1 += d; x2 += d * d; if (d > xinf) xinf = d;	\
+               }
+	       DO(n1, n2, ninf, c_re(b[i]));
+	       DO(n1, n2, ninf, c_im(b[i]));
+	       DO(e1, e2, einf, c_re(a[i]) - c_re(b[i]));
+	       DO(e1, e2, einf, c_im(a[i]) - c_im(b[i]));
 #         undef DO
+	  }
+
+	  e1 /= n1;
+	  e2 = e2 / n1;
+	  einf /= ninf;
+
+	  t1 += e1;
+	  t2 += e2;
+	  tinf = dmax(tinf, einf);
      }
-     e1 /= n1;
-     e2 = sqrt(e2 / n1);
-     einf /= ninf;
+
+     t1 /= rounds;
+     t2 = sqrt(t2 / rounds);
 
      printf("%10d %6.2e %6.2e %6.2e\n",
-	    n, (double)e1, (double)e2, (double)einf);
+	    n, (double)t1, (double)t2, (double)tinf);
 }
 
 void verify(const char *param, int rounds, double tol)
@@ -486,7 +525,7 @@ void verify(const char *param, int rounds, double tol)
      problem_destroy(p);
 }
 
-void accuracy(const char *param)
+void accuracy(const char *param, int rounds)
 {
      struct problem *p;
      p = problem_parse(param);
@@ -494,7 +533,7 @@ void accuracy(const char *param)
      problem_alloc(p);
      problem_zero(p);
      setup(p);
-     do_accuracy(p);
+     do_accuracy(p, rounds);
      done(p);
      problem_destroy(p);
 }

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: speed.c,v 1.8 2002-08-15 14:23:58 athena Exp $ */
+/* $Id: speed.c,v 1.9 2002-08-16 12:09:55 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
