@@ -1,0 +1,12 @@
+74c74
+<               call ccperr(1,' stop in fftlib.for 1000')
+---
+> c              call ccperr(1,' stop in fftlib.for 1000')
+1411c1411
+<               call ccperr(1,' stop in fftlib.for 2000')
+---
+> c              call ccperr(1,' stop in fftlib.for 2000')
+1611c1611
+<           call ccperr(1,' stop in fftlib.for 3000')
+---
+> c          call ccperr(1,' stop in fftlib.for 3000')

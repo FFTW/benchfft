@@ -1,0 +1,252 @@
+Documentation for the Ten Eyck FFT routines from the manual for the
+CCP4 package, which is available gratis for non-commercial use from:
+
+		http://www.ccp4.ac.uk/
+
+(Note that we downloaded the Ten Eyck routines from a completely
+different source, and the code is apparently without restrictions.)
+
+------------------------------------------------------------------------------
+
+   Description of the FFT routines
+       The  main  entry  to  the  FFT  subroutines  is  via   the
+       subroutine   CMPLFT  which is an organisational subroutine
+       calling the following subroutines:
+
+       a)   SRFP (Symmetrised Reordering Factoring Program)  fac-
+       tors  N   and   saves  some  information about the factors
+       which will be useful later.
+
+       b)   MDFTKD  (Multi-Dimensional  Fourier  Transform   Ker-
+       nel   Driver)   goes  through the list of factors of N and
+       calls an appropriate  subroutine to deal with each one. If
+       one  inspects the calling sequences for  the is a trick of
+       coding due to G. Sande  which  will   force   any    idiot
+       FORTRAN compiler to produce optimal code for subscipts  of
+       the  form I*J+K by converting  them   into   simple   sub-
+       scripts.   This   trick   is perfectly legitimate standard
+       FORTRAN; if your compiler  objects,  it is compiling some-
+       thing other than FORTRAN.
+
+       c)   DIPRP  (Double  In-Place  Reordering  Program)  sorts
+       the   Fourier transform into its natural order  using  the
+       information saved by SRFP.  This subroutine contains a set
+       of fourteen nested DO-loops, which may cause some  compil-
+       ers  trouble. If so, reduce the value of the variable NEST
+       in both  SRFP and DIPRP from fourteen  to   some   smaller
+       value,  remove  the  appropriate  number of loops from the
+       innermost   part  of the nest, and replace the variable  N
+       inside  the  loops with  with  the control variable of the
+       innermost remaining loop.
+
+       MDFTKD calls RPCFTK for all factors not treated as special
+       cases   by  another  subroutine. RPCFTK is capable of han-
+       dling all factors  from   three  to  nineteen,  inclusive.
+       Therefore the minimum requirement for the  program to work
+       is R2CFTK and RPCFTK. There is  a  substantial   advantage
+       in   using  specific routines for other low factors and in
+       the present version subroutines R3CFTK, R4CFTK, R5CFTK and
+       R8CFTK  are  used  for  factors of 3,  4,  5 and 8 respec-
+       tively.
+
+       In total six Fourier transform subroutines  are   provided
+       to   exploit  various  transform  symmetries. As mentioned
+       above the basic  subroutine  is CMPLFT, which calculates a
+       complex  Fourier  transform  on  one  dimension  of multi-
+       dimensional data. The remaining five subroutines are  con-
+       cerned   with data which have special symmetries along the
+       axis  being  transformed;  in all cases they calculate the
+       unique  portion  of the  transform  given  only the unique
+       portion of the data. The subroutines  provided  correspond
+       to  the  reciprocal space symmetries asociated with diads,
+       screw  diads,  inversion centres, and mirror planes. These
+       subroutines  are  also  sufficient for  the calculation of
+       structure factors from electron  density  maps  containing
+       the  specified  symmetry  elements. No subroutines to deal
+       with glide planes have yet been written. All of the  other
+       subroutines  call CMPLFT,  and  all  of them have the same
+       parameter structure.
+
+        CMPLFT
+
+             CMPLFT is called as follows:
+
+                    CALL CMPLFT (X, Y, N, I)
+
+       where X and Y are  the  real  and   imaginary   parts   of
+       the   data   to   be  transformed,  N is the length of the
+       transform, and I is an  integer  array of length  5  which
+       specifies  the  mapping function to index through X and Y.
+       If X and Y are dimensioned for k subscripts, each with   a
+       range   ni,   the elements of I are specified thus for the
+       j'th subscript:
+
+                k
+        I(1) =  Pi  ni = total size of the array.
+              i=1
+
+               j-1
+        I(2) =  Pi  ni = separation between elements of X differing
+              i=1        by 1 in subscript j.
+
+                j
+        I(3) =  Pi  ni = separation between elements of X differing
+               i=1       by 1 in subscript j+1.
+
+        I(4) = I(2)
+
+        I(5) = 1.
+
+
+       The extra information in I(4) and I(5)  is  used  to  pro-
+       vide   some   extra  flexibility  in  indexing  as will be
+       described later. The values are used  in  DOloop  indices.
+       When calculating multiple transforms in parallel one  must
+       cover all elements of X and Y for which subscript  j   has
+       some   particular value. To cover all elements for which j
+       = j0, the  following  formula  is used.
+
+                  J1 = (J0 - 1)*I(2) + 1
+                  DO 100 J2 = J1, I(1), I(3)
+                  J3 = J2 + I(4) - 1
+                  DO 100 J = J2, J3, I(5)
+                  ........
+              100 CONTINUE
+
+
+       Naturally  the  DO-loop  parameters  in  the  actual  pro-
+       grams   are   not subscripted.
+
+       The  parameter  I(5) is a spacing between consecutive ele-
+       ments of X and Y which permits the interleaving of X and Y
+       in  storage  --  i.e. they may be stored as normal FORTRAN
+       complex numbers with the real and imaginary parts  occupy-
+       ing consecutive storage locations. In this case I(5)  =  2
+       and  all other elements of I are  doubled.  The  parameter
+       I(4)  is  used  in  those  cases in which it is desired to
+       avoid calculating the transform of part  of  the data; for
+       example certain rows may be known to be zero.
+
+       Another use for I(4) and I(5) is in transforming the first
+       dimension of an array. In this  case  application  of  the
+       given   formulae   causes  the calculation to be driven by
+       the outer DO-loop. The  following  definitions cause it to
+       be driven more efficiently by the inner loop.
+
+                          k
+             I(1) = I(2)  Pi  ni.
+                         i=1
+
+             I(2) = 1 for separate real and imaginary  parts,
+                    2  for  interleaved data.
+
+             I(3) = I(1)
+             I(4) = I(1)
+             I(5) = I(2)n1
+
+
+       The   following   examples  illustrate  the  use  of  CMPL
+       FT   on   a three-dimensional problem for the  two   cases
+       of  separately  stored  and interleaved data.
+
+             DIMENSION X(30,20,40), Y(30,20,40), Z(30,20,40), A(2)
+             DIMENSION I(5)
+             COMPLEX Z
+             EQUIVALENCE (A(1), Z(1,1,1))
+        C    first separate data
+             I(1) = 30*20*40
+             I(2) = 30*20
+             I(3) = 30*20*40
+             I(4) = 30*20
+             I(5) = 1
+             CALL CMPLFT (X, Y, 40, I)
+             I(2) = 30
+             I(3) = 30*20
+             I(4) = 30
+             CALL CMPLFT (X, Y, 20, I)
+             I(2) = 1
+             I(3) = I(1)
+             I(4) = I(1)
+             I(5) = 30
+             CALL CMPLFT (X, Y, 30, I)
+        C    now for the case of fortran complex data
+             I(1) = 2*30*20*40
+             I(2) = 2*30*20
+             I(3) = 2*30*20*40
+             I(4) = 2*30*20
+             I(5) = 2
+             CALL CMPLFT (A(1), A(2), 40, I)
+             I(2) = 2*30
+             I(3) = 2*30*20
+             I(4) = 2*30
+             CALL CMPLFT (A(1), A(2), 20, I)
+             I(2) = 2
+             I(3) = I(1)
+             I(4) = I(1)
+             I(5) = 2*30
+             CALL CMPLFT (A(1), A(2), 30, I)
+             STOP
+             END
+
+
+   HERMFT
+       HERMFT  is designed to transform data which  is  Hermitian
+       symmetric along   the   axis   being   transformed   .  It
+       accepts   as   input  the  unique half of the sequence and
+       replaces it with  the  real  transform.  Since   a  Hermi-
+       tian  symmetric  sequence of length 2N contains N+1 unique
+       real numbers and N-1 unique imaginary  numbers,  the  real
+       value  for  X(N)  is stored in the imaginary part of X(0).
+       (Add one to the  true  subscripts  to  obtain  the FORTRAN
+       subscripts). The call is
+
+                  CALL HERMFT (X, Y, N, I)
+
+       where I is as described for CMPLFT. The program returns 2N
+       real  numbers, with the even terms (when indexed  starting
+       from zero) in  X  and  the  odd terms in Y.
+
+   REALFT
+       REALFT  is the inverse of HERMFT. Given a real sequence of
+       length 2N it will return the unique portion of the Fourier
+       transform   as   a   complex  sequence  of length N+1. The
+       first  and  last  elements  of  the  sequence returned are
+       real.  Note that this differs from  the  arrangement  used
+       in HERMFT. The reason for this choice is that the point at
+       1/2 is frequently of special interest. The input data must
+       allow for the extra location. The call is
+
+                         CALL REALFT (X, Y, N, I)
+
+       where X contains the even numbered part of the data and  Y
+       contains  the  odd  numbered  part of the data. (True sub-
+       scripts, not FORTRAN  subscripts).   On  return  the  real
+       parts will be in X and the imaginary parts will be in Y.
+
+   RSYMFT
+       RSYMFT   calculates   the  Fourier  transform  of  a  real
+       symmetric sequence. The transform is also  real  and  sym-
+       metric.  A  real  symmetric sequence of length 2N contains
+       N+1 unique points. These are the   input   to  RSYMFT;  no
+       scratch locations are required. The call is.
+
+                         CALL RSYMFT (X, N, I)
+
+       where  the  axis  being transformed contains N+1 values. N
+       must be a multiple of four. RSYMFT calls HERMFT.
+
+   SDIAD
+       SDIAD calculates the Fourier transform of a sequence  with
+       alternating  Hermitian symmetry and anti-symmetry,  as  is
+       found  with  a  screw  diad passing  through  the  origin.
+       Only  the  unique  half  of the data is presented, and the
+       unique half of the Fourier transform  is   returned.   The
+       remaining  half  of the transform is the complex conjugate
+       of  the  first  half.  One scratch location is required at
+       the end of each sequence transformed.  The call is
+                          CALL SDIAD (X, Y, N, I)
+
+       where  the length of the axis to be transformed is N+1  to
+       allow  for  the scratch location.  The  correct  transform
+       value  is returned in  the  scratch location, so it is not
+       a complete loss. N must be even.

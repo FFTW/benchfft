@@ -116,6 +116,7 @@
 	   "sorensen-sfftfu" => "indigo:dash:1:indigo:x:0.5:none",
 	   "sunperf" => "black:solid:1:black:star:0.5:none",
 	   "temperton" => "grey:solid:2:black:circle:0.25:none",
+	   "teneyck" => "grey:dash:2:black:square:0.5:grey",
 	   "vdsp" => "black:solid:1:black:star:0.5:none",
 	   "vDSP" => "black:solid:1:black:star:0.5:none",
 	   );

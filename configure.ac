@@ -311,6 +311,7 @@ benchees/sorensen/Makefile
 benchees/statlib/Makefile
 benchees/sunperf/Makefile
 benchees/temperton/Makefile
+benchees/teneyck/Makefile
 benchees/vdsp/Makefile
 
 ])
