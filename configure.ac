@@ -296,6 +296,7 @@ benchees/dxml/Makefile
 benchees/emayer/Makefile
 benchees/esrfft/Makefile
 benchees/essl/Makefile
+benchees/ffte/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
 benchees/fxt/Makefile
