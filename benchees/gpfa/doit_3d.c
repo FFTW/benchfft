@@ -41,6 +41,7 @@ void setup(struct problem *p)
      nn[0] = p->n[2];
      nn[1] = p->n[1];
      nn[2] = p->n[0];
+     doit(1, p); /* FFT initializes trig tables on first call */
 }
 
 void doit(int iter, struct problem *p)
