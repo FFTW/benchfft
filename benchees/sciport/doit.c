@@ -4,6 +4,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "sciport")
+BENCH_DOC("author", "Scott H. Lamson")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.netlib.org/scilib/")
 BENCH_DOC("url-was-valid-on", "Fri Aug 30 21:09:06 EDT 2002")
