@@ -4,7 +4,7 @@
 #include <math.h>
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "bailey")
+BENCH_DOC("name", "mpfun77")
 BENCH_DOC("author", "David H. Bailey")
 BENCH_DOC("year", "1988")
 BENCH_DOC("language", "Fortran 77")
