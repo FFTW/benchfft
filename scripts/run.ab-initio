@@ -5,15 +5,15 @@ HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
-CPPFLAGS='-I/opt/intel/mkl/include -I/opt/intel/ipp/include -I/usr/local/include' 
-LDFLAGS='-L/opt/intel/mkl/lib/32 -L/opt/intel/ipp/sharedlib -L/usr/local/lib' 
+CPPFLAGS='-I/opt/intel/mkl60/include -I/opt/intel/ipp/include -I/usr/local/include' 
+LDFLAGS='-L/opt/intel/mkl60/lib/32 -L/opt/intel/ipp/sharedlib -L/usr/local/lib' 
 MAKE=make
 
 OMP_NUM_THREADS=1
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
 
-LD_LIBRARY_PATH=/usr/local/gcc-3.2/lib:/opt/intel/mkl/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/gcc-3.2/lib:/opt/intel/mkl60/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME

@@ -26,31 +26,20 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "intel-mkl-dfti")
 BENCH_DOC("package", "Intel Math Kernel Library (MKL), DFTI interface")
 BENCH_DOCF("version", mkvers)
+BENCH_DOCF("notes", "Using the default CCS storage for hermitian data.")
 END_BENCH_DOC
 
 DFTI_DESCRIPTOR *the_descriptor;
 
-int can_do(struct problem *p)
-{
-     /* real transforms appear to be unimplemented in mkl6-beta */
-     return (p->kind == PROBLEM_COMPLEX &&
-	     sizeof(bench_real) <= sizeof(double));
-}
-
-void setup(struct problem *p)
+static int mkdescriptor(struct problem *p)
 {
      long status;
      enum DFTI_CONFIG_VALUE domain;
 
-     BENCH_ASSERT(can_do(p));
- 
      if (p->kind == PROBLEM_COMPLEX) {
 	  domain = DFTI_COMPLEX;
      } else {
-	  if (p->sign == -1)
-	       domain = DFTI_REAL;
-	  else
-	       domain = DFTI_CONJUGATE_EVEN;
+	  domain = DFTI_REAL;
      }
      
      /* api nonsense */
@@ -67,10 +56,58 @@ void setup(struct problem *p)
 					p->rank,
 					p->n);
 
-     if (status) {
+     if (status && verbose > 3) 
 	  printf("DFTI error: %s\n", DftiErrorMessage(status));
-	  exit(1);
+     
+     return (!status);
+}
+
+int can_do(struct problem *p)
+{
+     if (PRECISION < 0) return 0;
+
+     /* ask mkl whether it can do it or not */
+     if (mkdescriptor(p)) {
+	  DftiFreeDescriptor(&the_descriptor);
+	  return 1;
+     } else 
+	  return 0;
+}
+
+
+void copy_h2c(struct problem *p, bench_complex *out)
+{
+     if (p->rank == 1) {
+	  copy_h2c_unpacked(p, out, -1.0);
+     } else {
+	  BENCH_ASSERT(0  /* not implemented in mkl 6.0 */);
      }
+}
+
+void copy_c2h(struct problem *p, bench_complex *in)
+{
+     if (p->rank == 1) {
+	  copy_c2h_unpacked(p, in, -1.0);
+     } else {
+	  BENCH_ASSERT(0  /* not implemented in mkl 6.0 */);
+     }
+}
+
+void copy_r2c(struct problem *p, bench_complex *out)
+{
+     copy_r2c_unpacked(p, out);
+}
+
+void copy_c2r(struct problem *p, bench_complex *in)
+{
+     copy_c2r_unpacked(p, in);
+}
+
+void setup(struct problem *p)
+{
+     int status = mkdescriptor(p);
+
+     BENCH_ASSERT(status);
      DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
 		  problem_in_place(p) ? DFTI_INPLACE : DFTI_NOT_INPLACE);
      DftiSetValue(the_descriptor, DFTI_INITIALIZATION_EFFORT, DFTI_HIGH);
