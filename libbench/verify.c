@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.12 2001-07-19 17:47:25 athena Exp $ */
+/* $Id: verify.c,v 1.13 2001-07-25 16:31:50 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -357,6 +357,7 @@ void verify(const char *param, int rounds)
      struct problem *p;
      p = problem_parse(param);
      BENCH_ASSERT(can_do(p));
+     problem_zero(p);
      setup(p);
      do_verify(p, rounds);
      problem_destroy(p);
