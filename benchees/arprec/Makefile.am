@@ -24,3 +24,6 @@ extract-and-patch: $(TARFILE)
 	$(PATCH) $(PKG)/include/mp/mpreal.h < $(srcdir)/mpreal.h.patch
 
 include ../Makefile.common
+
+clean-local::
+	rm -f extract-and-patch
