@@ -191,7 +191,7 @@ for place in $PLACE; do
 	  fi
 
 	  if test "$speed" = yes; then
-	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -100` " || 
+	    time="`$program $useropt --report-benchmark --time-min $time_min --speed $problem | tail -1` " || 
 	    time="FAILED FAILED"
 	  else
 	    time=""
