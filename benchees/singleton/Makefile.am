@@ -13,6 +13,6 @@ doit_LDADD=libfft.a $(LIBBENCH) @FLIBS@
 doit_3d_SOURCES=doit_3d.c
 doit_3d_LDADD=libfft.a $(LIBBENCH) @FLIBS@
 
-libfft_a_SOURCES = fft.f
+libfft_a_SOURCES = fft.f realtr.f
 
 include ../Makefile.common
