@@ -30,7 +30,7 @@ int ok_sizes(int rank, unsigned int *n)
 {
      int i;
      for (i = 0; i < rank; ++i)
-	  if ((1 << 20) < n[i])
+	  if ((1 << 17) < n[i])
 	       return 0;
      return 1;
 }
