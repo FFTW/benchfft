@@ -6,7 +6,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "None.  Downloaded on 2003/05/20.")
+BENCH_DOC("version", "0.1")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
