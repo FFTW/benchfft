@@ -31,7 +31,7 @@ distclean-local:
 	rm -f benchmark accuracy *.info *.speed *.accuracy
 
 clean-local::
-	rm -f benchmark accuracy
+	rm -f benchmark accuracy $(LOCAL_COPIES)
 
 check-local: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do	\
