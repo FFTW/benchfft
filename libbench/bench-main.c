@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.15 2003-03-22 11:53:48 athena Exp $ */
+/* $Id: bench-main.c,v 1.16 2003-04-02 10:54:52 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -60,6 +60,12 @@ static struct option long_options[] =
   {0, no_argument, 0, 0}
 };
 
+static void check_alignment(void)
+{
+     double x;
+     BENCH_ASSERT((((long)&x) & 0x7) == 0);
+}
+
 static int bench_main1(int argc, char *argv[])
 {
      double tmin = 0.0;
@@ -70,6 +76,8 @@ static int bench_main1(int argc, char *argv[])
      int c;
      int index;
      char *short_options = make_short_options(long_options);
+
+     check_alignment();
 
      report = report_time; /* default */
      verbose = paranoid = 0;
@@ -201,9 +209,7 @@ int bench_main(int argc, char *argv[])
 {
 #if defined(__GNUC__) && defined(__i386__)
      /*
-      * horrible hack to align the stack so that double precision
-      * numbers are 8-bytes aligned on x86 processors.  If not,
-      * the benchmark is totally useless.
+      * horrible hack to align the stack to a 16-byte boundary.
       *
       * We assume a gcc version >= 2.95 so that
       * -mpreferred-stack-boundary works.  Otherwise, all bets are
@@ -213,34 +219,20 @@ int bench_main(int argc, char *argv[])
       * initial stack alignment, with the result that the code is now
       * pessimally aligned instead of having a 50% chance of being
       * correct.
-      *
-      * Here, we check the alignment of a double variable and restore
-      * the proper alignment if it is wrong.
       */
      {
-	  double x;
-	  if (((long)&x) & 0x7) {
-	       /* wrong alignment. */
+	  /*
+	   * Use alloca to allocate some memory on the stack.
+	   * This alerts gcc that something funny is going
+	   * on, so that it does not omit the frame pointer
+	   * etc.
+	   */
+	  (void)__builtin_alloca(16); 
 
-	       /* 
-		* You would imagine that __builtin_alloca(4) would
-		* solve the problem.  However, the overzealous gcc
-		* aligns it to __builtin_alloca(8) so that we
-		* accomplish nothing.  So here is what we do:
-		*/
-               /*
-		* Use alloca to allocate some memory on the stack.
-		* This alerts gcc that something funny is going
-		* on, so that it does not omit the frame pointer
-		* etc.
-		*/
-	       (void)__builtin_alloca(16); 
-
-	       /*
-		* Now allocate 4 stack bytes using inline asm.
-		*/
-	       __asm__ __volatile__ ("addl $-4, %esp");
-	  }
+	  /*
+	   * Now align the stack pointer
+	   */
+	  __asm__ __volatile__ ("andl $-16, %esp");
      }
 #endif
 
@@ -250,7 +242,7 @@ int bench_main(int argc, char *argv[])
 	   * Simply calling alloca seems to do the right thing. 
 	   * The size of the allocated block seems to be irrelevant.
 	   */
-	  _alloca(8);
+	  _alloca(16);
      }
 #endif
 
