@@ -9,8 +9,8 @@ F90=f90
 FFLAGS="-native -fast -xO5 -dalign"
 CFLAGS="-native -fast -xO5 -dalign"
 CXXFLAGS="-native -fast -xO5 -dalign"
-CPPFLAGS="-I$HOME/sparc/include" 
-LDFLAGS="-L$HOME/sparc/lib" 
+CPPFLAGS="-I/usr/local/include" 
+LDFLAGS="-L/usr/local/lib" 
 MAKE=make
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE

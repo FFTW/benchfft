@@ -4,14 +4,16 @@ endif
 
 INCLUDES = $(INCLBENCH)
 
-doit_SOURCES=doit.c
-doit_LDADD=-lsunperf $(LIBBENCH) @FLIBS@
+AM_LDFLAGS=-xlic_lib=sunperf
 
-doit2d_SOURCES=doit2d.c
-doit2d_LDADD=-lsunperf $(LIBBENCH) @FLIBS@
+doit_SOURCES=doit.c common.h
+doit_LDADD=$(LIBBENCH) @FLIBS@
 
-doit3d_SOURCES=doit3d.c
-doit3d_LDADD=-lsunperf $(LIBBENCH) @FLIBS@
+doit2d_SOURCES=doit2d.c common.h
+doit2d_LDADD=$(LIBBENCH) @FLIBS@
+
+doit3d_SOURCES=doit3d.c common.h
+doit3d_LDADD=$(LIBBENCH) @FLIBS@
 
 include ../Makefile.common
 

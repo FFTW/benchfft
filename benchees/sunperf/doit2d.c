@@ -8,139 +8,91 @@
 #include <sunperf.h>
 #endif
 
-static const char *mkvers(void)
-{
-#ifdef HAVE_SUNPERF_VERSION_
-     int a, b, c;
-     static char buf[128];
-
-     /* 
-	using FORTRAN interface.  The documented C interface cannot
-	possibly work because it takes a, b, c by value and it returns
-	void
-     */
-     sunperf_version_(&a, &b, &c);
-     sprintf(buf, "%d.%d.%d", a, b, c);
-     return buf;
-#else
-     return "unknown";
-#endif
-}
-
-BEGIN_BENCH_DOC
-BENCH_DOC("name", "sunperf")
-BENCH_DOCF("version", mkvers)
-BENCH_DOC("package", "Sun Performance Library (SUNPERF)")
-END_BENCH_DOC
+#include "common.h"
 
 #ifdef BENCHFFT_SINGLE
-#define FFT2I cfft2i
-#define FFT2F cfft2f
-#define FFT2B cfft2b
-#define RFFT2I rfft2i
-#define RFFT2F rfft2f
-#define RFFT2B rfft2b
+#define CFFTC2 cfftc2_
+#define SFFTC2 sfftc2_
+#define CFFTS2 cffts2_
 #else
-#define FFT2I zfft2i
-#define FFT2F zfft2f
-#define FFT2B zfft2b
-#define RFFT2I dfft2i
-#define RFFT2F dfft2f
-#define RFFT2B dfft2b
+#define CFFTC2 zfftz2_
+#define SFFTC2 dfftz2_
+#define CFFTS2 zfftd2_
 #endif
 
 int can_do(struct problem *p)
 {
-     return (p->rank == 2 && 
-	     /* real problems can be out of place */
-	     (p->kind == PROBLEM_REAL || problem_in_place(p)));
+     return (p->rank == 2);
 }
 
-void copy_h2c(struct problem *p, bench_complex *out)
-{
-     copy_h2c_unpacked(p, out, -1.0);
-}
-
-void copy_c2h(struct problem *p, bench_complex *in)
-{
-     copy_c2h_unpacked(p, in, -1.0);
-}
-
-
-void copy_r2c(struct problem *p, bench_complex *out)
-{
-     copy_r2c_unpacked(p, out);	  
-}
-
-void copy_c2r(struct problem *p, bench_complex *in)
-{
-     copy_c2r_unpacked(p, in);
-}
-
-static void *WSAVE;
-static int LWORK;
+static void *WORK;
+static int lwork;
+static void *TRIGS;
+static int IFAC[2*128];
+static int ldx;
+static int ldy;
 
 void setup(struct problem *p)
 {
-     int n, m;
- 
+     int iopt, n1, n2, ierr;
+     bench_real scale = 1.0;
+
      BENCH_ASSERT(can_do(p));
-     m = p->n[1];
-     n = p->n[0];
+     n1 = p->n[1];
+     n2 = p->n[0];
+
+     TRIGS = bench_malloc((2 * (n1 + n2)) * sizeof(bench_real));
+     iopt = 0;
  
      if (p->kind == PROBLEM_COMPLEX) {
-	  LWORK = 4 * (n + m) + 30; /* the value 2 * (m + n) + 30 in the
-				       manual appears to be bogus */
-	  WSAVE = bench_malloc(LWORK * sizeof(bench_real));
-	  FFT2I(m, n, WSAVE);
+	  ldx = ldy = n1;
+	  lwork = 2 * MAX2(n1, 2*n2);
+	  WORK = bench_malloc(lwork * sizeof(bench_real));
+	  CFFTC2(&iopt, &n1, &n2, &scale, 0, &ldx, 0, &ldy,
+		 TRIGS, IFAC, WORK, &lwork, &ierr);
      } else {
-	  LWORK = 2 * m + 3 * n + 30;
-	  WSAVE = bench_malloc(LWORK * sizeof(bench_real));
-	  RFFT2I(m, n, WSAVE);
+	  lwork = MAX2(n1, 2*n2);
+	  WORK = bench_malloc(lwork * sizeof(bench_real));
+	  if (p->sign == -1) {
+	       ldy = n1 / 2 + 1;
+	       ldx = 2 * ldy;
+	       SFFTC2(&iopt, &n1, &n2, &scale, 0, &ldx, 0, &ldy,
+		      TRIGS, IFAC, WORK, &lwork, &ierr);
+	  } else {
+	       ldx = n1 / 2 + 1;
+	       ldy = 2 * ldx;
+	       CFFTS2(&iopt, &n1, &n2, &scale, 0, &ldx, 0, &ldy,
+		      TRIGS, IFAC, WORK, &lwork, &ierr);
+	  }
      }
+     BENCH_ASSERT(ierr == 0);
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
-     int m = p->n[1];
-     int n = p->n[0];
+     int n1 = p->n[1];
+     int n2 = p->n[0];
+     int iopt = p->sign;
      void *in = p->in;
-     void *wsave = WSAVE;
-     int lwork = LWORK;
+     void *out = p->out;
+     bench_real scale = 1.0;
+     int ierr;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  int lda = m;
-	  if (p->sign == -1) {
-	    for (i = 0; i < iter; ++i) 
-	      FFT2F(m, n, in, lda, wsave, lwork);
-	  } else {
-	    for (i = 0; i < iter; ++i) 
-	      FFT2B(m, n, in, lda, wsave, lwork);
-	  }
+	  for (i = 0; i < iter; ++i) 
+	       CFFTC2(&iopt, &n1, &n2, &scale, in, &ldx, out, &ldy,
+		      TRIGS, IFAC, WORK, &lwork, &ierr);
      } else {
-	  if (p->sign == -1) {
-	       void *out = p->out;
-	       char place = p->in_place ? 'i' : 'o';
-	       int lda = 2 * (1 + m / 2);
-	       int ldb = lda / 2;
+	  if (iopt == -1) {
 	       for (i = 0; i < iter; ++i) {
-		    RFFT2F(place, 0, m, n, in, lda, out, ldb, wsave, lwork);
+		    SFFTC2(&iopt, &n1, &n2, &scale, in, &ldx, out, &ldy,
+			   TRIGS, IFAC, WORK, &lwork, &ierr);
 	       }
 	  } else {
-	       int lda = 2 * (1 + m / 2);
-	       int ldb;
-	       void *out;
-	       char place;
-
-	       if (p->out == in) {
-		 place = 'i'; ldb = lda; out = in;
-	       } else {
-		 place = 'o'; out = in; in = p->out; ldb = lda / 2;
-	       }
-	       for (i = 0; i < iter; ++i) {
-		    RFFT2B(place, m, n, in, lda, out, ldb, wsave, lwork);
- 	       }
+	       for (i = 0; i < iter; ++i) 
+		    CFFTS2(&iopt, &n1, &n2, &scale, in, &ldx, out, &ldy,
+			   TRIGS, IFAC, WORK, &lwork, &ierr);
 	  }
      }
 }
@@ -148,5 +100,6 @@ void doit(int iter, struct problem *p)
 void done(struct problem *p)
 {
      UNUSED(p);
-     bench_free(WSAVE);
+     bench_free(WORK);
+     bench_free(TRIGS);
 }

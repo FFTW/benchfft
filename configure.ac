@@ -159,9 +159,9 @@ AC_SUBST(DXML_LIB)
 AC_CHECK_HEADERS(dxmldef.h cxmldef.h)
 
 # Check for Sun Performance library:
-AC_CHECK_LIB(fsu, __f90_stop)
 SAVE_LIBS=$LIBS
-AC_CHECK_LIB(sunperf, cfftf, [LIBS="-lsunperf $LIBS";  have_sunperf=yes])
+LIBS="-xlic_lib=sunperf $LIBS"
+AC_CHECK_FUNCS(cfftc_, [LIBS="-xlic_lib=sunperf $LIBS";  have_sunperf=yes])
 AM_CONDITIONAL(HAVE_SUNPERF, test -n "$have_sunperf")
 AC_CHECK_HEADERS(sunperf.h)
 AC_CHECK_FUNCS(sunperf_version_)

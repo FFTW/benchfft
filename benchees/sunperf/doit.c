@@ -8,104 +8,79 @@
 #include <sunperf.h>
 #endif
 
-static const char *mkvers(void)
-{
-#ifdef HAVE_SUNPERF_VERSION_
-     int a, b, c;
-     static char buf[128];
-
-     /* 
-	using FORTRAN interface.  The documented C interface cannot
-	possibly work because it takes a, b, c by value and it returns
-	void
-     */
-     sunperf_version_(&a, &b, &c);
-     sprintf(buf, "%d.%d.%d", a, b, c);
-     return buf;
-#else
-     return "unknown";
-#endif
-}
-
-BEGIN_BENCH_DOC
-BENCH_DOC("name", "sunperf")
-BENCH_DOCF("version", mkvers)
-BENCH_DOC("package", "Sun Performance Library (SUNPERF)")
-END_BENCH_DOC
+#include "common.h"
 
 #ifdef BENCHFFT_SINGLE
-#define FFTI cffti
-#define FFTF cfftf
-#define FFTB cfftb
-#define RFFTI rffti
-#define RFFTF rfftf
-#define RFFTB rfftb
+#define CFFTC cfftc_
+#define SFFTC sfftc_
+#define CFFTS cffts_
 #else
-#define FFTI zffti
-#define FFTF zfftf
-#define FFTB zfftb
-#define RFFTI dffti
-#define RFFTF dfftf
-#define RFFTB dfftb
+#define CFFTC zfftz_
+#define SFFTC dfftz_
+#define CFFTS zfftd_
 #endif
 
 int can_do(struct problem *p)
 {
-     return (p->rank == 1 && problem_in_place(p));
+     return (p->rank == 1);
 }
 
-void copy_h2c(struct problem *p, bench_complex *out)
-{
-     copy_h2c_1d_fftpack(p, out, -1.0);
-}
-
-void copy_c2h(struct problem *p, bench_complex *in)
-{
-     copy_c2h_1d_fftpack(p, in, -1.0);
-}
-
-static void *WSAVE;
+static void *WORK;
+static int lwork;
+static void *TRIGS;
+static int IFAC[128];
 
 void setup(struct problem *p)
 {
-     int n;
- 
+     int iopt, n, ierr;
+     bench_real scale = 1.0;
+
      BENCH_ASSERT(can_do(p));
      n = p->n[0];
+
+     lwork = (p->kind == PROBLEM_COMPLEX) ? 2 * n : n;
+     WORK = bench_malloc(lwork * sizeof(bench_real));
+     TRIGS = bench_malloc((2 * n) * sizeof(bench_real));
+     iopt = 0;
  
      if (p->kind == PROBLEM_COMPLEX) {
-	  WSAVE = bench_malloc((4 * n + 15) * sizeof(bench_real));
-	  FFTI(n, WSAVE);
+	  CFFTC(&iopt, &n, &scale, 0, 0, TRIGS, IFAC, WORK, &lwork, &ierr);
      } else {
-	  WSAVE = bench_malloc((2 * n + 15) * sizeof(bench_real));
-	  RFFTI(n, WSAVE);
+	  if (p->sign == -1) {
+	       SFFTC(&iopt, &n, &scale, 0, 0, TRIGS, IFAC, 
+		     WORK, &lwork, &ierr);
+	  } else {
+	       CFFTS(&iopt, &n, &scale, 0, 0, TRIGS, IFAC, 
+		     WORK, &lwork, &ierr);
+	  }
      }
+     BENCH_ASSERT(ierr == 0);
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
      int n = p->n[0];
+     int iopt = p->sign;
      void *in = p->in;
-     void *wsave = WSAVE;
+     void *out = p->out;
+     bench_real scale = 1.0;
+     int ierr;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  if (p->sign == -1) {
-	    for (i = 0; i < iter; ++i) 
-	      FFTF(n, in, wsave);
-	  } else {
-	    for (i = 0; i < iter; ++i) 
-	      FFTB(n, in, wsave);
-	  }
+	  for (i = 0; i < iter; ++i) 
+	       CFFTC(&iopt, &n, &scale, in, out, TRIGS, IFAC, WORK, 
+		     &lwork, &ierr);
      } else {
-	  if (p->sign == -1) {
+	  if (iopt == -1) {
 	       for (i = 0; i < iter; ++i) {
-		    RFFTF(n, in, wsave);
+		    SFFTC(&iopt, &n, &scale, in, out, TRIGS, IFAC, WORK, 
+			  &lwork, &ierr);
 	       }
 	  } else {
-	       for (i = 0; i < iter; ++i) {
-		    RFFTB(n, in, wsave);
-	       }
+	       for (i = 0; i < iter; ++i) 
+		    CFFTS(&iopt, &n, &scale, in, out, TRIGS, IFAC, WORK, 
+			  &lwork, &ierr);
 	  }
      }
 }
@@ -113,5 +88,6 @@ void doit(int iter, struct problem *p)
 void done(struct problem *p)
 {
      UNUSED(p);
-     bench_free(WSAVE);
+     bench_free(WORK);
+     bench_free(TRIGS);
 }

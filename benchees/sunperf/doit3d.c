@@ -8,146 +8,98 @@
 #include <sunperf.h>
 #endif
 
-static const char *mkvers(void)
-{
-#ifdef HAVE_SUNPERF_VERSION_
-     int a, b, c;
-     static char buf[128];
-
-     /* 
-	using FORTRAN interface.  The documented C interface cannot
-	possibly work because it takes a, b, c by value and it returns
-	void
-     */
-     sunperf_version_(&a, &b, &c);
-     sprintf(buf, "%d.%d.%d", a, b, c);
-     return buf;
-#else
-     return "unknown";
-#endif
-}
-
-BEGIN_BENCH_DOC
-BENCH_DOC("name", "sunperf")
-BENCH_DOCF("version", mkvers)
-BENCH_DOC("package", "Sun Performance Library (SUNPERF)")
-BENCH_DOC("notes", "The library has 3D real transforms but I can't get them to work")
-END_BENCH_DOC
+#include "common.h"
 
 #ifdef BENCHFFT_SINGLE
-#define FFT3I cfft3i
-#define FFT3F cfft3f
-#define FFT3B cfft3b
-#define RFFT3I rfft3i
-#define RFFT3F rfft3f
-#define RFFT3B rfft3b
+#define CFFTC3 cfftc3_
+#define SFFTC3 sfftc3_
+#define CFFTS3 cffts3_
 #else
-#define FFT3I zfft3i
-#define FFT3F zfft3f
-#define FFT3B zfft3b
-#define RFFT3I dfft3i
-#define RFFT3F dfft3f
-#define RFFT3B dfft3b
+#define CFFTC3 zfftz3_
+#define SFFTC3 dfftz3_
+#define CFFTS3 zfftd3_
 #endif
 
 int can_do(struct problem *p)
 {
-     return (p->rank == 3 
-	     && p->kind == PROBLEM_COMPLEX /* can't get real to work properly */
-	     /* real problems can be out of place */
-	     && (p->kind == PROBLEM_REAL || problem_in_place(p)));
+     return (p->rank == 3);
 }
 
-void copy_h2c(struct problem *p, bench_complex *out)
-{
-     copy_h2c_unpacked(p, out, -1.0);
-}
-
-void copy_c2h(struct problem *p, bench_complex *in)
-{
-     copy_c2h_unpacked(p, in, -1.0);
-}
-
-
-void copy_r2c(struct problem *p, bench_complex *out)
-{
-     copy_r2c_unpacked(p, out);	  
-}
-
-void copy_c2r(struct problem *p, bench_complex *in)
-{
-     copy_c2r_unpacked(p, in);
-}
-
-static void *WSAVE;
-static int LWORK;
+static void *WORK;
+static int lwork;
+static void *TRIGS;
+static int IFAC[3*128];
+static int ldx1, ldx2;
+static int ldy1, ldy2;
 
 void setup(struct problem *p)
 {
-     int n, m, k;
- 
+     int iopt, n1, n2, n3, ierr;
+     bench_real scale = 1.0;
+
      BENCH_ASSERT(can_do(p));
-     m = p->n[2];
-     n = p->n[1];
-     k = p->n[0];
+     n1 = p->n[2];
+     n2 = p->n[1];
+     n3 = p->n[0];
+
+     TRIGS = bench_malloc((2 * (n1 + n2 + n3)) * sizeof(bench_real));
+     iopt = 0;
  
      if (p->kind == PROBLEM_COMPLEX) {
-	  LWORK = 4 * (n + m + k) + 45; /* the value 2 * (m + n) + 45 in the
-					   manual appears to be bogus */
-	  WSAVE = bench_malloc(LWORK * sizeof(bench_real));
-	  FFT3I(m, n, k, WSAVE);
+	  ldx1 = ldy1 = n1;
+	  ldx2 = ldy2 = n2;
+	  lwork = 32 * n3 + 2 * MAX3(n1, n2, n3);
+	  WORK = bench_malloc(lwork * sizeof(bench_real));
+	  CFFTC3(&iopt, &n1, &n2, &n3, &scale, 0, &ldx1, &ldx2,
+		 0, &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, &ierr);
      } else {
-          /* it's easier to win the lottery than to get this number
-	     right.  Each manpage shows a different number */
-	  LWORK = 4 * (m + n + k) + 45;
-	  WSAVE = bench_malloc(LWORK * sizeof(bench_real));
-	  RFFT3I(m, n, k, WSAVE);
+	  lwork = 16 * n3 + 2 * MAX3(n1, 2*n2, 2*n3);
+	  WORK = bench_malloc(lwork * sizeof(bench_real));
+	  if (p->sign == -1) {
+	       ldy1 = n1 / 2 + 1;
+	       ldx1 = 2 * ldy1;
+	       ldx2 = ldy2 = n2;
+	       SFFTC3(&iopt, &n1, &n2, &n3, &scale, 0, &ldx1, &ldx2,
+		      0, &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, &ierr);
+	  } else {
+	       ldx1 = n1 / 2 + 1;
+	       ldy1 = 2 * ldx1;
+	       ldx2 = ldy2 = n2;
+	       CFFTS3(&iopt, &n1, &n2, &n3, &scale, 0, &ldx1, &ldx2,
+		      0, &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, &ierr);
+	  }
      }
+     BENCH_ASSERT(ierr == 0);
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
-     int m = p->n[2];
-     int n = p->n[1];
-     int k = p->n[0];
+     int n1 = p->n[2];
+     int n2 = p->n[1];
+     int n3 = p->n[0];
+     int iopt = p->sign;
      void *in = p->in;
-     void *wsave = WSAVE;
-     int lwork = LWORK;
+     void *out = p->out;
+     bench_real scale = 1.0;
+     int ierr;
 
      if (p->kind == PROBLEM_COMPLEX) {
-	  int lda = m;
-	  int ld2a = n;
-	  if (p->sign == -1) {
-	    for (i = 0; i < iter; ++i) 
-	      FFT3F(m, n, k, in, lda, ld2a, wsave, lwork);
-	  } else {
-	    for (i = 0; i < iter; ++i) 
-	      FFT3B(m, n, k, in, lda, ld2a, wsave, lwork);
-	  }
+	  for (i = 0; i < iter; ++i) 
+	       CFFTC3(&iopt, &n1, &n2, &n3, &scale, in, &ldx1, &ldx2, out,
+		      &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, &ierr);
      } else {
-	  if (p->sign == -1) {
-	       void *out = p->out;
- 	       char place = p->in_place ? 'i' : 'o';
-	       int lda = 2 * (1 + m / 2);
-	       int ldb = lda / 2;
+	  if (iopt == -1) {
 	       for (i = 0; i < iter; ++i) {
-		    RFFT3F(place, 0, m, n, k, in, lda, out, ldb, wsave, lwork);
+		    SFFTC3(&iopt, &n1, &n2, &n3, &scale, in, &ldx1, &ldx2, 
+			   out, &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, 
+			   &ierr);
 	       }
 	  } else {
-	       int lda = 2 * (1 + m / 2);
-	       int ldb;
-	       void *out;
-	       char place;
-
-	       if (p->out == in) {
-		 place = 'i'; ldb = lda; out = in;
-	       } else {
-		 place = 'o'; out = in; in = p->out; ldb = lda / 2;
-	       }
-	       for (i = 0; i < iter; ++i) {
-		    RFFT3B(place, m, n, k, in, lda, out, ldb, wsave, lwork);
- 	       }
+	       for (i = 0; i < iter; ++i) 
+		    CFFTS3(&iopt, &n1, &n2, &n3, &scale, in, &ldx1, &ldx2, 
+			   out, &ldy1, &ldy2, TRIGS, IFAC, WORK, &lwork, 
+			   &ierr);
 	  }
      }
 }
@@ -155,5 +107,6 @@ void doit(int iter, struct problem *p)
 void done(struct problem *p)
 {
      UNUSED(p);
-     bench_free(WSAVE);
+     bench_free(WORK);
+     bench_free(TRIGS);
 }
