@@ -24,7 +24,8 @@ extract-mkdir: $(TARFILE)
 	echo timestamp >$@
 
 distclean-local:
-	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES) benchmark
+	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES)
+	rm -f benchmark *.info *.data
 
 check-local: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
