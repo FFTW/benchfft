@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.3 2001-07-07 21:05:35 athena Exp $ */
+/* $Id: report.c,v 1.4 2001-07-23 17:51:06 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -55,7 +55,7 @@ static void report_generic(const struct problem *p, double *t, int st,
      if (what & W_TIME) {
 	  switch (how) {
 	      case H_ALL:
-		   ovtpvt("%g/%g/%g\n", m, s, M);
+		   ovtpvt("(%g %g %g)\n", m, s, M);
 		   break;
 	      case H_MIN:
 		   ovtpvt("%g\n", m);
@@ -72,7 +72,7 @@ static void report_generic(const struct problem *p, double *t, int st,
      if (what & W_MFLOPS) {
 	  switch (how) {
 	      case H_ALL:
-		   ovtpvt("%g/%g/%g\n", 
+		   ovtpvt("(%g %g %g)\n", 
 			  mflops(p, M), mflops(p, s), mflops(p, m));
 		   break;
 	      case H_MIN:
