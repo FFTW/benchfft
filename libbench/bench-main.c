@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.8 2001-07-19 17:47:25 athena Exp $ */
+/* $Id: bench-main.c,v 1.9 2001-07-23 21:39:10 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -39,11 +39,11 @@ static struct option long_options[] =
   {"print-precision", no_argument, 0, 402},
   {"report-avg-mflops", no_argument, 0, 302},
   {"report-avg-time", no_argument, 0, 312},
-  {"report-full", no_argument, 0, 320},
   {"report-max-mflops", no_argument, 0, 301},
   {"report-mflops", no_argument, 0, 300},
   {"report-min-time", no_argument, 0, 311},
   {"report-time", no_argument, 0, 310},
+  {"report-benchmark", no_argument, 0, 320},
   {"speed", required_argument, 0, 's'},
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
@@ -117,8 +117,8 @@ static int bench_main1(int argc, char *argv[])
 		   report = report_avg_time;
 		   break;
 
-	      case 320: /* --report-full */
-		   report = report_full;
+ 	      case 320: /* --report-benchmark */
+		   report = report_benchmark;
 		   break;
 
 	      case 400: /* --print-time-min */

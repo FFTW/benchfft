@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.4 2001-07-23 17:51:06 athena Exp $ */
+/* $Id: report.c,v 1.5 2001-07-23 21:39:10 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -36,21 +36,28 @@ enum {
 /* report HOW */
 enum { H_ALL, H_MIN, H_MAX, H_AVG };
 
+static void mkstat(double *t, int st, double *m, double *M, double *s)
+{
+     int i;
+     
+     *m = t[0], *M = t[0], *s = 0.0;
+
+     for (i = 0; i < st; ++i) {
+	  if (t[i] < *m)
+	       *m = t[i];
+	  if (t[i] > *M)
+	       *M = t[i];
+	  *s += t[i];
+     }
+     *s /= (double)st;
+}
 
 static void report_generic(const struct problem *p, double *t, int st,
 			   int what, int how)
 {
-     int i;
-     double m = t[0], M = t[0], s = 0.0;
+     double m, M, s;
 
-     for (i = 0; i < st; ++i) {
-	  if (t[i] < m)
-	       m = t[i];
-	  if (t[i] > M)
-	       M = t[i];
-	  s += t[i];
-     }
-     s /= (double)st;
+     mkstat(t, st, &m, &M, &s);
 
      if (what & W_TIME) {
 	  switch (how) {
@@ -118,7 +125,9 @@ void report_avg_time(const struct problem *p, double *t, int st)
      report_generic(p, t, st, W_TIME, H_AVG);
 }
 
-void report_full(const struct problem *p, double *t, int st)
+void report_benchmark(const struct problem *p, double *t, int st)
 {
-     /* TODO */
+     double m, M, s;
+     mkstat(t, st, &m, &M, &s);
+     ovtpvt("%g %g\n", mflops(p, m), m);
 }

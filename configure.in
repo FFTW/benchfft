@@ -197,6 +197,7 @@ AC_OUTPUT([
 Makefile
 libbench/Makefile
 benchees/Makefile
+scripts/Makefile
 
 benchees/cwplib/Makefile
 benchees/dfftpack/Makefile

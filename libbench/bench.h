@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.6 2001-07-19 17:47:25 athena Exp $ */
+/* $Id: bench.h,v 1.7 2001-07-23 21:39:10 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -41,7 +41,7 @@ void report_avg_mflops(const struct problem *p, double *t, int st);
 void report_time(const struct problem *p, double *t, int st);
 void report_min_time(const struct problem *p, double *t, int st);
 void report_avg_time(const struct problem *p, double *t, int st);
-void report_full(const struct problem *p, double *t, int st);
+void report_benchmark(const struct problem *p, double *t, int st);
 
 void report_can_do(const char *param);
 void report_info(const char *param);
