@@ -360,9 +360,11 @@ print "@ xaxis tick type spec\n";
 print "@ xaxis tick spec ", 1 + $#sizes, "\n";
 $labelsize = 30.0 / (1 + $#sizes);
 if ($labelsize < 1.0) { print "@ xaxis ticklabel char size $labelsize\n"; }
+$ticknum = 0;
 foreach $siz (@sizes) {
-    print "@ xaxis tick major $ticknum, $xval{$siz}\n";
+    print "@ xaxis tick major $ticknum, $ticknum\n";
     print "@ xaxis ticklabel $ticknum, \"",$siz,"\"\n";
+    $ticknum = $ticknum + 1;
 }
 
 # Find the y axis scale from $best_val:
