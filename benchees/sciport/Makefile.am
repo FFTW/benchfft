@@ -9,7 +9,7 @@ LIBFFT = libfftd.a
 endif
 endif
 
-EXTRA_DIST = readme ffts.f fftd.f
+EXTRA_DIST = readme ffts.f fftd.f ffts.patch fftd.patch
 LOCAL_COPIES = ffts-patched.f fftd-patched.f
 
 INCLUDES = $(INCLBENCH)
