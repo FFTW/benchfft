@@ -7,7 +7,7 @@ endif
 if HAVE_MKL_P4
 PRG_P4=doit32_p4 doit32f_p4
 endif
-if HAVE_MKL_VML_ITP
+if HAVE_MKL_ITP
 PRG_ITP=doit64_itp doit64f_itp
 endif
 
@@ -34,9 +34,9 @@ doit32f_p4_SOURCES=doit32f_p4.c have-sse2.c
 doit32f_p4_LDADD=-lmkl_p4 $(LIBBENCH) @FLIBS@
 
 doit64_itp_SOURCES=doit64_itp.c
-doit64_itp_LDADD=-lmkl_vml_itp $(LIBBENCH) @FLIBS@
+doit64_itp_LDADD=-lmkl_itp $(LIBBENCH) @FLIBS@
 
 doit64f_itp_SOURCES=doit64f_itp.c
-doit64f_itp_LDADD=-lmkl_vml_itp $(LIBBENCH) @FLIBS@
+doit64f_itp_LDADD=-lmkl_itp $(LIBBENCH) @FLIBS@
 
 include ../Makefile.common
