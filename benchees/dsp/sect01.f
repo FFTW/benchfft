@@ -1,3 +1,9 @@
+C Machine definitions for machines that are more or less standard
+C in 2001.  Written by Matteo Frigo, Fri Jul 13 07:38:18 EDT 2001.
+C The original file sect01.f is in dsp.tar.gz .  
+C----------------------------------------------------------------------
+C----------------------------------------------------------------------
+C
 C
 C----------------------------------------------------------------------
 C  FUNCTION:  I1MACH
@@ -369,6 +375,15 @@ C     DATA IMACH(14) /   56 /
 C     DATA IMACH(15) / -127 /
 C     DATA IMACH(16) /  127 /
 C
+
+C FFT routines only C use I1MACH(1-4, 9), so I don't care about the
+C rest
+      DATA IMACH( 1) /    5 /
+      DATA IMACH( 2) /    6 /
+      DATA IMACH( 3) /    5 /
+      DATA IMACH( 4) /    6 /
+      DATA IMACH( 9) / 2147483647 /
+
       IF (I .LT. 1  .OR.  I .GT. 16) GO TO 10
 C
       I1MACH=IMACH(I)
