@@ -63,7 +63,7 @@ while (@ARGV) {
 	   "dsp79-singleton" => "yellow:solid:1:yellow:star:0.8:none",
 	   "dsp79-wfta" => "yellow:dash:1:yellow:square:0.5:none",
 	   "dsp79-morris" => "yellow:dotdash:1:yellow:square:0.5:yellow",
-	   "dxml" => "black:solid:1:black:star:0.5:none",
+	   "cxml" => "black:solid:1:black:star:0.5:none",
 	   "emayer" => "turquoise:dot:1.5:turquoise:plus:0.5:none",
 	   "esrfft" => "indigo:dash:1:indigo:square:0.4:indigo",
 	   "essl" => "black:solid:1:black:star:0.5:none",
@@ -193,7 +193,7 @@ while (@ARGV) {
 	    "sorensen-ctfftsr" => "black:solid:1:black:plus:0.7:none",
 	    "nr-c" => "black:dot:1:black:diamond:0.5:black",
 	    
-	    "dxml" => "black:solid:2:black:circle:0.2:black",
+	    "cxml" => "black:solid:2:black:circle:0.2:black",
 	    "intel-mkl-dfti" => "black:solid:2:black:circle:0.2:black",
 	    );
 
@@ -340,6 +340,7 @@ foreach $norm_val (@sorted_norm_vals) {
     $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
     $namleg = "spiral-egner-fft" if ($namleg eq "spiral-fft");
     $namleg = "green" if ($namleg eq "green-ffts-2.0");
+    $namleg = "cxml" if ($namleg eq "dxml");
     
     # get transform "family"
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);

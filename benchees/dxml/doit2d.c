@@ -4,7 +4,7 @@
 #include <math.h>
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "dxml")
+BENCH_DOC("name", "cxml")
 BENCH_DOC("package", "Compaq/Digital Extended Math Library (CXML/DXML)")
 BENCH_DOC("notes", "2d transform")
 BENCH_DOC("notes", "We benchmark using the complex array format.")
