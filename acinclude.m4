@@ -193,7 +193,7 @@ if test "$ac_test_CFLAGS" != "set"; then
                  fi;;
 
   alpha*-osf*)  if test "$CC" = cc; then
-                    CFLAGS="-newc -w0 -O5 -ansi_alias -ansi_args -fp_reorder -tune host -arch host -std1"
+                    CFLAGS="-newc -w0 -O5 -ansi_alias -ansi_args -fp_reorder -tune host -arch host"
                 fi;;
 
   hppa*-hpux*)  if test "$CC" = cc; then
