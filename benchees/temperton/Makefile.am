@@ -8,7 +8,7 @@ endif
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c 
-doit_LDADD=$(LIBBENCH) @FLIBS@
+doit_LDADD=libfft99f.a $(LIBBENCH) @FLIBS@
 
 libfft99f_a_SOURCES=fft99f.f
 
