@@ -187,7 +187,7 @@ for place in $PLACE; do
            fi
 
            if test "$accuracy" = "yes" -a "$oned" = "yes"; then
-               acc=`$program $aflags --verbose --accuracy $problem`
+               acc=`$program $aflags --accuracy $problem`
            fi
 
            echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"
