@@ -17,8 +17,9 @@ static const char *mkvers(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("package", "The GNU Scientific Library (GSL)")
 BENCH_DOC("author", "Brian Gough")
-BENCH_DOC("year", "2001")
+BENCH_DOC("year", "2002")
 BENCH_DOC("url", "http://sources.redhat.com/gsl")
 BENCH_DOC("url-was-valid-on", "Thu Jul 26 07:48:45 EDT 2001")
 BENCH_DOC("copyright",

@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-morris")
+BENCH_DOC("package", "Programs for Digital Signal Processing")
 BENCH_DOC("author", "L. Robert Morris")
 BENCH_DOC("year", "1979")
 BENCH_DOC("language", "Fortran 77")

@@ -5,7 +5,9 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dxml")
-BENCH_DOC("notes", "using complex array format")
+BENCH_DOC("package", "Compaq/Digital Extended Math Library (CXML/DXML)")
+BENCH_DOC("notes", "3d transform")
+BENCH_DOC("notes", "We benchmark using the complex array format.")
 END_BENCH_DOC
 
 

@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-rader")
+BENCH_DOC("package", "Programs for Digital Signal Processing")
 BENCH_DOC("author", "C. M. Rader, after Brenner")
 BENCH_DOC("year", "1979, after Brenner 1967")
 BENCH_DOC("language", "Fortran 77")

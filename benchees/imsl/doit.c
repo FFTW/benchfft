@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "imsl")
+BENCH_DOC("package", "IMSL (International Mathematical and Statistical Library)")
 BENCH_DOC("author", "Visual Numerics, Inc.")
 BENCH_DOC("url", "http://www.vni.com/products/imsl/")
 BENCH_DOC("url-was-valid-on", "Mon Jan 14 21:15:19 EST 2002")

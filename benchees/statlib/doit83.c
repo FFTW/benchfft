@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "as83")
+BENCH_DOC("package", "StatLib")
 BENCH_DOC("author", "Donald M. Monro")
 BENCH_DOC("year", "1975")
 BENCH_DOC("language", "Fortran 77")

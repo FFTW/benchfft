@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-wfta")
+BENCH_DOC("package", "Programs for Digital Signal Processing")
 BENCH_DOC("author", "James H. McClellan and Hamid Nawab")
 BENCH_DOC("year", "1979")
 BENCH_DOC("language", "Fortran 77")

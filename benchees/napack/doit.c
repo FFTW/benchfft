@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "napack")
+BENCH_DOC("package", "NAPACK")
 BENCH_DOC("author", "William W. Hager")
 BENCH_DOC("year", "1987")
 BENCH_DOC("language", "Fortran 77")

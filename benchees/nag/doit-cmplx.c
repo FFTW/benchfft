@@ -6,6 +6,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "nag-cmplx")
+BENCH_DOC("package", "NAG Fortran Library")
 BENCH_DOC("author", "Numerical Algorithms Group")
 BENCH_DOC("url", "http://www.nag.com/")
 BENCH_DOC("url-was-valid-on", "Wed Aug 15 13:43:43 EDT 2001")

@@ -5,7 +5,8 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dxml")
-BENCH_DOC("notes", "Compaq eXtended Math Library (CXML), formerly the Digital eXtended Math Library (DXML).")
+BENCH_DOC("package", "Compaq/Digital Extended Math Library (CXML/DXML)")
+BENCH_DOC("notes", "1d transform")
 BENCH_DOC("notes", "We benchmark using the complex array format.")
 END_BENCH_DOC
 

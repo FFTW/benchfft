@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "mixfft")
+BENCH_DOC("version", "0.5")
 BENCH_DOC("author", "Jens Joergen Nielsen")
 BENCH_DOC("year", "2000")
 BENCH_DOC("language", "C")

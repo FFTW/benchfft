@@ -30,6 +30,8 @@ static const char *mkvers(void)
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "sunperf")
 BENCH_DOCF("version", mkvers)
+BENCH_DOC("package", "Sun Performance Library (SUNPERF)")
+BENCH_DOC("notes", "3d transforms")
 BENCH_DOC("notes", "The library has 3D real transforms but I can't get them to work")
 END_BENCH_DOC
 

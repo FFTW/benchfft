@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-FFT842")
+BENCH_DOC("package", "Programs for Digital Signal Processing")
 BENCH_DOC("author", "G. D. Bergland and M. T. Dolan")
 BENCH_DOC("year", "1979")
 BENCH_DOC("language", "Fortran 77")

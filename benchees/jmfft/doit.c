@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "jmfftc")
+BENCH_DOC("package", "JMFFT")
 BENCH_DOC("author", "Jean-Marie Teuler")
 BENCH_DOC("year", "2000")
 BENCH_DOC("version", "1.0")

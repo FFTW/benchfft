@@ -21,6 +21,7 @@ static const char *mkvers(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("package", "Intel Math Kernel Library (MKL)")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "backward transform is scaled")
 END_BENCH_DOC

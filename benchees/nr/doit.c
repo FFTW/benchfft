@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 
+BENCH_DOC("package", "Numerical Recipes")
 #ifdef FORTRAN
   BENCH_DOC("name", "nr-f")
   BENCH_DOC("language", "Fortran 77")

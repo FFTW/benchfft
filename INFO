@@ -3,7 +3,8 @@ FFTs.  All FFTs must include the "name" tag; others are optional.
 Note that tags can be repeated for multiple items (e.g. multiple
 "notes").
 
-name: unique name of FFT (or author's last name)
+name: unique, lower-case identifier for FFT (based on package or author name)
+package: (full) name of FFT package, if any (if different from <name>)
 version: version number, if any
 author: author name
 email: author/contact email address

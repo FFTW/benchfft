@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "dsp79-singleton")
+BENCH_DOC("package", "Programs for Digital Signal Processing")
 BENCH_DOC("author", "Richard C. Singleton")
 BENCH_DOC("year", "1979, derived from Singleton 1968")
 BENCH_DOC("language", "Fortran 77")
