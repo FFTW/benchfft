@@ -4,12 +4,16 @@ $no_dups = 0;
 $accuracy = 0;
 $accurate_only = 0;
 $plot_worst = 0;
+$skip_missing_styles = 0;
+$use_paper_styles = 0;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
     $accuracy = 1 if ($arg eq "--accuracy");
     $accurate_only = 1 if ($arg eq "--accurate-only");
     $plot_worst = 1 if ($arg eq "--plot-worst");
+    $skip_missing_styles = 1 if ($arg eq "--skip-missing-styles");
+    $use_paper_styles = 1 if ($arg eq "--use-paper-styles");
 }
 
 #############################################################################
@@ -66,8 +70,7 @@ while (@ARGV) {
 	   "ffte" => "indigo:solid:2:indigo:none:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
 	   "fftreal" => "red:dash:1:red:circle:0.5:none",
-	   "fftw2 in-place" => "cyan:solid:1:cyan:circle:0.5:cyan",
-	   "fftw2 out-of-place" => "cyan:solid:1:cyan:circle:0.5:cyan",
+	   "fftw2" => "cyan:solid:1:cyan:circle:0.5:cyan",
 	   "fftw2-measure" => "cyan:solid:1:cyan:circle:0.5:cyan",
 	   "fftw2-estimate" => "cyan:solid:1:cyan:circle:0.5:none",
 	   "fftw2-nd" => "cyan:dash:1:cyan:circle:0.5:cyan",
@@ -85,8 +88,6 @@ while (@ARGV) {
 	   "fftw3 in-place" => "blue:dot:1:blue:circle:0.3:blue",
 	   "fftw3-impatient in-place" => "blue:dot:1:blue:triangle-up:0.3:none",
 	   "fftw3-estimate in-place" => "blue:dot:1:blue:circle:0.3:none",
-	   "fftw3-r2r in-place" => "blue:dotdash:1:blue:square:0.4:none",
-	   "fftw3-r2r out-of-place" => "blue:dash:1:blue:square:0.5:blue",
 	   "fftw3-r2r" => "blue:dash:1:blue:square:0.5:blue",
 	   "fxt-4step" => "yellow:solid:2:grey:circle:0.25:none",
 	   "fxt-matrixfft" => "yellow:solid:2:grey:circle:0.25:none",
@@ -102,7 +103,7 @@ while (@ARGV) {
 	   "goedecker" => "brown:solid:2:brown:circle:0.25:none",
 	   "gpfa" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
-	   "green-ffts-2.0" => "green:solid:2:green:circle:0.25:green",
+	   "green" => "green:solid:2:green:circle:0.25:green",
 	   "gsl-mixed-radix" => "violet:solid:2:violet:circle:0.4:none",
 	   "gsl-radix2" => "violet:dash:1:violet:circle:0.5:violet",
 	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
@@ -171,6 +172,34 @@ while (@ARGV) {
 	   "vDSP" => "black:solid:1:black:star:0.5:none",
 	   );
 
+# for publication, use black-and-white only and plot only a selected subset:
+%paper_styles = (
+	    "fftw3" => "black:solid:1:black:circle:0.5:black",
+	    "fftw3-no-simd" => "black:dash:1:black:circle:0.5:none",
+	    "fftw3-impatient" => "black:solid:1:black:triangle-up:0.5:none",
+	    "fftw3-estimate" => "black:solid:1:black:circle:0.5:none",
+	    "fftw3 out-of-place" => "black:solid:1:black:circle:0.5:black",
+	    "fftw3 in-place" => "black:dot:1:black:circle:0.3:black",
+
+	    "ooura" => "black:solid:1:black:square:0.5:none",
+	    "dfftpack" => "black:dotdashdash:1:black:triangle-right:0.5:none",
+	    "ffte" => "black:solid:1:black:plus:0.7:none",
+	    "arprec" => "black:dot:1:black:diamond:0.5:black",
+
+	    "green" => "black:dash:1:black:star:0.7:black",
+
+	    "fftpack" => "black:dotdashdash:1:black:triangle-right:0.5:none",
+	    "singleton" => "black:solid:1:black:square:0.5:none",
+	    "sorensen-ctfftsr" => "black:solid:1:black:plus:0.7:none",
+	    "nr-c" => "black:dot:1:black:diamond:0.5:black",
+	    "nr-f" => "black:dot:1:black:diamond:0.5:black",
+	    
+	    "dxml" => "black:solid:2:black:circle:0.2:black",
+	    "intel-mkl-dfti" => "black:solid:2:black:circle:0.2:black",
+	    );
+
+%styles = %paper_styles if ($use_paper_styles);
+
 %symbols = ("none" => 0, "circle" => 1, "square" => 2, "diamond" => 3,
 	    "triangle-up" => 4, "triangle-left" => 5, "triangle-down" => 6,
 	    "triangle-right" => 7, "plus" => 8, "x" => 9, "star" => 10, 
@@ -204,6 +233,10 @@ sub printstyle {
 	}
     }
 }
+
+# transforms that we always plot separate from their "family" even if 
+# the --no-dups option is specified
+%distinct_ffts = ("intel-mkl-dfti" => 0, "fftw3-r2r" => 0, "fxt-matrixfft" => 0, "fftw3-estimate" => 0, "fftw3-no-simd" => 0, "fftw3-impatient" => 0);
 
 #############################################################################
 # Read and process the data.
@@ -304,18 +337,17 @@ foreach $norm_val (@sorted_norm_vals) {
     ($nam, $prob) = split(/:/,$transform);
     $namleg = $nam;
 
+    # backwards compatibility
     $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
     $namleg = "spiral-egner-fft" if ($namleg eq "spiral-fft");
-
+    $namleg = "green" if ($namleg eq "green-ffts-2.0");
+    
     # get transform "family"
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
-    $nam0 = $nam if ($nam eq "intel-ipps");
-    $nam0 = $nam if ($nam eq "intel-mkl-dfti");
-    $nam0 = $nam if ($nam eq "fftw3-r2r");
-    $nam0 = $nam if ($namleg eq "fxt-matrixfft");
+    $nam0 = $nam if (exists($distinct_ffts{$namleg}));
     $nam0 = $nam if ($nam0 eq "dsp79");
     $nam0 = rmayer-buneman if ($accuracy && ($nam eq "rmayer-buneman" || $nam eq "rmayer-buneman2" || $nam eq "rmayer-buneman3"));
-    if ($nam0 eq "fftw3" || $nam0 eq "intel-mkl-dfti") {
+    if (exists($styles{"$namleg in-place"}) || exists($styles{"$namleg out-of-place"})) {
 	if ($prob =~ /..i./) {
 	    $nam0 = "$nam0 in-place";
 	    $namleg = "$namleg in-place";
@@ -324,24 +356,23 @@ foreach $norm_val (@sorted_norm_vals) {
 	    $namleg = "$namleg out-of-place";
 	}
     }
+    $namleg = $nam0 if (exists($styles{$nam0}) && !exists($styles{$namleg}) && !exists($styles{$nam}));
 
-    # check if we have already output a relation of this transform
-    next if ($no_dups && exists($done{$nam0}));
-    $done{$nam0} = 1;
-
-    if (($nam0 eq "fftw2" || $nam0 eq "fftw3-r2r") && $no_dups) {
-	if ($prob =~ /..i./) {
-	    $namleg = "$nam0 in-place";
-	} else {
-	    $namleg = "$nam0 out-of-place";
-	}
-    }
+    # just write "fftw2" instead of "fftw2-measure" etcetera
+    $namleg = "fftw2" if ($nam0 eq "fftw2" && $no_dups);
 
     # legend should include the problem if this transform solves more than
     # one problem in this data:
     if (!$no_dups and $problems{$nam} ne $prob) {
 	$namleg = $transform;
     }
+
+    # skip transforms without a plot style
+    next if ($skip_missing_styles && !exists($styles{$transform}) && !exists($styles{$namleg}) && !exists($styles{$nam}));
+
+    # check if we have already output a relation of this transform
+    next if ($no_dups && exists($done{$nam0}));
+    $done{$nam0} = 1;
 
     $namlegends{$transform} = $namleg;
     $plot_transforms[$#plot_transforms + 1] = $transform;
@@ -374,15 +405,21 @@ if ($accuracy xor $plot_worst) {
 
 # Put the legend in a good(?) place:
 print "@ legend char size 0.75\n";
+$xleg = 0.98;
+$yleg = 0.85;
+if ($use_paper_styles) {
+    $xleg = 0.7;
+    $yleg = 0.84;
+}
 if ($#plot_transforms < 31) {
     # legend aligned with top of plot
-    print "@ legend 0.98,0.85\n";
+    print "@ legend $xleg,$yleg\n";
 }
 else {
     # squeeze a few more items into the legend
-    $legtop = 0.5 + (0.85/31/2) * $#plot_transforms;
+    $legtop = 0.5 + ($yleg/31/2) * $#plot_transforms;
     $legtop = 1.0 if ($legtop > 1.0);
-    print "@ legend 0.98,$legtop\n";
+    print "@ legend $xleg,$legtop\n";
 }
 print "@ legend box linestyle 0\n";
 
