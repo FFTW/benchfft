@@ -192,6 +192,22 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 #include <mkl_fftc_ln.h>
 #endif
 
+#ifdef BENCHFFT_SINGLE
+#define _CFFT1DC CFFT1DC
+#define _SCFFT1DC SCFFT1DC
+#define _CSFFT1DC CSFFT1DC
+#define _CFFT2DC CFFT2DC
+#define _SCFFT2DC SCFFT2DC
+#define _CSFFT2DC CSFFT2DC
+#else
+#define _CFFT1DC ZFFT1DC
+#define _SCFFT1DC DZFFT1DC
+#define _CSFFT1DC ZDFFT1DC
+#define _CFFT2DC ZFFT2DC
+#define _SCFFT2DC DZFFT2DC
+#define _CSFFT2DC ZDFFT2DC
+#endif
+
 static void *WSAVE;
 
 void setup(struct problem *p)
@@ -215,23 +231,14 @@ void setup(struct problem *p)
 		     * locations, but the code dumps core for n == 4
 		     */
 		    WSAVE = bench_malloc((3 * n + 4) * sizeof(bench_real));
-		    if (SINGLE_PRECISION)
-			 CFFT1DC(rin, iin, n, 0, WSAVE);
-		    else
-			 ZFFT1DC(rin, iin, n, 0, WSAVE);
+		    _CFFT1DC(rin, iin, n, 0, WSAVE);
 	       } else {
 		    WSAVE = bench_malloc((4 * n) * sizeof(bench_real));
 
 		    if (p->sign == -1) {
-			 if (SINGLE_PRECISION)
-			      SCFFT1DC(p->in, n, 0, WSAVE);
-			 else
-			      DZFFT1DC(p->in, n, 0, WSAVE);
+			 _SCFFT1DC(p->in, n, 0, WSAVE);
 		    } else {
-			 if (SINGLE_PRECISION)
-			      CSFFT1DC(p->in, n, 0, WSAVE);
-			 else
-			      ZDFFT1DC(p->in, n, 0, WSAVE);
+			 _CSFFT1DC(p->in, n, 0, WSAVE);
 		    }
 	       }
 	       break;
@@ -258,35 +265,19 @@ void doit(int iter, struct problem *p)
 		    bench_real *rin = p->in;
 		    bench_real *iin = rin + n;
 
-		    if (SINGLE_PRECISION) {
-			 for (i = 0; i < iter; ++i) {
-			      CFFT1DC(rin, iin, n, sign, wsave);
-			 }
-		    } else {
-			 for (i = 0; i < iter; ++i) {
-			      ZFFT1DC(rin, iin, n, sign, wsave);
-			 }
+		    for (i = 0; i < iter; ++i) {
+			 _CFFT1DC(rin, iin, n, sign, wsave);
 		    }
 	       } else {
 		    bench_real *pin = p->in;
 		    if (p->sign == -1) {
-			 if (SINGLE_PRECISION)
-			      for (i = 0; i < iter; ++i) {
-				   SCFFT1DC(pin, n, -1, WSAVE);
-			      }
-			 else
-			      for (i = 0; i < iter; ++i) {
-				   DZFFT1DC(pin, n, -1, WSAVE);
-			      }
+			 for (i = 0; i < iter; ++i) {
+			      _SCFFT1DC(pin, n, -1, WSAVE);
+			 }
 		    } else {
-			 if (SINGLE_PRECISION)
-			      for (i = 0; i < iter; ++i) {
-				   CSFFT1DC(pin, n, 1, WSAVE);
-			      } 
-			 else
-			      for (i = 0; i < iter; ++i) {
-				   ZDFFT1DC(pin, n, 1, WSAVE);
-			      }
+			 for (i = 0; i < iter; ++i) {
+			      _CSFFT1DC(pin, n, 1, WSAVE);
+			 } 
 		    }
 	       }
 	       break;
@@ -299,36 +290,20 @@ void doit(int iter, struct problem *p)
 	       if (p->kind == PROBLEM_COMPLEX) {
 		    bench_real *rpin = p->in;
 		    bench_real *ipin = rpin + p->size;
-
-		    if (SINGLE_PRECISION) {
-			 for (i = 0; i < iter; ++i) {
-			      CFFT2DC(rpin, ipin, m, n, sign);
-			 }
-		    } else {
-			 for (i = 0; i < iter; ++i) {
-			      ZFFT2DC(rpin, ipin, m, n, sign);
-			 }
+		    
+		    for (i = 0; i < iter; ++i) {
+			 _CFFT2DC(rpin, ipin, m, n, sign);
 		    }
 	       } else {
 		    bench_real *pin = p->in;
 		    if (sign == -1) {
-			 if (SINGLE_PRECISION)
-			      for (i = 0; i < iter; ++i) {
-				   SCFFT2DC(pin, m, n);
-			      } 
-			 else
-			      for (i = 0; i < iter; ++i) {
-				   DZFFT2DC(pin, m, n);
-			      }
+			 for (i = 0; i < iter; ++i) {
+			      _SCFFT2DC(pin, m, n);
+			 } 
 		    } else {
-			 if (SINGLE_PRECISION)
-			      for (i = 0; i < iter; ++i) {
-				   CSFFT2DC(pin, m, n);
-			      } 
-			 else
-			      for (i = 0; i < iter; ++i) {
-				   ZDFFT2DC(pin, m, n);
-			      }
+			 for (i = 0; i < iter; ++i) {
+			      _CSFFT2DC(pin, m, n);
+			 } 
 		    }
 	       }
 	  }
