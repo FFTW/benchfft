@@ -14,6 +14,7 @@ desc=$1
 tgz=`echo $desc | sed 's/\.desc/.tar.gz/'`
 dir=${2-`pwd`}
 name=`basename $desc .desc`
+type=${3-speed}
 
 rm -rf $dir/$name
 mkdir $dir/$name || exit 1
@@ -71,7 +72,7 @@ echo '<p>Raw data files: <a href="'$tgz'">'$tgz'</a>' >> index.html
 
 echo '<hr>' >> index.html
 
-sh $sd/standard-plots.sh data/${name}.speed |while read ps; do
+sh $sd/standard-plots.sh data/${name}.${type} |while read ps; do
     png=`basename $ps .ps`.png
     convert -rotate 90 $ps $png
     rm $ps
