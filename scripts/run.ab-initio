@@ -13,7 +13,7 @@ OMP_NUM_THREADS=1
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
 
-LD_LIBRARY_PATH=/usr/local/gcc-3.2/lib:/opt/intel/mkl60/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/gcc-3.3/lib:/opt/intel/mkl60/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
