@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.31 2002-09-02 06:31:38 stevenj Exp $ */
+/* $Id: verify.c,v 1.32 2002-09-02 06:49:40 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -193,7 +193,7 @@ static double acmp(bench_complex *A, bench_complex *B, unsigned int n,
 	  if (verbose > 2) {
 	       unsigned int i;
 	       for (i = 0; i < n; ++i) {
-		    fprintf(stderr, "%g+%gi, %g+%gi (%g)\n",
+		    fprintf(stderr, "[%u] %g+%gi, %g+%gi (%g)\n", i,
 			    c_re(A[i]), c_im(A[i]),
 			    c_re(B[i]), c_im(B[i]),
 			    cerror(A + i, B + i, 1));
