@@ -13,6 +13,7 @@ BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "The backward transform is scaled")
 BENCH_DOC("notes", "DSP Section 1.7")
 BENCH_DOC("notes", "Modified by Matteo Frigo to remove assumption that local variables are SAVEd")
+BENCH_DOC("bibitem", "IEEE DSP Committee, Programs for Digital Signal Processing (IEEE Press, 1979). ISBN 0-471-05962-5. (Out of Print)")
 END_BENCH_DOC
 
 int can_do(struct problem *p)

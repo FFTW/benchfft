@@ -13,6 +13,7 @@ BENCH_DOC("notes", "DSP Section 1.4")
 BENCH_DOC("bibitem", 
 	  "R. C. Singleton, An algorithm for computing the mixed radix fast Fourier transform, IEEE Trans. on Audio and Electroacoustics AU-17, no. 2, p. 93-103 (June, 1969).")
 BENCH_DOC("notes", "The backward transform is scaled")
+BENCH_DOC("bibitem", "IEEE DSP Committee, Programs for Digital Signal Processing (IEEE Press, 1979). ISBN 0-471-05962-5. (Out of Print)")
 END_BENCH_DOC
 
 
