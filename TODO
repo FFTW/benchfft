@@ -1,6 +1,5 @@
 FFTs to add:
 
-FXT real-data FFTs
 pdqfft
 
 NFFT (probably slow, but interesting for academic reasons)
