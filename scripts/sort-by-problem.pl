@@ -27,7 +27,7 @@ while (<>) {
   $ranks[$a] <=> $ranks[$b] ||    # if tie, sort by rank
   $tots[$a] <=> $tots[$b] ||      # if tie, sort by total transform size
   $sizs[$a] cmp $sizs[$b] ||      # if tie, sort alphabetically on problem description
-  $mflopss[$b] <=> $mflopss[$a];  # if tie, reverse sort by speed
+  $mflopss[$b] <=> $mflopss[$a] || # if tie, reverse sort by speed
   $nams[$a] cmp $nams[$b]         # if tie, sort  by name
   } 0..$#records
 ];
