@@ -133,7 +133,7 @@ while (@ARGV) {
 	   "ooura-4f2d" => "magenta:dash:1:magenta:triangle-up:0.5:none",
 	   "ooura-4f2df" => "magenta:dash:1:magenta:triangle-up:0.5:magenta",
 	   "qft" => "violet:solid:1:violet:plus:0.5:none",
-	   "ransom" => "green4:solid:1:green4:star:0.5:none",
+	   "ransom" => "green4:solid:1:green4:diamond:0.5:none",
 	   "rmayer-ctrig" => "orange:solid:1:orange:circle:0.25:none",
 	   "rmayer-buneman" => "orange:dot:1:orange:circle:0.5:none",
 	   "rmayer-buneman2" => "orange:dot:1:orange:triangle-up:0.5:none",
