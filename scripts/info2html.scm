@@ -75,18 +75,20 @@
   (newline))
 
 (define (htmlize package-name common-entries specific-entries)
-  (begin (htmlize-one package-name common-entries)
+  (begin (htmlize-one package-name common-entries #t)
 	 (if (not (every? null? specific-entries))
 	     (begin
+	       (writeln "<li>Benchmarked variants:")
 	       (writeln "<ul>")
 	       (for-each (lambda (e) (if (not (null? e)) (htmlize-one #f e)))
 			 specific-entries)
-	       (writeln "</ul>")))))
+	       (writeln "</ul>")))
+	 (writeln "</ul>")))
 
 (define (assoc* sym l)
   (filter (lambda (x) (eq? sym (car x))) l))
 
-(define (htmlize-one name entries)
+(define (htmlize-one name entries . no:/ul)
   (let* ((name0 (and (assoc 'name entries) (cadr (assoc 'name entries))))
 	 (name1 (or name name0 "unknown"))
 	 (name (if (and name0 (equal? (cadr (name2package (list 'name name0)))
@@ -117,7 +119,8 @@
       (for-each (lambda (note) (writeln "<li>Note: " (cadr note)))
 		(assoc* 'notes entries))
       )
-    (writeln "</ul>") ))
+    (if (null? no:/ul) (writeln "</ul>"))
+    ))
 
 (define (fold-left op init list)
   (if (null? list)
