@@ -225,7 +225,9 @@ if test "$ac_test_CFLAGS" != "set"; then
   # Disable the first instruction scheduling pass.  The second
   # scheduling pass (after register reload) is ok.
   if test "$acx_prog_egcs" = yes; then
-     CFLAGS="$CFLAGS -fno-schedule-insns -fschedule-insns2"
+     if test "$1" = fftw; then
+        CFLAGS="$CFLAGS -fno-schedule-insns -fschedule-insns2"
+     fi
   fi
 
   # test for gcc-specific flags:
@@ -250,13 +252,23 @@ if test "$ac_test_CFLAGS" != "set"; then
 			[CPU_FLAGS=-mcpu=pentium],
 			[ACX_CHECK_CC_FLAGS(-mpentium,pentium,
 				[CPU_FLAGS=-mpentium])])
-	          CPU_OPTIM=-O
+		  if test "$1" = fftw; then
+	            CPU_OPTIM=-O
+                  fi
+		  if test "$1" = benchfft; then
+	            CPU_OPTIM=-O2
+                  fi
 		  ;;
 	  i686*)  ACX_CHECK_CC_FLAGS(-mcpu=pentiumpro,cpu_pentiumpro,
 			[CPU_FLAGS=-mcpu=pentiumpro],
 			[ACX_CHECK_CC_FLAGS(-mpentiumpro,pentiumpro,
 				[CPU_FLAGS=-mpentiumpro])])
-	          CPU_OPTIM=-O
+		  if test "$1" = fftw; then
+	            CPU_OPTIM=-O
+                  fi
+		  if test "$1" = benchfft; then
+	            CPU_OPTIM=-O2
+                  fi
 		  ;;
 	  alphaev6)  ACX_CHECK_CC_FLAGS(-mcpu=ev6,cpu_ev6,
 			[CPU_FLAGS=-mcpu=ev6])
