@@ -15,6 +15,6 @@ BENCH_DOC("copyright",
 #else
   BENCH_DOC("language", "C")
 #endif
-BENCH_DOC("notes", "Inverse real transform in scaled by .5")
+BENCH_DOC("notes", "Inverse real transform is scaled by .5")
 BENCH_DOC("notes", "Sign of forward real transform is +1")
 END_BENCH_DOC
