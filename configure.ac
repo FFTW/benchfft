@@ -5,7 +5,7 @@ AC_CANONICAL_SYSTEM
 AM_INIT_AUTOMAKE(benchfft, 3.0-alpha0)
 AM_CONFIG_HEADER(config.h)
 
-dnl configure options
+# configure options
 AC_ARG_ENABLE(debug, [  --enable-debug          compile benchfft with extra runtime checks for debugging], ok=$enableval, ok=no)
 if test "$ok" = "yes"; then
 	AC_DEFINE(BENCHFFT_DEBUG,1,[Define to enable extra benchfft debugging code.])
@@ -17,7 +17,7 @@ fi
 AM_CONDITIONAL(SINGLE, test "$benchfft_single" = "yes")
 AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no")
 
-dnl Checks for programs.
+# Checks for programs.
 AC_PROG_CC
 AC_PROG_CC_STDC
 ACX_PROG_CC_EGCS
@@ -27,7 +27,7 @@ AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 AC_PROG_AWK
 
-dnl check for c++, but allow the check to fail
+# check for c++, but allow the check to fail
 AC_CHECK_PROGS(CXX, $CCC c++ g++ gcc CC cxx cc++ cl, nosuchprogram)
 if test "$CXX" = nosuchprogram; then
     CXX=""
@@ -74,18 +74,18 @@ AM_CONDITIONAL(HAVE_CXX, test -n "$CXX")
 AM_CONDITIONAL(HAVE_F77, test -n "$F77")
 AM_CONDITIONAL(HAVE_F90, test -n "$F90")
 
-dnl Checks for header files.
+# Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h sys/time.h unistd.h string.h)
 AC_CHECK_HEADERS(alloca.h stddef.h libintl.h)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
+# Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 AC_C_INLINE
 AC_TYPE_SIZE_T
 AC_HEADER_TIME
 
-dnl Checks for library functions.
+# Checks for library functions.
 AC_FUNC_ALLOCA
 AC_FUNC_MALLOC
 AC_FUNC_VPRINTF
@@ -101,11 +101,11 @@ AC_CHECK_FUNCS(memalign)
 AC_CHECK_DECLS(drand48)
 AC_CHECK_DECLS(hypot,[],[],[#include <math.h>])
 
-dnl Check for installed libraries
-dnl check for pthreads library (required by MKL below)
+# Check for installed libraries
+# check for pthreads library (required by MKL below)
 AC_CHECK_LIB(pthread, pthread_attr_init)
 
-dnl Check for FFTW 2
+# Check for FFTW 2
 AC_CHECK_LIB(fftw, fftw_create_plan_specific,
 	[LFFTW="-lfftw"; have_fftw2=yes])
 AC_CHECK_LIB(rfftw, rfftw_create_plan_specific,
@@ -113,8 +113,8 @@ AC_CHECK_LIB(rfftw, rfftw_create_plan_specific,
 AC_CHECK_HEADERS(fftw.h, [have_fftw_h=yes])
 AC_CHECK_HEADERS(rfftw.h, [have_rfftw_h=yes])
 AC_SUBST(LFFTW)
-AM_CONDITIONAL(HAVE_FFTW2, 
-	[test -n "$have_fftw2" -a -n "$have_rfftw2" -a -n "$have_fftw_h" -a -n "$have_rfftw_h"])
+test -n "$have_fftw2" && test -n "$have_rfftw2" && test -n "$have_fftw_h" && test -n "$have_rfftw_h" && have_fftw2_all=yes
+AM_CONDITIONAL(HAVE_FFTW2, test -n "$have_fftw2_all")
 AC_CHECK_LIB(sfftw, fftw_create_plan_specific,
 	[LSFFTW="-lsfftw"; have_sfftw2=yes])
 AC_CHECK_LIB(srfftw, rfftw_create_plan_specific,
@@ -122,14 +122,15 @@ AC_CHECK_LIB(srfftw, rfftw_create_plan_specific,
 AC_CHECK_HEADERS(sfftw.h)
 AC_CHECK_HEADERS(srfftw.h)
 AC_SUBST(LSFFTW)
-AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2" -a -n "$have_srfftw2")
+test -n "$have_sfftw2" && test -n "$have_srfftw2" && have_sfftw2_all=yes
+AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2_all")
 
-dnl Check for DEC Alpha DXML library
+# Check for DEC Alpha DXML library
 AC_CHECK_LIB(dxml, zfft_, [have_dxml=yes])
 AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
 AC_CHECK_HEADERS(dxmldef.h)
 
-dnl Check for Sun Performance library:
+# Check for Sun Performance library:
 AC_CHECK_LIB(fsu, __f90_stop)
 SAVE_LIBS=$LIBS
 AC_CHECK_LIB(sunperf, cfftf, [LIBS="-lsunperf $LIBS";  have_sunperf=yes])
@@ -138,12 +139,12 @@ AC_CHECK_HEADERS(sunperf.h)
 AC_CHECK_FUNCS(sunperf_version_)
 LIBS=$SAVE_LIBS  # sunperf's symbols may interfere with fftpack.
 
-dnl Check for SGIMATH library:
+# Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d, [have_sgimath=yes])
 AM_CONDITIONAL(HAVE_SGIMATH, test -n "$have_sgimath")
 AC_CHECK_HEADERS(fft.h)
 
-dnl Check for ESSL library (some versions have only one precision):
+# Check for ESSL library (some versions have only one precision):
 if test "x$benchfft_single" = xyes; then
 	essl_prefix=s
 else
@@ -152,7 +153,7 @@ fi
 AC_CHECK_LIB(essl, ${essl_prefix}cft, [have_essl=yes], [], $FLIBS)
 AM_CONDITIONAL(HAVE_ESSL, test -n "$have_essl")
 
-dnl Check for NAG library:
+# Check for NAG library:
 AC_F77_FUNC(c06frf)
 if test "x$LIBNAG" = x; then
 	AC_CHECK_LIB(nag, $c06frf, [have_nag=yes; LIBNAG=-lnag], [], $FLIBS)
@@ -165,7 +166,7 @@ fi
 AM_CONDITIONAL(HAVE_NAG, test -n "$have_nag")
 AC_SUBST(LIBNAG)
 
-dnl Check for IMSL library:
+# Check for IMSL library:
 if test "x$benchfft_single" = xyes; then
 	AC_F77_FUNC(f2tcf, imsl_f2tcf)
 else
@@ -182,7 +183,7 @@ fi
 AM_CONDITIONAL(HAVE_IMSL, test -n "$have_imsl")
 AC_SUBST(LIBIMSL)
 
-dnl Check for Apple's vDSP/vecLib library:
+# Check for Apple's vDSP/vecLib library:
 xsave_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="-I/System/Library/Frameworks/vecLib.framework/Headers"
 test -z "$VECLIB" && VECLIB=/System/Library/Frameworks/vecLib.framework/vecLib
@@ -199,7 +200,7 @@ if test -n "$have_vdsp"; then
 	LIBS="$xsave_LIBS"
 fi
 
-dnl Check for Intel's MKL library:
+# Check for Intel's MKL library:
 AC_CHECK_LIB(guide, omp_in_parallel)
 AC_CHECK_LIB(mkl_def, zfft1d_, [have_mkl_def=yes])
 AM_CONDITIONAL(HAVE_MKL_DEF, test -n "$have_mkl_def")
@@ -213,6 +214,11 @@ AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 AC_CHECK_LIB(mkl_def, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
+
+# check for Numerical Recipes source in benchees/nr
+nr_dir=$srcdir/benchees/nr
+test -r $nr_dir/four1.c && test -r $nr_dir/fourn.c && test -r $nr_dir/realft.c && test -r $nr_dir/rlft3.c && have_nrc=yes
+test -r $nr_dir/four1.f && test -r $nr_dir/fourn.f && test -r $nr_dir/realft.f && test -r $nr_dir/rlft3.f && have_nrf=yes
 
 dnl Check for the GNU Scientific Library
 SAVE_LIBS=$LIBS
@@ -316,3 +322,25 @@ benchees/teneyck/Makefile
 benchees/vdsp/Makefile
 
 ])
+
+cat <<EOF
+*******************************************************************************
+		    Optional FFT libraries Found:
+
+                                      DXML/CXML (Alphas only): ${have_dxml-no}
+                         Sun Performance Library (SPARC only): ${have_sunperf-no}
+                                      sgimath (SGI/MIPS only): ${have_sgimath-no}
+                                          ESSL (IBM/AIX only): ${have_essl-no}
+                                  Apple VDSP (Macintosh only): ${have_vdsp-no}
+
+                               NAG (proprietary, www.nag.com): ${have_nag-no}
+                              IMSL (proprietary, www.vni.com): ${have_imsl-no}
+             Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
+       Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
+
+Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
+
+                                FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
+               FFTW 2.x single-precision (free, www.fftw.org): ${have_sfftw2_all-no}
+  GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
+EOF
