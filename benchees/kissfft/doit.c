@@ -10,7 +10,7 @@ BENCH_DOC("version", "0.1")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
-BENCH_DOC("url", "http://http://sourceforge.net/projects/kissfft/")
+BENCH_DOC("url", "http://sourceforge.net/projects/kissfft/")
 BENCH_DOC("copyright",
 "Copyright (c) 2003, Mark Borgerding\n"
 "\n"
