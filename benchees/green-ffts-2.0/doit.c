@@ -13,7 +13,7 @@ BENCH_DOC("copyright",
 	  "This code is public domain, do anything you want to with it.")
 BENCH_DOC("language", "C")
 BENCH_DOC("notes", "The backward transform is scaled")
-BENCH_DOC("notes", "Code is in single precision, but double precision version is created as documented by the author: \"for double precision just use a global search and replace to change float to double in all source files.\"")
+BENCH_DOC("notes", "Code is in single precision, but double precision version is created as documented by the author: ``for double precision just use a global search and replace to change float to double in all source files.''")
 BENCH_DOC("url", "http://hyperarchive.lcs.mit.edu/HyperArchive/Archive/dev/src/ffts-for-risc-2-c.hqx")
 BENCH_DOC("url-was-valid-on", "Sun Jul 15 21:28:59 EDT 2001")
 END_BENCH_DOC
