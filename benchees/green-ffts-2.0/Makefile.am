@@ -22,3 +22,4 @@ fft2d.o: fft2d.c fp.h fftlib.h fftext.h matlib.h dxpose.h fft2d.h
 fftext.o: fftext.c fftlib.h matlib.h fftext.h
 fftlib.o: fftlib.c fftlib.h
 matlib.o: matlib.c matlib.h
+doit.o: fftext.h
