@@ -14,6 +14,7 @@ doit_CFLAGS=$(AM_CFLAGS) @ALTIVEC_CFLAGS@ -Dvalloc=bench_malloc
 doit_LDADD=$(LIBBENCH)
 
 $(PKG)/vBigDSP.c: extract
-doit.o: extract
+$(PKG)/vBigDSP.h: extract
+doit.o: $(PKG)/vBigDSP.h
 
 include ../Makefile.common
