@@ -44,15 +44,21 @@ extern void F77_FUNC(rfftb, RFFTB)();
 void setup(struct problem *p)
 {
      int n;
+     const int extra_locations = 500;  
+     /* not clear how many locations are actually needed.  FFTPACK
+	plays it dirty by confusing 2int = 1 double, which is false
+	on 64bit machines */
  
      BENCH_ASSERT(can_do(p));
      n = p->n[0];
  
      if (p->kind == PROBLEM_COMPLEX) {
-	  WSAVE = bench_malloc((4 * n + 15) * sizeof(bench_real));
+	  WSAVE = bench_malloc((4 * n + 15 + extra_locations)
+			       * sizeof(bench_real));
 	  F77_FUNC(cffti, CFFTI)(&n, WSAVE);
      } else {
-	  WSAVE = bench_malloc((2 * n + 15) * sizeof(bench_real));
+	  WSAVE = bench_malloc((2 * n + 15 + extra_locations)
+			       * sizeof(bench_real));
 	  F77_FUNC(rffti, RFFTI)(&n, WSAVE);
      }
 }
