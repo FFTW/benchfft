@@ -316,6 +316,7 @@ benchees/mpfun90/Makefile
 benchees/nag/Makefile
 benchees/napack/Makefile
 benchees/nr/Makefile
+benchees/numutils/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
