@@ -271,6 +271,15 @@ dnl This macro sets ANSI mode for certain compilers, and must
 dnl thus come before the subsequenct checks
 ACX_PROG_CC_MAXOPT(benchfft)
 
+if test "$GCC" = "yes"; then
+    ACX_CHECK_CC_FLAGS(-faltivec, faltivec, ALTIVEC_CFLAGS="-faltivec",
+	[ACX_CHECK_CC_FLAGS(-maltivec -mabi=altivec, maltivec,
+	    [ALTIVEC_CFLAGS="-maltivec -mabi=altivec -DOS_LINUXPPC"
+	     ALTIVEC_ABIFLAGS="-mabi=altivec"])])
+fi
+AC_SUBST(ALTIVEC_CFLAGS)
+AC_SUBST(ALTIVEC_ABIFLAGS)
+
 dnl override CFLAGS selection when debugging
 if test "${enable_debug}" = "yes"; then
 	CFLAGS="-g"
@@ -350,6 +359,7 @@ benchees/sunperf/Makefile
 benchees/temperton/Makefile
 benchees/teneyck/Makefile
 benchees/valkenburg/Makefile
+benchees/vbigdsp/Makefile
 benchees/vdsp/Makefile
 
 ])

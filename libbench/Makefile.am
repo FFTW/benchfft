@@ -1,5 +1,6 @@
 noinst_LIBRARIES=libbench.a
 
+libbench_a_CFLAGS = $(AM_CFLAGS) @ALTIVEC_ABIFLAGS@
 libbench_a_SOURCES=accopy-from.c accopy-to.c acopy.c allocate.c		\
 ascale.c aset.c bench-main.c caadd.c cacopy.c can-do.c cascale.c	\
 caset.c casub.c ccopy-from.c ccopy-to.c copy-c2c-from.c copy-c2c-to.c	\
