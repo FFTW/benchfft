@@ -1,5 +1,7 @@
+if SINGLE
 if HAVE_F77
 PRG=doit doit_3d
+endif
 endif
 
 INCLUDES = $(INCLBENCH)

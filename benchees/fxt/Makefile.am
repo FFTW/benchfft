@@ -1,7 +1,7 @@
+if DOUBLE
 if HAVE_CXX
 PRG=doit_dif doit_dit doit_split doit_fht doit_4step doit_twodim doit_ndim
-else
-FORTRAN_PRG=
+endif
 endif
 
 INCLUDES = $(INCLBENCH)

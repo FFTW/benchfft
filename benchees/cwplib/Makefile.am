@@ -1,4 +1,7 @@
+if SINGLE
 PRG=doit
+endif
+
 PKG=cwplib
 INCLUDES = $(INCLBENCH) -I$(PKG)
 TARFILE=$(PKG).tar.gz

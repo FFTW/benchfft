@@ -1,4 +1,6 @@
+if DOUBLE
 PRG=doit
+endif
 
 PKG = mixfft05
 TARFILE = $(PKG).tar.gz

@@ -1,5 +1,7 @@
+if DOUBLE
 if HAVE_F77
 PRG=doit
+endif
 endif
 
 PKG = f77-ieee

@@ -1,5 +1,7 @@
+if DOUBLE
 if HAVE_F90
 PRG = doit
+endif
 endif
 
 PKG = f90-ieee

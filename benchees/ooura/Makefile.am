@@ -1,8 +1,8 @@
+if DOUBLE
 if HAVE_F77
 FORTRAN_PRG=doit_8gf doit_4gf
 LOCAL_COPIES=fft4gf.f fft8gf.f
-else
-FORTRAN_PRG=
+endif
 endif
 
 PRG=doit_sg doit_8g doit_4g $(FORTRAN_PRG)

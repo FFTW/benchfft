@@ -1,6 +1,8 @@
+if SINGLE
 if HAVE_F77
 PRG=doit11 doit12 doit12-fast doit12-ffa doit14 doit17 doit18
 noinst_LIBRARIES=libdsp.a
+endif
 endif
 
 PKG=dsp

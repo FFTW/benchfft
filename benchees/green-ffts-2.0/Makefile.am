@@ -1,4 +1,7 @@
+if SINGLE
 PRG=doit
+endif
+
 INCLUDES = $(INCLBENCH) -Ddouble_t=double
 PKG=green-ffts-2.0
 TARFILE=$(PKG).tar.gz
