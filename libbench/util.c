@@ -18,13 +18,12 @@
  *
  */
 
-#include "config.h"
+#include "bench.h"
 
 #ifdef malloc
 #  undef malloc
 #endif
 
-#include "bench.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
