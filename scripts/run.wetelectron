@@ -2,7 +2,7 @@
 
 # execute this script from the top-level directory
 HOSTNAME=`hostname`
-
+PATH=$HOME/bin:$PATH; export PATH
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
 CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
 CPPFLAGS="-I$HOME/include" 
