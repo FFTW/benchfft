@@ -293,7 +293,7 @@ foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
 
     # legend should include the problem if this transform solves more than
     # one problem in this data:
-    if ($problems{$nam} ne $prob) {
+    if (!$no_dups and $problems{$nam} ne $prob) {
 	print "@ s$setnum legend \"$transform\"\n";
     }
     else {
