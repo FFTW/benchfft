@@ -16,7 +16,7 @@ doit_LDADD=$(LIBFFTW) $(LIBBENCH) @FLIBS@
 doit.o: doit.c extract
 
 $(LIBFFTW): extract
-	(cd $(PKG) && $(CONFIGURE) && $(MAKE))
+	(cd $(PKG) && (CC=$(CC) CFLAGS=$(CFLAGS) $(CONFIGURE)) && $(MAKE))
 
 include ../Makefile.common
 
