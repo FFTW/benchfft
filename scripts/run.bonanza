@@ -13,6 +13,7 @@ LDFLAGS="-L$HOME/alpha/lib"
 MAKE=/usr/local/bin/make
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+MAXND=2097152; export MAXND
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
