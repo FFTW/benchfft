@@ -10,13 +10,9 @@
 
 static const char *mkvers(void)
 {
-#if HAVE_MKLGETVERSIONSTRING
      static char buf[160];
      MKLGetVersionString(buf, 160);
      return buf;
-#else
-     return "unknown";
-#endif
 }
 
 BEGIN_BENCH_DOC 

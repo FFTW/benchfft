@@ -231,7 +231,7 @@ AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
-AC_CHECK_LIB(mkl, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
+
 
 # Check for Intel's IPP library:
 AC_CHECK_HEADERS(ipps.h)
