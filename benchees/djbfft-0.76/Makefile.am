@@ -21,4 +21,4 @@ extract: $(TARFILE)
 	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
 	@echo timestamp >$@
 
-$(PKG)/fftc4.h $(PKG)/fftc8.h $(PKG)/fftfreq.h: $(PKG)
+$(PKG)/fftc4.h $(PKG)/fftc8.h $(PKG)/fftfreq.h: extract
