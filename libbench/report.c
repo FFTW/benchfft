@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.1 2001-07-04 22:50:19 athena Exp $ */
+/* $Id: report.c,v 1.2 2001-07-07 14:16:56 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -30,7 +30,7 @@ void (*report)(const struct problem *p, double *t, int st);
 /* report WHAT */
 enum {
      W_TIME = 0x1,
-     W_MFLOPS = 0x2,
+     W_MFLOPS = 0x2
 };
 
 /* report HOW */

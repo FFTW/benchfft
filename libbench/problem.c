@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.3 2001-07-05 18:58:45 athena Exp $ */
+/* $Id: problem.c,v 1.4 2001-07-07 14:16:56 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -33,21 +33,23 @@ struct problem *problem_parse(const char *s)
 {
      int n;
      int in_place = 0;
-     int sign = -1;
      struct problem *p;
-     const bench_complex czero = {0, 0};
 
      p = bench_malloc(sizeof(struct problem));
 
      p->kind = PROBLEM_COMPLEX;
+     p->sign = -1;
+     p->in = 0;
+     p->out = 0;
      p->userinfo = 0;
 
      for (;;) {
 	  switch (tolower(*s)) {
 	      case 'i': in_place = 1; ++s; continue;
 	      case 'o': in_place = 0; ++s; continue;
-	      case 'f': sign = -1; ++s; continue;
-	      case 'b': sign = 1; ++s; continue;
+	      case 'f': p->sign = -1; ++s; continue;
+	      case 'b': p->sign = 1; ++s; continue;
+	      case 'r': p->kind = PROBLEM_REAL; ++s; continue;
 	      default:
 		   ;
 	  }
@@ -78,32 +80,14 @@ struct problem *problem_parse(const char *s)
 	  goto accept_digit;
      }
 
-     p->p.complex.sign = sign;
-     p->p.complex.in = bench_malloc(p->size * sizeof(bench_complex));
-
-     if (in_place)
-	  p->p.complex.out = p->p.complex.in;
-     else
-	  p->p.complex.out = bench_malloc(p->size * sizeof(bench_complex));
-
-     caset(p->p.complex.out, p->size, czero);
-     caset(p->p.complex.in, p->size, czero);
+     problem_alloc(p, in_place);
      return p;
 }
 
 void problem_destroy(struct problem *p)
 {
-     switch (p->kind) {
-	 case PROBLEM_COMPLEX:
-	      if (p->p.complex.out != p->p.complex.in)
-		   bench_free(p->p.complex.out);
-	      bench_free(p->p.complex.in);
-	      break;
-	 case PROBLEM_REAL:
-	      /* TODO */
-	      ;
-     }
-
+     BENCH_ASSERT(p);
+     problem_free(p);
      bench_free(p);
 }
 
@@ -113,6 +97,5 @@ int problem_complex_power_of_two(struct problem *p, int in_place)
      return (p->kind == PROBLEM_COMPLEX &&
 	     p->rank == 1 &&
 	     power_of_two(p->n[0]) &&
-	     (in_place ? (p->p.complex.in == p->p.complex.out)
-	      : (p->p.complex.in != p->p.complex.out)));
+	     (in_place ? (p->in == p->out) : (p->in != p->out)));
 }

@@ -2,10 +2,9 @@
 
 #include "bench.h"
 
-/* copy A onto B */
-void cacopy(bench_complex *A, bench_complex *B, unsigned int n)
+void aset(bench_real *A, unsigned int n, bench_real x)
 {
      unsigned int i;
      for (i = 0; i < n; ++i)
-	  B[i] = A[i];
+	  A[i] = x;
 }

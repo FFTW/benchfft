@@ -3,7 +3,7 @@
 #include "bench.h"
 
 /* copy A onto B */
-void cacopy(bench_complex *A, bench_complex *B, unsigned int n)
+void acopy(bench_real *A, bench_real *B, unsigned int n)
 {
      unsigned int i;
      for (i = 0; i < n; ++i)

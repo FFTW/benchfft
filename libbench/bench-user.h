@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.4 2001-07-07 00:16:14 athena Exp $ */
+/* $Id: bench-user.h,v 1.5 2001-07-07 14:16:56 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -44,19 +44,9 @@ struct problem {
      unsigned int rank;
      unsigned n[MAX_RANK];  
      unsigned int size;  /* total size of input = PROD n[i] */
-
-     union {
-	  struct {
-	       int sign;
-	       bench_complex *in;
-	       bench_complex *out;
-	  } complex;
-
-	  struct {
-	       /* TODO */
-	       int dummy; /* prevent compiler warning */
-	  } real;
-     } p;
+     int sign;
+     void *in;
+     void *out;
      void *userinfo; /* user can store whatever */
 };
 
@@ -65,8 +55,28 @@ extern void setup(struct problem *p);
 extern void doit(int iter, struct problem *p);
 extern void done(struct problem *p);
 
+/* default routine in allocate.c */
+extern void problem_alloc(struct problem *p, int in_place);
+
+/* default routine in deallocate.c */
+extern void problem_free(struct problem *p);
+
+/* default routine in zero.c */
+extern void problem_zero(struct problem *p);
+
+/* default routine in ccopy-from.c */
+extern void problem_ccopy_from(struct problem *p, bench_complex *in);
+
+/* default routine in ccopy-to.c */
+extern void problem_ccopy_to(struct problem *p, bench_complex *out);
+
 #define power_of_two(n) (((n) > 0) && (((n) & ((n) - 1)) == 0))
-int problem_complex_power_of_two(struct problem *p, int in_place);
+extern int problem_complex_power_of_two(struct problem *p, int in_place);
+
+extern void aset(bench_real *A, unsigned int n, bench_real x);
+extern void caset(bench_complex *A, unsigned int n, bench_complex x);
+extern void acopy(bench_real *A, bench_real *B, unsigned int n);
+extern void cacopy(bench_complex *A, bench_complex *B, unsigned int n);
 
 /**************************************************************
  * malloc

@@ -10,16 +10,47 @@ BENCH_DOC("year", "1999")
 BENCH_DOC("email", "djb@pobox.com")
 BENCH_DOC("url", "http://pobox.com/~djb/djbfft.html")
 BENCH_DOC("language", "C")
+BENCH_DOC("notes",
+	  "djbfft considers sign = +1 to be the forward transform")
 END_BENCH_DOC
 
 #include "fftc4.h"
 #include "fftc8.h"
+#include "fftfreq.h"
 
 static void (*fft)();
 
 int can_do(struct problem *p)
 {
      return problem_complex_power_of_two(p, 1) && p->size <= 8192;
+}
+
+void problem_ccopy_from(struct problem *p, bench_complex *in)
+{
+     if (p->sign == 1)
+	  /* in-order input for backward transforms */
+	  cacopy(in, p->in, p->size);
+     else {
+	  unsigned int i;
+	  bench_complex *pin = p->in;
+	  for (i = 0; i < p->size; ++i) {
+	       pin[i] = in[fftfreq_c(i, p->size)];
+	  }
+     }
+}
+
+void problem_ccopy_to(struct problem *p, bench_complex *out)
+{
+     if (p->sign == 1) {
+	  unsigned int i;
+	  bench_complex *pout = p->out;
+	  for (i = 0; i < p->size; ++i) {
+	       out[fftfreq_c(i, p->size)] = pout[i];
+	  }
+     } else {
+	  /* in-order output for forward transforms */
+	  cacopy(p->out, out, p->size);
+     }
 }
 
 #define CASE(p, var, fft)			\
@@ -42,13 +73,13 @@ switch (p->n[0]) {				\
 void setup(struct problem *p)
 {
      if (sizeof(bench_real) == sizeof(float)) {
-	  if (p->p.complex.sign == -1) {
+	  if (p->sign == 1) {
 	       CASE(p, fft, fftc4_);
 	  } else {
 	       CASE(p, fft, fftc4_un);
 	  }
      } else {
-	  if (p->p.complex.sign == -1) {
+	  if (p->sign == 1) {
 	       CASE(p, fft, fftc8_);
 	  } else {
 	       CASE(p, fft, fftc8_un);
@@ -59,7 +90,7 @@ void setup(struct problem *p)
 void doit(int iter, struct problem *p)
 {
      int i;
-     bench_complex *in = p->p.complex.in;
+     bench_complex *in = p->in;
      void (*FFT)() = fft; /* cache */
 
      for (i = 0; i < iter; ++i) {

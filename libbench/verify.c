@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.3 2001-07-05 18:58:45 athena Exp $ */
+/* $Id: verify.c,v 1.4 2001-07-07 14:16:56 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -45,12 +45,12 @@ static double hypot(double a, double b)
 }
 #endif
 
-static double cerror(bench_complex *A, bench_complex *B, int n)
+static double cerror(bench_complex *A, bench_complex *B, unsigned int n)
 {
      /* compute the relative error */
      double error = 0.0;
      double tol = tolerance();
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  double a;
@@ -72,9 +72,9 @@ static double cerror(bench_complex *A, bench_complex *B, int n)
 }
 
 /* generate random inputs */
-static void arand(bench_complex *A, int n)
+static void arand(bench_complex *A, unsigned int n)
 {
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  c_re(A[i]) = bench_drand();
@@ -83,9 +83,9 @@ static void arand(bench_complex *A, int n)
 }
 
 /* C = A + B */
-static void aadd(bench_complex *C, bench_complex *A, bench_complex *B, int n)
+static void aadd(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
 {
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  c_re(C[i]) = c_re(A[i]) + c_re(B[i]);
@@ -95,9 +95,9 @@ static void aadd(bench_complex *C, bench_complex *A, bench_complex *B, int n)
 
 
 /* C = A - B */
-static void asub(bench_complex *C, bench_complex *A, bench_complex *B, int n)
+static void asub(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
 {
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  c_re(C[i]) = c_re(A[i]) - c_re(B[i]);
@@ -107,9 +107,9 @@ static void asub(bench_complex *C, bench_complex *A, bench_complex *B, int n)
 
 /* B = rotate left A */
 static void arol(bench_complex *B, bench_complex *A,
-		 int n, int n_before, int n_after)
+		 unsigned int n, unsigned int n_before, unsigned int n_after)
 {
-     int i, ib, ia;
+     unsigned int i, ib, ia;
 
      for (ib = 0; ib < n_before; ++ib) {
 	  for (i = 0; i < n - 1; ++i)
@@ -123,9 +123,9 @@ static void arol(bench_complex *B, bench_complex *A,
 }
 
 /* A = alpha * A  (in place) */
-static void ascale(bench_complex *A, bench_complex alpha, int n)
+static void ascale(bench_complex *A, bench_complex alpha, unsigned int n)
 {
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  bench_complex a = A[i];
@@ -134,7 +134,7 @@ static void ascale(bench_complex *A, bench_complex alpha, int n)
      }
 }
 
-static void acmp(bench_complex *A, bench_complex *B, int n)
+static void acmp(bench_complex *A, bench_complex *B, unsigned int n)
 {
      double d = cerror(A, B, n);
      if (d > tolerance()) {
@@ -146,9 +146,9 @@ static void acmp(bench_complex *A, bench_complex *B, int n)
 
 static void do_fft(struct problem *p, bench_complex *in, bench_complex *out)
 {
-     cacopy(in, p->p.complex.in, p->size);
+     problem_ccopy_from(p, in);
      doit(1, p);
-     cacopy(p->p.complex.out, out, p->size);
+     problem_ccopy_to(p, out);
 }
 
 /*
@@ -168,10 +168,10 @@ static void linear(struct problem *p,
 		   bench_complex *outB,
 		   bench_complex *outC,
 		   bench_complex *tmp,
-		   int rounds)
+		   unsigned int rounds)
 {
-     int N = p->size;
-     int i;
+     unsigned int N = p->size;
+     unsigned int i;
 
      /* test 1: check linearity */
      for (i = 0; i < rounds; ++i) {
@@ -206,12 +206,12 @@ static void impulse(struct problem *p,
 		    bench_complex *outB,
 		    bench_complex *outC,
 		    bench_complex *tmp,
-		    int rounds)
+		    unsigned int rounds)
 {
-     int n = p->size;
+     unsigned int n = p->size;
      const bench_complex one = {1.0, 0.0};
      const bench_complex zero = {0.0, 0.0};
-     int i;
+     unsigned int i;
 
      /* test 2: check that the unit impulse is transformed properly */
      caset(inA, n, zero);
@@ -239,16 +239,16 @@ static void time_shift(struct problem *p,
 		       bench_complex *outA,
 		       bench_complex *outB,
 		       bench_complex *tmp,
-		       int rounds)
+		       unsigned int rounds)
 {
      double sign;
-     int n, n_before, n_after, dim;
+     unsigned int n, n_before, n_after, dim;
      double twopin;
      const double k2pi = 6.2831853071795864769252867665590057683943388;
-     int i;
+     unsigned int i;
 
      n = p->size;
-     sign = p->p.complex.sign;
+     sign = p->sign;
 
      /* test 3: check the time-shift property */
      /* the paper performs more tests, but this code should be fine too */
@@ -256,13 +256,13 @@ static void time_shift(struct problem *p,
      n_before = 1;
      n_after = n;
      for (dim = 0; dim < p->rank; ++dim) {
-	  int n_cur = p->n[dim];
+	  unsigned int n_cur = p->n[dim];
 
 	  n_after /= n_cur;
 	  twopin = k2pi / n_cur;
 
 	  for (i = 0; i < rounds; ++i) {
-	       int j, jb, ja;
+	       unsigned int j, jb, ja;
 
 	       arand(inA, n);
 	       arol(inB, inA, n_cur, n_before, n_after);
@@ -275,7 +275,8 @@ static void time_shift(struct problem *p,
 			 double c = cos(j * twopin);
 
 			 for (ja = 0; ja < n_after; ++ja) {
-			      int index = (jb * n_cur + j) * n_after + ja;
+			      unsigned int index = 
+				   (jb * n_cur + j) * n_after + ja;
 			      c_re(tmp[index]) = c_re(outB[index]) * c 
 				   - c_im(outB[index]) * s;
 			      c_im(tmp[index]) = c_re(outB[index]) * s
@@ -289,10 +290,10 @@ static void time_shift(struct problem *p,
      }
 }
 
-static void do_verify(struct problem *p, int rounds)
+static void do_verify(struct problem *p, unsigned int rounds)
 {
      bench_complex *inA, *inB, *inC, *outA, *outB, *outC, *tmp;
-     int n = p->size;
+     unsigned int n = p->size;
 
      /* TODO: real case */
      BENCH_ASSERT(p->kind == PROBLEM_COMPLEX);

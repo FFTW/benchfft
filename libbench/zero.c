@@ -18,46 +18,20 @@
  *
  */
 
-/* $Id: speed.c,v 1.3 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: zero.c,v 1.1 2001-07-07 14:16:56 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
 
-void speed(const char *param)
+/* set I/O arrays to zero.  Default routine */
+void problem_zero(struct problem *p)
 {
-     double *t;
-     int iter, k;
-     struct problem *p;
-
-     t = bench_malloc(time_repeat * sizeof(double));
-
-     p = problem_parse(param);
-
-     BENCH_ASSERT(can_do(p));
-     
-     problem_zero(p);
-     setup(p);
-
-     for (iter = 1; ; iter *= 2) {
-	  for (k = 0; k < time_repeat; ++k) {
-	       timer_start();
-	       doit(iter, p);
-	       t[k] = timer_stop();
-	  }
-	  
-	  if (t[0] >= time_min)
-	       break;
+     if (p->kind == PROBLEM_COMPLEX) {
+	  const bench_complex czero = {0, 0};
+	  caset(p->out, p->size, czero);
+	  caset(p->in, p->size, czero);
+     } else {
+	  aset(p->out, p->size, 0.0);
+	  aset(p->in, p->size, 0.0);
      }
-
-     done(p);
-
-     for (k = 0; k < time_repeat; ++k) {
-	  t[k] /= iter;
-     }
-
-     report(p, t, time_repeat);
-
-     problem_destroy(p);
-     bench_free(t);
-     return;
 }

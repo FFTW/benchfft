@@ -13,4 +13,4 @@ djbfft-0.76/djbfft.a: djbfft-0.76
 djbfft-0.76: djbfft-0.76.tar.gz
 	gzip -dc ${srcdir}/djbfft-0.76.tar.gz | tar xf -
 
-djbfft-0.76/fftc4.h djbfft-0.76/fftc8.h: djbfft-0.76
+djbfft-0.76/fftc4.h djbfft-0.76/fftc8.h djbfft-0.76/fftfreq.h: djbfft-0.76
