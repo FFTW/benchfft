@@ -13,7 +13,7 @@ endif
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBFFTW) $(LIBBENCH) @FLIBS@
 
-doit.o: doit.c extract
+doit.o: doit.c $(LIBFFTW)
 
 $(LIBFFTW): extract
 	(cd $(PKG) && (CC=$(CC) CFLAGS=$(CFLAGS) $(CONFIGURE)) && $(MAKE))
