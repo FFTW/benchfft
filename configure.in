@@ -26,7 +26,7 @@ AC_CHECK_PROG(TR, tr, tr)
 AC_F77_LIBRARY_LDFLAGS
 AC_F77_WRAPPERS
 
-AM_CONDITIONAL(HAVE_F77, test -n "$ac_ct_F77")
+AM_CONDITIONAL(HAVE_F77, test -n "$F77")
 
 dnl check for optimization options
 dnl This macro sets ANSI mode for certain compilers, and must
