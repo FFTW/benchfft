@@ -2,7 +2,7 @@ AUTOMAKE_OPTIONS = gnu
 
 SUBDIRS = libbench benchees scripts
 
-EXTRA_DIST = COPYRIGHT bootstrap.sh
+EXTRA_DIST = COPYRIGHT bootstrap.sh acx_f77_cmain_fflags.m4
 
 collect:
 	$(SHELL) ${top_srcdir}/scripts/collect ${top_builddir}/benchees
