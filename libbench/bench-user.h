@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.24 2001-07-15 22:17:48 stevenj Exp $ */
+/* $Id: bench-user.h,v 1.25 2001-07-19 14:41:09 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -91,6 +91,10 @@ void copy_c2h_1d_unpacked(struct problem *p, bench_complex *in,
 			  bench_real sign_of_r2h_transform);
 void copy_h2c_1d_unpacked(struct problem *p, bench_complex *out, 
 			  bench_real sign_of_r2h_transform);
+void copy_c2h_1d_unpacked_ri(struct problem *p, bench_complex *in,
+			     bench_real sign_of_r2h_transform);
+void copy_h2c_1d_unpacked_ri(struct problem *p, bench_complex *out, 
+			     bench_real sign_of_r2h_transform);
 void copy_ri2c(bench_real *rin, bench_real *rout, bench_complex *out,
 	       unsigned int n);
 void copy_c2ri(bench_complex *in, bench_real *rout, bench_real *iout,
