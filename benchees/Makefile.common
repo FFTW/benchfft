@@ -31,7 +31,7 @@ check-local: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
 	  test ! -x $$prog ||                              \
 	  echo "Testing $$prog";                           \
-	  $(BENCHMARK) --verify `pwd`/$$prog;              \
+	  $(BENCHMARK) --verify-only `pwd`/$$prog;         \
 	done)
 
 benchmark: $(PRG)
