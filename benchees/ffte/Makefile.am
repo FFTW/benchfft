@@ -10,7 +10,7 @@ endif
 endif
 endif
 
-PKG = ffte-3.0
+PKG = ffte-3.2
 TARFILE = $(PKG).tgz
 EXTRA_DIST = $(TARFILE) zfft1d.f.patch zfft2d.f.patch zfft3d.f.patch
 LOCAL_COPIES = cparam.h param.h
