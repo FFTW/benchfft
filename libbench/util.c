@@ -177,7 +177,7 @@ void *bench_malloc(size_t n)
 
 #ifdef HAVE_MEMALIGN
      {
-	  const int alignment = 16; /* power of 2 */
+	  const int alignment = 128; /* for Pentium IV */
 	  p = memalign(alignment, n);
      }
 #else
