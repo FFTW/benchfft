@@ -11,6 +11,7 @@ endif
 endif
 
 INCLUDES = $(INCLBENCH)
+BENCHMARK_USEROPT='-o=patient'
 
 doit_SOURCES=doit.c
 doit_LDADD=$(FFTW3_LIBS) $(LIBBENCH) @FLIBS@

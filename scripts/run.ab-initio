@@ -5,8 +5,8 @@ HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
 CXXFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
-CPPFLAGS='-I/opt/intel/mkl/include' 
-LDFLAGS='-L/opt/intel/mkl/lib/32' 
+CPPFLAGS='-I/opt/intel/mkl/include -I/usr/local/include' 
+LDFLAGS='-L/opt/intel/mkl/lib/32 -L/usr/local/lib' 
 MAKE=make
 
 OMP_NUM_THREADS=1

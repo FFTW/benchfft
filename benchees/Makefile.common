@@ -6,7 +6,7 @@ INCLBENCH=-I${top_srcdir}/libbench
 
 MAXN=262144
 MAXND=$(MAXN)
-BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark --maxn=$(MAXN) --maxnd=$(MAXND) $(BENCHMARK_FLAGS)
+BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark --maxn=$(MAXN) --maxnd=$(MAXND) $(BENCHMARK_USEROPT) $(BENCHMARK_FLAGS) 
 WRITEINFO=$(SHELL) ${top_srcdir}/scripts/writeinfo
 
 if SINGLE
