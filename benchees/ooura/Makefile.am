@@ -83,7 +83,7 @@ doit_sg3df.o: doit-doc.h doit3d.c
 include ../Makefile.common
 
 $(PKG)/fftsg.c $(PKG)/fft8g.c $(PKG)/fft4g.c: extract
-$(PKG2)/fftsg2d.c $(PKG2)/fft4f2d.c $(PKG2)/fftsg2d.c: extract2
+$(PKG2)/fftsg2d.c $(PKG2)/fft4f2d.c $(PKG2)/fftsg3d.c: extract2
 
 fftsgf.f: extract
 	@CP@ -f $(PKG)/fftsg.f $@
