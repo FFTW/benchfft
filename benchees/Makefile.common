@@ -5,7 +5,7 @@ LIBBENCH=${top_builddir}/libbench/libbench.a
 INCLBENCH=-I${top_srcdir}/libbench
 
 MAXN=262144
-MAXND=2097152
+MAXND=$(MAXN)
 BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark --maxn=$(MAXN) --maxnd=$(MAXND) $(BENCHMARK_FLAGS)
 WRITEINFO=$(SHELL) ${top_srcdir}/scripts/writeinfo
 
