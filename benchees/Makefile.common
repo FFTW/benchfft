@@ -10,13 +10,13 @@ list:
 
 # extract TARFILE
 extract: $(TARFILE)
-	@GZIP@ -dc ${srcdir}/$(TARFILE) | @TAR@ xf -
+	(@GZIP@ -dc ${srcdir}/$(TARFILE) | @TAR@ xf -) && \
 	echo timestamp >$@
 
 # extract TARFILE in PKG directory
 extract-mkdir: $(TARFILE)
 	@MKDIR@ $(PKG) && \
-        @GZIP@ -dc ${srcdir}/$(TARFILE) | (cd $(PKG); @TAR@ xf -)
+        @GZIP@ -dc ${srcdir}/$(TARFILE) | (cd $(PKG); @TAR@ xf -) && \
 	echo timestamp >$@
 
 distclean-local:
