@@ -1,8 +1,17 @@
 noinst_PROGRAMS=doit
-INCLUDES = -I${top_srcdir}/libbench
-EXTRA_DIST = cwplib.tar.gz
+PKG=cwplib
+INCLUDES = -I${top_srcdir}/libbench -I$(PKG)
+TARFILE=$(PKG).tar.gz
+EXTRA_DIST = $(TARFILE)
 
-doit_SOURCES=doit.c pfafft.c cwp.h
-doit_LDADD=${top_builddir}/libbench/libbench.a
+doit_SOURCES=doit.c
+doit_LDADD=pfafft.o ${top_builddir}/libbench/libbench.a
 
+extract: $(TARFILE)
+	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
+	@echo timestamp >$@
 
+pfafft.o: $(PKG)/pfafft.c
+	$(COMPILE) -c -o $@ $(PKG)/pfafft.c
+
+doit.o: extract
