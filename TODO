@@ -1,5 +1,7 @@
 FFTs to add:
 
+New Intel MKL (includes mixed radix)
+
 NFFT
 
 crandall (out-of-order)
