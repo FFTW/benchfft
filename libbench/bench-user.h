@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.23 2001-07-15 04:44:21 stevenj Exp $ */
+/* $Id: bench-user.h,v 1.24 2001-07-15 22:17:48 stevenj Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -172,12 +172,28 @@ extern const struct bench_doc bench_doc[];
 #define CC_DOC /* none */
 #endif
 
+#ifdef CXX
+#define CXX_DOC BENCH_DOC("cxx", CXX)
+#elif defined(BENCH_CXX)
+#define CXX_DOC BENCH_DOC("cxx", BENCH_CXX)
+#else
+#define CXX_DOC /* none */
+#endif
+
 #ifdef F77
 #define F77_DOC BENCH_DOC("f77", F77)
 #elif defined(BENCH_F77)
 #define F77_DOC BENCH_DOC("f77", BENCH_F77)
 #else
 #define F77_DOC /* none */
+#endif
+
+#ifdef F90
+#define F90_DOC BENCH_DOC("f90", F90)
+#elif defined(BENCH_F90)
+#define F90_DOC BENCH_DOC("f90", BENCH_F90)
+#else
+#define F90_DOC /* none */
 #endif
 
 #ifdef BENCH_HOST
@@ -195,7 +211,9 @@ extern const struct bench_doc bench_doc[];
 #define BEGIN_BENCH_DOC						\
 const struct bench_doc bench_doc[] = {				\
     CC_DOC							\
+    CXX_DOC							\
     F77_DOC							\
+    F90_DOC							\
     HOST_DOC							\
     HOSTNAME_DOC					
 

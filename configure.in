@@ -139,8 +139,18 @@ fi
 AC_DEFINE_UNQUOTED(BENCH_HOST, "$host", [host type])
 AC_DEFINE_UNQUOTED(BENCH_HOSTNAME, "$ac_hostname", [host name])
 AC_DEFINE_UNQUOTED(BENCH_CC, "$CC $CFLAGS", [C compiler name and flags])
-AC_DEFINE_UNQUOTED(BENCH_F77, "$F77 $FFLAGS", 
-	[FORTRAN compiler name and flags])
+if test -n "$CXX"; then
+	AC_DEFINE_UNQUOTED(BENCH_CXX, "$CXX $CXXFLAGS",
+		[C++ compiler name and flags])
+fi
+if test -n "$F77"; then
+	AC_DEFINE_UNQUOTED(BENCH_F77, "$F77 $FFLAGS",
+		[Fortran 77 compiler name and flags])
+fi
+if test -n "$F90"; then
+	AC_DEFINE_UNQUOTED(BENCH_F90, "$F90 $F90FLAGS",
+		[Fortran 90 compiler name and flags])
+fi
 
 dnl TODO
 ACX_GCC_ALIGNS_STACK()
