@@ -7,8 +7,9 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("version", "26-August-2002")
 BENCH_DOC("author", "J&ouml;rg Arndt")
-BENCH_DOC("year", "2001")
+BENCH_DOC("year", "2002")
 BENCH_DOC("email", "arndt@jjj.de")
 BENCH_DOC("url", "http://www.jjj.de/fxt/")
 BENCH_DOC("url-was-valid-on", "Sun Jul 15 00:02:30 EDT 2001")
