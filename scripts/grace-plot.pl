@@ -125,7 +125,7 @@
 	   "rmayer-simple" => "orange:dash:1:orange:diamond:0.5:orange",
 	   "rmayer-unstable" => "orange:dash:2:orange:diamond:0.5:none",
 	   "rmayer-lookup" => "orange:solid:1:orange:triangle-down:0.5:none",
-	   "sciport" => "turquoise:solid:1:turquoise:circle:0.5:none",
+	   "sciport" => "turquoise:solid:1:turquoise:triangle-down:0.4:none",
 	   "sgimath" => "black:solid:1:black:star:0.5:none",
 	   "singleton" => "red:solid:1:red:triangle-up:0.5:none",
 	   "singleton-3d" => "red:solid:1:red:triangle-up:0.5:none",
