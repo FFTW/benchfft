@@ -31,7 +31,7 @@ check-local: $(PRG)
 	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
 	  test ! -x $$prog ||                              \
 	  echo "Testing $$prog";                           \
-	  $(BENCHMARK) --verify $$PWD/$$prog;              \
+	  $(BENCHMARK) --verify `pwd`/$$prog;              \
 	done)
 
 benchmark: $(PRG)
@@ -39,8 +39,8 @@ benchmark: $(PRG)
 	  test ! -x $$prog ||                              \
 	  echo "Benchmarking $$prog";                      \
 	  time_min=`./$$prog --print-time-min`;              \
-	  $(WRITEINFO) --time-min $$time_min $$PWD/$$prog  >$$prog.info; \
-	  ($(BENCHMARK) --time-min $$time_min $$PWD/$$prog  | \
+	  $(WRITEINFO) --time-min $$time_min `pwd`/$$prog  >$$prog.info; \
+	  ($(BENCHMARK) --time-min $$time_min `pwd`/$$prog  | \
            tee $$prog.data); \
 	done)
 	echo done >$@
