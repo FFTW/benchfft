@@ -55,7 +55,13 @@
 	   "fftw2-estimate" => "cyan:solid:1:cyan:circle:0.5:none",
 	   "fftw2-nd-measure" => "cyan:dash:1:cyan:circle:0.5:cyan",
 	   "fftw2-nd-estimate" => "cyan:dash:1:cyan:circle:0.5:none",
+	   "fftw2-measure:scif" => "cyan:solid:1:cyan:circle:0.5:cyan",
+	   "fftw2-measure:scof" => "cyan:dash:1:cyan:circle:0.5:cyan",
 	   "fftw3" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3:scif" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3:scof" => "blue:dash:1:blue:circle:0.5:blue",
+	   "fftw3:dcif" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3:dcof" => "blue:dash:1:blue:circle:0.5:blue",
 	   "goedecker" => "brown:solid:2:brown:circle:0.25:none",
 	   "gpfa" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
@@ -201,6 +207,7 @@ foreach $siz (@sizes) {
 
 # Find the y axis scale from $max_mflops:
 $mflops_increment = 100; # increment for y-axis labels
+if ($max_mflops > 1500) { $mflops_increment = 500; }
 $max_mflops =~ s/\..*//;
 $max_mflops = $max_mflops + $mflops_increment - 1 - ($max_mflops + $mflops_increment - 1) % $mflops_increment;
 
@@ -258,7 +265,9 @@ foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
 	print "@ s$setnum legend \"$nam\"\n";
     }
 
-    if (exists($styles{$nam})) {
+    if (exists($styles{$transform})) {
+	printstyle($styles{$transform}, $setnum);
+    } elsif (exists($styles{$nam})) {
 	printstyle($styles{$nam}, $setnum);
     }
 
