@@ -527,7 +527,7 @@ static void swapri(unsigned int n, N *a)
 	  N t;
 	  cpy(a[2 * i], t);
 	  cpy(a[2 * i + 1], a[2 * i]);
-	  cpy(t, a[2 * i]);
+	  cpy(t, a[2 * i + 1]);
      }
 }
 
