@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.26 2001-07-19 17:47:25 athena Exp $ */
+/* $Id: bench-user.h,v 1.27 2001-07-19 20:57:00 stevenj Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -49,9 +49,11 @@ typedef struct {
 #define SINGLE_PRECISION (sizeof(bench_real) == sizeof(float))
 #define DOUBLE_PRECISION (sizeof(bench_real) == sizeof(double))
 
+typedef enum { PROBLEM_COMPLEX, PROBLEM_REAL } problem_kind_t;
+
 #define MAX_RANK 20
 struct problem {
-     enum { PROBLEM_COMPLEX, PROBLEM_REAL } kind;
+     problem_kind_t kind;
      unsigned int rank;
      unsigned n[MAX_RANK];  
      unsigned int size;  /* total size of input = PROD n[i] */
