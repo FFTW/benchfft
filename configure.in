@@ -33,7 +33,7 @@ fi
 dnl Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS(malloc.h sys/time.h unistd.h)
-AC_CHECK_HEADERS(alloca.h stddef.h)
+AC_CHECK_HEADERS(alloca.h stddef.h libintl.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
@@ -49,7 +49,9 @@ AC_CHECK_FUNCS(BSDgettimeofday)
 AC_CHECK_FUNCS(gettimeofday)
 AC_CHECK_FUNCS(drand48)
 AC_CHECK_FUNCS(hypot)
+AC_CHECK_FUNCS(sqrt)
 AC_CHECK_FUNCS(strtod)
+AC_CHECK_FUNCS(memset)
 
 AC_MSG_CHECKING([for isnan])
 AC_TRY_LINK([#include <math.h>

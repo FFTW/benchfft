@@ -18,7 +18,9 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.1 2001-07-04 22:50:36 athena Exp $ */
+/* $Id: bench-user.h,v 1.2 2001-07-05 14:27:19 athena Exp $ */
+#ifndef __BENCH_USER_H__
+#define __BENCH_USER_H__
 
 /* benchmark program definitions for user code */
 #include "config.h"
@@ -32,6 +34,9 @@ typedef double bench_real;
 typedef struct {
      bench_real re, im;
 } bench_complex;
+
+#define c_re(c)  ((c).re)
+#define c_im(c)  ((c).im)
 
 struct problem {
      enum { PROBLEM_COMPLEX, PROBLEM_REAL } kind;
@@ -106,11 +111,40 @@ struct bench_doc {
 
 extern const struct bench_doc bench_doc[];
 
+#ifdef CC
+#define CC_DOC BENCH_DOC("cc", CC)
+#else
+#define CC_DOC /* none */
+#endif
+
+#ifdef CFLAGS
+#define CFLAGS_DOC BENCH_DOC("cflags", CFLAGS)
+#else
+#define CFLAGS_DOC /* none */
+#endif
+
+#ifdef F77
+#define F77_DOC BENCH_DOC("f77", F77)
+#else
+#define F77_DOC /* none */
+#endif
+
+#ifdef FFLAGS
+#define FFLAGS_DOC BENCH_DOC("fflags", FFLAGS)
+#else
+#define FFLAGS_DOC /* none */
+#endif
+
 #define BEGIN_BENCH_DOC				\
-const struct bench_doc bench_doc[] = {
+const struct bench_doc bench_doc[] = {		\
+    CC_DOC					\
+    CFLAGS_DOC					\
+    F77_DOC					\
+    FFLAGS_DOC
 
 #define BENCH_DOC(key, val) { key, val },
 
 #define END_BENCH_DOC				\
      {0, 0}};
     
+#endif /* __BENCH_USER_H__ */
