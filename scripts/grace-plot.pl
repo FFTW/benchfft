@@ -45,7 +45,6 @@ while (@ARGV) {
 	   "as83" => "maroon:solid:1:maroon:none:0.5:none",
 	   "as97" => "orange:solid:1:orange:none:0.5:none",
 	   "as117" => "black:solid:1:black:none:0.5:none",
-	   "athfft" => "indigo:dot:1:indigo:circle:0.5:none",
 	   "bloodworth" => "red:dot:1:red:square:0.5:none",
 	   "bloodworth-fht" => "red:solid:1:red:square:0.5:red",
 	   "burrus-sffteu" => "green:solid:1:green:circle:0.5:none",
