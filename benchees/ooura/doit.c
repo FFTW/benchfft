@@ -6,12 +6,12 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
 BENCH_DOC("author", "Takuya OOURA")
-BENCH_DOC("year", "1999")
+BENCH_DOC("year", "2001")
 BENCH_DOC("email", "ooura@mmm.t.u-tokyo.ac.jp")
 BENCH_DOC("url", "http://momonga.t.u-tokyo.ac.jp/~ooura/fft.html")
-BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
+BENCH_DOC("url-was-valid-on", "Sat Feb 23 09:00:34 EST 2002")
 BENCH_DOC("copyright", 
-	  "Copyright(C) 1996-1999 Takuya OOURA\n"
+	  "Copyright(C) 1996-2001 Takuya OOURA\n"
 	  "You may use, copy, modify this code for any purpose and\n"
 	  "without fee. You may distribute this ORIGINAL package.")
 #ifdef FORTRAN
