@@ -11,16 +11,16 @@
 me=`echo "$0" | sed -e 's,.*/,,'`
 medir=`echo "$0" | sed -e 's,/[^/]*$,,'`
 
-usage="\
+usage="
 Usage: $0 benchees-directory [outfile]
 "
 
 case $# in
- 0) echo "$me: missing arguments$help" >&2
+ 0) echo "$me: missing arguments$usage" >&2
     exit 1;;
  1) benchdir="$1";;
  2) benchdir="$1"; outfile="$2";;
- *) echo "$me: too many arguments$help" >&2
+ *) echo "$me: too many arguments$usage" >&2
     exit 1;;
 esac
 
