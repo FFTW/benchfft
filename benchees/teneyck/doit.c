@@ -6,6 +6,7 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "teneyck")
 BENCH_DOC("author", "Lynn F. Ten Eyck")
+BENCH_DOC("year", "1973")
 BENCH_DOC("email", "lteneyck@sdsc.edu")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://risc2.numis.nwu.edu/ftp/pub/transforms/fftlib.f")
