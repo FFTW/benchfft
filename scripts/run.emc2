@@ -1,0 +1,34 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+PATH=$HOME/install/bin:$PATH; export PATH
+CFLAGS='-O3 -fomit-frame-pointer -mcpu=7450'
+FFLAGS='-O3 -fomit-frame-pointer -mcpu=7450'
+CXXFLAGS='-O3 -fomit-frame-pointer -mcpu=7450'
+CPPFLAGS="-I$HOME/install/include" 
+LDFLAGS="-L$HOME/install/lib" 
+MAKE=make
+
+export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+
+FLIBS=-lg2c; export FLIBS
+
+rm -rf $HOSTNAME
+mkdir $HOSTNAME
+
+( 
+  cd $HOSTNAME
+
+  ../configure --disable-single
+  make -k; make -k benchmark; make clean
+  ../configure --enable-single
+  make -k; make -k benchmark; make clean
+
+  ../configure --disable-single
+  make -k; make -k accuracy; make clean
+  ../configure --enable-single
+  make -k; make -k accuracy; make clean
+
+  make collect
+)
