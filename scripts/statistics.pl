@@ -7,7 +7,7 @@
 while (<>) {
   my ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
   
-  next if ($mflops == 0.0 || $mflops eq "");
+  next if ($mflops eq "" || $mflops == 0.0);
 
   $problem = "$prob $siz";
   if (exists($probdata{$problem})) {
