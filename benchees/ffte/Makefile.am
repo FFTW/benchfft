@@ -35,17 +35,17 @@ kernel.o zfft1d.o zfft2d.o zfft3d.o: param.h
 zfft1d.f: $(PKG)/zfft1d.f zfft1d.f.patch
 	rm -f $@
 	$(CP) $(PKG)/zfft1d.f $@
-	$(PATCH) $@ $(srcdir)/zfft1d.f.patch
+	$(PATCH) $@ <$(srcdir)/zfft1d.f.patch
 
 zfft2d.f: $(PKG)/zfft2d.f zfft2d.f.patch
 	rm -f $@
 	$(CP) $(PKG)/zfft2d.f $@
-	$(PATCH) $@ $(srcdir)/zfft2d.f.patch
+	$(PATCH) $@ <$(srcdir)/zfft2d.f.patch
 
 zfft3d.f: $(PKG)/zfft3d.f zfft3d.f.patch
 	rm -f $@
 	$(CP) $(PKG)/zfft3d.f $@
-	$(PATCH) $@ $(srcdir)/zfft3d.f.patch
+	$(PATCH) $@ <$(srcdir)/zfft3d.f.patch
 
 # need a local copy or Fortran include statement is confused
 param.h: $(PKG)/param.h

@@ -23,7 +23,7 @@ mpfun90.f90: extract
 	rm -f $@
 	head -133 $(PKG)/mpfun90.f > $@
 	tail +6081 $(PKG)/mpfun90.f | head -630 >> $@
-	@PATCH@ $@ $(srcdir)/mpfun90.patch
+	@PATCH@ $@ <$(srcdir)/mpfun90.patch
 
 mpfun90.o: mpfun90.f90
 	$(F90) @F90FLAGS@ -c mpfun90.f90

@@ -19,6 +19,6 @@ nodist_libfft_a_SOURCES=mpfun.f
 
 mpfun.f: extract
 	@CP@ -f $(PKG)/$@ $@
-	@PATCH@ $@ $(srcdir)/mpfun.patch
+	@PATCH@ $@ <$(srcdir)/mpfun.patch
 
 include ../Makefile.common

@@ -19,7 +19,7 @@ BUILT_SOURCES = fftlib-patched.f
 fftlib-patched.f: fftlib.f fftlib.patch
 	rm -f $@
 	$(CP) $(srcdir)/fftlib.f $@
-	$(PATCH) $@ $(srcdir)/fftlib.patch
+	$(PATCH) $@ <$(srcdir)/fftlib.patch
 
 
 include ../Makefile.common

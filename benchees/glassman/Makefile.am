@@ -19,6 +19,6 @@ BUILT_SOURCES = glassman-fft-patched.f
 glassman-fft-patched.f: glassman-fft.f glassman-fft.patch
 	rm -f $@
 	$(CP) $(srcdir)/glassman-fft.f $@
-	$(PATCH) $@ $(srcdir)/glassman-fft.patch
+	$(PATCH) $@ <$(srcdir)/glassman-fft.patch
 
 include ../Makefile.common
