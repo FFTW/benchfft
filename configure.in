@@ -286,6 +286,7 @@ benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
 benchees/gsl/Makefile
 benchees/harm/Makefile
+benchees/imsl/Makefile
 benchees/intel-mkl/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
