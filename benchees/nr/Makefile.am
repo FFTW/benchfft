@@ -9,6 +9,7 @@ endif
 
 INCLUDES = $(INCLBENCH)
 EXTRA_DIST = doit.c
+LOCAL_COPIES = four1f.f fournf.f realftf.f rlft3f.f
 
 doit_c_SOURCES=doit-c.c my_nrerror.c
 nodist_doit_c_SOURCES = four1.c fourn.c realft.c rlft3.c
