@@ -4,7 +4,7 @@
 #include <math.h>
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "gpfa")
+BENCH_DOC("name", "gpfa-3d")
 BENCH_DOC("author", "Clive Temperton")
 BENCH_DOC("year", "1992 (?)")
 BENCH_DOC("language", "Fortran 77")
@@ -14,51 +14,46 @@ BENCH_DOC("bibitem",
 	  " May 1992.")
 END_BENCH_DOC
 
+static const unsigned int NMAX = 256; /* must match constant in gpfft3.f */
 
 int can_do(struct problem *p)
 {
      return (SINGLE_PRECISION && 
-	     p->rank == 1 &&
+	     p->rank == 3 &&
+	     p->n[0] <= NMAX/2 &&
+	     p->n[1] <= NMAX/2 &&
+	     p->n[2] <= NMAX/2 &&
 	     problem_in_place(p) &&
-	     check_prime_factors(p->n[0], 5));
+	     check_prime_factors(p->n[0], 5) &&
+	     check_prime_factors(p->n[1], 5) &&
+	     check_prime_factors(p->n[2], 5));
 }
 
-static bench_real *TRIGS;
+extern void F77_FUNC(gpf3d, GPF3D)(bench_complex *c, unsigned int *id,
+				   unsigned int *nn, int *is);
 
-extern void F77_FUNC(setgpfa, SETGPFA)();
-extern void F77_FUNC(gpfa, GPFA)();
+unsigned int nn[3];
 
 void setup(struct problem *p)
 {
-     int n;
- 
      BENCH_ASSERT(can_do(p));
-     n = p->n[0];
-
-     /* N is an overestimate */
-     TRIGS = bench_malloc(2 * n * sizeof(bench_real));
-     F77_FUNC(setgpfa, SETGPFA)(TRIGS, &n);
+     nn[0] = p->n[2];
+     nn[1] = p->n[1];
+     nn[2] = p->n[0];
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
-     int n = p->n[0];
      bench_complex *in = p->in;
-     bench_real *trigs = TRIGS;
-     int inc = 2;
-     int jump = 0;
-     int lot = 1;
-     int isign = p->sign;
+     int isign = -p->sign;
 
      for (i = 0; i < iter; ++i) {
-	  F77_FUNC(gpfa, GPFA)(&c_re(in[0]), &c_im(in[0]),
-			       trigs, &inc, &jump, &n, &lot, &isign);
+	  F77_FUNC(gpf3d, GPF3D)(in, nn, nn, &isign);
      }
 }
 
 void done(struct problem *p)
 {
      UNUSED(p);
-     bench_free(TRIGS);
 }
