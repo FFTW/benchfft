@@ -20,6 +20,7 @@ int can_do(struct problem *p)
 {
      return (SINGLE_PRECISION && 
 	     p->rank == 3 &&
+	     p->kind == PROBLEM_COMPLEX &&
 	     p->n[0] <= NMAX/2 &&
 	     p->n[1] <= NMAX/2 &&
 	     p->n[2] <= NMAX/2 &&
