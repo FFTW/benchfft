@@ -1,5 +1,9 @@
 #! /bin/sh
 
+# Usage: desc2web.sh <foo.desc> [<directory>]
+# Creates a directory foo in <directory> (or .) containing an index.html
+# and images etcetera for the data foo.tar.gz, described by foo.desc.
+
 sd=`dirname $0`
 case $sd in
     /*) ;;
