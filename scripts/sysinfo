@@ -104,3 +104,11 @@ if test -r /usr/lib/libdxml.a; then
    (TERM=dumb; export TERM;
      x=`man dxml | head -20` && (echo "man dxml:"; echo "$x"))
 fi 2>/dev/null
+
+echo
+echo "-----------"
+echo "ENVIRONMENT"
+echo "-----------"
+echo
+
+printenv
