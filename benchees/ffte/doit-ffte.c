@@ -18,9 +18,9 @@ static const char *mknote(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
-BENCH_DOC("version", "3.0")
+BENCH_DOC("version", "4.0")
 BENCH_DOC("author", "Daisuke Takahashi")
-BENCH_DOC("year", "2003")
+BENCH_DOC("year", "2004")
 BENCH_DOC("email", "daisuke@is.tsukuba.ac.jp")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.ffte.jp/")
@@ -48,12 +48,30 @@ END_BENCH_DOC
 #define ZFFT2D F77_FUNC(zfft2d,ZFFT2D)
 #define ZFFT3D F77_FUNC(zfft3d,ZFFT3D)
 
-extern void ZFFT1D(bench_complex *a, bench_complex *b, 
-		   unsigned int *n, int *idir);
+extern void ZFFT1D(bench_complex *a, 
+		   unsigned int *n, int *idir, bench_complex *b);
+
+#ifndef FFTE_VECTOR
+#  define FFTE_VECTOR 0
+#endif
+
+#if FFTE_VECTOR
+extern void ZFFT2D(bench_complex *a, 
+		   unsigned int *nx, unsigned int *ny, int *idir,
+		   bench_complex *work);
+extern void ZFFT3D(bench_complex *a, unsigned int *nx, 
+		   unsigned int *ny, unsigned int *nz, int *idir,
+		   bench_complex *work);
+#  define ZFFT2Dw(a,nx,ny,idir,work) ZFFT2D(a,nx,ny,idir,work)
+#  define ZFFT3Dw(a,nx,ny,nz,idir,work) ZFFT3D(a,nx,ny,nz,idir,work)
+#else
 extern void ZFFT2D(bench_complex *a, 
 		   unsigned int *nx, unsigned int *ny, int *idir);
 extern void ZFFT3D(bench_complex *a, unsigned int *nx, 
 		   unsigned int *ny, unsigned int *nz, int *idir);
+#  define ZFFT2Dw(a,nx,ny,idir,work) ZFFT2D(a,nx,ny,idir)
+#  define ZFFT3Dw(a,nx,ny,nz,idir,work) ZFFT3D(a,nx,ny,nz,idir)
+#endif
 
 int maxdim(const struct problem *p)
 {
@@ -70,29 +88,33 @@ int can_do(struct problem *p)
 	     p->rank >= 1 && p->rank <= 3 &&
 	     p->kind == PROBLEM_COMPLEX &&
 	     check_prime_factors(p->size, 5) &&
-             (problem_in_place(p) ^ (p->rank == 1)) &&
+             problem_in_place(p) &&
 	     (p->rank != 2 || maxdim(p) <= NDA2) &&
 	     (p->rank != 3 || maxdim(p) <= NDA3)
 	  );
 }
 
+bench_complex *work = 0;
+
 void setup(struct problem *p)
 {
-     int idir = p->sign < 0 ? 1 : 2;
+     int idir = 0; // 0 = initialization
 
      BENCH_ASSERT(can_do(p));
      
-     /* the first time you call the routine, it does some initialization
-	(setting up trig. tables, apparently) so call it once here: */
+     work = (bench_complex *) bench_malloc(sizeof(bench_complex) * p->size
+					   * ((p->rank == 1) + FFTE_VECTOR));
+     
+     /* initialize trig stuff, etc. */
      switch (p->rank) {
 	 case 1: 
-	      ZFFT1D(p->in, p->out, p->n, &idir); 
+	      ZFFT1D(p->in, p->n, &idir, work); 
 	      break;
 	 case 2: 
-	      ZFFT2D(p->in, p->n + 1, p->n, &idir); 
+	      ZFFT2Dw(p->in, p->n + 1, p->n, &idir, work); 
 	      break;
 	 case 3: 
-	      ZFFT3D(p->in, p->n + 2, p->n + 1, p->n, &idir); 
+	      ZFFT3Dw(p->in, p->n + 2, p->n + 1, p->n, &idir, work); 
 	      break;
 	 default:
 	      BENCH_ASSERT(0);
@@ -106,7 +128,7 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
 
 void doit(int iter, struct problem *p)
 {
-     int idir = p->sign < 0 ? 1 : 2;
+     int idir = p->sign;
      int i;
 
      switch (p->rank) {
@@ -114,7 +136,7 @@ void doit(int iter, struct problem *p)
 	 {
 	      unsigned int *n0 = p->n;
 	      for (i = 0; i < iter; ++i)
-		   ZFFT1D(p->in, p->out, n0, &idir); 
+		   ZFFT1D(p->in, n0, &idir, work); 
 	      break;
 	 }
 	 case 2: 
@@ -122,7 +144,7 @@ void doit(int iter, struct problem *p)
 	      unsigned int *n0 = p->n;
 	      unsigned int *n1 = p->n + 1;
 	      for (i = 0; i < iter; ++i)
-		   ZFFT2D(p->in, n1, n0, &idir); 
+		   ZFFT2Dw(p->in, n1, n0, &idir, work); 
 	      break;
 	 }
 	 case 3: 
@@ -131,7 +153,7 @@ void doit(int iter, struct problem *p)
 	      unsigned int *n1 = p->n + 1;
 	      unsigned int *n2 = p->n + 2;
 	      for (i = 0; i < iter; ++i)
-		   ZFFT3D(p->in, n2, n1, n0, &idir); 
+		   ZFFT3Dw(p->in, n2, n1, n0, &idir, work); 
 	      break;
 	 }
 	 default:
@@ -142,4 +164,5 @@ void doit(int iter, struct problem *p)
 void done(struct problem *p)
 {
      UNUSED(p);
+     bench_free(work);
 }

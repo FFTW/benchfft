@@ -3,7 +3,8 @@
 #include "bench-user.h"
 #include <math.h>
 
-#include "fxt.h"
+#include "fft-all.h"
+#include "matrixfft-all.h"
 
 #include "doit-doc.h"
 

@@ -8,7 +8,7 @@ EXTRA_DIST = $(TARFILE)
 
 INCLUDES = $(INCLBENCH) -I$(PKG)
 
-CFLAGS=@CFLAGS@ @ALTIVEC_CFLAGS@ -Dvalloc=bench_malloc
+AM_CFLAGS=@ALTIVEC_CFLAGS@ -Dvalloc=bench_malloc
 doit_SOURCES=doit.c
 nodist_doit_SOURCES = $(PKG)/vBigDSP.c
 doit_LDADD=$(LIBBENCH)

@@ -1,0 +1,13 @@
+32c32
+<       SUBROUTINE ZFFT2D(A,NX,NY,IOPT)
+---
+>       SUBROUTINE ZFFT2D(A,NX,NY,IOPT,B)
+37,38c37
+<       COMPLEX*16 B(:)
+<       ALLOCATABLE :: B
+---
+>       COMPLEX*16 B(*)
+57d55
+<       ALLOCATE(B(NX*NY))
+62d59
+<       DEALLOCATE(B)

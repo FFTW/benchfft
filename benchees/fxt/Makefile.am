@@ -7,10 +7,10 @@ endif
 
 INCLUDES = $(INCLBENCH)
 PKG=fxt
-TARFILE=$(PKG)-2003.03.26.tar.gz
+TARFILE=$(PKG)-2005.02.08.tar.gz
 EXTRA_DIST = $(TARFILE) doit.cc doitr.cc doit-doc.h
 
-CPPFLAGS = @CPPFLAGS@ -I$(PKG)/include -I$(PKG)/auxil -I$(PKG)/permute -I$(PKG)/auxbit
+AM_CPPFLAGS = -I$(PKG) -I$(PKG)/include
 
 LIBFXT = $(PKG)/libfxt.a
 
@@ -56,7 +56,7 @@ doitr_split.o: doitr.cc doit-doc.h $(LIBFXT)
 
 if CXX_GNU
 $(LIBFXT): extract
-	cd $(PKG) && (unset CXXFLAGS; $(MAKE))
+	cd $(PKG) && (unset CXXFLAGS; $(MAKE) CPUTYPE=$(GCC_ARCH))
 else
 $(LIBFXT): extract
 	cd $(PKG) && $(MAKE)

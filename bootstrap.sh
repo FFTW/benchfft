@@ -1,13 +1,11 @@
 # script to initialize automake/autoconf etc
-echo "Please ignore warnings and errors"
-autoheader
-aclocal
-automake --add-missing
-autoconf
-autoheader
-aclocal
-automake --add-missing
-autoconf
+echo "PLEASE IGNORE WARNINGS AND ERRORS"
+
+# paranoia: sometimes autoconf doesn't get things right the first time
+rm -rf autom4te.cache
+autoreconf --verbose --install --symlink --force
+autoreconf --verbose --install --symlink --force
+autoreconf --verbose --install --symlink --force
 
 rm -f config.cache
 

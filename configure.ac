@@ -29,7 +29,6 @@ AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_info_on
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_CC_STDC
-ACX_PROG_CC_EGCS
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -73,8 +72,7 @@ if test -n "$F77"; then
 		F90=""  # F90 too, since they use the same compiler
 	else
 		AC_F77_WRAPPERS
-		sinclude(acx_f77_cmain_fflags.m4)
-		ACX_F77_CMAIN_FFLAGS
+		AX_F77_CMAIN_FFLAGS
 	fi
 fi
 
@@ -298,18 +296,37 @@ AC_MSG_RESULT(${ok})
 dnl check for optimization options
 dnl This macro sets ANSI mode for certain compilers, and must
 dnl thus come before the subsequenct checks
-ACX_PROG_CC_MAXOPT(benchfft)
+AX_CC_MAXOPT
+
+AX_GCC_ARCHFLAG(no, [GCC_ARCH=`echo $ax_cv_gcc_archflag | cut -d= -f2`])
+AC_SUBST(GCC_ARCH)
 
 if test "$GCC" = "yes"; then
-    ACX_CHECK_CC_FLAGS(-msse2, msse2, SSE2_CFLAGS="-msse2")
-    ACX_CHECK_CC_FLAGS(-faltivec, faltivec, ALTIVEC_CFLAGS="-faltivec",
-	[ACX_CHECK_CC_FLAGS(-maltivec -mabi=altivec, maltivec,
+    AX_CHECK_COMPILER_FLAGS(-msse, SSE_CFLAGS="-msse2")
+    AX_CHECK_COMPILER_FLAGS(-msse2, SSE2_CFLAGS="-msse2")
+    AX_CHECK_COMPILER_FLAGS(-msse3, SSE3_CFLAGS="-msse3")
+    AX_CHECK_COMPILER_FLAGS(-faltivec, ALTIVEC_CFLAGS="-faltivec",
+	[AX_CHECK_COMPILER_FLAGS(-maltivec -mabi=altivec,
 	    [ALTIVEC_CFLAGS="-maltivec -mabi=altivec -DOS_LINUXPPC"
 	     ALTIVEC_ABIFLAGS="-mabi=altivec"])])
 fi
+AC_SUBST(SSE_CFLAGS)
 AC_SUBST(SSE2_CFLAGS)
+AC_SUBST(SSE3_CFLAGS)
 AC_SUBST(ALTIVEC_CFLAGS)
 AC_SUBST(ALTIVEC_ABIFLAGS)
+
+dnl check whether SSE works:
+AC_MSG_CHECKING([whether SSE instructions work])
+save_CFLAGS=$CFLAGS
+CFLAGS="$CFLAGS $SSE_CFLAGS"
+AC_RUN_IFELSE([AC_LANG_PROGRAM([],[[
+     __asm__ __volatile__ ("xorps %xmm0, %xmm0");
+     return 0;
+]])], [have_sse=yes], [have_sse=no], [have_sse=no])
+CFLAGS=$save_CFLAGS
+AC_MSG_RESULT($have_sse)
+AM_CONDITIONAL(HAVE_SSE, test "x$have_sse" = xyes)
 
 dnl check whether SSE2 works:
 AC_MSG_CHECKING([whether SSE2 instructions work])
@@ -322,6 +339,18 @@ AC_RUN_IFELSE([AC_LANG_PROGRAM([],[[
 CFLAGS=$save_CFLAGS
 AC_MSG_RESULT($have_sse2)
 AM_CONDITIONAL(HAVE_SSE2, test "x$have_sse2" = xyes)
+
+dnl check whether SSE3 works:
+AC_MSG_CHECKING([whether SSE3 instructions work])
+save_CFLAGS=$CFLAGS
+CFLAGS="$CFLAGS $SSE3_CFLAGS"
+AC_RUN_IFELSE([AC_LANG_PROGRAM([],[[
+     __asm__ __volatile__ ("addsubpd %xmm0, %xmm0");
+     return 0;
+]])], [have_sse3=yes], [have_sse3=no], [have_sse3=no])
+CFLAGS=$save_CFLAGS
+AC_MSG_RESULT($have_sse3)
+AM_CONDITIONAL(HAVE_SSE3, test "x$have_sse3" = xyes)
 
 dnl override CFLAGS selection when debugging
 if test "${enable_debug}" = "yes"; then
@@ -349,9 +378,6 @@ case $host_cpu in
 esac
 AC_SUBST(PFFTW_ARCH)
 AM_CONDITIONAL(HAVE_PFFTW_ARCH, test -n "$PFFTW_ARCH")
-
-dnl TODO
-ACX_GCC_ALIGNS_STACK()
 
 cat <<EOF
 *******************************************************************************

@@ -1,0 +1,13 @@
+34c34
+<       SUBROUTINE ZFFT3D(A,NX,NY,NZ,IOPT)
+---
+>       SUBROUTINE ZFFT3D(A,NX,NY,NZ,IOPT,B)
+39,40c39
+<       COMPLEX*16 B(:)
+<       ALLOCATABLE :: B
+---
+>       COMPLEX*16 B(*)
+61d59
+<       ALLOCATE(B(NX*NY*NZ))
+68d65
+<       DEALLOCATE(B)
