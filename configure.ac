@@ -353,6 +353,7 @@ benchees/mfft/Makefile
 benchees/mixfft/Makefile
 benchees/mkl-dfti/Makefile
 benchees/monnier/Makefile
+benchees/morris/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
 benchees/nag/Makefile
