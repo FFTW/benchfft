@@ -8,6 +8,7 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <ctype.h>
+#include <errno.h>
 
 static time_t idletime(char *tty)
 {
@@ -33,8 +34,7 @@ static int idlep(int idlemin)
 	  if (u->ut_type != USER_PROCESS)
 	       continue;
 
-	  /* no login process, etc. */
-	  if (kill(u->ut_pid, 0))
+	  if ((!u->ut_pid) || (kill(u->ut_pid, 0) == ESRCH)) /* no login process */
 	       continue;
 
 	  for (i = 0; i < sizeof(u->ut_line); i++) /* clean up tty if garbled */
