@@ -1,5 +1,5 @@
 ;; sanitize .info file
-(define verboten '("djbfft-0.76" "athfft" "pfftw"))
+(define verboten '("djbfft-0.76" "athfft" "pfftw" "acml"))
 
 (define (sanitize entry)
   (define (replace! field with)
