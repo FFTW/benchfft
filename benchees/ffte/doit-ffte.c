@@ -18,9 +18,9 @@ static const char *mknote(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
-BENCH_DOC("version", "2.0")
+BENCH_DOC("version", "3.0")
 BENCH_DOC("author", "Daisuke Takahashi")
-BENCH_DOC("year", "2002")
+BENCH_DOC("year", "2003")
 BENCH_DOC("email", "daisuke@is.tsukuba.ac.jp")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.ffte.jp/")
