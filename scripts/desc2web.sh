@@ -51,7 +51,7 @@ tgz=`basename $tgz`
 tar xzf $tgz
 
 # sanitize
-verboten='djbfft athfft pfftw'
+verboten='djbfft|athfft|pfftw'
 for suff in speed accuracy config.h config.log config.status; do
     egrep -i -v "$verboten" ${name}.${suff} > foo && mv -f foo ${name}.${suff}
 done
