@@ -1,0 +1,21 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+
+FFLAGS='-O2 -fomit-frame-pointer'
+CXXLAGS='-O2 -fomit-frame-pointer'
+
+export FFLAGS
+export CPPFLAGS
+export CXXFLAGS
+
+rm -rf $HOSTNAME
+( 
+  cd $HOSTNAME
+  ../configure --disable-single --with-f90
+  make -k; make -k; make benchmark; make clean
+  ../configure --enable-single --with-f90
+  make -k; make -k; make benchmark; make clean
+  make collect
+)

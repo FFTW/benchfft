@@ -1,0 +1,25 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+
+CFLAGS="-Ae +O3 +Oall"
+FFLAGS="-Ae +O3 +Oall"
+CXXLAGS="-Ae +O3 +Oall"
+CPPFLAGS="-I$HOME/fftw-2.1.3/fftw -I$HOME/fftw-2.1.3/rfftw" 
+LDFLAGS="-L$HOME/fftw-2.1.3/fftw/.libs -L$HOME/fftw-2.1.3/rfftw/.libs" 
+
+export CFLAGS
+export FFLAGS
+export CPPFLAGS
+export CXXFLAGS
+
+rm -rf $HOSTNAME
+( 
+  cd $HOSTNAME
+  ../configure --disable-single --with-f90
+  make -k; make -k; make benchmark; make clean
+  ../configure --enable-single --with-f90
+  make -k; make -k; make benchmark; make clean
+  make collect
+)
