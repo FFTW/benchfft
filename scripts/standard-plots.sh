@@ -50,6 +50,9 @@ rank=1
 
 for problem in dcxx drxx scxx srxx; do
     pat=`echo $problem | sed 's/xx/[io][fb]/g'`
+
+    test `egrep "$pat" $data | egrep -v "$outoforder" | perl $sd/grep-rank.pl $rank | wc -l` -gt 1 || continue
+
     (sh $sd/plot-title.sh $problem $rank;
     egrep "$pat" $data | egrep -v "$outoforder" |
 	perl $sd/grep-rank.pl $rank |
@@ -57,9 +60,8 @@ for problem in dcxx drxx scxx srxx; do
 	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.ps
     echo "${dname}.${rank}d.${problem}.ps"
 
-    pat=`echo $problem | sed 's/xx/[io][fb]/g'`
     (sh $sd/plot-title.sh $problem $rank;
-     echo "@subtitle \"enlargement of most accurate FFTs only\"";
+     echo "@subtitle \"enlargement of most accurate FFTs\"";
      egrep "$pat" $data | egrep -v "$outoforder" |
 	perl $sd/grep-rank.pl $rank |
 	perl $sd/grace-plot.pl --no-dups --accuracy --accurate-only) |
