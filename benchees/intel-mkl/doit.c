@@ -19,6 +19,7 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
 BENCH_DOC("package", "Intel Math Kernel Library (MKL)")
 BENCH_DOCF("version", mkvers)
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "backward transform is scaled")
 END_BENCH_DOC
 

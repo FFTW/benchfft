@@ -8,6 +8,7 @@ BENCH_DOC("name", "sorensen-ctfftsr")
 BENCH_DOC("author", "Henrik Sorensen")
 BENCH_DOC("year", "1984")
 BENCH_DOC("language", "Fortran 77")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("bibitem", 
 	  "Sorensen, Heideman, Burrus: On computing the split-radix FFT,\n"
 	  "IEEE Tran. ASSP, Vol. ASSP-34, No. 1, pp. 152-156 Feb. 1986")

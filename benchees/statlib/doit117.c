@@ -12,6 +12,7 @@ BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://lib.stat.cmu.edu/apstat/117")
 BENCH_DOC("url-was-valid-on", "Sun Jan 13 14:14:59 EST 2002")
 BENCH_DOC("notes", "Downloaded from the StatLib repository at Carnegie Mellon University, in the Applied Statistics algorithm collection.")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "Uses the chirp-z algorithm to compute FFTs of arbitrary size, via the as83 power-of-two FFT.")
 BENCH_DOC("notes", "The forward transform is scaled.")
 BENCH_DOC("bibitem", 

@@ -12,6 +12,7 @@ BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://lib.stat.cmu.edu/apstat/83")
 BENCH_DOC("url-was-valid-on", "Sun Jan 13 14:14:59 EST 2002")
 BENCH_DOC("notes", "Downloaded from the StatLib repository at Carnegie Mellon University, in the Applied Statistics algorithm collection.")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "The forward transform is scaled.")
 BENCH_DOC("notes", "The inverse transform is computed via the inverse transform by a pair of complex conjugations.")
 BENCH_DOC("bibitem", 

@@ -8,6 +8,7 @@ BENCH_DOC("name", "burrus-sffteu")
 BENCH_DOC("author", "C. S. Burrus")
 BENCH_DOC("year", "1984")
 BENCH_DOC("language", "Fortran 77")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("bibitem", "Electronics Letters, January 5, 1984")
 BENCH_DOC("url", 
 	  "http://ourworld.compuserve.com/homepages/steve_kifowit/sffteu.txt")

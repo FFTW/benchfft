@@ -11,6 +11,7 @@ BENCH_DOC("email", "daisuke@is.tsukuba.ac.jp")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.ffte.jp/")
 BENCH_DOC("url-was-valid-on", "Fri Jan  3 16:11:54 EST 2003")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("bibitem", 
 	  "D. Takahashi, An extended split-radix FFT algorithm, IEEE Signal Processing Lett. 8, pp. 145-147, May 2001.")
 BENCH_DOC("notes", "The backward transform is scaled, and also has an additional pre-processing pass to flip the sign of the input imaginary part.  Since the code accepts the real/imag parts as separate arrays, we instead swap the arguments to avoid this overhead.")

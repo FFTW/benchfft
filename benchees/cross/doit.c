@@ -11,6 +11,7 @@ BENCH_DOC("language", "C")
 BENCH_DOC("email", "dcross@intersrv.com")
 BENCH_DOC("url", "http://www.intersrv.com/~dcross/fft.html")
 BENCH_DOC("url-was-valid-on", "Mon Sep  2 21:54:04 EDT 2002")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "The forward transform is scaled.")
 BENCH_DOC("copyright",
 "                         *** SMALL REQUESTS ****\n"

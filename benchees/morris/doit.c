@@ -9,6 +9,7 @@ BENCH_DOC("author", "L. Robert Morris")
 BENCH_DOC("year", "1982")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("notes", "Received in personal communication from the author, Apr 21 2003")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "Published in: Digital Signal Processing Software, DSPS Inc, 1983")
 END_BENCH_DOC
 

@@ -13,6 +13,7 @@ BENCH_DOC("url", "http://www.nersc.gov/~dhbailey/mpdist/mpdist.html")
 BENCH_DOC("url-was-valid-on", "Mon Sep  2 00:48:38 EDT 2002")
 BENCH_DOC("bibitem", 
   "D. H. Bailey, Intl. J. of Supercomp. Appl., p. 82-87 (Spring 1988).")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "Part of the MPFUN multi-precision arithmetic library.")
 BENCH_DOC("notes", "Employs 4-step and Stockham FFT algorithms.")
 BENCH_DOC("notes", "Patched by S. G. Johnson to allow arrays to be allocated from C caller.")

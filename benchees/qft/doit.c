@@ -18,6 +18,7 @@ BENCH_DOC("copyright", "As I developed this software in conjunction with "
 	  "restrictions, or acknowledgements other than "
 	  "those which the user wishes to add.")
 BENCH_DOC("notes", "Received in personal communication with the author.")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "inverse real transform is scaled")
 END_BENCH_DOC
 

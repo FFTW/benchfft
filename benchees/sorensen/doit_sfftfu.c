@@ -9,6 +9,7 @@ BENCH_DOC("author", "Henrik Sorensen")
 BENCH_DOC("year", "1984")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("bibitem", "Electronics Letters, January 5, 1984")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("url", 
 	  "http://ourworld.compuserve.com/homepages/steve_kifowit/sfftfu.txt")
 BENCH_DOC("url-was-valid-on", "Mon Jul 16 00:03:31 EDT 2001")

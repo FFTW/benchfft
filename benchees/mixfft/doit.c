@@ -12,6 +12,7 @@ BENCH_DOC("language", "C")
 BENCH_DOC("email", "jjn@get2net.dk")
 BENCH_DOC("url", "http://hjem.get2net.dk/jjn/fft.htm")
 BENCH_DOC("url-was-valid-on", "Mon Feb 10 01:19:57 EST 2003")
+BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("copyright",
 "The source code in this packet is copyrighted material.\n"
 "\n"
