@@ -417,13 +417,16 @@ if ($accuracy xor $plot_worst) {
 # Output the plot in Grace format.
 
 # Put the legend in a good(?) place:
-print "@ legend char size 0.75\n";
-$xleg = 0.98;
-$yleg = 0.85;
 if ($use_paper_styles) {
+    print "@ legend char size 0.95\n";
     $xleg = 0.73;
     $yleg = 0.86;
+} else {
+    print "@ legend char size 0.75\n";
+    $xleg = 0.98;
+    $yleg = 0.85;
 }
+
 if ($#plot_transforms < 31) {
     # legend aligned with top of plot
     print "@ legend $xleg,$yleg\n";
@@ -445,6 +448,14 @@ if ($accuracy) {
 }
 else {
     print "@ yaxis label \"speed (mflops)\"\n";
+}
+
+# special hacks for the paper
+if ($use_paper_styles) {
+    print "@ xaxis ticklabel char size 1.2\n";
+    print "@ yaxis ticklabel char size 1.2\n";
+    print "@ xaxis label char size 1.2\n";
+    print "@ yaxis label char size 1.2\n";
 }
 
 # Set x axis ticks and labels:
