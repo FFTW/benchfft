@@ -1,6 +1,5 @@
-if SINGLE
+
 PRG=doit
-endif
 
 INCLUDES = $(INCLBENCH) -Ddouble_t=double
 PKG=green-ffts-2.0
@@ -17,8 +16,14 @@ include ../Makefile.common
 doit.o: extract
 
 # remove Macintosh newlines and C++-style  comments
+if SINGLE
 $(LOCAL_COPIES): extract
 	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
+else
+# also replace float with double, as Green documents
+$(LOCAL_COPIES): extract
+	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g;s/float/double/g' >$@
+endif
 
 # explicit dependencies because source file need to be created
 dxpose.o: dxpose.c dxpose.h
