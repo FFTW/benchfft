@@ -1,7 +1,5 @@
-if SINGLE
 if HAVE_VDSP
 PRG=doit
-endif
 endif
 
 INCLUDES = $(INCLBENCH)

@@ -30,6 +30,16 @@ BENCH_DOC("bibitem",
 	  "for Apple G4, Apple Technical Report (Jan. 2000).")
 END_BENCH_DOC
 
+#define CONCAT(prefix, name) prefix ## name
+
+#ifdef BENCHFFT_SINGLE
+#define MANGLE(name) name
+typedef DSPSplitComplex splitcomplex;
+#else
+#define MANGLE(name) CONCAT(name, D)
+typedef DSPDoubleSplitComplex splitcomplex;
+#endif
+
 static int n_ok(struct problem *p, unsigned int n)
 {
      /* According to Apple's docs, the code only vectorizes for n
@@ -46,8 +56,7 @@ static int n_ok(struct problem *p, unsigned int n)
 
 int can_do(struct problem *p)
 {
-     return (SINGLE_PRECISION &&
-	     n_ok(p, p->n[0]) && (p->rank < 2 || n_ok(p, p->n[1])) &&
+     return (n_ok(p, p->n[0]) && (p->rank < 2 || n_ok(p, p->n[1])) &&
 	     ((p->kind == PROBLEM_COMPLEX && p->rank >= 1 && p->rank < 3)  ||
 	      (p->kind == PROBLEM_REAL && p->rank >= 1 && p->rank < 3 &&
 	       p->n[0] > 1 && (p->rank < 2 || p->n[0] > 1))));
@@ -56,32 +65,32 @@ int can_do(struct problem *p)
 static int imax2(int a, int b) { return (a > b ? a : b); }
 static int imin2(int a, int b) { return (a < b ? a : b); }
 
-FFTSetup fftsetup;
-DSPSplitComplex ins, outs, buf;
+MANGLE(FFTSetup) fftsetup;
+splitcomplex ins, outs, buf;
 int m0, m1;
 int n0, n1;
 
 void setup(struct problem *p)
 {
      n1 = p->rank == 2 ? p->n[1] : 1;
-     fftsetup = create_fftsetup(imax2(m0 = log_2(n0 = p->n[0]), 
-				      m1 = log_2(n1)),
-				2);
+     fftsetup = MANGLE(create_fftsetup)(imax2(m0 = log_2(n0 = p->n[0]), 
+					      m1 = log_2(n1)),
+					2);
 
      /* Use Apple vec_malloc for 16-byte alignment */
-     ins.realp = (float*) vec_malloc(p->size * sizeof(float));
-     ins.imagp = (float*) vec_malloc(p->size * sizeof(float));
+     ins.realp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
+     ins.imagp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
      if (!problem_in_place(p)) {
-	  outs.realp = (float*) vec_malloc(p->size * sizeof(float));
-	  outs.imagp = (float*) vec_malloc(p->size * sizeof(float));
+	  outs.realp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
+	  outs.imagp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
      }
      else {
 	  outs.realp = ins.realp;
 	  outs.imagp = ins.imagp;
-	  buf.realp = (float*) vec_malloc(imin2(4 * p->size, 16384)
-					  * sizeof(float));
-	  buf.imagp = (float*) vec_malloc(imin2(4 * p->size, 16384)
-					  * sizeof(float));
+	  buf.realp = (bench_real*) vec_malloc(imin2(4 * p->size, 16384)
+					       * sizeof(bench_real));
+	  buf.imagp = (bench_real*) vec_malloc(imin2(4 * p->size, 16384)
+					       * sizeof(bench_real));
      }
 }
 
@@ -95,13 +104,13 @@ void doit(int iter, struct problem *p)
 	       switch (p->rank) {
 		   case 1: 
 			for (i = 0; i < iter; ++i) {
-			     fft_zipt(fftsetup, &ins, 1, &buf, m0, dir);
+			     MANGLE(fft_zipt)(fftsetup, &ins, 1, &buf, m0, dir);
 			}
 			break;
 		   case 2: 
 			for (i = 0; i < iter; ++i) {
-			     fft2d_zipt(fftsetup, &ins, 1, 0, &buf, 
-					m1, m0, dir);
+			     MANGLE(fft2d_zipt)(fftsetup, &ins, 1, 0, &buf, 
+						m1, m0, dir);
 			}
 			break;
 	       }
@@ -110,13 +119,13 @@ void doit(int iter, struct problem *p)
 	       switch (p->rank) {
 		   case 1: 
 			for (i = 0; i < iter; ++i) {
-			     fft_zop(fftsetup, &ins, 1, &outs, 1, m0, dir);
+			     MANGLE(fft_zop)(fftsetup, &ins, 1, &outs, 1, m0, dir);
 			}
 			break;
 		   case 2: 
 			for (i = 0; i < iter; ++i) {
-			     fft2d_zop(fftsetup, &ins, 1, 0, &outs, 1, 0,
-				       m1, m0, dir);
+			     MANGLE(fft2d_zop)(fftsetup, &ins, 1, 0, &outs, 1, 0,
+					       m1, m0, dir);
 			}
 			break;
 	       }
@@ -127,13 +136,13 @@ void doit(int iter, struct problem *p)
 	       switch (p->rank) {
 		   case 1: 
 			for (i = 0; i < iter; ++i) {
-			     fft_zript(fftsetup, &ins, 1, &buf, m0, dir);
+			     MANGLE(fft_zript)(fftsetup, &ins, 1, &buf, m0, dir);
 			}
 			break;
 		   case 2: 
 			for (i = 0; i < iter; ++i) {
-			     fft2d_zript(fftsetup, &ins, 1, 0, &buf, 
-					m1, m0, dir);
+			     MANGLE(fft2d_zript)(fftsetup, &ins, 1, 0, &buf, 
+						 m1, m0, dir);
 			}
 			break;
 	       }
@@ -142,13 +151,13 @@ void doit(int iter, struct problem *p)
 	       switch (p->rank) {
 		   case 1: 
 			for (i = 0; i < iter; ++i) {
-			     fft_zrop(fftsetup, &ins, 1, &outs, 1, m0, dir);
+			     MANGLE(fft_zrop)(fftsetup, &ins, 1, &outs, 1, m0, dir);
 			}
 			break;
 		   case 2: 
 			for (i = 0; i < iter; ++i) {
-			     fft2d_zrop(fftsetup, &ins, 1, 0, &outs, 1, 0,
-					m1, m0, dir);
+			     MANGLE(fft2d_zrop)(fftsetup, &ins, 1, 0, &outs, 1, 0,
+						m1, m0, dir);
 			}
 			break;
 	       }
@@ -168,7 +177,7 @@ void done(struct problem *p)
      }
      vec_free(ins.imagp);
      vec_free(ins.realp);
-     destroy_fftsetup(fftsetup);
+     MANGLE(destroy_fftsetup)(fftsetup);
 }
 
 void copy_c2c_from(struct problem *p, bench_complex *in)
