@@ -278,6 +278,7 @@ benchees/mixfft/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
 benchees/nag/Makefile
+benchees/nr/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
 benchees/rmayer/Makefile
