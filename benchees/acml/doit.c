@@ -2,9 +2,24 @@
 
 #include "bench-user.h"
 #include <math.h>
+#include <stdio.h>
+
+static const char *mkvers(void)
+{
+     int major, minor;
+     static char buf[160];
+     acmlversion(&major, &minor);
+     sprintf(buf, "%d.%d", major, minor);
+     return buf;
+}
+
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "acml")
+BENCH_DOC("package", "AMD Core Math Library (ACML)")
+BENCH_DOCF("version", mkvers)
+BENCH_DOC("notes", "transform is scaled by sqrt(n)")
+BENCH_DOC("notes", "backward real transform is scaled by 2")
 END_BENCH_DOC
 
 
