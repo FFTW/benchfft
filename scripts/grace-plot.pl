@@ -111,6 +111,7 @@ while (@ARGV) {
 	   "intel-mkl-dfti" => "black:solid:1:black:square:0.5:none",
 	   "intel-mkl-f" => "black:dash:1:black:circle:0.5:none",
 	   "jmfftc" => "turquoise:solid:2:turquoise:circle:0.5:turquoise",
+	   "kissfft" => "blue:dash:2:blue:none:0.5:none",
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
 	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
