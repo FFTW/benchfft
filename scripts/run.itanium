@@ -5,8 +5,8 @@ HOSTNAME=`hostname`
 
 FFLAGS='-O2 -fomit-frame-pointer'
 CXXFLAGS='-O2 -fomit-frame-pointer'
-CPPFLAGS="-I$HOME/ia64/include"
-LDFLAGS="-I$HOME/ia64/lib"
+CPPFLAGS="-I$HOME/local-ia64/include"
+LDFLAGS="-L$HOME/local-ia64/lib"
 MAKE=make
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
