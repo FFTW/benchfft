@@ -14,3 +14,5 @@ zero.c bench-user.h bench.h getopt.h copy-r2c-unpacked.c		\
 copy-r2c-packed.c copy-c2r-packed.c copy-c2r-unpacked.c
 
 
+benchmark:
+	@echo "nothing to benchmark"

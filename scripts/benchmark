@@ -77,6 +77,13 @@ fi
 
 test -n "$time_min" || time_min=`$program --print-time-min`
 precision=`$program --print-precision`
+
+# shorten the name
+case $precision in
+  single) precision=s;;
+  double) precision=d;;
+esac
+
 name=`$program --info name`
 
 for place in $PLACE; do
@@ -93,7 +100,7 @@ for place in $PLACE; do
         if test "$doable" = "#t"; then
 	   test "$verify" = "no" || $program --verify $problem || exit 1
            time=`$program --report-benchmark --time-min $time_min --speed $problem`
-	   echo "$name $precision $problem $time"
+	   echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}"
         fi
       done
     done

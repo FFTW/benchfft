@@ -4,6 +4,8 @@ noinst_PROGRAMS=$(PRG)
 LIBBENCH=${top_builddir}/libbench/libbench.a
 INCLBENCH=-I${top_srcdir}/libbench
 
+BENCHMARK=$(SHELL) ${top_srcdir}/scripts/benchmark
+
 # ``make list'' prints a list of available programs
 list:
 	@echo $(PRG)
@@ -20,17 +22,20 @@ extract-mkdir: $(TARFILE)
 	echo timestamp >$@
 
 distclean-local:
-	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES)
+	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES) benchmark-local
 
 check-local: $(PRG)
-	test -z "$(PRG)" || \
-	(for prog in `echo $(PRG)`; do \
-	 test ! -x $$prog || echo "testing $$prog"; \
-	 for prob in f b if ib rf rb rif rib; do \
-	   for siz in 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 32 64 1024 2x2 2x3 2x4 4x3 4x8 8x4 4x256 6x256 512x16 2x4x8 8x2x4 16x8x2 2x3x4 5x7x9 9x16x32 2x4x8x16 2x3x4x5; do \
-             p=$$prob$$siz; pr=./$$prog; \
-             test ! -x $$pr || test "`$$pr --can-do $$p`" != '#t' || $$pr --verify $$p || exit 1; \
-           done;\
-         done;\
-        done)
+	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
+	  test ! -x $$prog ||                              \
+	  echo "Testing $$prog";                           \
+	  $(BENCHMARK) --verify ./$$prog;                  \
+	done)
 
+benchmark: $(PRG)
+	test -z "$(PRG)" || (for prog in `echo $(PRG)`; do \
+	  test ! -x $$prog ||                              \
+	  echo "Benchmarking $$prog";                      \
+	  ./$$prog --info-all >$$prog.info;                \
+	  $(BENCHMARK) ./$$prog >$$prog.data;              \
+	done)
+	echo done >$@
