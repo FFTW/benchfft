@@ -14,7 +14,7 @@ OMP_NUM_THREADS=1
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
 MAXND=2097152; export MAXND
 
-LD_LIBRARY_PATH=/opt/intel/mkl/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=/usr/local/gcc-3.2/lib:/opt/intel/mkl/lib/32:/opt/intel/ipp/sharedlib; export LD_LIBRARY_PATH
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
@@ -22,8 +22,8 @@ mkdir $HOSTNAME
 ( 
   cd $HOSTNAME
   ../configure --disable-single --with-f90
-  make -k; make -k benchmark; make clean
+  make -k; make -k benchmark; make -k accuracy; make clean
   ../configure --enable-single --with-f90
-  make -k; make -k benchmark; make clean
+  make -k; make -k benchmark; make -k accuracy; make clean
   make collect
 )
