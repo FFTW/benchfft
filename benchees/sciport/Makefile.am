@@ -23,12 +23,12 @@ BUILT_SOURCES = ffts-patched.f fftd-patched.f
 
 ffts-patched.f: ffts.f ffts.patch
 	rm -f $@
-	cp $(srcdir)/ffts.f $@
-	@PATCH@ $@ $(srcdir)/ffts.patch
+	$(CP) $(srcdir)/ffts.f $@
+	$(PATCH) $@ $(srcdir)/ffts.patch
 
 fftd-patched.f: fftd.f fftd.patch
 	rm -f $@
-	cp $(srcdir)/fftd.f $@
-	@PATCH@ $@ $(srcdir)/fftd.patch
+	$(CP) $(srcdir)/fftd.f $@
+	$(PATCH) $@ $(srcdir)/fftd.patch
 
 include ../Makefile.common
