@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.30 2002-08-22 15:30:55 athena Exp $ */
+/* $Id: verify.c,v 1.31 2002-09-02 06:31:38 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -190,6 +190,15 @@ static double acmp(bench_complex *A, bench_complex *B, unsigned int n,
      double d = cerror(A, B, n);
      if (d > tol) {
 	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
+	  if (verbose > 2) {
+	       unsigned int i;
+	       for (i = 0; i < n; ++i) {
+		    fprintf(stderr, "%g+%gi, %g+%gi (%g)\n",
+			    c_re(A[i]), c_im(A[i]),
+			    c_re(B[i]), c_im(B[i]),
+			    cerror(A + i, B + i, 1));
+	       }
+	  }
 	  exit(EXIT_FAILURE);
      }
      return d;
@@ -273,7 +282,7 @@ static double impulse0(struct problem *p,
 
      /* a simple test first, to help with debugging: */
      do_fft(p, inA, outB);
-     e = dmax(e, acmp(outB, outA, n, "impulse response", tol));
+     e = dmax(e, acmp(outB, outA, n, "impulse response 1", tol));
 
      for (i = 0; i < rounds; ++i) {
 	  arand(inB, n);
