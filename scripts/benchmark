@@ -187,13 +187,15 @@ for place in $PLACE; do
 	    time=""
 	  fi
 
-	  if test "$accuracy" = "yes" -a "$oned" = "yes"; then
-	    acc=`$program $aflags --accuracy $problem`
-	  else
-	    print="no"
+	  if test "$accuracy" = "yes"; then
+	    if test "$oned" = "yes"; then
+	       acc=`$program $aflags --accuracy $problem`
+	    else
+	       print="no"
+	    fi
 	  fi
 
-	  if test "$print" = yes; then
+	  if test "$print" = "yes"; then
 	    echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}${acc}"
 	  fi
 	fi
