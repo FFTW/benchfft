@@ -1,7 +1,8 @@
 #! /usr/bin/perl
 
 $no_dups = 0;
-foreach $arg (@ARGV) {
+while (@ARGV) {
+    $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
 }
 
