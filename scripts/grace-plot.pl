@@ -83,6 +83,7 @@
 	   "nag-workspace" => "red:dash:1:red:square:0.5:none",
 	   "nag-inplace" => "red:dot:1:red:triangle-right:0.5:red",
 	   "nag-multiple" => "red:dash:1:red:circle:0.5:none",
+	   "napack" => "green4:dot:2:green4:none:0.5:none",
 	   "nr-c" => "brown:dot:1:brown:square:0.5:none",
 	   "nr-f" => "brown:dotdotdash:1:brown:square:0.5:brown",
 	   "ooura-sg" => "magenta:solid:1:magenta:star:1.0:none",
