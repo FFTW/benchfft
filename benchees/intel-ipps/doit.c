@@ -41,6 +41,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
 }
 
 static void *thing;
+static void *buffer;
 
 int can_do(struct problem *p)
 {
@@ -49,17 +50,25 @@ int can_do(struct problem *p)
 
 void setup(struct problem *p)
 {
+    int bufsz;
+
     if (p->kind == PROBLEM_COMPLEX) {
 	MANGLEC(ippsFFTInitAlloc_C)(&thing, 
 				    log_2(p->n[0]), 
 				    IPP_FFT_NODIV_BY_ANY,
 				    ippAlgHintAccurate);
+	MANGLEC(ippsFFTGetBufSize_C)(thing, &bufsz);
     } else {
 	MANGLE(ippsFFTInitAlloc_R)(&thing, 
 				   log_2(p->n[0]), 
 				   IPP_FFT_NODIV_BY_ANY,
 				   ippAlgHintAccurate);
+	MANGLE(ippsFFTGetBufSize_R)(thing, &bufsz);
     }
+
+    if (verbose > 2)
+	printf("bufsize = %d\n", bufsz);
+    buffer = bench_malloc(bufsz);
 }
 
 void doit(int iter, struct problem *p)
@@ -69,20 +78,20 @@ void doit(int iter, struct problem *p)
     if (p->kind == PROBLEM_COMPLEX) {
 	if (p->sign == -1)
 	    for (i = 0; i < iter; ++i) {
-		MANGLEC(ippsFFTFwd_CToC)(p->in, p->out, thing, 0);
+		MANGLEC(ippsFFTFwd_CToC)(p->in, p->out, thing, buffer);
 	    }
 	else 
 	    for (i = 0; i < iter; ++i) {
-		MANGLEC(ippsFFTInv_CToC)(p->in, p->out, thing, 0);
+		MANGLEC(ippsFFTInv_CToC)(p->in, p->out, thing, buffer);
 	    }
     } else {
 	if (p->sign == -1)
 	    for (i = 0; i < iter; ++i) {
-		MANGLE(ippsFFTFwd_RToPerm)(p->in, p->out, thing, 0);
+		MANGLE(ippsFFTFwd_RToPerm)(p->in, p->out, thing, buffer);
 	    }
 	else 
 	    for (i = 0; i < iter; ++i) {
-		MANGLE(ippsFFTInv_PermToR)(p->in, p->out, thing, 0);
+		MANGLE(ippsFFTInv_PermToR)(p->in, p->out, thing, buffer);
 	    }
     }
 }
@@ -95,4 +104,5 @@ void done(struct problem *p)
 	MANGLE(ippsFFTFree_R)(thing);
     }
     thing = 0;
+    bench_free(buffer);
 }
