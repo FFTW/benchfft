@@ -63,6 +63,42 @@ AC_CHECK_FUNCS(sqrt)
 AC_CHECK_FUNCS(strtod)
 AC_CHECK_FUNCS(memset)
 
+dnl Check for installed libraries
+
+dnl Checks for ESSL libraries: -lessl -lxlf -lxlf90 -lxlfutil
+AC_CHECK_LIB(xlf90, sqrt)
+AC_CHECK_LIB(xlf, sqrt)
+AC_CHECK_LIB(essl, dcft)
+
+dnl Check for DEC Alpha DXML library
+AC_CHECK_LIB(dxml, zfft_apply_)
+AC_CHECK_LIB(for, for_stop)
+
+dnl Check for Sun Performance library:
+dnl AC_CHECK_LIB(SUNWPro_lic, __lsp_rethread_mn_ph_)
+AC_CHECK_LIB(sunmath, acosp)
+AC_CHECK_LIB(F77, ishft_)
+AC_CHECK_LIB(f90, _F90_STOP)
+AC_CHECK_LIB(sunperf, cfftf_,
+	[LIBS="-xlic_lib=sunperf $LIBS"; 
+	AC_DEFINE(HAVE_LIBSUNPERF, 1, [Define if you have the Sun Performance Library])])
+AC_CHECK_LIB(M77, __pow_ri)
+
+dnl Check for SGIMATH library:
+AC_CHECK_LIB(complib.sgimath, zfft1d)
+
+dnl Check for SCSL library (SGI/Cray Scientific Library):
+AC_CHECK_LIB(scs, zzfft)
+
+dnl Check for Cray SCILIB library:
+AC_CHECK_LIB(sci, CCFFT)
+
+dnl Check for IMSL library:
+AC_CHECK_LIB(imsl, imsl_fftf)
+
+dnl Check for NAG library:
+AC_CHECK_LIB(nag, c06fcf)
+
 AC_MSG_CHECKING([for isnan])
 AC_TRY_LINK([#include <math.h>
 ], if (!isnan(3.14159)) isnan(2.7183);, ok=yes, ok=no)

@@ -9,6 +9,9 @@ BENCH_DOC("author", "Paul N. Swarztrauber")
 BENCH_DOC("year", "1985")
 BENCH_DOC("version", "4")
 BENCH_DOC("language", "FORTRAN")
+BENCH_DOC("url", "ftp://ftp.netlib.org:/fftpack")
+BENCH_DOC("bibitem", 
+	  "P. N. Swarztrauber, Vectorizing the FFTs, Parallel Computations, p. 51-83 (1982).")
 END_BENCH_DOC
 
 
