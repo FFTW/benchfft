@@ -118,8 +118,8 @@ void doit(int iter, struct problem *p)
      int is = p->sign;
 #ifdef NO_Complex
      int rank= p->rank;
-     bench_real *inr = (bench_real *) p->in;
-     bench_real *ini = inr + N;
+     double *inr = (double *) p->in;
+     double *ini = inr + N;
 #endif
 
      for (i = 0; i < iter; ++i) {
