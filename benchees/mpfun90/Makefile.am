@@ -9,7 +9,8 @@ LOCAL_COPIES = mpfun90.f90
 
 INCLUDES = $(INCLBENCH)
 
-doit_SOURCES=doit.c mpfun90.f
+doit_SOURCES=doit.c
+nodist_doit_SOURCES=mpfun90.f
 doit_LDADD=$(LIBBENCH) @F90LIBS@
 
 # We need to extract just modules mpfuna and mpfung, and "unmodulize"

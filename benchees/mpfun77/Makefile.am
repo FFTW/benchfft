@@ -9,7 +9,8 @@ LOCAL_COPIES = mpfun.f
 
 INCLUDES = $(INCLBENCH)
 
-doit_SOURCES=doit.c mpfun.f
+doit_SOURCES=doit.c
+nodist_doit_SOURCES=mpfun.f
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
 mpfun.f: extract

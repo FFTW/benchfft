@@ -5,12 +5,10 @@ TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
 doit_SOURCES=doit.c
-doit_LDADD=pfafft.o $(LIBBENCH)
+nodist_doit_SOURCES=$(PKG)/pfafft.c
+doit_LDADD=$(LIBBENCH)
 
 include ../Makefile.common
-
-pfafft.o: $(PKG)/pfafft.c
-	$(COMPILE) -c -o $@ $(PKG)/pfafft.c
 
 $(PKG)/pfafft.c $(PKG)/cwp.h: extract
 
