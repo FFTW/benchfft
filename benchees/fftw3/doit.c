@@ -1,90 +1,119 @@
-/* this program is in the public domain */
+/**************************************************************************/
+/* NOTE to users: this is the FFTW self-test and benchmark program.
+   It is probably NOT a good place to learn FFTW usage, since it has a
+   lot of added complexity in order to exercise and test the full API,
+   etcetera.  We suggest reading the manual. */
+/**************************************************************************/
 
 #include "bench-user.h"
 #include <math.h>
+#include <stdio.h>
+#include <fftw3.h>
+#include <string.h>
 
-#include "fftw.h"
+#define CONCAT(prefix, name) prefix ## name
+#if defined(BENCHFFT_SINGLE)
+#define FFTW(x) CONCAT(fftwf_, x)
+#elif defined(BENCHFFT_LDOUBLE)
+#define FFTW(x) CONCAT(fftwl_, x)
+#else
+#define FFTW(x) CONCAT(fftw_, x)
+#endif
 
-/* horrible hack for now */
-#define problem fftw_problem
-#include "problem.h"
-#include "plan.h"
-#include "planner.h"
-#include "planner-memo.h"
-#include "planner-naive.h"
-#include "planner-score.h"
-#include "planner-estimate.h"
-#include "problem-ridft.h"
-#undef problem
-
-extern const char *fftw_version;
-extern const char *fftw_cc;
-
-static const char *mkvers(void)
-{
-     return fftw_version;
-}
-
-static const char *mkcc(void)
-{
-     return fftw_cc;
-}
+static const char *mkversion(void) { return FFTW(version); }
+static const char *mkcc(void) { return FFTW(cc); }
+static const char *mkcodelet_optim(void) { return FFTW(codelet_optim); }
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "fftw3")
-BENCH_DOCF("version", mkvers)
-BENCH_DOCF("compiled-by", mkcc)
-END_BENCH_DOC
+BENCH_DOCF("version", mkversion)
+BENCH_DOCF("cc", mkcc)
+BENCH_DOCF("codelet-optim", mkcodelet_optim)
+END_BENCH_DOC 
+
+FFTW(plan) the_plan = 0;
+unsigned the_flags = 0;
+
+void useropt(const char *arg)
+{
+     if (!strcmp(arg, "patient")) the_flags |= FFTW_PATIENT;
+     else if (!strcmp(arg, "estimate")) the_flags |= FFTW_ESTIMATE;
+     else if (!strcmp(arg, "exhaustive")) the_flags |= FFTW_EXHAUSTIVE;
+     else if (!strcmp(arg, "unaligned")) the_flags |= FFTW_UNALIGNED;
+
+     else fprintf(stderr, "unknown user option: %s.  Ignoring.\n", arg);
+}
 
 int can_do(struct problem *p)
 {
-     return (sizeof(fftw_real) == sizeof(bench_real) && 
-	     p->kind == PROBLEM_COMPLEX);
+     UNUSED(p);
+     return 1;
 }
 
-static struct planner *planner;
-static struct fftw_problem *problem;
-static struct plan *plan;
+void copy_h2c(struct problem *p, bench_complex *out)
+{
+     copy_h2c_unpacked(p, out, -1.0);
+}
+
+void copy_c2h(struct problem *p, bench_complex *in)
+{
+     copy_c2h_unpacked(p, in, -1.0);
+}
+
+void copy_r2c(struct problem *p, bench_complex *out)
+{
+     if (problem_in_place(p))
+	  copy_r2c_unpacked(p, out);	  
+     else
+	  copy_r2c_packed(p, out);
+}
+
+void copy_c2r(struct problem *p, bench_complex *in)
+{
+     if (problem_in_place(p))
+	  copy_c2r_unpacked(p, in);
+     else
+	  copy_c2r_packed(p, in);
+}
 
 void setup(struct problem *p)
 {
-     bench_real *ri, *ii, *ro, *io;
      BENCH_ASSERT(can_do(p));
-
-     planner = fftw_planner_naive_make();
-     planner = fftw_planner_memo_make(planner);
-     fftw_configuration_dft_standard(planner);
-
-     if (p->sign == -1) {
-	  ri = p->in; ii = ri + 1; ro = p->out; io = ro + 1;
+ 
+     if (p->kind == PROBLEM_COMPLEX) {
+	  the_plan = FFTW(plan_dft)(
+	       p->rank, p->n,
+	       p->in, p->out,
+	       p->sign, the_flags);
      } else {
-	  ii = p->in; ri = ii + 1; io = p->out; ro = io + 1;
+	  if (p->sign == -1) {
+	       the_plan = FFTW(plan_dft_r2c)(
+		    p->rank, p->n,
+		    p->in, p->out,
+		    the_flags);
+	  } else {
+	       the_plan = FFTW(plan_dft_c2r)(
+		    p->rank, p->n,
+		    p->in, p->out,
+		    the_flags);
+	  }
      }
-
-     problem = fftw_problem_ridft_make_d(
-	  fftw_io_tensor_create_rowmajor(p->rank, p->n, p->n, 2, 2),
-	  fftw_io_tensor_create_1d(1, 0, 0),
-	  ri, ii, ro, io);
-     plan = planner->plan(planner, problem);
-     BENCH_ASSERT(plan);
-     plan->awake(plan, PLAN_AWAKE);
+     BENCH_ASSERT(the_plan);
 }
 
 void doit(int iter, struct problem *p)
 {
      int i;
-     struct plan *PLAN = plan;
-     struct fftw_problem *PROBLEM = problem;
+     FFTW(plan) plan = the_plan;
 
-     for (i = 0; i < iter; ++i) {
-	  PLAN->solve(PLAN, PROBLEM);
-     }
+     UNUSED(p);
+
+     for (i = 0; i < iter; ++i) 
+	  FFTW(execute)(plan);
 }
 
 void done(struct problem *p)
 {
      UNUSED(p);
-     fftw_plan_destroy(plan);
-     fftw_problem_destroy(problem);
-     fftw_planner_destroy(planner);
+     FFTW(destroy_plan)(the_plan);
 }

@@ -128,6 +128,19 @@ AC_SUBST(LSFFTW)
 test -n "$have_sfftw2" && test -n "$have_srfftw2" && have_sfftw2_all=yes
 AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2_all")
 
+# Check for FFTW 3
+AC_CHECK_LIB(fftw3, fftw_execute,
+		    [LFFTW3="-lfftw3"; have_fftw3=yes])
+AC_SUBST(LFFTW3)
+AC_CHECK_LIB(fftw3f, fftwf_execute, 
+		     [LFFTW3F="-lfftw3f"; have_fftw3f=yes])
+AC_SUBST(LFFTW3F)
+AC_CHECK_HEADERS(fftw3.h, [have_fftw3_h=yes])
+test -n "$have_fftw3" && test -n "$have_fftw3_h" && have_fftw3_all=yes
+test -n "$have_fftw3f" && test -n "$have_fftw3_h" && have_fftw3f_all=yes
+AM_CONDITIONAL(HAVE_FFTW3, test -n "$have_fftw3_all")
+AM_CONDITIONAL(HAVE_FFTW3F, test -n "$have_fftw3f_all")
+
 # Check for DEC Alpha DXML library
 AC_CHECK_LIB(dxml, zfft_, [have_dxml=yes; DXML_LIB=-ldxml], [AC_CHECK_LIB(cxml, zfft_, [have_dxml=yes; DXML_LIB=-lcxml])])
 AM_CONDITIONAL(HAVE_DXML, test -n "$have_dxml")
@@ -300,6 +313,7 @@ benchees/essl/Makefile
 benchees/ffte/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
+benchees/fftw3/Makefile
 benchees/fxt/Makefile
 benchees/glassman/Makefile
 benchees/goedecker/Makefile
@@ -357,6 +371,8 @@ Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
                         djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
-               FFTW 2.x single-precision (free, www.fftw.org): ${have_sfftw2_all-no}
+               FFTW 2.x single precision (free, www.fftw.org): ${have_sfftw2_all-no}
+                                FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
+               FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
   GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
 EOF

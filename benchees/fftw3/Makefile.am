@@ -1,27 +1,18 @@
-PRG=doit
-PKG=fftw-3.0-attempt2
-TARFILE=$(PKG).tar.gz
-INCLUDES = $(INCLBENCH) -I$(PKG)/src
-LIBFFTW=$(PKG)/src/libfftw.a
-EXTRA_DIST=$(PKG).tar.gz
-
 if SINGLE
-CONFIGURE=./configure --enable-single
+if HAVE_FFTW3F
+PRG=doit
+FFTW3_LIBS=@LFFTW3F@
+endif
 else
-CONFIGURE=./configure
+if HAVE_FFTW3
+PRG=doit
+FFTW3_LIBS=@LFFTW3@
+endif
 endif
 
-CC_FOR_FFTW3=@CC@
+INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-doit_LDADD=$(LIBFFTW) $(LIBBENCH) @FLIBS@
-
-doit.o: doit.c $(LIBFFTW)
-
-$(LIBFFTW): extract
-	(cd $(PKG) && (CC="$(CC_FOR_FFTW3)" $(CONFIGURE)) && $(MAKE))
+doit_LDADD=$(FFTW3_LIBS) $(LIBBENCH) @FLIBS@
 
 include ../Makefile.common
-
-clean-local::
-	rm -rf benchmark extract $(PKG) *.o $(PRG)
