@@ -7,16 +7,15 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "fftreal")
 BENCH_DOC("package", "FFTReal")
 BENCH_DOC("year", "2001")
-BENCH_DOC("version", "1.02")
+BENCH_DOC("version", "1.03")
 BENCH_DOC("author", "Laurent de Soras")
 BENCH_DOC("email", "ldesoras@club-internet.fr")
 BENCH_DOC("copyright",
 	  "Source code may be freely used for any purpose, including commercial applications. Programs must display in their 'About' dialog-box (or documentation) a text telling they use these routines by Laurent de Soras. Modified source code can be distributed, but modifications must be clearly indicated.")
 BENCH_DOC("language", "C++")
 BENCH_DOC("notes", "Code is in single precision, but double precision version is created as documented by the author, by changing the flt_t typedef in the FFTReal.h header file")
-BENCH_DOC("notes", "According to the README: There is no official web site where to get these files. If you have them, that's all to the good for you.")
-BENCH_DOC("url", "http://www.musicdsp.org/FFTReal.zip")
-BENCH_DOC("url-was-valid-on", "Tue Apr 15 17:01:59 EDT 2003")
+BENCH_DOC("url", "http://ldesoras.free.fr/prod.html")
+BENCH_DOC("url-was-valid-on", "Sat Feb 12 18:41:20 EST 2005")
 END_BENCH_DOC
 
 #include "FFTReal.h"
