@@ -29,7 +29,7 @@ distclean-local:
 	rm -rf extract extract-mkdir $(PKG) $(LOCAL_COPIES)
 	rm -f benchmark *.info *.data
 
-clean-local:
+clean-local::
 	rm -f benchmark
 
 check-local: $(PRG)

@@ -22,5 +22,5 @@ $(LIBFFTW): extract
 
 include ../Makefile.common
 
-clean-local:
+clean-local::
 	rm -rf benchmark extract $(PKG) *.o $(PRG)
