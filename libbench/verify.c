@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.9 2001-07-08 03:09:39 athena Exp $ */
+/* $Id: verify.c,v 1.10 2001-07-08 15:26:01 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -82,6 +82,16 @@ static void arand(bench_complex *A, unsigned int n)
      }
 }
 
+/* make array real */
+static void mkreal(bench_complex *A, unsigned int n)
+{
+     unsigned int i;
+
+     for (i = 0; i < n; ++i) {
+	  c_im(A[i]) = 0.0;
+     }
+}
+
 
 /* C = A - B */
 static void asub(bench_complex *C, bench_complex *A, bench_complex *B, unsigned int n)
@@ -111,12 +121,13 @@ static void arol(bench_complex *B, bench_complex *A,
      }
 }
 
-static void acmp(bench_complex *A, bench_complex *B, unsigned int n)
+static void acmp(bench_complex *A, bench_complex *B, unsigned int n, 
+		 const char *test)
 {
      double d = cerror(A, B, n);
      if (d > tolerance()) {
 	  fflush(stdout);
-	  fprintf(stderr, "Found relative error %e\n", d);
+	  fprintf(stderr, "Found relative error %e (%s)\n", d, test);
 	  BENCH_ASSERT(((void)"failure in Ergun's verification procedure\n",0));
      }
 }
@@ -175,9 +186,8 @@ static void linear(struct problem *p,
 	  caadd(inC, inA, inB, N);
 	  do_fft(p, inC, outC);
 
-	  acmp(outC, tmp, N);
+	  acmp(outC, tmp, N, "linearity");
      }
-
 }
 
 static void impulse(struct problem *p,
@@ -202,7 +212,7 @@ static void impulse(struct problem *p,
 
      /* a simple test first, to help with debugging: */
      do_fft(p, inA, outB);
-     acmp(outB, outA, n);
+     acmp(outB, outA, n, "impulse response");
 
      for (i = 0; i < rounds; ++i) {
 	  arand(inB, n);
@@ -210,7 +220,7 @@ static void impulse(struct problem *p,
 	  do_fft(p, inB, outB);
 	  do_fft(p, inC, outC);
 	  caadd(tmp, outB, outC, n);
-	  acmp(tmp, outA, n);
+	  acmp(tmp, outA, n, "impulse response");
      }
 }
 
@@ -247,6 +257,9 @@ static void time_shift(struct problem *p,
 	       unsigned int j, jb, ja;
 
 	       arand(inA, n);
+	       if (p->kind == PROBLEM_REAL) 
+		    mkreal(inA, n);
+
 	       arol(inB, inA, n_cur, n_before, n_after);
 	       do_fft(p, inA, outA);
 	       do_fft(p, inB, outB);
@@ -265,7 +278,7 @@ static void time_shift(struct problem *p,
 				   + c_im(outB[index]) * c;
 			 }
 		    }
-	       acmp(tmp, outA, n);
+	       acmp(tmp, outA, n, "time shift");
 	  }
 
 	  n_before *= n_cur;
@@ -291,10 +304,11 @@ static void do_verify(struct problem *p, unsigned int rounds)
      linear(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
      impulse(p, inA, inB, inC, outA, outB, outC, tmp, rounds);
 
-     if (p->kind == PROBLEM_COMPLEX) 
+     if (p->kind == PROBLEM_COMPLEX || p->sign == -1) 
 	  time_shift(p, inA, inB, outA, outB, tmp, rounds);
-     else {
-	  /* TODO */
+
+     if (p->kind == PROBLEM_COMPLEX || p->sign == +1) {
+	  /* TODO: frequency shift */
      }
 
      bench_free(tmp);

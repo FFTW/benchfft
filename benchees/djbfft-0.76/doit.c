@@ -12,6 +12,8 @@ BENCH_DOC("url", "http://pobox.com/~djb/djbfft.html")
 BENCH_DOC("language", "C")
 BENCH_DOC("notes",
 	  "djbfft considers sign = +1 to be the forward transform")
+BENCH_DOC("conf-opt", CONF_OPT)
+BENCH_DOC("auto-opt", AUTO_OPT)
 END_BENCH_DOC
 
 #include "fftc4.h"

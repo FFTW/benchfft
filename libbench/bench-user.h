@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.10 2001-07-08 03:09:39 athena Exp $ */
+/* $Id: bench-user.h,v 1.11 2001-07-08 15:26:01 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -74,6 +74,10 @@ void copy_c2r(struct problem *p, bench_complex *in);
 void copy_c2h(struct problem *p, bench_complex *in);
 void copy_r2c(struct problem *p, bench_complex *out);
 void copy_h2c(struct problem *p, bench_complex *out);
+void copy_c2h_1d_packed(struct problem *p, bench_complex *in,
+			bench_real sign_of_r2h_transform);
+void copy_h2c_1d_packed(struct problem *p, bench_complex *out, 
+			bench_real sign_of_r2h_transform);
 
 extern int power_of_two(unsigned int n);
 extern int problem_power_of_two(struct problem *p, int in_place);
@@ -87,6 +91,8 @@ extern void acopy(bench_real *A, bench_real *B, unsigned int n);
 extern void cacopy(bench_complex *A, bench_complex *B, unsigned int n);
 
 extern void cascale(bench_complex *A, unsigned int n, bench_complex alpha);
+extern void ascale(bench_real *A, unsigned int n, bench_real alpha);
+
 extern void caadd(bench_complex *C, bench_complex *A, 
 		  bench_complex *B, unsigned int n);
 extern void casub(bench_complex *C, bench_complex *A, 
@@ -138,34 +144,38 @@ extern const struct bench_doc bench_doc[];
 
 #ifdef CC
 #define CC_DOC BENCH_DOC("cc", CC)
+#elif defined(BENCH_CC)
+#define CC_DOC BENCH_DOC("cc", BENCH_CC)
 #else
 #define CC_DOC /* none */
 #endif
 
-#ifdef CFLAGS
-#define CFLAGS_DOC BENCH_DOC("cflags", CFLAGS)
-#else
-#define CFLAGS_DOC /* none */
-#endif
-
 #ifdef F77
 #define F77_DOC BENCH_DOC("f77", F77)
+#elif defined(BENCH_F77)
+#define F77_DOC BENCH_DOC("f77", BENCH_F77)
 #else
 #define F77_DOC /* none */
 #endif
 
-#ifdef FFLAGS
-#define FFLAGS_DOC BENCH_DOC("fflags", FFLAGS)
+#ifdef BENCH_HOST
+#define HOST_DOC BENCH_DOC("host", BENCH_HOST)
 #else
-#define FFLAGS_DOC /* none */
+#define HOST_DOC /* none */
 #endif
 
-#define BEGIN_BENCH_DOC				\
-const struct bench_doc bench_doc[] = {		\
-    CC_DOC					\
-    CFLAGS_DOC					\
-    F77_DOC					\
-    FFLAGS_DOC
+#ifdef BENCH_HOSTNAME
+#define HOSTNAME_DOC BENCH_DOC("hostname", BENCH_HOSTNAME)
+#else
+#define HOSTNAME_DOC /* none */
+#endif
+
+#define BEGIN_BENCH_DOC						\
+const struct bench_doc bench_doc[] = {				\
+    CC_DOC							\
+    F77_DOC							\
+    HOST_DOC							\
+    HOSTNAME_DOC					
 
 #define BENCH_DOC(key, val) { key, val },
 

@@ -71,6 +71,13 @@ if test "$ok" = "yes"; then
 fi
 AC_MSG_RESULT(${ok})
 
+AC_DEFINE_UNQUOTED(BENCH_HOST, "$host", [host type])
+AC_DEFINE_UNQUOTED(BENCH_HOSTNAME, "$ac_hostname", [host name])
+AC_DEFINE_UNQUOTED(BENCH_CC, "$CC $CFLAGS", [C compiler name and flags])
+AC_DEFINE_UNQUOTED(BENCH_F77, "$F77 $FFLAGS", 
+	[FORTRAN compiler name and flags])
+
+
 dnl TODO
 ACX_GCC_ALIGNS_STACK()
 

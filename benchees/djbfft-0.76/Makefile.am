@@ -1,16 +1,23 @@
 noinst_PROGRAMS=doit
-INCLUDES = -I${top_srcdir}/libbench -I./djbfft-0.76
-EXTRA_DIST = djbfft-0.76.tar.gz
+PKG=djbfft-0.76
+INCLUDES = -I${top_srcdir}/libbench -I$(PKG)
+TARFILE=$(PKG).tar.gz
+EXTRA_DIST = $(TARFILE)
 
 doit_SOURCES=doit.c
-doit_LDADD=djbfft-0.76/djbfft.a ${top_builddir}/libbench/libbench.a
+doit_LDADD=$(PKG)/djbfft.a ${top_builddir}/libbench/libbench.a
 
-doit.o: djbfft-0.76
+doit.o: doit.c $(PKG) $(CONFIG_HEADER)
+	$(COMPILE) \
+	-DCC="\"`cat $(PKG)/conf-cc`\"" \
+	-DCONF_OPT="\"`cat $(PKG)/conf-opt`\"" \
+	-DAUTO_OPT="\"`cat $(PKG)/auto_opt`\"" \
+         -c $<
 
-djbfft-0.76/djbfft.a: djbfft-0.76
-	(cd djbfft-0.76; make)
+$(PKG)/djbfft.a: $(PKG)
+	(cd $(PKG); make)
 
-djbfft-0.76: djbfft-0.76.tar.gz
-	gzip -dc ${srcdir}/djbfft-0.76.tar.gz | tar xf -
+$(PKG): $(TARFILE)
+	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
 
-djbfft-0.76/fftc4.h djbfft-0.76/fftc8.h djbfft-0.76/fftfreq.h: djbfft-0.76
+$(PKG)/fftc4.h $(PKG)/fftc8.h $(PKG)/fftfreq.h: $(PKG)

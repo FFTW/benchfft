@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.6 2001-07-08 03:09:39 athena Exp $ */
+/* $Id: bench-main.c,v 1.7 2001-07-08 15:26:01 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -34,6 +34,7 @@ static struct option long_options[] =
   {"info", required_argument, 0, 'i'},
   {"info-all", no_argument, 0, 'I'},
   {"print-time-min", no_argument, 0, 400},
+  {"print-precision", no_argument, 0, 402},
   {"report-avg-mflops", no_argument, 0, 302},
   {"report-avg-time", no_argument, 0, 312},
   {"report-full", no_argument, 0, 320},
@@ -116,10 +117,21 @@ static int bench_main1(int argc, char *argv[])
 	      case 400: /* --print-time-min */
 		   timer_init(tmin, repeat);
 		   ovtpvt("%g\n", time_min);
+		   break;
 
 	      case 401: /* --verify-rounds */
 		   rounds = atoi(optarg);
 		   break;
+
+	      case 402: /* --print-precision */
+		   if (sizeof(bench_real) == sizeof(float))
+			ovtpvt("single\n");
+		   else if (sizeof(bench_real) == sizeof(double))
+			ovtpvt("double\n");
+		   else 
+			ovtpvt("unknown %d\n", sizeof(bench_real));
+		   break;
+
 		   
 	      case '?':
 		   /* `getopt_long' already printed an error message. */
@@ -127,7 +139,6 @@ static int bench_main1(int argc, char *argv[])
 
 	      default:
 		   abort ();
-
 	  }
      }
 
