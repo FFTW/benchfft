@@ -1,7 +1,9 @@
 FFTs to add:
 
-New Intel MKL (includes mixed radix)
+New Intel MKL (includes mixed radix) (currently in beta)
 vBigDSP (http://www.findsabrina.org/altivec/)
+pfftw
+pdqfft
 
 NFFT (probably slow, but interesting for academic reasons)
 
