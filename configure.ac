@@ -163,6 +163,10 @@ AC_CHECK_LIB(complib.sgimath, zfft1d, [have_sgimath=yes])
 AM_CONDITIONAL(HAVE_SGIMATH, test -n "$have_sgimath")
 AC_CHECK_HEADERS(fft.h)
 
+# Check for AMD Core Math Library (ACML):
+AC_CHECK_LIB(acml, zfft1d_, [have_acml=yes], [], $FLIBS)
+AM_CONDITIONAL(HAVE_ACML, test -n "$have_acml")
+
 # Check for ESSL library (some versions have only one precision):
 if test "x$benchfft_single" = xyes; then
 	essl_prefix=s
@@ -320,6 +324,7 @@ libbench/Makefile
 benchees/Makefile
 scripts/Makefile
 
+benchees/acml/Makefile
 benchees/arprec/Makefile
 benchees/athfft/Makefile
 benchees/bloodworth/Makefile
@@ -399,6 +404,7 @@ cat <<EOF
 Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                                           Intel IPPS (gratis): ${have_ipps-no}
+                                            AMD ACML (gratis): ${have_acml-no}
                         djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}

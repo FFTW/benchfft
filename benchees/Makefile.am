@@ -1,4 +1,4 @@
-SUBDIRS = arprec athfft bloodworth burrus cross cwplib dfftpack		\
+SUBDIRS = acml arprec athfft bloodworth burrus cross cwplib dfftpack	\
 djbfft-0.76 dsp dxml emayer esrfft essl ffte fftpack fftreal fftw2	\
 fftw3 fxt glassman goedecker gpfa green-ffts-2.0 gsl harm imsl		\
 intel-mkl intel-ipps jmfft krukar mfft mixfft mkl-dfti monnier morris	\
