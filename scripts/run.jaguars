@@ -1,0 +1,25 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=`hostname`
+
+FFLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
+CXXLAGS='-O2 -fomit-frame-pointer -mcpu=pentiumpro'
+CPPFLAGS="-I$HOME/i386/include" 
+LDFLAGS="-L$HOME/i386/lib" 
+MAKE=make
+
+export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+
+
+rm -rf $HOSTNAME
+mkdir $HOSTNAME
+
+( 
+  cd $HOSTNAME
+  ../configure --disable-single
+  make -k; make -k; make benchmark; make clean
+  ../configure --enable-single
+  make -k; make -k; make benchmark; make clean
+  make collect
+)
