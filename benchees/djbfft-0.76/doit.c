@@ -148,8 +148,8 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
      for (k = 2; k < n; k += 2) {
           int f = fftfreq_r(k, n);
-	  pin[k] = c_re(in[f]);
-	  pin[k + 1] = - c_im(in[f]);
+	  pin[k] = 2.0 * c_re(in[f]);
+	  pin[k + 1] = - 2.0 * c_im(in[f]);
      }
 }
 
