@@ -22,7 +22,7 @@ BENCH_DOC("name", "fftw3-r2r")
 BENCH_DOCF("version", mkversion)
 BENCH_DOCF("fftw-cc", mkcc)
 BENCH_DOCF("fftw-codelet-optim", mkcodelet_optim)
-BENCH_DOC("package", "FFTW 3 Real Transform Interface")
+BENCH_DOC("package", "FFTW")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Matteo Frigo")
 BENCH_DOC("author", "Steven G. Johnson")
@@ -31,6 +31,7 @@ BENCH_DOC("url", "http://www.fftw.org")
 BENCH_DOC("url-was-valid-on", "Fri Mar 28 18:46:22 EST 2003")
 BENCH_DOC("language", "C")
 BENCH_DOC("language", "Objective Caml")
+BENCH_DOC("notes", "Using halfcomplex transform interface (R2HC/HC2R kinds).")
 BENCH_DOC("copyright",
 "Copyright (c) 2003 Matteo Frigo\n"
 "Copyright (c) 2003 Massachusetts Institute of Technology\n"
