@@ -258,10 +258,13 @@ if ($use_paper_styles) {
     %legend_map = (
 		   "fftw3" => "fftw",
 		   "fftw3-no-simd" => "fftw, no simd",
+		   "fftw3-patient" => "fftw, patient mode",
 		   "fftw3-impatient" => "fftw, impatient mode",
 		   "fftw3-estimate" => "fftw, estimate mode",
 		   "fftw3 out-of-place" => "fftw, out of place",
 		   "fftw3 in-place" => "fftw, in place",
+
+		   "dfftpack" => "fftpack",
 
 		   "ffte" => "takahashi",
 		   "sorensen-ctfftsr" => "sorensen",
