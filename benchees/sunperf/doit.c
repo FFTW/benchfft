@@ -12,7 +12,7 @@ static const char *mkvers(void)
 {
 #ifdef HAVE_SUNPERF_VERSION_
      int a, b, c;
-     static char *b[128];
+     static char buf[128];
 
      /* 
 	using FORTRAN interface.  The documented C interface cannot
@@ -20,11 +20,11 @@ static const char *mkvers(void)
 	void
      */
      sunperf_version_(&a, &b, &c);
-     sprintf(b, "%d.%d.%d", a, b, c);
-     return b;
+     sprintf(buf, "%d.%d.%d", a, b, c);
+     return buf;
 #else
      return "unknown"
-#fi
+#endif
 }
 
 BEGIN_BENCH_DOC
@@ -32,6 +32,21 @@ BENCH_DOC("name", "sunperf")
 BENCH_DOCF("version", mkvers)
 END_BENCH_DOC
 
+#ifdef BENCHFFT_SINGLE
+#define FFTI cffti
+#define FFTF cfftf
+#define FFTB cfftb
+#define RFFTI sffti
+#define RFFTF sfftf
+#define RFFTB sfftb
+#else
+#define FFTI zffti
+#define FFTF zfftf
+#define FFTB zfftb
+#define RFFTI dffti
+#define RFFTF dfftf
+#define RFFTB dfftb
+#endif
 
 int can_do(struct problem *p)
 {
@@ -48,7 +63,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
      copy_c2h_1d_fftpack(p, in, -1.0);
 }
 
-static bench_real *WSAVE;
+static void *WSAVE;
 
 void setup(struct problem *p)
 {
@@ -59,10 +74,10 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
 	  WSAVE = bench_malloc((4 * n + 15) * sizeof(bench_real));
-	  SINGLE_PRECISION ? cffti(n, WSAVE) : zffti(n, WSAVE);
+	  FFTI(n, WSAVE);
      } else {
 	  WSAVE = bench_malloc((2 * n + 15) * sizeof(bench_real));
-	  SINGLE_PRECISION ? sffti(n, WSAVE) : dffti(n, WSAVE);
+	  RFFTI(n, WSAVE);
      }
 }
 
@@ -71,40 +86,26 @@ void doit(int iter, struct problem *p)
      int i;
      int n = p->n[0];
      void *in = p->in;
-     bench_real *wsave = WSAVE;
+     void *wsave = WSAVE;
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (p->sign == -1) {
-	       if (SINGLE_PRECISION)
-		    for (i = 0; i < iter; ++i) {
-			 cfftf(n, in, wsave);
-		    }
-	       else
-		    for (i = 0; i < iter; ++i) {
-			 zfftf(n, in, wsave);
-		    }
+	    for (i = 0; i < iter; ++i) 
+	      FFTF(n, in, wsave);
 	  } else {
-	       if (SINGLE_PRECISION)
-		    for (i = 0; i < iter; ++i) {
-			 cfftb(n, in, wsave);
-		    }
-	       else
-		    for (i = 0; i < iter; ++i) {
-			 zfftb(n, in, wsave);
-		    }
+	    for (i = 0; i < iter; ++i) 
+	      FFTB(n, in, wsave);
 	  }
      } else {
-#if 0
 	  if (p->sign == -1) {
 	       for (i = 0; i < iter; ++i) {
-		    F77_FUNC(dfftf, DFFTF)(&n, in, wsave);
+		    RFFTF(n, in, wsave);
 	       }
 	  } else {
 	       for (i = 0; i < iter; ++i) {
-		    F77_FUNC(dfftb, DFFTB)(&n, in, wsave);
+		    RFFTB(n, in, wsave);
 	       }
 	  }
-#endif
      }
 }
 
