@@ -79,5 +79,23 @@ for compiler in gcc g77 g++ cc CC f77 F77; do
 done 2>/dev/null
 
 echo
+echo "---------"
+echo "LIBRARIES"
+echo "---------"
+echo
 
-# libraries
+# there seems to be no reliable way to identify dxml
+if test -r /usr/lib/libdxml.a; then
+   # dxml is usually a symbolic link to a file.  The name of
+   # the file will at least tell us which CPU this is optimized
+   # for.
+   echo 'ls -l /usr/lib/libdxml* :'
+   ls -l /usr/lib/libdxml*
+
+   # look at the binary for the string xml
+   strings /usr/lib/libdxml.a | grep -i xml
+
+   # the man page may contain the version number:
+   (TERM=dumb; export TERM;
+     x=`man dxml | head -20` && (echo "man dxml:"; echo "$x"))
+fi 2>/dev/null
