@@ -9,11 +9,11 @@ collect:
 
 # this is a hack
 RECURSIVE_TARGETS =
-RECURSIVE_TARGETS += benchmark-recursive accuracy-recursive info-recursive
+RECURSIVE_TARGETS += benchmark-recursive accuracy-recursive fftinfo-recursive
 benchmark: benchmark-recursive
 benchmark-am:
 accuracy: accuracy-recursive
 accuracy-am:
-info: info-recursive
-info-am:
+fftinfo: fftinfo-recursive
+fftinfo-am:
 
