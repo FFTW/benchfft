@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.11 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: bench.h,v 1.12 2003-04-16 13:05:57 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -36,12 +36,9 @@ extern double timer_stop(void);
 extern void (*report)(const struct problem *p, double *t, int st);
 
 void report_mflops(const struct problem *p, double *t, int st);
-void report_max_mflops(const struct problem *p, double *t, int st);
-void report_avg_mflops(const struct problem *p, double *t, int st);
 void report_time(const struct problem *p, double *t, int st);
-void report_min_time(const struct problem *p, double *t, int st);
-void report_avg_time(const struct problem *p, double *t, int st);
 void report_benchmark(const struct problem *p, double *t, int st);
+void report_verbose(const struct problem *p, double *t, int st);
 
 void report_can_do(const char *param);
 void report_info(const char *param);

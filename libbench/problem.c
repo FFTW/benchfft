@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.13 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: problem.c,v 1.14 2003-04-16 13:05:57 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -46,6 +46,8 @@ struct problem *problem_parse(const char *s)
      p->vrank = 0;
      p->size = 1;      /* the product of 0 things is 1 */
      p->vsize = 1;      /* the product of 0 things is 1 */
+     p->pstring = (char *) bench_malloc(sizeof(char) * (strlen(s) + 1));
+     strcpy(p->pstring, s);
 
  L1:
      switch (tolower(*s)) {
@@ -117,6 +119,7 @@ void problem_destroy(struct problem *p)
 {
      BENCH_ASSERT(p);
      problem_free(p);
+     bench_free(p->pstring);
      bench_free(p);
 }
 

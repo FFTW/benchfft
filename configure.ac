@@ -229,10 +229,14 @@ AC_CHECK_LIB(mkl_p4, zfft1d_, [have_mkl_p4=yes])
 AM_CONDITIONAL(HAVE_MKL_P4, test -n "$have_mkl_p4")
 AC_CHECK_LIB(mkl_vml_itp, zfft1d_, [have_mkl_vml_itp=yes])
 AM_CONDITIONAL(HAVE_MKL_VML_ITP, test -n "$have_mkl_vml_itp")
+AC_CHECK_LIB(mkl_ia32, DftiCreateDescriptor, [have_mkl_dfti=yes])
+AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
+
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 AC_CHECK_LIB(mkl_def, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
+
 
 # check for Numerical Recipes source in benchees/nr
 nr_dir=$srcdir/benchees/nr
@@ -347,6 +351,7 @@ benchees/jmfft/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
 benchees/mixfft/Makefile
+benchees/mkl-dfti/Makefile
 benchees/monnier/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
@@ -389,7 +394,8 @@ cat <<EOF
              Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
-Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
+Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl_def-no}
+                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                         djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}

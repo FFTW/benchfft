@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.16 2003-04-02 10:54:52 athena Exp $ */
+/* $Id: bench-main.c,v 1.17 2003-04-16 13:05:57 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -42,13 +42,10 @@ static struct option long_options[] =
   {"print-precision", no_argument, 0, 402},
   {"print-time-min", no_argument, 0, 400},
   {"random-seed", required_argument, 0, 404},
-  {"report-avg-mflops", no_argument, 0, 302},
-  {"report-avg-time", no_argument, 0, 312},
   {"report-benchmark", no_argument, 0, 320},
-  {"report-max-mflops", no_argument, 0, 301},
   {"report-mflops", no_argument, 0, 300},
-  {"report-min-time", no_argument, 0, 311},
   {"report-time", no_argument, 0, 310},
+  {"report-verbose", no_argument, 0, 330},
   {"speed", required_argument, 0, 's'},
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
@@ -79,7 +76,7 @@ static int bench_main1(int argc, char *argv[])
 
      check_alignment();
 
-     report = report_time; /* default */
+     report = report_verbose; /* default */
      verbose = paranoid = 0;
 
      tol = SINGLE_PRECISION ? 1.0e-3 : 1.0e-10;
@@ -132,25 +129,17 @@ static int bench_main1(int argc, char *argv[])
 	      case 300: /* --report-mflops */
 		   report = report_mflops;
 		   break;
-	      case 301: /* --report-max-mflops */
-		   report = report_max_mflops;
-		   break;
-	      case 302: /* --report-avg-mflops */
-		   report = report_avg_mflops;
-		   break;
 
 	      case 310: /* --report-time */
 		   report = report_time;
 		   break;
-	      case 311: /* --report-min-time */
-		   report = report_min_time;
-		   break;
-	      case 312: /* --report-avg-time */
-		   report = report_avg_time;
-		   break;
 
  	      case 320: /* --report-benchmark */
 		   report = report_benchmark;
+		   break;
+
+ 	      case 330: /* --report-verbose */
+		   report = report_verbose;
 		   break;
 
 	      case 400: /* --print-time-min */
@@ -194,14 +183,14 @@ static int bench_main1(int argc, char *argv[])
 	  }
      }
 
-     /* Print any remaining command line arguments (not options). */
-     if (optind < argc) {
-	  fprintf(stderr, "unrecognized non-option arguments: ");
-	  while (optind < argc)
-	       fprintf(stderr, "%s ", argv[optind++]);
-	  fprintf(stderr, "\n");
+     /* assume that any remaining arguments are problems to be
+        benchmarked */
+     while (optind < argc) {
+	  timer_init(tmin, repeat);
+	  speed(argv[optind++]);
      }
-     
+
+     bench_free(short_options);     
      return 0;
 }
 

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.13 2003-03-30 14:41:44 athena Exp $ */
+/* $Id: report.c,v 1.14 2003-04-16 13:05:57 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -27,15 +27,6 @@
 #include <math.h>
 
 void (*report)(const struct problem *p, double *t, int st);
-
-/* report WHAT */
-enum {
-     W_TIME = 0x1,
-     W_MFLOPS = 0x2
-};
-
-/* report HOW */
-enum { H_ALL, H_MIN, H_MAX, H_AVG };
 
 #undef min
 #undef max /* you never know */
@@ -67,88 +58,30 @@ static void mkstat(double *t, int st, struct stats *a)
      /* compute median --- silly bubblesort algorithm */
      for (i = st - 1; i > 1; --i) {
 	  for (j = 0; j < i - 1; ++j) {
-	       double y0, y1;
-	       if ((y0 = t[j]) > (y1 = t[j + 1])) {
-		    t[j] = y0;
-		    t[j + 1] = y1;
+	       double t0, t1;
+	       if ((t0 = t[j]) > (t1 = t[j + 1])) {
+		    t[j] = t0;
+		    t[j + 1] = t1;
 	       }
 	  } 
      }
      a->median = t[st / 2];
 }
 
-static void report_generic(const struct problem *p, double *t, int st,
-			   int what, int how)
-{
-     struct stats s;
-
-     mkstat(t, st, &s);
-
-     if (what & W_TIME) {
-	  switch (how) {
-	      case H_ALL:
-		   ovtpvt("(%g %g %g %g)\n", s.min, s.avg, s.max, s.median);
-		   break;
-	      case H_MIN:
-		   ovtpvt("%g\n", s.min);
-		   break;
-	      case H_MAX:
-		   ovtpvt("%g\n", s.max);
-		   break;
-	      case H_AVG:
-		   ovtpvt("%g\n", s.avg);
-		   break;
-	  }
-     }
-
-     if (what & W_MFLOPS) {
-	  switch (how) {
-	      case H_ALL:
-		   ovtpvt("(%g %g %g)\n", 
-			  mflops(p, s.max), mflops(p, s.avg), 
-			  mflops(p, s.min));
-		   break;
-	      case H_MIN:
-		   ovtpvt("%g\n", mflops(p, s.max));
-		   break;
-	      case H_MAX:
-		   ovtpvt("%g\n", mflops(p, s.max));
-		   break;
-	      case H_AVG:
-		   ovtpvt("%g\n", mflops(p, s.avg));
-		   break;
-	  }
-     }
-}
-
 void report_mflops(const struct problem *p, double *t, int st)
 {
-     report_generic(p, t, st, W_MFLOPS, H_ALL);
-}
-
-void report_max_mflops(const struct problem *p, double *t, int st)
-{
-     report_generic(p, t, st, W_MFLOPS, H_MAX);
-}
-
-void report_avg_mflops(const struct problem *p, double *t, int st)
-{
-     report_generic(p, t, st, W_MFLOPS, H_AVG);
+     struct stats s;
+     mkstat(t, st, &s);
+     ovtpvt("(%g %g %g %g)\n", 
+	    mflops(p, s.max), mflops(p, s.avg), 
+	    mflops(p, s.min), mflops(p, s.median));
 }
 
 void report_time(const struct problem *p, double *t, int st)
 {
-     report_generic(p, t, st, W_TIME, H_ALL);
-}
-
-void report_min_time(const struct problem *p, double *t, int st)
-{
-     report_generic(p, t, st, W_TIME, H_MIN);
-}
-
-void report_avg_time(const struct problem *p, double *t, int st)
-{
-     report_generic(p, t, st, W_TIME, H_AVG);
+     struct stats s;
+     mkstat(t, st, &s);
+     ovtpvt("(%g %g %g %g)\n", s.min, s.avg, s.max, s.median);
 }
 
 void report_benchmark(const struct problem *p, double *t, int st)
@@ -156,4 +89,41 @@ void report_benchmark(const struct problem *p, double *t, int st)
      struct stats s;
      mkstat(t, st, &s);
      ovtpvt("%.5g %.8g %g\n", mflops(p, s.min), s.min, p->setup_time);
+}
+
+static void sprintf_time(double x, char *buf)
+{
+     if (x < 1.0E-6)
+	  sprintf(buf, "%.2f ns", x * 1.0E9);
+     else if (x < 1.0E-3)
+	  sprintf(buf, "%.2f us", x * 1.0E6);
+     else if (x < 1.0)
+	  sprintf(buf, "%.2f ms", x * 1.0E3);
+     else
+	  sprintf(buf, "%.2f s", x);
+}
+
+void report_verbose(const struct problem *p, double *t, int st)
+{
+     struct stats s;
+     char bmin[64], bmax[64], bavg[64], bmedian[64], btmin[64];
+     char bsetup[64];
+
+     mkstat(t, st, &s);
+
+     sprintf_time(s.min, bmin);
+     sprintf_time(s.max, bmax);
+     sprintf_time(s.avg, bavg);
+     sprintf_time(s.median, bmedian);
+     sprintf_time(time_min, btmin);
+     sprintf_time(p->setup_time, bsetup);
+
+     ovtpvt("Problem: %s, setup: %s, time: %s, ``mflops'': %.5g\n",
+	    p->pstring, bsetup, bmin, mflops(p, s.min));
+
+     if (verbose) {
+	  ovtpvt("Took %d measurements for at least %s each.\n", st, btmin);
+	  ovtpvt("Time: min %s, max %s, avg %s, median %s\n",
+		 bmin, bmax, bavg, bmedian);
+     }
 }

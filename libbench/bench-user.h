@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.37 2003-03-30 14:41:44 athena Exp $ */
+/* $Id: bench-user.h,v 1.38 2003-04-16 13:05:57 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -76,6 +76,7 @@ struct problem {
      int split;
      void *in;
      void *out;
+     char *pstring;
      void *userinfo; /* user can store whatever */
 
      /* internal hack to avoid passing around too many parameters */
