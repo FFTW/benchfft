@@ -4,7 +4,7 @@
 #include <math.h>
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "green-ffts-2.0")
+BENCH_DOC("name", "green")
 BENCH_DOC("package", "FFTs for RISC 2.0")
 BENCH_DOC("year", "1998")
 BENCH_DOC("author", "John Green")
