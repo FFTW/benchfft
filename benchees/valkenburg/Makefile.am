@@ -14,6 +14,6 @@ doit_SOURCES=doit.c
 nodist_doit_SOURCES=$(FFT)
 doit_LDADD=$(LIBBENCH) @FLIBS@
 
-$(FFT): extract
+doit.c $(FFT): extract
 
 include ../Makefile.common
