@@ -200,6 +200,7 @@ if test -n "$have_vdsp"; then
 fi
 
 dnl Check for Intel's MKL library:
+AC_CHECK_LIB(guide, omp_in_parallel)
 AC_CHECK_LIB(mkl_def, zfft1d_, [have_mkl_def=yes])
 AM_CONDITIONAL(HAVE_MKL_DEF, test -n "$have_mkl_def")
 AC_CHECK_LIB(mkl_p3, zfft1d_, [have_mkl_p3=yes])
