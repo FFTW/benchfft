@@ -24,5 +24,9 @@ mkdir $HOSTNAME
   make -k; make -k; make benchmark; make clean
   ../configure --enable-single --with-f90
   make -k; make -k; make benchmark; make clean
+  ../configure --disable-single --with-f90
+  make -k; make -k; make accuracy; make clean
+  ../configure --enable-single --with-f90
+  make -k; make -k; make accuracy; make clean
   make collect
 )
