@@ -27,8 +27,8 @@ static const char *mkcodelet_optim(void) { return FFTW(codelet_optim); }
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "fftw3")
 BENCH_DOCF("version", mkversion)
-BENCH_DOCF("cc", mkcc)
-BENCH_DOCF("codelet-optim", mkcodelet_optim)
+BENCH_DOCF("fftw-cc", mkcc)
+BENCH_DOCF("fftw-codelet-optim", mkcodelet_optim)
 END_BENCH_DOC 
 
 FFTW(plan) the_plan = 0;
