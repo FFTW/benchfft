@@ -10,6 +10,8 @@ case `echo "testing\c"; echo 1,2,3`,`echo -n testing; echo 1,2,3` in
   *)      ECHO_N= ECHO_C='\c' ECHO_T= ;;
 esac
 
+medir=`echo "$0" | sed -e 's,/[^/]*$,,'`
+
 # 
 echo "-----------"
 echo "SYSTEM NAME"
@@ -26,6 +28,9 @@ echo "-----------"
 echo "SYSTEM TYPE"
 echo "-----------"
 echo
+x=`sh $medir/../config.guess 2>/dev/null | sed 1q`
+if test -n "$x"; then echo "config.guess: $x";  fi
+
 for prog in "uname -a" "/usr/sbin/sizer -c"; do
    x=`$prog 2>/dev/null | sed 1q`
    if test -n "$x"; then echo "$prog: $x";  fi
