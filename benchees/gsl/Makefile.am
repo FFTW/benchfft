@@ -7,7 +7,7 @@ INCLUDES = $(INCLBENCH)
 EXTRA_DIST=doit2.c
 
 doit_SOURCES=doit.c
-doit_LDADD=-lgsl $(LIBBENCH)
+doit_LDADD=-lgsl -lgslcblas $(LIBBENCH)
 
 doit_dit_SOURCES=doit-dit.c
 doit_dit_LDADD=-lgsl -lgslcblas $(LIBBENCH)
