@@ -36,7 +36,7 @@
 	   "athfft" => "indigo:dot:1:indigo:circle:0.5:none",
 	   "bloodworth" => "red:dot:1:red:square:0.5:none",
 	   "bloodworth-fht" => "red:solid:1:red:square:0.5:red",
-	   "burrus-sffteu" => "violet:solid:1:violet:x:0.5:none",
+	   "burrus-sffteu" => "green:solid:1:green:circle:0.5:none",
 	   "cwplib" => "orange:dotdash:1:orange:square:0.5:none",
 	   "dfftpack" => "brown:dash:1:brown:triangle-right:0.5:none",
 	   "djbfft-0.76" => "maroon:solid:1:maroon:square:0.5:none",
@@ -61,9 +61,9 @@
 	   "gpfa-3d" => "maroon:dash:1:maroon:diamond:0.5:none",
 	   "green-ffts-2.0" => "green:solid:2:green:circle:0.25:green",
 	   "gsl-mixed-radix" => "violet:solid:2:violet:circle:0.25:none",
-	   "gsl-radix-2" => "violet:dash:1:violet:circle:0.5:violet",
-	   "gsl-radix-2-dif" => "violet:dash:1:violet:star:0.5:none",
-	   "gsl-radix-2-dit" => "violet:dot:1:violet:circle:0.5:none",
+	   "gsl-radix2" => "violet:dash:1:violet:circle:0.5:violet",
+	   "gsl-radix2-dif" => "violet:dash:1:violet:star:0.5:none",
+	   "gsl-radix2-dit" => "violet:dot:1:violet:circle:0.5:none",
 	   "harm" => "green4:dot:1:green4:star:0.5:none",
 	   "intel-mkl32-def" => "black:solid:1:black:circle:0.5:black",
 	   "intel-mkl32-f-def" => "black:dash:1:black:circle:0.5:none",
@@ -99,7 +99,7 @@
 	   "sgimath" => "black:solid:1:black:star:0.5:none",
 	   "singleton" => "red:solid:1:red:triangle-up:0.5:none",
 	   "singleton-3d" => "red:solid:1:red:triangle-up:0.5:none",
-	   "sorensen-ctfftsr" => "indigo:dot:2:indigo:circle:0.25:none",
+	   "sorensen-ctfftsr" => "indigo:dot:2:indigo:none:0.25:none",
 	   "sorensen-rsrfft" => "indigo:solid:1:indigo:diamond:0.5:indigo",
 	   "sorensen-sfftfu" => "indigo:dash:1:indigo:x:0.5:none",
 	   "sunperf" => "black:solid:1:black:star:0.5:none",
@@ -144,7 +144,7 @@ sub printstyle {
 
 #############################################################################
 
-print "@ xaxis label \"transform size\"\n";
+# print "@ xaxis label \"transform size\"\n";
 print "@ yaxis label \"speed (mflops)\"\n";
 
 $max_mflops = 0;
@@ -188,7 +188,7 @@ print "@ yaxis tick major color \"grey\"\n";
 print "@ yaxis tick major grid on\n";
 print "@ xaxis tick major color \"grey\"\n";
 print "@ xaxis tick major grid on\n";
-print "@ autoscale onread xaxes\n";
+print "@ autoscale onread xaxes\n";  # requires recent version of Grace
 
 # Set x axis ticks and labels:
 print "@ xaxis ticklabel angle 270\n";
