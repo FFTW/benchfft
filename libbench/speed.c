@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: speed.c,v 1.1 2001-07-04 22:50:34 athena Exp $ */
+/* $Id: speed.c,v 1.2 2001-07-05 16:49:43 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -33,9 +33,7 @@ void speed(const char *param)
 
      p = problem_parse(param);
 
-     if (!can_do(p)) {
-	  goto fail;
-     }
+     BENCH_ASSERT(can_do(p));
      
      setup(p);
 
@@ -58,7 +56,6 @@ void speed(const char *param)
 
      report(p, t, time_repeat);
 
- fail:
      problem_destroy(p);
      bench_free(t);
      return;

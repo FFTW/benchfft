@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.2 2001-07-05 14:27:19 athena Exp $ */
+/* $Id: bench-user.h,v 1.3 2001-07-05 16:49:43 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 
@@ -38,13 +38,13 @@ typedef struct {
 #define c_re(c)  ((c).re)
 #define c_im(c)  ((c).im)
 
+#define MAX_RANK 20
 struct problem {
      enum { PROBLEM_COMPLEX, PROBLEM_REAL } kind;
      int rank;
-     int *n;  
+     int n[MAX_RANK];  
      int size;  /* total size of input = PROD n[i] */
 
-     void *userinfo; /* user can store whatever */
      union {
 	  struct {
 	       int sign;
@@ -57,6 +57,7 @@ struct problem {
 	       int dummy; /* prevent compiler warning */
 	  } real;
      } p;
+     void *userinfo; /* user can store whatever */
 };
 
 extern int can_do(struct problem *p);

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.1 2001-07-05 14:27:19 athena Exp $ */
+/* $Id: verify.c,v 1.2 2001-07-05 16:49:43 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -107,7 +107,7 @@ static void asub(bench_complex *C, bench_complex *A, bench_complex *B, int n)
 
 /* B = rotate left A */
 static void arol(bench_complex *B, bench_complex *A,
-		  int n, int n_before, int n_after)
+		 int n, int n_before, int n_after)
 {
      int i, ib, ia;
 
@@ -244,6 +244,9 @@ static void do_verify(struct problem *p, int rounds)
 
      /* TODO: real case */
      BENCH_ASSERT(p->kind == PROBLEM_COMPLEX);
+
+     /* TODO: nd */
+     BENCH_ASSERT(p->rank == 1);
 
      if (rounds == 0)
 	  rounds = 20;  /* default value */
