@@ -12,7 +12,7 @@ BENCH_DOC("bibitem",
 	  "C. Temperton : A Generalized Prime Factor Fft Algorithm "
 	  "For Any N = (2**P)(3**Q)(5**R), SIAM J. Sci. Stat. Comp.," 
 	  " MAY 1992.")
-BENCH_DOC("notes"
+BENCH_DOC("notes",
 	  "We also have a 3D version which appears to be apocryphal and thus "
           "not benchmarked")
 END_BENCH_DOC
