@@ -10,6 +10,8 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "hp-mlib")
 BENCH_DOC("package", "HP Mathematical Software Library (mlib, a.k.a. veclib)")
+BENCH_DOC("url", "http://h21007.www2.hp.com/dspp/tech/tech_TechSoftwareDetailPage_IDX/1,1703,1204,00.html")
+BENCH_DOC("url-was-valid-on", "Thu Feb  5 23:41:33 EST 2004")
 BENCH_DOC("notes", "We benchmark the complex (interleaved real/imag) format for complex transforms.")
 BENCH_DOC("notes", "We benchmark the non-redundant format for real data (real input array, half of complex output array).")
 BENCH_DOC("notes", "We benchmark the unscaled inverse in 1d.")
