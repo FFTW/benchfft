@@ -53,6 +53,7 @@
 	   "dsp79-morris" => "yellow:dotdash:1:yellow:square:0.5:yellow",
 	   "dxml" => "black:solid:1:black:star:0.5:none",
 	   "emayer" => "turquoise:dot:1.5:turquoise:plus:0.5:none",
+	   "esrfft" => "indigo:dash:1:indigo:square:0.4:indigo",
 	   "essl" => "black:solid:1:black:star:0.5:none",
 	   "fftpack" => "brown:dash:1:brown:triangle-right:0.5:brown",
 	   "fftw2-measure" => "cyan:solid:1:cyan:circle:0.5:cyan",

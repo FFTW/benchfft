@@ -294,6 +294,7 @@ benchees/djbfft-0.76/Makefile
 benchees/dsp/Makefile
 benchees/dxml/Makefile
 benchees/emayer/Makefile
+benchees/esrfft/Makefile
 benchees/essl/Makefile
 benchees/fftpack/Makefile
 benchees/fftw2/Makefile
