@@ -10,8 +10,8 @@ BEGIN_BENCH_DOC
 BENCH_DOC("name", "goedecker")
 BENCH_DOC("author", "Stefan Goedecker")
 BENCH_DOC("year", "1993")
-BENCH_DOC("url", "http://www.mapr.ucl.ac.be/Fr/PCPM/ABINIT/")
-BENCH_DOC("url-was-valid-on", "Thu Jul 12 20:26:24 EDT 2001")
+BENCH_DOC("url", "http://www.abinit.org/")
+BENCH_DOC("url-was-valid-on", "Thu May 22 00:37:07 EDT 2003")
 BENCH_DOC("copyright",
 	  "Copyright by Stefan Goedecker, Ithaca, NY USA, July 14, 1993\n"
 	  "Copyright (C) 1998-2001 ABINIT group (DCA, XG)\n"
