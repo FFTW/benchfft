@@ -164,6 +164,23 @@ fi
 AM_CONDITIONAL(HAVE_NAG, test -n "$have_nag")
 AC_SUBST(LIBNAG)
 
+dnl Check for IMSL library:
+if test "x$benchfft_single" = xyes; then
+	AC_F77_FUNC(f2tcf, imsl_f2tcf)
+else
+	AC_F77_FUNC(df2tcf, imsl_f2tcf)
+fi
+if test "x$LIBIMSL" = x; then
+        AC_CHECK_LIB(imsl, $imsl_f2tcf, [have_imsl=yes; LIBIMSL=-limsl], [], $FLIBS)
+else # user-specified $LIBIMSL
+        my_LIBS="$LIBS"
+        LIBS="$LIBIMSL $LIBS $FLIBS"
+        AC_CHECK_FUNC($imsl_f2tcf, [have_imsl=yes])
+        LIBS="$my_LIBS"
+fi
+AM_CONDITIONAL(HAVE_IMSL, test -n "$have_imsl")
+AC_SUBST(LIBIMSL)
+
 dnl Check for Apple's vDSP/vecLib library:
 xsave_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="-I/System/Library/Frameworks/vecLib.framework/Headers"
@@ -207,9 +224,6 @@ AC_CHECK_LIB(scs, zzfft)
 
 dnl Check for Cray SCILIB library:
 AC_CHECK_LIB(sci, CCFFT)
-
-dnl Check for IMSL library:
-AC_CHECK_LIB(imsl, imsl_fftf)
 
 AC_MSG_CHECKING([for isnan])
 AC_TRY_LINK([#include <math.h>
