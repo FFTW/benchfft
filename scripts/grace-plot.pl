@@ -1,9 +1,13 @@
 #! /usr/bin/perl
 
 $no_dups = 0;
+$accuracy = 0;
+$accurate_only = 0;
 while (@ARGV) {
     $arg = shift;
     $no_dups = 1 if ($arg eq "--no-dups");
+    $accuracy = 1 if ($arg eq "--accuracy");
+    $accurate_only = 1 if ($arg eq "--accurate-only");
 }
 
 #############################################################################
@@ -97,7 +101,7 @@ while (@ARGV) {
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
 	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
-	   "morris82" => "turquoise:solid:1:turquoise:blue:0.3:blue",
+	   "morris82" => "turquoise:solid:1:turquoise:star:0.4:blue",
 	   "mixfft" => "blue:dot:1:blue:star:0.5:none",
 	   "bailey" => "green4:dot:1:green4:square:0.5:green4",
 	   "mpfun77" => "green4:dot:1:green4:square:0.5:green4",
@@ -189,33 +193,53 @@ print "@ legend 1.02,0.85\n";
 print "@ view xmax 1.0\n"; # make space for the legend
 
 # print "@ xaxis label \"transform size\"\n";
-print "@ yaxis label \"speed (mflops)\"\n";
-
-$max_mflops = 0;
+if ($accuracy) {
+    print "@ yaxis label \"relative rms error\"\n";
+    $best_val = -1;
+    $worst_val = 0;
+}
+else {
+    print "@ yaxis label \"speed (mflops)\"\n";
+    $best_val = 0;
+    $worst_val = 1e20;
+}
 
 # Collect the data:
 while (<>) {
-  ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
+  if ($accuracy) {
+      ($nam, $prob, $siz, $L1f, $L2f, $Linff, $L1b, $L2b, $Linfb) = split / /;
+      $val = -$L2f;
+  }
+  else {
+      ($nam, $prob, $siz, $mflops, $tim, $setup_tim) = split / /;
+      $val = $mflops;
+  }
   $tot = $siz;
   $tot =~ s/x/*/g;
   $tot = eval($tot);
 
+  next if ($accuracy and $tot < 8);
+
   $tots{$siz} = $tot;
 
-  if (! exists($best_mflops{$siz}) || $best_mflops{$siz} < $mflops) {
-      $best_mflops{$siz} = $mflops;
+  if (! exists($best_vals{$siz}) || $best_vals{$siz} < $val) {
+      $best_vals{$siz} = $val;
   }
-  if ($mflops > $max_mflops) { $max_mflops = $mflops };
+  if (! exists($worst_vals{$siz}) || $worst_vals{$siz} > $val) {
+      $worst_vals{$siz} = $val;
+  }
+  if ($val > $best_val) { $best_val = $val };
+  if ($val < $worst_val) { $worst_val = $val };
 
   if (! exists($problems{$nam})) { $problems{$nam} = $prob; }
   elsif ($problems{$nam} ne $prob) { $problems{$nam} = "several"; }
 
   $transform = "$nam:$prob";
   if (! exists($results{$transform})) { 
-      $results{$transform} = "$siz:$mflops";
+      $results{$transform} = "$siz:$val";
   }
   else {
-      $results{$transform} = $results{$transform} . " $siz:$mflops";
+      $results{$transform} = $results{$transform} . " $siz:$val";
   }
 }
 
@@ -235,18 +259,38 @@ foreach $siz (@sizes) {
     $ticknum = $ticknum + 1;
 }
 
-# Find the y axis scale from $max_mflops:
-$mflops_increment = 100; # increment for y-axis labels
-if ($max_mflops > 1500) { $mflops_increment = 500; }
-$max_mflops =~ s/\..*//;
-$max_mflops = $max_mflops + $mflops_increment - 1 - ($max_mflops + $mflops_increment - 1) % $mflops_increment;
+# Find the y axis scale from $best_val:
+if ($accuracy) {
+    $val_increment = 1;
+    $best_val = -log(-$best_val) / log(10) + 1.0;
+    $worst_val = -log(-$worst_val) / log(10) - 1.0;
+}
+else {
+    $val_increment = 100; # increment for y-axis labels
+    if ($best_val > 1500) { $val_increment = 500; }
+}
+$best_val =~ s/\..*//;
+$best_val = $best_val + $val_increment - 1 - ($best_val + $val_increment - 1) % $val_increment;
+$worst_val =~ s/\..*//;
+$worst_val = $worst_val + $val_increment - 1 - ($worst_val + $val_increment - 1) % $val_increment;
 
 # Set axis scales, grids, and colors:
 print "@ world xmin 0\n";
 print "@ world xmax ",$ticknum-1,"\n";
-print "@ world ymin 0\n";
-print "@ world ymax $max_mflops\n";
-print "@ yaxis tick major $mflops_increment\n";
+if ($accuracy) {
+    $worst_val = $best_val - 2 if ($accurate_only);
+    $best_val = exp(-log(10) * $best_val);
+    $worst_val = exp(-log(10) * $worst_val);
+    print "@ world ymin $best_val\n";
+    print "@ world ymax $worst_val\n";
+    print "@ yaxes scale Logarithmic\n";
+    $val_increment = 10;
+}
+else {
+    print "@ world ymin 0\n";
+    print "@ world ymax $best_val\n";
+}
+print "@ yaxis tick major $val_increment\n";
 print "@ yaxis tick minor color \"grey\"\n";
 print "@ yaxis tick major color \"grey\"\n";
 print "@ yaxis tick major grid on\n";
@@ -260,31 +304,37 @@ print "@ autoscale onread none\n";  # requires recent version of Grace
 # connect the dots strangely:
 foreach $transform (keys %results) {
     $results{$transform} = join(" ", sort { 
-	($siz_a, $mflops_a) = split(/:/,$a);
-	($siz_b, $mflops_b) = split(/:/,$b);
+	($siz_a, $val_a) = split(/:/,$a);
+	($siz_b, $val_b) = split(/:/,$b);
 	$xval{$siz_a} - $xval{$siz_b};
     } split(/ /,$results{$transform}));
 }
 
-# Compute the "normalized speed" of each transform, for sorting purposes:
-@norm_speeds = ();
+# Compute median "normalized value" of each transform, for sorting purposes:
+@norm_vals = ();
 foreach $transform (keys %results) {
-    $norm_speed = "";
+    @nvs = ();
     foreach $speed (split(/ /, $results{$transform})) {
-	($siz, $mflops) = split(/:/,$speed);
-	$norm_speed = $norm_speed . " " .  ($mflops / $best_mflops{$siz});
+	($siz, $val) = split(/:/,$speed);
+	if ($accuracy) {
+	    $val = log(-$val) / log(-$best_vals{$siz});
+	}
+	else {
+	    $val = $val / $best_vals{$siz};
+	}
+	$nvs[$#nvs + 1] = $val;
     }
-    $num_speeds = 1 + ($norm_speed =~ s/ /+/g);
-    $norm_speed = eval($norm_speed) / $num_speeds;
-    $norm_speeds[$#norm_speeds + 1] = $norm_speed;
-    $transforms{$norm_speed} = $transform;
+    nvs = sort { 100000 * ($b - $a) } @nvs;
+    $norm_val = $nvs[($#nvs + 1) / 2];
+    $norm_vals[$#norm_vals + 1] = $norm_val;
+    $transforms{$norm_val} = $transform;
 }
 
-# Print out the data sets for each transform, in descending order of "speed":
+# Print out the data sets for each transform, in descending order of "value":
 $setnum = 0;
 %done = ();
-foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
-    $transform = $transforms{$norm_speed};
+foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
+    $transform = $transforms{$norm_val};
     ($nam, $prob) = split(/:/,$transform);
 
     # check if we have already output a relation of this transform
@@ -310,8 +360,9 @@ foreach $norm_speed (sort { 100000 * ($b - $a) } @norm_speeds) {
 
     print "@ target s$setnum\n";
     foreach $speed (split(/ /, $results{$transform})) {
-	($siz, $mflops) = split(/:/,$speed);
-	print "$xval{$siz} $mflops\n";
+	($siz, $val) = split(/:/,$speed);
+	$val = -$val if ($accuracy);
+	print "$xval{$siz} $val\n";
     }
     print "&\n";
 
