@@ -300,17 +300,17 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 	}
     }
 
-    if ($nam0 eq "fftw2") {
+    # check if we have already output a relation of this transform
+    next if ($no_dups && exists($done{$nam0}));
+    $done{$nam0} = 1;
+
+    if ($nam0 eq "fftw2" && $no_dups) {
 	if ($prob =~ /..i./) {
 	    $namleg = "$nam0 in-place";
 	} else {
 	    $namleg = "$nam0 out-of-place";
 	}
     }
-
-    # check if we have already output a relation of this transform
-    next if ($no_dups && exists($done{$nam0}));
-    $done{$nam0} = 1;
 
     # legend should include the problem if this transform solves more than
     # one problem in this data:
