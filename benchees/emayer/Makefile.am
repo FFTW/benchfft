@@ -15,6 +15,6 @@ fft_radix8_fwd_bench_rc.o: fft_radix8_fwd_bench_rc.f90
 	$(F90) $(F90FLAGS) -c fft_radix8_fwd_bench_rc.f90
 
 fft_radix8_rev_bench_rc.o: fft_radix8_rev_bench_rc.f90
-	$(F90) $(F90FLAGS) -c fft_radix8_fwd_bench_rc.f90
+	$(F90) $(F90FLAGS) -c fft_radix8_rev_bench_rc.f90
 
 include ../Makefile.common
