@@ -25,7 +25,7 @@ END_BENCH_DOC
 #endif
 
 /* prefixes for precision */
-#ifdef BENCH_SINGLE
+#ifdef BENCHFFT_SINGLE
 #  define C(n) c ## n
 #  define S(n) s ## n
 typedef complex8_t cmplx;
