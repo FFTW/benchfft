@@ -6,6 +6,7 @@ TARFILE2=$(PKG2).tgz
 if DOUBLE
 if HAVE_F77
 FORTRAN_PRG=doit_8gf doit_4gf doit_sgf doit_sg2df doit_4f2df doit_sg3df
+FORTRAN_LIBS=lib8gf.a lib4gf.a libsgf.a libsg2df.a lib4f2df.a libsg3df.a
 LOCAL_COPIES=fft4gf.f fft8gf.f fftsgf.f fftsg2df.f fft4f2df.f fftsg3df.f extract2 $(PKG2)
 else
 LOCAL_COPIES=extract2 $(PKG2)
@@ -17,6 +18,7 @@ endif
 PRG=doit_sg doit_8g doit_4g doit_sg2d doit_4f2d doit_sg3d $(FORTRAN_PRG)
 INCLUDES = $(INCLBENCH)
 EXTRA_DIST = $(TARFILE) $(TARFILE2) doit.c doit-doc.h doit2d.c doit3d.c
+noinst_LIBRARIES=$(FORTRAN_LIBS)
 
 doit_sg_SOURCES=doit_sg.c
 nodist_doit_sg_SOURCES=$(PKG)/fftsg.c
@@ -34,18 +36,18 @@ doit_4g_LDADD=$(LIBBENCH)
 doit_4g.o: doit-doc.h doit.c
 
 doit_sgf_SOURCES=doit_sgf.c
-nodist_doit_sgf_SOURCES=fftsgf.f
-doit_sgf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_libsgf_a_SOURCES=fftsgf.f
+doit_sgf_LDADD=libsgf.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sgf.o: doit-doc.h doit.c
 
 doit_8gf_SOURCES=doit_8gf.c
-nodist_doit_8gf_SOURCES=fft8gf.f
-doit_8gf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_lib8gf_a_SOURCES=fft8gf.f
+doit_8gf_LDADD=lib8gf.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_8gf.o: doit-doc.h doit.c
 
 doit_4gf_SOURCES=doit_4gf.c
-nodist_doit_4gf_SOURCES=fft4gf.f
-doit_4gf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_lib4gf_a_SOURCES=fft4gf.f
+doit_4gf_LDADD=lib4gf.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_4gf.o: doit-doc.h doit.c
 
 doit_sg2d_SOURCES=doit_sg2d.c
@@ -54,8 +56,8 @@ doit_sg2d_LDADD=$(LIBBENCH)
 doit_sg2d.o: doit-doc.h doit2d.c
 
 doit_sg2df_SOURCES=doit_sg2df.c
-nodist_doit_sg2df_SOURCES=fftsgf.f fftsg2df.f
-doit_sg2df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_libsg2df_a_SOURCES=fftsgf.f fftsg2df.f
+doit_sg2df_LDADD=libsg2df.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sg2df.o: doit-doc.h doit2d.c
 
 doit_4f2d_SOURCES=doit_4f2d.c
@@ -64,8 +66,8 @@ doit_4f2d_LDADD=$(LIBBENCH)
 doit_4f2d.o: doit-doc.h doit2d.c
 
 doit_4f2df_SOURCES=doit_4f2df.c
-nodist_doit_4f2df_SOURCES=fft4f2df.f
-doit_4f2df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_lib4f2df_a_SOURCES=fft4f2df.f
+doit_4f2df_LDADD=lib4f2df.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_4f2df.o: doit-doc.h doit2d.c
 
 doit_sg3d_SOURCES=doit_sg3d.c
@@ -74,8 +76,8 @@ doit_sg3d_LDADD=$(LIBBENCH)
 doit_sg3d.o: doit-doc.h doit3d.c
 
 doit_sg3df_SOURCES=doit_sg3df.c
-nodist_doit_sg3df_SOURCES=fftsgf.f fftsg3df.f
-doit_sg3df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
+nodist_libsg3df_a_SOURCES=fftsgf.f fftsg3df.f
+doit_sg3df_LDADD=libsg3df.a $(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sg3df.o: doit-doc.h doit3d.c
 
 include ../Makefile.common
