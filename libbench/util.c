@@ -43,6 +43,9 @@ int bench_square(int x)
 }
 
 #ifdef HAVE_DRAND48
+#  ifdef DECLARE_DRAND48
+extern double drand48(void);
+#  endif
 double bench_drand(void)
 {
      return drand48() - 0.5;

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.18 2001-07-28 16:39:24 athena Exp $ */
+/* $Id: verify.c,v 1.19 2001-08-15 04:28:43 stevenj Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -35,6 +35,10 @@ static double hypot(double a, double b)
 {
      return sqrt(a * a + b * b);
 }
+#else /* ! HAVE_HYPOT */
+#  ifdef DECLARE_HYPOT
+extern double hypot(double a, double b);
+#  endif
 #endif
 
 static double dmax(double a, double b)
