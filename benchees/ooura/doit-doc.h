@@ -1,5 +1,6 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("package", "ooura")
 BENCH_DOC("author", "Takuya Ooura")
 BENCH_DOC("version", "2001/11/22")
 BENCH_DOC("year", "2001")

@@ -5,6 +5,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
+BENCH_DOC("package", "rmayer")
 BENCH_DOC("author", "Ron Mayer")
 BENCH_DOC("year", "1993")
 BENCH_DOC("language", "C")

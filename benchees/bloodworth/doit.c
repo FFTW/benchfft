@@ -9,6 +9,7 @@ BEGIN_BENCH_DOC
 #else
   BENCH_DOC("name", "bloodworth")
 #endif
+BENCH_DOC("package", "bloodworth")
 BENCH_DOC("author", "Carey E. Bloodworth")
 BENCH_DOC("year", "1998")
 BENCH_DOC("language", "C")
