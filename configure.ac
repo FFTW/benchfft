@@ -221,12 +221,8 @@ fi
 
 # Check for Intel's MKL library:
 AC_CHECK_LIB(guide, omp_in_parallel)
-AC_CHECK_LIB(mkl_def, zfft1d_, [have_mkl_def=yes])
-AM_CONDITIONAL(HAVE_MKL_DEF, test -n "$have_mkl_def")
-AC_CHECK_LIB(mkl_p3, zfft1d_, [have_mkl_p3=yes])
-AM_CONDITIONAL(HAVE_MKL_P3, test -n "$have_mkl_p3")
-AC_CHECK_LIB(mkl_p4, zfft1d_, [have_mkl_p4=yes])
-AM_CONDITIONAL(HAVE_MKL_P4, test -n "$have_mkl_p4")
+AC_CHECK_LIB(mkl, zfft1d_, [have_mkl=yes])
+AM_CONDITIONAL(HAVE_MKL, test -n "$have_mkl")
 AC_CHECK_LIB(mkl_itp, zfft1d_, [have_mkl_itp=yes])
 AM_CONDITIONAL(HAVE_MKL_ITP, test -n "$have_mkl_itp")
 AC_CHECK_LIB(mkl_ia32, DftiCreateDescriptor, [have_mkl_dfti=yes])
@@ -235,7 +231,7 @@ AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 AC_CHECK_HEADERS(mkl_blas.h)
-AC_CHECK_LIB(mkl_def, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
+AC_CHECK_LIB(mkl, MKLGetVersionString, [AC_DEFINE(HAVE_MKLGETVERSIONSTRING, 1, "")])
 
 # Check for Intel's IPP library:
 AC_CHECK_HEADERS(ipps.h)
@@ -400,7 +396,7 @@ cat <<EOF
              Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
-Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl_def-no}
+Intel MKL (gratis, www.intel.com/software/products/mkl/mkl52): ${have_mkl-no}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                                           Intel IPPS (gratis): ${have_ipps-no}
                         djbfft (gratis, cr.yp.to/djbfft.html): ${have_djbfft-no}
