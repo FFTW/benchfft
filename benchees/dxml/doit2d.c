@@ -10,8 +10,24 @@ BENCH_DOC("notes", "2d transform")
 BENCH_DOC("notes", "We benchmark using the complex array format.")
 END_BENCH_DOC
 
+#if defined(HAVE_DXMLDEF_H)
+#  include <dxmldef.h>
+#elif defined(HAVE_CXMLDEF_H)
+#  include <cxmldef.h>
+#endif
 
-#include <dxmldef.h>
+#define CFFT_INIT_2D F77_FUNC_(cfft_init_2d,CFFT_INIT_2D)
+#define ZFFT_INIT_2D F77_FUNC_(zfft_init_2d,ZFFT_INIT_2D)
+#define SFFT_INIT_2D F77_FUNC_(sfft_init_2d,SFFT_INIT_2D)
+#define DFFT_INIT_2D F77_FUNC_(dfft_init_2d,DFFT_INIT_2D)
+#define CFFT_APPLY_2D F77_FUNC_(cfft_apply_2d,CFFT_APPLY_2D)
+#define ZFFT_APPLY_2D F77_FUNC_(zfft_apply_2d,ZFFT_APPLY_2D)
+#define SFFT_APPLY_2D F77_FUNC_(sfft_apply_2d,SFFT_APPLY_2D)
+#define DFFT_APPLY_2D F77_FUNC_(dfft_apply_2d,DFFT_APPLY_2D)
+#define CFFT_EXIT_2D F77_FUNC_(cfft_exit_2d,CFFT_EXIT_2D)
+#define ZFFT_EXIT_2D F77_FUNC_(zfft_exit_2d,ZFFT_EXIT_2D)
+#define SFFT_EXIT_2D F77_FUNC_(sfft_exit_2d,SFFT_EXIT_2D)
+#define DFFT_EXIT_2D F77_FUNC_(dfft_exit_2d,DFFT_EXIT_2D)
 
 int can_do(struct problem *p)
 {
@@ -62,14 +78,14 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (SINGLE_PRECISION) 
-	       cfft_init_2d_(&ni, &nj, &fsc, &stride1);
+	       CFFT_INIT_2D(&ni, &nj, &fsc, &stride1);
 	  else	       
-	       zfft_init_2d_(&ni, &nj, &fsz, &stride1);
+	       ZFFT_INIT_2D(&ni, &nj, &fsz, &stride1);
      } else {
 	  if (SINGLE_PRECISION) 
-	       sfft_init_2d_(&ni, &nj, &fss, &stride1);
+	       SFFT_INIT_2D(&ni, &nj, &fss, &stride1);
 	  else	       
-	       dfft_init_2d_(&ni, &nj, &fsd, &stride1);
+	       DFFT_INIT_2D(&ni, &nj, &fsd, &stride1);
      }
 }
 
@@ -85,12 +101,12 @@ void doit(int iter, struct problem *p)
 	  int lda = p->n[1];
 	  if (SINGLE_PRECISION) {
 	       for (i = 0; i < iter; ++i) {
-		    cfft_apply_2d_("C", "C", dir, in, out, &lda, &fsc, &stride,
+		    CFFT_APPLY_2D("C", "C", dir, in, out, &lda, &fsc, &stride,
 				   &stride);
 	       }
 	  } else {
 	       for (i = 0; i < iter; ++i) {
-		    zfft_apply_2d_("C", "C", dir, in, out, &lda, &fsz, &stride, 
+		    ZFFT_APPLY_2D("C", "C", dir, in, out, &lda, &fsz, &stride, 
 				   &stride);
 	       }
 	  }
@@ -99,24 +115,24 @@ void doit(int iter, struct problem *p)
 	  if (p->sign == -1) {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_2d_("R", "C", "F", in, out, &lda, &fss, 
+			 SFFT_APPLY_2D("R", "C", "F", in, out, &lda, &fss, 
 					&stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_2d_("R", "C", "F", in, out, &lda, &fsd, 
+			 DFFT_APPLY_2D("R", "C", "F", in, out, &lda, &fsd, 
 					&stride, &stride);
 		    }
 	       }
 	  } else {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_2d_("C", "R", "B", in, out, &lda, &fss, 
+			 SFFT_APPLY_2D("C", "R", "B", in, out, &lda, &fss, 
 					&stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_2d_("C", "R", "B", in, out, &lda, &fsd,
+			 DFFT_APPLY_2D("C", "R", "B", in, out, &lda, &fsd,
 					&stride, &stride);
 		    }
 	       }
@@ -129,14 +145,14 @@ void done(struct problem *p)
      UNUSED(p); 
      if (p->kind == PROBLEM_COMPLEX) { 
 	  if (SINGLE_PRECISION)  
-	       cfft_exit_2d_(&fsc); 
+	       CFFT_EXIT_2D(&fsc); 
 	  else          
-	       zfft_exit_2d_(&fsz); 
+	       ZFFT_EXIT_2D(&fsz); 
      } else { 
 	  if (SINGLE_PRECISION)  
-	       sfft_exit_2d_(&fss); 
+	       SFFT_EXIT_2D(&fss); 
 	  else             
-	       dfft_exit_2d_(&fsd); 
+	       DFFT_EXIT_2D(&fsd); 
      } 
 } 
  

@@ -10,8 +10,24 @@ BENCH_DOC("notes", "3d transform")
 BENCH_DOC("notes", "We benchmark using the complex array format.")
 END_BENCH_DOC
 
+#if defined(HAVE_DXMLDEF_H)
+#  include <dxmldef.h>
+#elif defined(HAVE_CXMLDEF_H)
+#  include <cxmldef.h>
+#endif
 
-#include <dxmldef.h>
+#define CFFT_INIT_3D F77_FUNC_(cfft_init_3d,CFFT_INIT_3D)
+#define ZFFT_INIT_3D F77_FUNC_(zfft_init_3d,ZFFT_INIT_3D)
+#define SFFT_INIT_3D F77_FUNC_(sfft_init_3d,SFFT_INIT_3D)
+#define DFFT_INIT_3D F77_FUNC_(dfft_init_3d,DFFT_INIT_3D)
+#define CFFT_APPLY_3D F77_FUNC_(cfft_apply_3d,CFFT_APPLY_3D)
+#define ZFFT_APPLY_3D F77_FUNC_(zfft_apply_3d,ZFFT_APPLY_3D)
+#define SFFT_APPLY_3D F77_FUNC_(sfft_apply_3d,SFFT_APPLY_3D)
+#define DFFT_APPLY_3D F77_FUNC_(dfft_apply_3d,DFFT_APPLY_3D)
+#define CFFT_EXIT_3D F77_FUNC_(cfft_exit_3d,CFFT_EXIT_3D)
+#define ZFFT_EXIT_3D F77_FUNC_(zfft_exit_3d,ZFFT_EXIT_3D)
+#define SFFT_EXIT_3D F77_FUNC_(sfft_exit_3d,SFFT_EXIT_3D)
+#define DFFT_EXIT_3D F77_FUNC_(dfft_exit_3d,DFFT_EXIT_3D)
 
 int can_do(struct problem *p)
 {
@@ -64,14 +80,14 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (SINGLE_PRECISION) 
-	       cfft_init_3d_(&ni, &nj, &nk, &fsc, &stride1);
+	       CFFT_INIT_3D(&ni, &nj, &nk, &fsc, &stride1);
 	  else	       
-	       zfft_init_3d_(&ni, &nj, &nk, &fsz, &stride1);
+	       ZFFT_INIT_3D(&ni, &nj, &nk, &fsz, &stride1);
      } else {
 	  if (SINGLE_PRECISION) 
-	       sfft_init_3d_(&ni, &nj, &nk, &fss, &stride1);
+	       SFFT_INIT_3D(&ni, &nj, &nk, &fss, &stride1);
 	  else	       
-	       dfft_init_3d_(&ni, &nj, &nk, &fsd, &stride1);
+	       DFFT_INIT_3D(&ni, &nj, &nk, &fsd, &stride1);
      }
 }
 
@@ -88,12 +104,12 @@ void doit(int iter, struct problem *p)
 	  int ldb = p->n[1];
 	  if (SINGLE_PRECISION) {
 	       for (i = 0; i < iter; ++i) {
-		    cfft_apply_3d_("C", "C", dir, in, out, &lda, &ldb, &fsc, &stride,
+		    CFFT_APPLY_3D("C", "C", dir, in, out, &lda, &ldb, &fsc, &stride,
 				   &stride, &stride);
 	       }
 	  } else {
 	       for (i = 0; i < iter; ++i) {
-		    zfft_apply_3d_("C", "C", dir, in, out, &lda, &ldb, &fsz, &stride, 
+		    ZFFT_APPLY_3D("C", "C", dir, in, out, &lda, &ldb, &fsz, &stride, 
 				   &stride, &stride);
 	       }
 	  }
@@ -103,24 +119,24 @@ void doit(int iter, struct problem *p)
 	  if (p->sign == -1) {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_3d_("R", "C", "F", in, out, &lda, &ldb, &fss, 
+			 SFFT_APPLY_3D("R", "C", "F", in, out, &lda, &ldb, &fss, 
 					&stride, &stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_3d_("R", "C", "F", in, out, &lda, &ldb, &fsd, 
+			 DFFT_APPLY_3D("R", "C", "F", in, out, &lda, &ldb, &fsd, 
 					&stride, &stride, &stride);
 		    }
 	       }
 	  } else {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_3d_("C", "R", "B", in, out, &lda, &ldb, &fss,
+			 SFFT_APPLY_3D("C", "R", "B", in, out, &lda, &ldb, &fss,
 					&stride, &stride, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_3d_("C", "R", "B", in, out, &lda, &ldb, &fsd,
+			 DFFT_APPLY_3D("C", "R", "B", in, out, &lda, &ldb, &fsd,
 					&stride, &stride, &stride);
 		    }
 	       }
@@ -133,14 +149,14 @@ void done(struct problem *p)
      UNUSED(p); 
      if (p->kind == PROBLEM_COMPLEX) { 
 	  if (SINGLE_PRECISION)  
-	       cfft_exit_3d_(&fsc); 
+	       CFFT_EXIT_3D(&fsc); 
 	  else          
-	       zfft_exit_3d_(&fsz); 
+	       ZFFT_EXIT_3D(&fsz); 
      } else { 
 	  if (SINGLE_PRECISION)  
-	       sfft_exit_3d_(&fss); 
+	       SFFT_EXIT_3D(&fss); 
 	  else             
-	       dfft_exit_3d_(&fsd); 
+	       DFFT_EXIT_3D(&fsd); 
      } 
 } 
  

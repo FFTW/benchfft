@@ -38,6 +38,19 @@ void after_problem_ccopy_to(struct problem *p, bench_complex *out)
      unnormalize(p, out, 1);
 }
 
+#define CFFT_INIT F77_FUNC_(cfft_init,CFFT_INIT)
+#define ZFFT_INIT F77_FUNC_(zfft_init,ZFFT_INIT)
+#define SFFT_INIT F77_FUNC_(sfft_init,SFFT_INIT)
+#define DFFT_INIT F77_FUNC_(dfft_init,DFFT_INIT)
+#define CFFT_APPLY F77_FUNC_(cfft_apply,CFFT_APPLY)
+#define ZFFT_APPLY F77_FUNC_(zfft_apply,ZFFT_APPLY)
+#define SFFT_APPLY F77_FUNC_(sfft_apply,SFFT_APPLY)
+#define DFFT_APPLY F77_FUNC_(dfft_apply,DFFT_APPLY)
+#define CFFT_EXIT F77_FUNC_(cfft_exit,CFFT_EXIT)
+#define ZFFT_EXIT F77_FUNC_(zfft_exit,ZFFT_EXIT)
+#define SFFT_EXIT F77_FUNC_(sfft_exit,SFFT_EXIT)
+#define DFFT_EXIT F77_FUNC_(dfft_exit,DFFT_EXIT)
+
 static DXML_C_FFT_STRUCTURE fsc;
 static DXML_Z_FFT_STRUCTURE fsz;
 static DXML_S_FFT_STRUCTURE fss;
@@ -53,14 +66,14 @@ void setup(struct problem *p)
  
      if (p->kind == PROBLEM_COMPLEX) {
 	  if (SINGLE_PRECISION) 
-	       cfft_init_(&n, &fsc, &stride1);
+	       CFFT_INIT(&n, &fsc, &stride1);
 	  else	       
-	       zfft_init_(&n, &fsz, &stride1);
+	       ZFFT_INIT(&n, &fsz, &stride1);
      } else {
 	  if (SINGLE_PRECISION) 
-	       sfft_init_(&n, &fss, &stride1);
+	       SFFT_INIT(&n, &fss, &stride1);
 	  else	       
-	       dfft_init_(&n, &fsd, &stride1);
+	       DFFT_INIT(&n, &fsd, &stride1);
      }
 }
 
@@ -75,32 +88,32 @@ void doit(int iter, struct problem *p)
 	  char *dir = p->sign == -1 ? "F" : "B";
 	  if (SINGLE_PRECISION) {
 	       for (i = 0; i < iter; ++i) {
-		    cfft_apply_("C", "C", dir, in, out, &fsc, &stride);
+		    CFFT_APPLY("C", "C", dir, in, out, &fsc, &stride);
 	       }
 	  } else {
 	       for (i = 0; i < iter; ++i) {
-		    zfft_apply_("C", "C", dir, in, out, &fsz, &stride);
+		    ZFFT_APPLY("C", "C", dir, in, out, &fsz, &stride);
 	       }
 	  }
      } else {
 	  if (p->sign == -1) {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_("R", "C", "F", in, out, &fss, &stride);
+			 SFFT_APPLY("R", "C", "F", in, out, &fss, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_("R", "C", "F", in, out, &fsd, &stride);
+			 DFFT_APPLY("R", "C", "F", in, out, &fsd, &stride);
 		    }
 	       }
 	  } else {
 	       if (SINGLE_PRECISION) {
 		    for (i = 0; i < iter; ++i) {
-			 sfft_apply_("C", "R", "B", in, out, &fss, &stride);
+			 SFFT_APPLY("C", "R", "B", in, out, &fss, &stride);
 		    }
 	       } else {
 		    for (i = 0; i < iter; ++i) {
-			 dfft_apply_("C", "R", "B", in, out, &fsd, &stride);
+			 DFFT_APPLY("C", "R", "B", in, out, &fsd, &stride);
 		    }
 	       }
 	  }
@@ -112,14 +125,14 @@ void done(struct problem *p)
      UNUSED(p); 
      if (p->kind == PROBLEM_COMPLEX) { 
 	  if (SINGLE_PRECISION)  
-	       cfft_exit_(&fsc); 
+	       CFFT_EXIT(&fsc); 
 	  else          
-	       zfft_exit_(&fsz); 
+	       ZFFT_EXIT(&fsz); 
      } else { 
 	  if (SINGLE_PRECISION)  
-	       sfft_exit_(&fss); 
+	       SFFT_EXIT(&fss); 
 	  else             
-	       dfft_exit_(&fsd); 
+	       DFFT_EXIT(&fsd); 
      } 
 } 
  
