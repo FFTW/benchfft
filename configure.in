@@ -278,6 +278,7 @@ benchees/mpfun90/Makefile
 benchees/nag/Makefile
 benchees/ooura/Makefile
 benchees/qft/Makefile
+benchees/rmayer/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
 benchees/sorensen/Makefile
