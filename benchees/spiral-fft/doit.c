@@ -7,7 +7,7 @@
 #include "spiral_fft.h"
 
 BEGIN_BENCH_DOC
-BENCH_DOC("name", "spiral-fft")
+BENCH_DOC("name", "spiral-egner-fft")
 BENCH_DOC("version", "1")
 BENCH_DOC("author", "Gavin Haentjens")
 BENCH_DOC("email", "gh2r@andrew.cmu.edu")
@@ -17,6 +17,7 @@ BENCH_DOC("year", "2000")
 BENCH_DOC("language", "C")
 BENCH_DOC("url", "http://www.ece.cmu.edu/~spiral/fft.html")
 BENCH_DOC("url-was-valid-on", "Sun Sep  1 19:30:13 EDT 2002")
+BENCH_DOC("notes", "Design is based on an FFT package by Sebastian Egner.")
 BENCH_DOC("notes", "Backwards transform is forward transform plus two extra passes to scale and reverse the output.")
 BENCH_DOC("notes", "Uses codelets (hard-coded FFTs of small sizes, with or without premultiplying twiddle factors) from FFTW 2.1.1.")
 BENCH_DOC("copyright",
