@@ -1,12 +1,35 @@
 ;; sanitize .info file
 (define verboten '("djbfft-0.76" "athfft" "pfftw"))
 
+(define (sanitize entry)
+  (define (replace! field with)
+    (set-cdr! (assoc field entry) (list with)))
+  (define (add! field with)
+    (set! entry (cons (list field with) entry)))
+  (let ((x (assoc 'name entry)))
+    (case (and x (string->symbol (cadr x)))
+      ((fftw3-r2r) (replace! 'package "FFTW 3"))
+      ((fftw3) 
+       (add! 'notes "Using unpacked complex format for real transforms."))
+      ((intel-mkl) 
+       (add! 'notes "Using ``C'' routines (split real/imag arrays)."))
+      ((intel-mkl-f) 
+       (add! 'notes "Using ``FORTRAN'' routines (interleaved real/imag arrays)."))
+      ((intel-ipps)
+       ; the version string normally contains a machine-dependent CPU id
+       (replace! 'version "v3.0 gold 3.0.18.57"))
+      ((ooura-4g ooura-4gf) (add! 'notes "Radix-4 algorithm"))
+      ((ooura-8g ooura-8gf) (add! 'notes "Radix-8 algorithm"))
+      ((ooura-sg ooura-sgf) (add! 'notes "Split-radix algorithm")))
+    entry))
+
 (do ((entry (read) (read)))
     ((eof-object? entry))
   (if (and (assoc 'name entry) (member (cadr (assoc 'name entry)) verboten))
       'nothing-to-do
       (begin   (display "(")
                (newline)
-               (for-each (lambda (x) (write x) (newline)) entry)
+               (for-each (lambda (x) (write x) (newline)) (sanitize entry))
                (display ")")
                (newline))))
+
