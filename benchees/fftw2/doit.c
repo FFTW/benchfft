@@ -3,8 +3,13 @@
 #include "bench-user.h"
 #include <math.h>
 
-#include <fftw.h>
-#include <rfftw.h>
+#if defined(BENCHFFT_SINGLE) && defined(HAVE_SFFTW_H) && defined(HAVE_SRFFTW_H)
+#  include <sfftw.h>
+#  include <srfftw.h>
+#else
+#  include <fftw.h>
+#  include <rfftw.h>
+#endif
 
 static const char *mkvers(void)
 {

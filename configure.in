@@ -103,18 +103,20 @@ AC_CHECK_LIB(pthread, pthread_attr_init)
 
 dnl Check for FFTW 2
 AC_CHECK_LIB(fftw, fftw_create_plan_specific,
-	[LIBS="-lfftw $LIBS"; have_fftw2=yes])
+	[LFFTW="-lfftw"; have_fftw2=yes])
 AC_CHECK_LIB(rfftw, rfftw_create_plan_specific,
-	[LIBS="-lrfftw $LIBS"; have_rfftw2=yes])
+	[LFFTW="-lrfftw $LFFTW"; have_rfftw2=yes],[],$LFFTW)
 AC_CHECK_HEADERS(fftw.h)
 AC_CHECK_HEADERS(rfftw.h)
+AC_SUBST(LFFTW)
 AM_CONDITIONAL(HAVE_FFTW2, test -n "$have_fftw2" -a -n "$have_rfftw2")
 AC_CHECK_LIB(sfftw, fftw_create_plan_specific,
-	[LIBS="-lsfftw $LIBS"; have_sfftw2=yes])
+	[LSFFTW="-lsfftw"; have_sfftw2=yes])
 AC_CHECK_LIB(srfftw, rfftw_create_plan_specific,
-	[LIBS="-lsrfftw $LIBS"; have_srfftw2=yes])
+	[LSFFTW="-lsrfftw $LSFFTW"; have_srfftw2=yes],[],$LSFFTW)
 AC_CHECK_HEADERS(sfftw.h)
 AC_CHECK_HEADERS(srfftw.h)
+AC_SUBST(LSFFTW)
 AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2" -a -n "$have_srfftw2")
 
 dnl Check for ESSL libraries
