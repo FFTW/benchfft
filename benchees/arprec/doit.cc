@@ -26,7 +26,7 @@ BENCH_DOC("copyright",
 	  "\n"
 	  "This software is provided for research purposes only.\n"
 	  "Commercial usage requires license agreement.\n")
-BENCH_DOC("notes", "A new version was released on 2003-07-14, but did not make it into our benchmark yet.  Sorry about that.")
+BENCH_DOC("notes", "A new version was released on 2003-07-14, but has not made it into our benchmark yet.  Sorry about that.")
 END_BENCH_DOC
 
 int can_do(struct problem *p)
