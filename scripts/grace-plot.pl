@@ -347,7 +347,7 @@ foreach $norm_val (@sorted_norm_vals) {
     $nam0 = $nam if (exists($distinct_ffts{$namleg}));
     $nam0 = $nam if ($nam0 eq "dsp79");
     $nam0 = rmayer-buneman if ($accuracy && ($nam eq "rmayer-buneman" || $nam eq "rmayer-buneman2" || $nam eq "rmayer-buneman3"));
-    if (exists($styles{"$namleg in-place"}) || exists($styles{"$namleg out-of-place"})) {
+    if ((exists($styles{"$namleg in-place"}) || exists($styles{"$namleg out-of-place"})) && $problems{$nam} ne $prob) {
 	if ($prob =~ /..i./) {
 	    $nam0 = "$nam0 in-place";
 	    $namleg = "$namleg in-place";
