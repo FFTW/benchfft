@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: info.c,v 1.8 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: info.c,v 1.9 2003-05-10 02:07:17 stevenj Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -50,6 +50,9 @@ void report_info_all(void)
      for (p = bench_doc; p->key; ++p) {
 	  if (!p->val)
 	       p->val = p->f();
+	  if (strchr(p->key, '"') || strchr(p->val, '"'))
+	       fprintf(stderr, "info warning: quotes in %s, %s\n",
+		       p->key, p->val);
 	  ovtpvt("(%s \"%s\")\n", p->key, p->val);
      }
      ovtpvt("(benchmark-precision \"%s\")\n", 

@@ -21,3 +21,6 @@ benchmark: all
 accuracy: all
 	@echo "nothing to benchmark"
 
+fftinfo: all
+	@echo "nothing to benchmark"
+
