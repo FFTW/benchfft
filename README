@@ -1,3 +1,13 @@
+----------------------------------------------------------------------------
+			       WARNING
+
+THIS BENCHMARK IS PROVIDED FOR YOUR INFORMATION ONLY.  DO NOT EXPECT
+IT TO RUN OUT OF THE BOX.  WE DID NOT WRITE MOST OF THE INCLUDED
+PROGRAMS.  IT IS NOT OUR FAULT IF NO TWO C++ COMPILERS ACCEPT THE SAME
+LANGUAGE.  USE AT YOUR OWN RISK.
+
+----------------------------------------------------------------------------
+
 			       benchFFT
 
 benchFFT is a program to benchmark FFT software, assembled by Matteo
@@ -17,12 +27,8 @@ subdirectory) were written by various authors over a period of more
 than 35 years. Except for small tweaks to get things to compile, we
 used the unmodified original codes.
 
-THIS BENCHMARK IS PROVIDED FOR YOUR INFORMATION, BUT REQUIRES SOME
-UNDERSTANDING TO RUN.  WE DID NOT WRITE MOST OF THE INCLUDED PROGRAMS;
-USE AT YOUR OWN RISK.
-
 ----------------------------------------------------------------------------
-			       Contents
+			       CONTENTS
 
 libbench/
 	-- Timing, accuracy, utilities, and other routines used
@@ -39,7 +45,23 @@ scripts/
 	   resulting data.  (See "running" and "plotting" below.)
 
 ----------------------------------------------------------------------------
-			       Running
+			LICENSE AND COPYRIGHT
+
+Files in the libbench directory are Copyright (c) 2003 Matteo Frigo,
+Copyright (c) 2003 Massachusetts Institute of Technology, and
+distributed under the terms of the GNU General Public License.  See
+file COPYING for details.
+
+FFT routines in the benchees directory are copyrighted by their
+respective authors.  We are distributing only those routines that
+are redistributable.
+
+The remaining files (in particular, all programs called doit*.[ch],
+and all scripts in the scripts/ directory) are hereby placed in the
+public domain.
+
+----------------------------------------------------------------------------
+			       RUNNING
 
 If you don't have a Unix system (GNU/Linux is fine), you are on your own.
 
