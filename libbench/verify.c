@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.26 2002-08-16 12:09:55 athena Exp $ */
+/* $Id: verify.c,v 1.27 2002-08-16 22:23:39 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>

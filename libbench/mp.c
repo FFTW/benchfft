@@ -1,6 +1,6 @@
 #include "config.h"
 #include "bench.h"
-#include "math.h"
+#include <math.h>
 
 #define DG unsigned short
 #define ACC unsigned long
@@ -12,15 +12,8 @@
 #define IRADIX (1.0 / RADIX)
 #define LO(x) ((x) & (RADIX - 1))
 #define HI(x) ((x) >> SHFT)
-#define HI_SIGNED(x)						\
- (((-1L) >> SHFT) == (-1L) ? 					\
-    (((signed long)x) >> SHFT)  /* arithmetic shift works */	\
-  : ((x & (1 << (2 * SHFT - 1))) ?				\
-       (((x) >> SHFT) | (RADIX * (RADIX - 1UL)))		\
-     : ((x) >> SHFT)))
-  
-#define SEXT(x) (((x) < RADIX / 2) ? (x) : (x) + RADIX * (RADIX - 1UL))
-
+#define HI_SIGNED(x) \
+   ((((x) + (ACC)(RADIX >> 1) * RADIX) >> SHFT) - (RADIX >> 1))
 #define ZEROEXP (-32768)
 
 #define LEN 10
@@ -221,30 +214,41 @@ static void mul(const N a, const N b, N c)
 
 static REAL toreal(const N a)
 {
-     REAL h, l;
-     int i, sticky, bits, cnth, cntl;
+     REAL h, l, f;
+     int i, bits;
+     ACC r;
+     DG sticky;
 
      if (EXA != ZEROEXP) {
-	  h = l = 0.0;
-	  cnth = cntl = 0;
+	  f = IRADIX;
+	  i = LEN;
 
-	  for (i = LEN - 1, bits = 0;
-	       i >= 0 && bits < BITS_IN_REAL - SHFT + 1; --i, bits += SHFT)
-	       h = h * RADIX + AD[i], ++cnth;
+	  bits = 0;
+	  h = (r = AD[--i]) * f; f *= IRADIX;
+	  for (bits = 0; r > 0; ++bits)
+	       r >>= 1;
 
-	  for (bits = 0; i >= 0 && bits < BITS_IN_REAL - SHFT; 
-	       --i, bits += SHFT)
-	       l = l * RADIX + AD[i], ++cntl;
+	  /* first digit */
+	  while (bits + SHFT <= BITS_IN_REAL) {
+	       h += AD[--i] * f;  f *= IRADIX; bits += SHFT;
+	  }
 
-	  for (sticky = 0; i >= 0; --i)
-	       sticky |= AD[i];
+	  /* guard digit (leave one bit for sticky bit, hence `<' instead
+	     of `<=') */
+	  bits = 0; l = 0.0;
+	  while (bits + SHFT < BITS_IN_REAL) {
+	       l += AD[--i] * f;  f *= IRADIX; bits += SHFT;
+	  }
+	  
+	  /* sticky bit */
+	  sticky = 0;
+	  while (i > 0) 
+	       sticky |= AD[--i];
 
 	  if (sticky)
-	       l += 0.5;
+	       l += (RADIX / 2) * f;
 
-	  while (cntl--) l *= IRADIX;
 	  h += l;
-	  while (cnth--) h *= IRADIX;
 
 	  for (i = 0; i < EXA; ++i) h *= (REAL)RADIX;
 	  for (i = 0; i > EXA; --i) h *= IRADIX;
@@ -471,7 +475,7 @@ static void cmulj(N r0, N i0, N r1, N i1, N r2, N i2)
 
 static void bluestein(unsigned int n, bench_complex *a)
 {
-     unsigned int nb = pow2_atleast(3 * n);
+     unsigned int nb = pow2_atleast(2 * n);
      REAL nbinv = 1.0 / nb; /* exact because nb = 2^k */
      N *w = (N *)bench_malloc(2 * n * sizeof(N));
      N *y = (N *)bench_malloc(2 * nb * sizeof(N));
@@ -521,7 +525,7 @@ static void bluestein(unsigned int n, bench_complex *a)
 static void mfft0(unsigned int n, bench_complex *a, int sign)
 {
      N *b = (N *)bench_malloc(2 * n * sizeof(N));
-     int i;
+     unsigned int i;
 
      for (i = 0; i < n; ++i) {
 	  fromreal(c_re(a[i]), b[2 * i]);
@@ -537,7 +541,7 @@ static void mfft0(unsigned int n, bench_complex *a, int sign)
 
 static void swapri(unsigned int n, bench_complex *a)
 {
-     int i;
+     unsigned int i;
      for (i = 0; i < n; ++i) {
 	  bench_real t = c_re(a[i]);
 	  c_re(a[i]) = c_im(a[i]);

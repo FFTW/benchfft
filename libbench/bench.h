@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.10 2002-08-16 12:09:55 athena Exp $ */
+/* $Id: bench.h,v 1.11 2002-08-16 22:23:39 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"

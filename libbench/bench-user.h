@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-user.h,v 1.34 2002-08-16 12:09:55 athena Exp $ */
+/* $Id: bench-user.h,v 1.35 2002-08-16 22:23:39 athena Exp $ */
 #ifndef __BENCH_USER_H__
 #define __BENCH_USER_H__
 

@@ -1,6 +1,6 @@
 /* not worth copyrighting */
 
-/* $Id: deallocate.c,v 1.3 2002-08-16 12:09:55 athena Exp $ */
+/* $Id: deallocate.c,v 1.4 2002-08-16 22:23:39 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
