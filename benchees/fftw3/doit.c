@@ -66,8 +66,8 @@ void useropt(const char *arg)
 
 int can_do(struct problem *p)
 {
-     UNUSED(p);
      const int YES = 1;
+     UNUSED(p);
      
      return YES;      /* the way God intended */
 }
