@@ -35,17 +35,17 @@ doit_4g.o: doit-doc.h doit.c
 
 doit_sgf_SOURCES=doit_sgf.c
 nodist_doit_sgf_SOURCES=fftsgf.f
-doit_sgf_LDADD=$(LIBBENCH) @FLIBS@
+doit_sgf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sgf.o: doit-doc.h doit.c
 
 doit_8gf_SOURCES=doit_8gf.c
 nodist_doit_8gf_SOURCES=fft8gf.f
-doit_8gf_LDADD=$(LIBBENCH) @FLIBS@
+doit_8gf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_8gf.o: doit-doc.h doit.c
 
 doit_4gf_SOURCES=doit_4gf.c
 nodist_doit_4gf_SOURCES=fft4gf.f
-doit_4gf_LDADD=$(LIBBENCH) @FLIBS@
+doit_4gf_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_4gf.o: doit-doc.h doit.c
 
 doit_sg2d_SOURCES=doit_sg2d.c
@@ -55,7 +55,7 @@ doit_sg2d.o: doit-doc.h doit2d.c
 
 doit_sg2df_SOURCES=doit_sg2df.c
 nodist_doit_sg2df_SOURCES=fftsgf.f fftsg2df.f
-doit_sg2df_LDADD=$(LIBBENCH) @FLIBS@
+doit_sg2df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sg2df.o: doit-doc.h doit2d.c
 
 doit_4f2d_SOURCES=doit_4f2d.c
@@ -65,7 +65,7 @@ doit_4f2d.o: doit-doc.h doit2d.c
 
 doit_4f2df_SOURCES=doit_4f2df.c
 nodist_doit_4f2df_SOURCES=fft4f2df.f
-doit_4f2df_LDADD=$(LIBBENCH) @FLIBS@
+doit_4f2df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_4f2df.o: doit-doc.h doit2d.c
 
 doit_sg3d_SOURCES=doit_sg3d.c
@@ -75,7 +75,7 @@ doit_sg3d.o: doit-doc.h doit3d.c
 
 doit_sg3df_SOURCES=doit_sg3df.c
 nodist_doit_sg3df_SOURCES=fftsgf.f fftsg3df.f
-doit_sg3df_LDADD=$(LIBBENCH) @FLIBS@
+doit_sg3df_LDADD=$(LIBBENCH) @F77_CMAIN_FFLAGS@
 doit_sg3df.o: doit-doc.h doit3d.c
 
 include ../Makefile.common

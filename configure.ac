@@ -65,6 +65,8 @@ if test -n "$F77"; then
 		F90=""  # F90 too, since they use the same compiler
 	else
 		AC_F77_WRAPPERS
+		sinclude(acx_f77_cmain_fflags.m4)
+		ACX_F77_CMAIN_FFLAGS
 	fi
 fi
 
