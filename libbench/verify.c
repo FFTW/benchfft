@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.16 2001-07-27 12:02:18 athena Exp $ */
+/* $Id: verify.c,v 1.17 2001-07-27 12:08:16 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -227,6 +227,7 @@ static double linear(struct problem *p,
 
 	  e = dmax(e, acmp(outC, tmp, N, "linearity", tol));
      }
+     return e;
 }
 
 static double impulse(struct problem *p,
@@ -263,6 +264,7 @@ static double impulse(struct problem *p,
 	  caadd(tmp, outB, outC, n);
 	  e = dmax(e, acmp(tmp, outA, n, "impulse response", tol));
      }
+     return e;
 }
 
 enum { TIME_SHIFT, FREQ_SHIFT };
@@ -321,6 +323,7 @@ static double tf_shift(struct problem *p,
 
 	  n_before *= n_cur;
      }
+     return e;
 }
 
 static void do_verify(struct problem *p, unsigned int rounds, double tol)
