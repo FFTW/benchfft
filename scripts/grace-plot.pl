@@ -193,6 +193,7 @@ while (@ARGV) {
 	    "sorensen-ctfftsr" => "black:solid:1:black:plus:0.7:none",
 	    "nr-c" => "black:dot:1:black:diamond:0.5:black",
 	    
+	    "vdsp" => "black:solid:2:black:circle:0.2:black",
 	    "cxml" => "black:solid:2:black:circle:0.2:black",
 	    "intel-mkl-dfti" => "black:solid:2:black:circle:0.2:black",
 	    );
