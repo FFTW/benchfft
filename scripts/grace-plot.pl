@@ -105,6 +105,7 @@
 	   "napack" => "green4:dot:2:green4:none:0.5:none",
 	   "nr-c" => "brown:dot:1:brown:square:0.5:none",
 	   "nr-f" => "brown:dotdotdash:1:brown:square:0.5:brown",
+	   "numutils" => "cyan:dash:1:cyan:triangle-down:0.5:none",
 	   "ooura-sg" => "magenta:solid:1:magenta:star:1.0:none",
 	   "ooura-8g" => "magenta:dot:1:magenta:circle:0.5:none",
 	   "ooura-8gf" => "magenta:dot:1:magenta:circle:0.5:magenta",
