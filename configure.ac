@@ -294,6 +294,7 @@ benchees/intel-mkl/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
 benchees/mixfft/Makefile
+benchees/monnier/Makefile
 benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
 benchees/nag/Makefile

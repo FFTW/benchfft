@@ -81,6 +81,7 @@
 	   "intel-mkl64-f-itp" => "black:dot:1:black:triangle-up:0.5:none",
 	   "krukar" => "cyan:dash:1:cyan:triangle-up:0.5:none",
 	   "mfft" => "orange:solid:2:orange:circle:0.25:none",
+	   "monnier" => "turquoise:dash:1:turquoise:square:0.5:none",
 	   "mixfft" => "blue:dot:1:blue:star:0.5:none",
 	   "bailey" => "green4:dot:1:green4:square:0.5:green4",
 	   "mpfun77" => "green4:dot:1:green4:square:0.5:green4",
