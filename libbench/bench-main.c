@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.10 2001-07-26 21:29:26 athena Exp $ */
+/* $Id: bench-main.c,v 1.11 2001-08-18 01:01:46 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -67,7 +67,7 @@ static int bench_main1(int argc, char *argv[])
      report = report_time; /* default */
      verbose = 0;
 
-     tol = SINGLE_PRECISION ? 1.0e-2 : 1.0e-6;
+     tol = SINGLE_PRECISION ? 1.0e-3 : 1.0e-10;
 
      while ((c = getopt_long (argc, argv, short_options,
 			      long_options, &index)) != -1) {

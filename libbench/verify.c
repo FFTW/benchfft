@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.20 2001-08-15 04:42:28 stevenj Exp $ */
+/* $Id: verify.c,v 1.21 2001-08-18 01:01:46 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -46,23 +46,30 @@ static double dmax(double a, double b)
      return a > b ? a : b;
 }
 
+static double dmin(double a, double b)
+{
+     return a > b ? a : b;
+}
+
 static double cerror(bench_complex *A, bench_complex *B, unsigned int n,
 		     double tol)
 {
      /* compute the relative error */
      double error = 0.0;
      unsigned int i;
+     double mag = 0.0;
+
+     for (i = 0; i < n; ++i) {
+	  mag = dmax(mag,
+		     dmin(hypot(c_re(A[i]), c_im(A[i])),
+			  hypot(c_re(B[i]), c_im(B[i]))));
+     }
 
      for (i = 0; i < n; ++i) {
 	  double a;
-	  double mag;
-	  a = hypot(c_re(A[i]) - c_re(B[i]), c_im(A[i]) - c_im(B[i]));
-	  mag = 0.5 * (hypot(c_re(A[i]), c_im(A[i])) + 
-		       hypot(c_re(B[i]), c_im(B[i])))
-	       + tol;
 
-	  a /= mag;
-	  if (a > error)
+	  a = hypot(c_re(A[i]) - c_re(B[i]), c_im(A[i]) - c_im(B[i])) / mag;
+	  if (a > error) 
 	       error = a;
 
 #ifdef HAVE_ISNAN

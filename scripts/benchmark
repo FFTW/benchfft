@@ -26,6 +26,7 @@ maxn=1048576
 time_min=""
 keep_going="no"
 tolerance=""
+rounds=""
 
 for option
 do
@@ -47,6 +48,8 @@ do
     --verify-only) verify=yes; speed=no; shift;;
     --verify-tolerance) prev=tolerance; shift;;
     --verify-tolerance=*) tolerance=$optarg; shift;;
+    --verify-rounds) prev=rounds; shift;;
+    --verify-rounds=*) rounds=$optarg; shift;;
     --time-min) prev=time_min; shift;;
     --time-min=*) time_min=$optarg; shift;;
     --maxn) prev=maxn; shift;;
@@ -140,6 +143,8 @@ esac
 
 name=`$program --info name`
 test -z "$tolerance" || tolerance="--verify-tolerance $tolerance"
+test -z "$rounds" || rounds="--verify-rounds $rounds"
+vflags="$tolerance $rounds"
 
 for place in $PLACE; do
   for reality in $REALITY; do
@@ -154,7 +159,7 @@ for place in $PLACE; do
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
            if test "$verify" = "yes"; then
-               acc=`$program $tolerance --verbose --verify $problem`||
+               acc=`$program $vflags --verbose --verify $problem`||
                { acc="FAILED FAILED FAILED"; 
 	         test "$keep_going" = "yes" || exit 1; }
            else
