@@ -1,8 +1,8 @@
 C-----------------------------------------------------------------------
 C This is not the original program!  
 C
-C This file was modified by Matteo Frigo to remove assumption that local
-C variables are SAVEd.  See dsp.tar.gz for the original program.
+C This file was modified by Matteo Frigo to remove the assumption that
+C local variables are SAVEd.  See dsp.tar.gz for the original program.
 C
 C-----------------------------------------------------------------------
 C

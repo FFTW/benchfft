@@ -1,11 +1,11 @@
 if HAVE_F77
-PRG=doit11 doit12 doit12-fast doit12-ffa doit14 doit17
+PRG=doit11 doit12 doit12-fast doit12-ffa doit14 doit17 doit18
 noinst_LIBRARIES=libdsp.a
 endif
 
 PKG=dsp
 TARFILE=$(PKG).tar.gz
-EXTRA_DIST = $(TARFILE)
+EXTRA_DIST = $(TARFILE) sect17.f sect18.f
 INCLUDES = $(INCLBENCH)
 
 doit11_SOURCES=doit11.c
@@ -33,6 +33,9 @@ doit14_LDADD=sect14.o libdsp.a $(LIBBENCH) @FLIBS@
 doit17_SOURCES=doit17.c
 doit17_LDADD=sect17.o libdsp.a $(LIBBENCH) @FLIBS@
 
+doit18_SOURCES=doit18.c
+doit18_LDADD=sect18.o libdsp.a $(LIBBENCH) @FLIBS@
+
 
 libdsp_a_SOURCES=sect01.f
 
@@ -40,7 +43,7 @@ libdsp_a_LIBADD=sect04.o
 
 include ../Makefile.common
 
-sect04.f sect11.f sect12.f sect13.f sect14.f sect16.f sect18.f sect19.f: extract-mkdir
+sect04.f sect11.f sect12.f sect13.f sect14.f sect16.f sect19.f: extract-mkdir
 	@CP@ $(PKG)/$@ $@
 
 
