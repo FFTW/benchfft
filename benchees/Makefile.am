@@ -1,7 +1,8 @@
 SUBDIRS = bloodworth burrus cwplib dfftpack djbfft-0.76 dsp dxml emayer	\
 essl fftpack fftw2 fxt goedecker gpfa green-ffts-2.0 gsl harm		\
 intel-mkl krukar mfft mixfft mpfun77 mpfun90 nag napack nr ooura qft	\
-rmayer sgimath singleton sorensen sunperf temperton vdsp fftw3 athfft
+rmayer sgimath singleton sorensen sunperf temperton vdsp fftw3 athfft	\
+statlib
 
 EXTRA_DIST = Makefile.common
 
