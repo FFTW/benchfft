@@ -1,12 +1,3 @@
-C-----------------------------------------------------------------------
-C This is not the original program!  
-C
-C This file was modified by Matteo Frigo to remove the assumption that
-C local variables are SAVEd.  See dsp.tar.gz for the original program.
-C
-C-----------------------------------------------------------------------
-C
-C
 C
 C-----------------------------------------------------------------------
 C MAIN PROGRAM: TIME-EFFICIENT RADIX-4 FAST FOURIER TRANSFORM
@@ -118,10 +109,6 @@ C
       COMMON NTYPL,KKP,INDEX,IXC
       COMMON /AA/A
       COMMON /XX/IX
-      SAVE N, XP, NTOT, N2, N1TEST, N2TEST, N3TEST, NSPAN
-      SAVE IBASE, ISN, INC, RAD, PI, C707, CM141, C383, C924, CM924
-      SAVE C541, CM541, C131, CM131, NT, KS, KSPAN, JC, RADF, I, M, K
-      SAVE NFAC, NP, S2, C2, S1, C1, S3, C3, T
 C
 C     CHECK FOR MM<2 OR MM>5
 C
