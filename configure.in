@@ -1,0 +1,69 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(libbench/bench.h)
+AC_CANONICAL_SYSTEM
+AM_INIT_AUTOMAKE(benchfft, 3.0-alpha0)
+AM_CONFIG_HEADER(config.h)
+
+dnl configure options
+AC_ARG_ENABLE(debug, [  --enable-debug          compile fftw with extra runtime checks for debugging], ok=$enableval, ok=no)
+if test "$ok" = "yes"; then
+	AC_DEFINE(FFTW_DEBUG,1,[Define to enable extra FFTW debugging code.])
+fi
+
+dnl Checks for programs.
+AC_PROG_CC
+ACX_PROG_CC_EGCS
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_PROG_AWK
+
+dnl check for optimization options
+dnl This macro sets ANSI mode for certain compilers, and must
+dnl thus come before the subsequenct checks
+ACX_PROG_CC_MAXOPT
+
+dnl override CFLAGS selection when debugging
+if test "${enable_debug}" = "yes"; then
+	CFLAGS="-g"
+fi
+
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(malloc.h sys/time.h unistd.h)
+AC_CHECK_HEADERS(alloca.h stddef.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_C_INLINE
+AC_TYPE_SIZE_T
+AC_HEADER_TIME
+
+dnl Checks for library functions.
+AC_FUNC_ALLOCA
+AC_FUNC_MALLOC
+AC_CHECK_LIB(m, sin)
+AC_CHECK_FUNCS(BSDgettimeofday)
+AC_CHECK_FUNCS(gettimeofday)
+AC_CHECK_FUNCS(drand48)
+AC_CHECK_FUNCS(hypot)
+AC_CHECK_FUNCS(strtod)
+
+AC_MSG_CHECKING([for isnan])
+AC_TRY_LINK([#include <math.h>
+], if (!isnan(3.14159)) isnan(2.7183);, ok=yes, ok=no)
+if test "$ok" = "yes"; then
+	AC_DEFINE(HAVE_ISNAN,1,[Define if the isnan() function/macro is available.])
+fi
+AC_MSG_RESULT(${ok})
+
+dnl TODO
+ACX_GCC_ALIGNS_STACK()
+
+AC_OUTPUT([
+Makefile
+libbench/Makefile
+ooura-sg/Makefile
+])
