@@ -44,7 +44,8 @@ head -1 $desc >> $dir/$name/index.html
 echo '</h1>' >> $dir/$name/index.html
 
 echo "<p>" >> $dir/$name/index.html
-tail +2 $desc >> $dir/$name/index.html
+perl -p -e 's/\n/<p>/g' $desc | perl -p -e 's/<p>(<p>)?(<p>)*/\n\1/g' |
+    tail +2 | perl -p -e 's/<p>/\n<p>/g' >> $dir/$name/index.html
 
 cd $dir/$name/data
 tgz=`basename $tgz`
