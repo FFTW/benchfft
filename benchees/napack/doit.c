@@ -20,6 +20,7 @@ int can_do(struct problem *p)
 	     p->rank == 1 &&
 	     p->kind == PROBLEM_COMPLEX &&
 	     /* check_prime_factors(p->n[0], 23) && */
+             p->n[0] > 1 && /* wrong for n=1 */
 	     problem_in_place(p)
 	  );
 }
