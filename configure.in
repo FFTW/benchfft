@@ -128,11 +128,13 @@ AC_CHECK_HEADERS(dxmldef.h)
 
 dnl Check for Sun Performance library:
 AC_CHECK_LIB(fsu, __f90_stop)
+SAVE_LIBS=$LIBS
 AC_CHECK_LIB(sunperf, cfftf,
 	[LIBS="-lsunperf $LIBS";  have_sunperf=yes])
 AM_CONDITIONAL(HAVE_SUNPERF, test -n "$have_sunperf")
 AC_CHECK_HEADERS(sunperf.h)
 AC_CHECK_FUNCS(sunperf_version_)
+LIBS=$SAVE_LIBS  # sunperf's symbols may interfere with fftpack.
 
 dnl Check for SGIMATH library:
 AC_CHECK_LIB(complib.sgimath, zfft1d,
@@ -242,6 +244,7 @@ benchees/mpfun90/Makefile
 benchees/ooura/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
+benchees/sunperf/Makefile
 benchees/temperton/Makefile
 benchees/vdsp/Makefile
 

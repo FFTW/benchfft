@@ -1,6 +1,8 @@
 #! /bin/sh
 
-# nonportable echo
+# find out as much as we can about this system
+
+# echo is not portable 
 case `echo "testing\c"; echo 1,2,3`,`echo -n testing; echo 1,2,3` in
   *c*,-n*) ECHO_N= ECHO_C='
 ' ECHO_T='	' ;;
@@ -8,13 +10,13 @@ case `echo "testing\c"; echo 1,2,3`,`echo -n testing; echo 1,2,3` in
   *)      ECHO_N= ECHO_C='\c' ECHO_T= ;;
 esac
 
-# find out as much as we can about this system
-
+# 
 echo "-----------"
 echo "SYSTEM NAME"
 echo "-----------"
 echo
-for prog in hostname "uname -n"; do
+
+for prog in hostname "uname -n" date uptime; do
    x=`$prog 2>/dev/null | sed 1q`
    if test -n "$x"; then echo "$prog: $x";  fi
 done 2>/dev/null
