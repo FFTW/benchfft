@@ -1,0 +1,73 @@
+#! /bin/sh
+
+# find out as much as we can about this system
+
+echo "-----------"
+echo "SYSTEM NAME"
+echo "-----------"
+echo
+for prog in hostname "uname -n"; do
+   x=`$prog 2>/dev/null | sed 1q`
+   if test -n "$x"; then echo "$prog: $x";  fi
+done
+
+echo
+echo "-----------"
+echo "SYSTEM TYPE"
+echo "-----------"
+echo
+for prog in "uname -a" "/usr/sbin/sizer -c"; do
+   x=`$prog 2>/dev/null | sed 1q`
+   if test -n "$x"; then echo "$prog: $x";  fi
+done
+
+# Hardware information
+echo
+echo "--------------------"
+echo "HARDWARE INFORMATION"
+echo "--------------------"
+echo
+
+# programs with short output
+for prog in arch "arch -k" machine "uname -X" "/usr/sbin/sizer -c" vmstat sys; do
+   x=`$prog 2>/dev/null`
+   if test -n "$x"; then echo "$prog: $x";  fi
+done
+
+# programs with a more verbose output
+for prog in hinv /usr/sbin/sysdef; do
+  x=`$prog 2>/dev/null`
+  if test -n "$x"; then 
+    echo
+    echo "$prog:"
+    echo "$x"
+    echo
+  fi
+done
+
+for file in /proc/cpuinfo /proc/meminfo; do
+  if test -r $file; then
+    echo
+    echo "$file:"
+    cat $file
+    echo
+  fi
+done
+
+
+# Compilers
+echo
+echo "---------"
+echo "COMPILERS"
+echo "---------"
+echo
+
+for compiler in gcc g77 g++ cc CC f77 F77; do
+    for flag in --version -v -V -version; do
+       x=`$compiler $flag 2>&1` && (echo -n "$compiler $flag:"; echo "$x" | head -1)
+    done
+done 2>/dev/null
+
+echo
+
+# libraries

@@ -85,15 +85,15 @@ AC_SUBST(OCAMLLDFLAGS)
 AC_DEFUN(ACX_CHECK_CC_FLAGS,
 [
 AC_REQUIRE([AC_PROG_CC])
-AC_CACHE_CHECK(whether ${CC-cc} accepts $1, ac_$2,
-[echo 'void f(){}' > conftest.c
-if test -z "`${CC-cc} $1 -c conftest.c 2>&1`"; then
-	ac_$2=yes
-else
-	ac_$2=no
+ac_test_CFLAGS=${CFLAGS+set}
+ac_save_CFLAGS=$CFLAGS
+CFLAGS="$1"
+AC_CACHE_CHECK(whether $CC accepts $1, ac_$2,
+               [AC_COMPILE_IFELSE([AC_LANG_PROGRAM()], [ac_$2=yes], 
+						       [ac_$2=no])])
+if test "$ac_test_CFLAGS" = set; then
+  CFLAGS=$ac_save_CFLAGS
 fi
-rm -f conftest*
-])
 if test "$ac_$2" = yes; then
 	:
 	$3

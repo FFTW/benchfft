@@ -1,1 +1,1 @@
-EXTRA_DIST = bench-program
+EXTRA_DIST = sysinfo
