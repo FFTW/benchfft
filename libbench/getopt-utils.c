@@ -18,11 +18,15 @@
  *
  */
 
-/* $Id: getopt-utils.c,v 1.1 2001-07-04 22:50:39 athena Exp $ */
+/* $Id: getopt-utils.c,v 1.2 2001-07-08 22:24:26 athena Exp $ */
 #include "bench.h"
 #include "getopt.h"
 #include <ctype.h>
 #include <stdio.h>
+
+#ifdef HAVE_STRING_H
+#include <string.h>
+#endif
 
 /* make a short option string for getopt from the long option description */
 char *make_short_options(const struct option *opt)

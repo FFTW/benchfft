@@ -7,7 +7,7 @@ EXTRA_DIST = $(TARFILE)
 doit_SOURCES=doit.c
 doit_LDADD=$(PKG)/djbfft.a ${top_builddir}/libbench/libbench.a
 
-doit.o: doit.c $(PKG) $(CONFIG_HEADER)
+doit.o: doit.c extract $(CONFIG_HEADER) $(PKG)/djbfft.a
 	$(COMPILE) \
 	-DCC="\"`cat $(PKG)/conf-cc`\"" \
 	-DCONF_OPT="\"`cat $(PKG)/conf-opt`\"" \
@@ -17,7 +17,8 @@ doit.o: doit.c $(PKG) $(CONFIG_HEADER)
 $(PKG)/djbfft.a: $(PKG)
 	(cd $(PKG); make)
 
-$(PKG): $(TARFILE)
+extract: $(TARFILE)
 	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
+	@echo timestamp >$@
 
 $(PKG)/fftc4.h $(PKG)/fftc8.h $(PKG)/fftfreq.h: $(PKG)

@@ -8,13 +8,15 @@ doit_SOURCES=doit.c
 doit_LDADD=dxpose.o fft2d.o fftext.o fftlib.o matlib.o	\
 ${top_builddir}/libbench/libbench.a
 
-doit.o: $(PKG)
+doit.o: extract
 
-$(PKG): $(TARFILE)
+extract: $(TARFILE)
 	gzip -dc ${srcdir}/$(TARFILE) | tar xf -
+	@echo timestamp >$@
 
-dxpose.c dxpose.h fft2d.c fft2d.h fftext.c fftext.h fftlib.c fftlib.h matlib.c matlib.h: $(PKG)
-	tr '\r' '\n' <$(PKG)/fft\ libraries/$@ >$@
+# remove Macintosh newlines and C++-style  comments
+dxpose.c dxpose.h fft2d.c fft2d.h fftext.c fftext.h fftlib.c fftlib.h matlib.c matlib.h: extract
+	tr '\r' '\n' <$(PKG)/fft\ libraries/$@ | sed -e 's/\/\/.*$$//g' >$@
 
 # explicit dependencies because source file need to be created
 dxpose.o: dxpose.c dxpose.h

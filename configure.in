@@ -41,7 +41,7 @@ fi
 
 dnl Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADERS(malloc.h sys/time.h unistd.h)
+AC_CHECK_HEADERS(malloc.h sys/time.h unistd.h string.h)
 AC_CHECK_HEADERS(alloca.h stddef.h libintl.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
