@@ -133,18 +133,19 @@ for place in $PLACE; do
         doable=`$program --can-do $problem`
         if test "$doable" = "#t"; then
            if test "$verify" = "yes"; then
-               { x=`$program $tolerance --verbose --verify $problem` &&
-                echo "${name} ${precision}${reality}${place}${dir} ${size} ${x}"; } || 
-               { 
-                 echo "${name} ${precision}${reality}${place}${dir} ${size} bad"; 
-	         test "$keep_going" = "yes" || exit 1; 
-	       }
+               acc=`$program $tolerance --verbose --verify $problem` ||
+               { acc="bad"; test "$keep_going" = "yes" || exit 1; }
+           else
+		acc=""
            fi
 
 	   if test "$speed" = yes; then
                time=`$program --report-benchmark --time-min $time_min --speed $problem`
-	       echo "${name} ${precision}${reality}${place}${dir} ${size} ${time}"
+           else
+               time=""
            fi
+
+           echo "${name} ${precision}${reality}${place}${dir} ${size} ${time} ${acc}"
         fi
       done
     done
