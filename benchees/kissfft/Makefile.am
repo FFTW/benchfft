@@ -16,9 +16,9 @@ doit_LDADD=$(LIBBENCH)
 
 include ../Makefile.common
 
-$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h: extract
+$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h: extract-mkdir
 
 doit.o: $(PKG)/kiss_fft.h
 
 clean-local::
-	rm -rf benchmark extract $(PKG) *.o $(PRG)
+	rm -rf benchmark extract-mkdir $(PKG) *.o $(PRG)

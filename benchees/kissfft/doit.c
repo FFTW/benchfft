@@ -6,7 +6,7 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "0.1")
+BENCH_DOC("version", "0.2")
 BENCH_DOC("year", "2003")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
@@ -27,7 +27,7 @@ END_BENCH_DOC
 
 int can_do(struct problem *p)
 {
-     return p->rank == 1 && problem_complex_power_of_two(p, 1);
+     return p->rank == 1 && p->kind == PROBLEM_COMPLEX;
 }
 
 static void *WORK;
@@ -42,12 +42,20 @@ void doit(int iter, struct problem *p)
      int i;
      void *in = p->in;
      void *work = WORK;
-
-     for (i = 0; i < iter; ++i) 
-	  kiss_fft(work, in);
+     
+     if (p->in_place) {
+	  for (i = 0; i < iter; ++i) 
+	       kiss_fft(work, in);
+     }
+     else {
+	  void *out = p->out;
+	  for (i = 0; i < iter; ++i) 
+	       kiss_fft_io(work, in, out);
+     }
 }
 
 void done(struct problem *p)
 {
+     free(WORK);
      UNUSED(p);
 }
