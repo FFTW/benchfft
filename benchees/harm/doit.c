@@ -30,7 +30,7 @@ int ok_sizes(int rank, unsigned int *n)
 {
      int i;
      for (i = 0; i < rank; ++i)
-	  if ((1 << 17) < n[i])
+	  if ((1 << 17) < n[i] || 2 >= n[i]) /* suppress buggy sizes */
 	       return 0;
      return 1;
 }
@@ -40,7 +40,8 @@ int can_do(struct problem *p)
      return (p->rank >= 1 && p->rank <= 3 &&
 	     p->kind == PROBLEM_COMPLEX &&
 	     power_of_two(p->size) &&
-	     problem_in_place(p)
+	     problem_in_place(p) &&
+	     ok_sizes(p->rank, p->n)
 	  );
 }
 
