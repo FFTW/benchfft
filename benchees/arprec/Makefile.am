@@ -13,7 +13,7 @@ ARPREC = $(PKG)/lib/libmp.a
 
 doit_SOURCES=doit.cc $(FFT)
 doit_LDADD=$(ARPREC) $(LIBBENCH)
-doit.o: extract
+doit.o: $(ARPREC)
 
 $(ARPREC): extract
 	$(PATCH) $(PKG)/include/mp/mp.h < $(srcdir)/mp.h.patch
