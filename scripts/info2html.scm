@@ -108,7 +108,10 @@
       (maybe-plural "Email address" "Email addresses" 'email entries
 		    obfuscate-email)
       (maybe "Year" 'year entries)
-      (maybe "Version" 'version entries)
+      (maybe "Version" 'version entries
+	     (lambda (x) (if (or (not x)
+				 (equal? (cadr x) "unknown")
+				 (equal? (cadr x) "0.0")) #f x)))
       (maybe-plural "Language" "Languages" 'language entries)
       (maybe "References" 'bibitem entries)
       (for-each (lambda (note) (writeln "<li>Note: " (cadr note)))
