@@ -173,6 +173,13 @@ AM_CONDITIONAL(HAVE_MKL64_ITP, test -n "$have_mkl64_itp")
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_fftc_ln.h)
 
+dnl Check for the GNU Scientific Library
+AC_CHECK_LIB(gslcblas, cblas_dsdot) dnl why on the hell does it use cblas?
+AC_CHECK_LIB(gsl, gsl_fft_complex_forward, [have_gsl=yes])
+AC_CHECK_HEADERS([gsl/gsl_fft.h gsl/gsl_fft_complex.h gsl/gsl_fft_real.h])
+AC_CHECK_HEADERS([gsl/gsl_fft_halfcomplex.h gsl/gsl_version.h])
+AM_CONDITIONAL(HAVE_GSL, test -n "$have_gsl")
+
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
 
@@ -237,6 +244,7 @@ benchees/fftw2/Makefile
 benchees/fxt/Makefile
 benchees/gpfa/Makefile
 benchees/green-ffts-2.0/Makefile
+benchees/gsl/Makefile
 benchees/harm/Makefile
 benchees/intel-mkl/Makefile
 benchees/krukar/Makefile
