@@ -1,8 +1,9 @@
 FFTs to add:
 
 New Intel MKL (includes mixed radix)
+vBigDSP (http://www.findsabrina.org/altivec/)
 
-NFFT
+NFFT (probably slow, but interesting for academic reasons)
 
 crandall (out-of-order)
 edelblute
