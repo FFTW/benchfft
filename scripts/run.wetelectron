@@ -3,13 +3,14 @@
 # execute this script from the top-level directory
 HOSTNAME=`hostname`
 
-FFLAGS='-O2 -fomit-frame-pointer'
-CXXLAGS='-O2 -fomit-frame-pointer'
-CPPFLAGS="-I$HOME/ia64/include"
-LDFLAGS="-I$HOME/ia64/lib"
+FFLAGS='-O2 -fomit-frame-pointer -mcpu=750'
+CXXLAGS='-O2 -fomit-frame-pointer -mcpu=750'
+CPPFLAGS="-I$HOME/include" 
+LDFLAGS="-L$HOME/lib" 
 MAKE=make
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME

@@ -9,8 +9,8 @@ F90=f90
 CFLAGS="-Ae +O3 +Oall"
 FFLAGS="+O3 +Oall"
 CXXLAGS="-Ae +O3 +Oall"
-CPPFLAGS="-I$HOME/fftw-2.1.3/fftw -I$HOME/fftw-2.1.3/rfftw" 
-LDFLAGS="-L$HOME/fftw-2.1.3/fftw/.libs -L$HOME/fftw-2.1.3/rfftw/.libs" 
+CPPFLAGS="-I$HOME/hppa/include" 
+LDFLAGS="-L$HOME/hppa/lib" 
 MAKE=gmake
 
 export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
