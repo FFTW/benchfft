@@ -203,6 +203,8 @@ sub printstyle {
 #############################################################################
 # Read and process the data.
 
+$maxlen_siz = 0; # max. length in characters of size string
+
 # Collect the data:
 while (<>) {
   if ($accuracy) {
@@ -221,6 +223,8 @@ while (<>) {
   next if ($accuracy and $tot < 8);
 
   $tots{$siz} = $tot;
+
+  $maxlen_siz = length($siz) if (length($siz) > $maxlen_siz);
 
   if (! exists($best_vals{$siz}) || $best_vals{$siz} < $val) {
       $best_vals{$siz} = $val;
@@ -360,16 +364,16 @@ if ($accuracy) {
 print "@ legend char size 0.75\n";
 if ($#plot_transforms < 31) {
     # legend aligned with top of plot
-    print "@ legend 0.97,0.85\n";
+    print "@ legend 0.98,0.85\n";
 }
 else {
     # squeeze a few more items into the legend
     $legtop = 0.5 + (0.85/31/2) * $#plot_transforms;
     $legtop = 1.0 if ($legtop > 1.0);
-    print "@ legend 0.97,$legtop\n";
+    print "@ legend 0.98,$legtop\n";
 }
-print "@ view xmin 0.1\n"; # make space for the legend
-print "@ view xmax 0.95\n"; # make space for the legend
+print "@ view xmin 0.11\n"; # make space for the legend
+print "@ view xmax 0.96\n"; # make space for the legend
 
 # print "@ xaxis label \"transform size\"\n";
 if ($accuracy) {
@@ -385,12 +389,20 @@ print "@ xaxis ticklabel type spec\n";
 print "@ xaxis tick type spec\n";
 print "@ xaxis tick spec ", 1 + $#sizes, "\n";
 $labelsize = 30.0 / (1 + $#sizes);
+$lsz = 10.0 / $maxlen_siz;
+$labelsize = $lsz if ($lsz < $labelsize);
 if ($labelsize < 1.0) { print "@ xaxis ticklabel char size $labelsize\n"; }
 $ticknum = 0;
 foreach $siz (@sizes) {
     print "@ xaxis tick major $ticknum, $ticknum\n";
     print "@ xaxis ticklabel $ticknum, \"",$siz,"\"\n";
     $ticknum = $ticknum + 1;
+}
+
+# use 10^-8, etc. format for accuracy labels (0.001 is too big).
+if ($accuracy) {
+    print "@ yaxis ticklabel format power\n";
+    print "@ yaxis ticklabel prec 0\n";
 }
 
 # Find the y axis scale from $best_val:
