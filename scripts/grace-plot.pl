@@ -408,8 +408,8 @@ print "@ legend char size 0.75\n";
 $xleg = 0.98;
 $yleg = 0.85;
 if ($use_paper_styles) {
-    $xleg = 0.7;
-    $yleg = 0.84;
+    $xleg = 0.73;
+    $yleg = 0.86;
 }
 if ($#plot_transforms < 31) {
     # legend aligned with top of plot
@@ -494,6 +494,12 @@ print "@ yaxis tick major grid on\n";
 print "@ xaxis tick major color \"grey\"\n";
 print "@ xaxis tick major grid on\n";
 print "@ autoscale onread none\n";  # requires recent version of Grace
+
+if ($use_paper_styles) {
+    print "@ xaxis bar linestyle 0\n";
+    print "@ yaxis bar linestyle 0\n";
+    print "@ frame linestyle 0\n";
+}
 
 # add grid lines?
 
