@@ -24,7 +24,7 @@ BENCH_DOC("copyright",
 "along with this program; if not, write to the Free Software\n"
 "Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA\n")
 BENCH_DOC("language", "C++")
-BENCH_DOC("notes", "We use whatever CXXFLAGS are selected by fxt's makefile")
+BENCH_DOC("notes", "For GNU g++, we use whatever CXXFLAGS are selected by fxt's makefile")
 BENCH_DOC("notes", NOTES)
 #ifdef NO_Complex
 BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
