@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.4 2001-07-06 18:50:05 athena Exp $ */
+/* $Id: bench-main.c,v 1.5 2001-07-07 21:05:35 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -113,7 +113,7 @@ static int bench_main1(int argc, char *argv[])
 
 	      case 400: /* --print-time-min */
 		   timer_init(tmin, repeat);
-		   printf("%g\n", time_min);
+		   ovtpvt("%g\n", time_min);
 		   
 	      case '?':
 		   /* `getopt_long' already printed an error message. */

@@ -126,11 +126,6 @@ void bench_free(void *p)
 	  size_t magic = ((size_t *) q)[1];
 	  size_t i;
 
-	  WHEN_VERBOSE( {
-	       printf("BENCH_FREE %d\n", n);
-	       fflush(stdout);
-	  })
-
 	  ((size_t *) q)[0] = 0; /* set to zero to detect duplicate free's */
 
 	  BENCH_ASSERT(magic == MAGIC);

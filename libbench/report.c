@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: report.c,v 1.2 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: report.c,v 1.3 2001-07-07 21:05:35 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -55,16 +55,16 @@ static void report_generic(const struct problem *p, double *t, int st,
      if (what & W_TIME) {
 	  switch (how) {
 	      case H_ALL:
-		   printf("%g/%g/%g\n", m, s, M);
+		   ovtpvt("%g/%g/%g\n", m, s, M);
 		   break;
 	      case H_MIN:
-		   printf("%g\n", m);
+		   ovtpvt("%g\n", m);
 		   break;
 	      case H_MAX:
-		   printf("%g\n", M);
+		   ovtpvt("%g\n", M);
 		   break;
 	      case H_AVG:
-		   printf("%g\n", s);
+		   ovtpvt("%g\n", s);
 		   break;
 	  }
      }
@@ -72,17 +72,17 @@ static void report_generic(const struct problem *p, double *t, int st,
      if (what & W_MFLOPS) {
 	  switch (how) {
 	      case H_ALL:
-		   printf("%g/%g/%g\n", 
+		   ovtpvt("%g/%g/%g\n", 
 			  mflops(p, M), mflops(p, s), mflops(p, m));
 		   break;
 	      case H_MIN:
-		   printf("%g\n", mflops(p, M));
+		   ovtpvt("%g\n", mflops(p, M));
 		   break;
 	      case H_MAX:
-		   printf("%g\n", mflops(p, m));
+		   ovtpvt("%g\n", mflops(p, m));
 		   break;
 	      case H_AVG:
-		   printf("%g\n", mflops(p, s));
+		   ovtpvt("%g\n", mflops(p, s));
 		   break;
 	  }
      }

@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: verify.c,v 1.5 2001-07-07 20:01:11 athena Exp $ */
+/* $Id: verify.c,v 1.6 2001-07-07 21:05:35 athena Exp $ */
 
 #include <math.h>
 #include <stdio.h>
@@ -308,5 +308,5 @@ void verify(const char *param)
      setup(p);
      do_verify(p, 10);
      problem_destroy(p);
-     printf("ok\n");
+     ovtpvt("ok\n");
 }

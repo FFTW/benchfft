@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.4 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: problem.c,v 1.5 2001-07-07 21:05:35 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -92,10 +92,26 @@ void problem_destroy(struct problem *p)
 }
 
 /* predicates for common cases */
+
+/* complex, any D, power of 2 */
+int problem_complex_nd_power_of_two(struct problem *p, int in_place)
+{
+     unsigned int i;
+
+     if (p->kind != PROBLEM_COMPLEX)
+	  return 0;
+
+     for (i = 0; i < p->rank; ++i)
+	  if (!(power_of_two(p->n[i])))
+	       return 0;
+
+     return (in_place ? (p->in == p->out) : (p->in != p->out));
+}
+
+/* complex, 1D, power of 2 */
 int problem_complex_power_of_two(struct problem *p, int in_place)
 {
-     return (p->kind == PROBLEM_COMPLEX &&
-	     p->rank == 1 &&
-	     power_of_two(p->n[0]) &&
-	     (in_place ? (p->in == p->out) : (p->in != p->out)));
+     return (p->rank == 1 &&
+	     problem_complex_nd_power_of_two(p, in_place));
 }
+

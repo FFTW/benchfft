@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.3 2001-07-07 14:16:56 athena Exp $ */
+/* $Id: bench.h,v 1.4 2001-07-07 21:05:35 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -61,3 +61,5 @@ extern void usage(const char *progname, const struct option *opt);
 
 extern struct problem *problem_parse(const char *desc);
 extern void problem_destroy(struct problem *p);
+
+extern void ovtpvt(const char *format, ...);
