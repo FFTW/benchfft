@@ -1,0 +1,8 @@
+Authors/assemblers of benchFFT (reachable at benchfft@fftw.org):
+
+Matteo Frigo <athena@fftw.org>
+Stevenj G. Johnson <stevenj@alum.mit.edu>
+
+The benchmarked FFTs, however, were written by many other authors; see
+the list at:
+	http://www.fftw.org/benchfft/ffts.html
