@@ -23,7 +23,7 @@ static const char *mkvers(void)
      sprintf(buf, "%d.%d.%d", a, b, c);
      return buf;
 #else
-     return "unknown"
+     return "unknown";
 #endif
 }
 
