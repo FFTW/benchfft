@@ -84,6 +84,9 @@ while (@ARGV) {
 	   "fftw3 in-place" => "blue:dot:1:blue:circle:0.3:blue",
 	   "fftw3-impatient in-place" => "blue:dot:1:blue:triangle-up:0.3:none",
 	   "fftw3-estimate in-place" => "blue:dot:1:blue:circle:0.3:none",
+	   "fftw3-r2r in-place" => "blue:dotdash:1:blue:square:0.4:none",
+	   "fftw3-r2r out-of-place" => "blue:dash:1:blue:square:0.5:none",
+	   "fftw3-r2r" => "blue:dash:1:blue:square:0.5:none",
 	   "fxt-4step" => "yellow:solid:2:yellow:circle:0.25:none",
 	   "fxt-matrixfft" => "yellow:solid:2:yellow:circle:0.25:none",
 	   "fxt-dif" => "yellow:solid:1:yellow:circle:0.5:none",
@@ -353,13 +356,14 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     # check if we have already output a relation of this transform
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
     $nam0 = $nam if ($nam eq "intel-ipps");
+    $nam0 = $nam if ($nam eq "fftw3-r2r");
     $nam0 = $nam if ($nam0 eq "dsp79");
-    if ($nam0 eq "fftw3") {
+    if ($nam0 eq "fftw3" || $nam0 eq "fftw3-r2r") {
 	if ($prob =~ /..i./) {
-	    $nam0 = "fftw3 in-place";
+	    $nam0 = "$nam0 in-place";
 	    $namleg = "$namleg in-place";
 	} else {
-	    $nam0 = "fftw3 out-of-place";
+	    $nam0 = "$nam0 out-of-place";
 	    $namleg = "$namleg out-of-place";
 	}
     }
