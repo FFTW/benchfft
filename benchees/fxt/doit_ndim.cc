@@ -1,4 +1,4 @@
-#define NAME "arndt-ndim"
+#define NAME "fxt-ndim"
 #define NOTES "Real/imag arrays datatype, uses FHT for 1d FFTs."
 
 #define NO_Complex 1

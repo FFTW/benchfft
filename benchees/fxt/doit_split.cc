@@ -1,4 +1,4 @@
-#define NAME "arndt-split"
+#define NAME "fxt-split"
 #define NOTES "Split-radix algorithm, real/imag arrays datatype, iterative trig. factor calculation."
 
 #define NO_Complex 1

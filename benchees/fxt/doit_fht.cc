@@ -1,4 +1,4 @@
-#define NAME "arndt-fht"
+#define NAME "fxt-fht"
 #define NOTES "FFT by FHT algorithm, real/imag arrays datatype."
 
 #define NO_Complex 1
