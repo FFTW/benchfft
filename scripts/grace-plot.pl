@@ -78,6 +78,12 @@ while (@ARGV) {
 	   "fftw3" => "blue:solid:1:blue:circle:0.5:blue",
 	   "fftw3-impatient" => "blue:solid:1:blue:triangle-up:0.5:none",
 	   "fftw3-estimate" => "blue:solid:1:blue:circle:0.5:none",
+	   "fftw3 out-of-place" => "blue:solid:1:blue:circle:0.5:blue",
+	   "fftw3-impatient out-of-place" => "blue:solid:1:blue:triangle-up:0.5:none",
+	   "fftw3-estimate out-of-place" => "blue:solid:1:blue:circle:0.5:none",
+	   "fftw3 in-place" => "blue:dot:1:blue:circle:0.3:blue",
+	   "fftw3-impatient in-place" => "blue:dot:1:blue:triangle-up:0.3:none",
+	   "fftw3-estimate in-place" => "blue:dot:1:blue:circle:0.3:none",
 	   "fxt-4step" => "yellow:solid:2:yellow:circle:0.25:none",
 	   "fxt-dif" => "yellow:solid:1:yellow:circle:0.5:none",
 	   "fxt-dit" => "yellow:solid:1:yellow:circle:0.5:yellow",
@@ -336,10 +342,22 @@ $setnum = 0;
 foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
     $transform = $transforms{$norm_val};
     ($nam, $prob) = split(/:/,$transform);
+    $namleg = $nam;
 
     # check if we have already output a relation of this transform
     ($nam0,$namrest) = split(/\-|:|77|90/, $nam);
     $nam0 = $nam if ($nam eq "intel-ipps");
+    $nam0 = $nam if ($nam0 eq "dsp79");
+    if ($nam0 eq "fftw3") {
+	if ($prob =~ /..i./) {
+	    $nam0 = "fftw3 in-place";
+	    $namleg = "$namleg in-place";
+	} else {
+	    $nam0 = "fftw3 out-of-place";
+	    $namleg = "$namleg out-of-place";
+	}
+	
+    }
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
 
@@ -349,11 +367,13 @@ foreach $norm_val (sort { 100000 * ($b - $a) } @norm_vals) {
 	print "@ s$setnum legend \"$transform\"\n";
     }
     else {
-	print "@ s$setnum legend \"$nam\"\n";
+	print "@ s$setnum legend \"$namleg\"\n";
     }
 
     if (exists($styles{$transform})) {
 	printstyle($styles{$transform}, $setnum);
+    } elsif (exists($styles{$namleg})) {
+	printstyle($styles{$namleg}, $setnum);
     } elsif (exists($styles{$nam})) {
 	printstyle($styles{$nam}, $setnum);
     }
