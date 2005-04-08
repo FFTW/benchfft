@@ -1,0 +1,99 @@
+Copyright (c) 2005 Massachusetts Institute of Technology
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+----------------------------------------------------------------------------
+
+This is a proof-of-concept implementation of a new variation of the
+split-radix FFT algorithm, employing a twiddle-factor rescaling to
+save O(n log n) arithmetic operations (multiplies) compared to the
+record set by Yavne in 1968.  Yavne's adds+mults flop count (N=2^m) is:
+
+                 4 N lg(N) - 6 N + 8 - 2 delta(N,1)
+
+while our algorithm has the same count for N < 64 and is in general:
+
+    (34/9) N lg(N) - (124/27) N - 2 lg(N) - (2/9) lg(N) (-1)^lg(N)
+                    + (16/27) (-1)^lg(N) + 8 - 4 delta(N,1)
+
+This algorithm generalizes a discovery by James Van Buskirk
+(1/21/2004 comp.dsp posting) during hand optimization of a
+hard-coded size-64 DFT (using an unusual algorithm based on
+transforming the even and odd components of the real and imaginary
+parts).  He found that by factoring out a cos(2*pi/16) from one
+twiddle factor and absorbing it into another, he could save 8
+multiplications overall compared to Yavne's flop count for that N.
+He later generalized this into a program-generator that produces
+hard-coded FFTs with the above count for an arbitrary fixed
+N=2^m.  See: http://home.comcast.net/~kmbtib/
+
+Here, we realize the same savings applied to the ordinary complex
+split-radix algorithm, in a recursive form that extends to any
+power-of-two size N.  The application of this idea is simplified by
+the use of Bernstein's "exponent -1" split-radix variant (also
+previously called a "conjugate pair" FFT), which makes explicit the
+sharing of twiddle factors between the two size n/4 sub-transforms.
+
+Note that, since it is only a proof of concept, this code suffers
+from a number of deficiencies that would have to be corrected for a
+serious implementation:
+
+1) It recurses all the way down to N=1 or N=2, instead of using
+   a larger base case to reduce the overhead of recursion.
+
+2) It computes all twiddle factors on the fly by calling sin()
+   and cos() library routines, instead of precomputing them.
+
+3) It assumes that the compiler can optimize away the trivial
+   operations in multiplications by complex numbers like 1 + I*tan(...),
+   instead of doing the complex arithmetic "by hand".
+
+4) A larger radix (or "strength-reduced" recursion) is probably
+   also necessary to fully exploit the CPU, as in FFTW.
+
+In practice, the ~ 5.6% (1/18) arithmetic savings may not be
+sufficient to justify much effort to use this algorithm in a practical
+setting, especially since they may be counteracted by increased memory
+pressure from the rescaled twiddle factors.  Our primary intention is
+to set a new bound in the arithmetic complexity theory of FFT
+algorithms.
+
+We have also modified the FFTW codelet generator to use the same
+algorithm, and it can also automatically derive resulting savings in
+real-data FFTs and real-symmetric FFTs (DCTs and DSTs).  The
+performance gains of these kernels (tested on one P-IV with gcc only)
+range from negligible to a 5% performance loss to a 9% performance
+gain, where the significant changes mainly occured for the DCTs.
+
+Steven G. Johnson
+Matteo Frigo
+1/27/2004
+(paper forthcoming in 2005)
+
+PS. A related algorithm in the literature seems to be that of:
+
+ Elliot Linzer and Ephraim Feig, "Modified FFTs for fused
+ multiply-add architectures," Mathematics of Computation 60
+ (201), 347-361 (1993).
+
+which also pulls a cosine or sine out of the twiddle factors in
+order to put them in a 1 + i tan(..) form, but does so in order to
+turn all multiplies into fused multiply-add (fma) ops.  It does
+much worse than Yavne if an fma is counted as 1 add + 1 multiply.
