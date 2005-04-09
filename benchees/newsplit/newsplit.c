@@ -35,7 +35,7 @@
     a constant (~ 1) times n^log_4(cos(pi/5)).  Proof left as an exercise.
     Fun fact 2: scale(n, m) vs. m is a fractal with dimension ~ 1.924.
 */
-R scale(int n, int m)
+Rt scale(int n, int m)
 {
      if (n <= 4)
 	  return 1.0;
@@ -113,7 +113,7 @@ void nsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       C w = omega(n, i) * scale(n/4, i);
+	       Ct w = omega(n, i) * scale(n/4, i);
 
 	       {
 		    C f0 = out[i*os];
@@ -148,7 +148,7 @@ void nsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       R wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = wabs * ((1.0 - I) * out[(i+n/2)*os]);
@@ -206,7 +206,7 @@ void nsplitds(int n, C *in0, C *in1, int is, C *out, int os)
 	  for (i = 1; i < n/8; ++i) {
 	       /* multiplying by omega_tan should only take
 		  2 adds and 2 multiplies */
-	       C w = omega_tan(n, i);
+	       Ct w = omega_tan(n, i);
 	       /*  = omega(n, i) * scale(n/4, i) / scale(n, i) */
 
 	       {
@@ -281,7 +281,7 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 	  
 	  /* i == 0 case (few multiplies): */
 	  {
-	       R s2 = 1.0 / scale(2*n, n/4);
+	       Rt s2 = 1.0 / scale(2*n, n/4);
 	       C f0 = out[0*os];
                C f1 = out[(0+n/4)*os];
                C g = out[(0+n/2)*os];
@@ -299,12 +299,12 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    R s1 = 1.0 / scale(2*n, i);
-		    R s2 = 1.0 / scale(2*n, i + n/4);
+		    Rt s1 = 1.0 / scale(2*n, i);
+		    Rt s2 = 1.0 / scale(2*n, i + n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
@@ -319,8 +319,8 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       {
 		    int j = n/4 - i;
-		    R s1 = 1.0 / scale(2*n, j);
-		    R s2 = 1.0 / scale(2*n, j + n/4);
+		    Rt s1 = 1.0 / scale(2*n, j);
+		    Rt s2 = 1.0 / scale(2*n, j + n/4);
 		    C f0 = out[j*os];
 		    C f1 = out[(j+n/4)*os];
 		    C wg = -I * conj(w) * out[(j+n/2)*os];
@@ -339,9 +339,9 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       R s1 = 1.0 / scale(2*n, i);
-	       /* R s2 = 1.0 / scale(2*n, i + n/4); == s1 */
-	       R wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = 1.0 / scale(2*n, i);
+	       /* Rt s2 = 1.0 / scale(2*n, i + n/4); == s1 */
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);
@@ -365,7 +365,7 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
      if (n == 1)
 	  out[0] = *in0;
      else if (n == 2) {
-	  R s1 = sqrt(2.0); /* = 1.0 / scale(4*n, 1); */
+	  Rt s1 = sqrt(2.0); /* = 1.0 / scale(4*n, 1); */
 	  C a, b;
 	  a = *in0;
 	  b = *in1;
@@ -383,8 +383,8 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 	  
 	  /* i == 0 case (few multiplies): */
 	  {
-	       R s2 = 1.0 / scale(4*n, n/4);
-	       R s3 = 1.0 / scale(4*n, n/2);
+	       Rt s2 = 1.0 / scale(4*n, n/4);
+	       Rt s3 = 1.0 / scale(4*n, n/2);
 	       C f0 = out[0*os];
                C f1 = s2 * out[(0+n/4)*os];
                C g = out[(0+n/2)*os];
@@ -402,14 +402,14 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    R s1 = 1.0 / scale(4*n, i);
-		    R s2 = 1.0 / scale(4*n, i + n/4);
-		    R s3 = 1.0 / scale(4*n, i + n/2);
-		    R s4 = 1.0 / scale(4*n, i + 3*n/4);
+		    Rt s1 = 1.0 / scale(4*n, i);
+		    Rt s2 = 1.0 / scale(4*n, i + n/4);
+		    Rt s3 = 1.0 / scale(4*n, i + n/2);
+		    Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
@@ -424,10 +424,10 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       {
 		    int j = n/4 - i;
-		    R s1 = 1.0 / scale(4*n, j);
-		    R s2 = 1.0 / scale(4*n, j + n/4);
-		    R s3 = 1.0 / scale(4*n, j + n/2);
-		    R s4 = 1.0 / scale(4*n, j + 3*n/4);
+		    Rt s1 = 1.0 / scale(4*n, j);
+		    Rt s2 = 1.0 / scale(4*n, j + n/4);
+		    Rt s3 = 1.0 / scale(4*n, j + n/2);
+		    Rt s4 = 1.0 / scale(4*n, j + 3*n/4);
 		    C f0 = out[j*os];
 		    C f1 = out[(j+n/4)*os];
 		    C wg = -I * conj(w) * out[(j+n/2)*os];
@@ -446,11 +446,11 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       R s1 = 1.0 / scale(4*n, i);
-	       R s2 = 1.0 / scale(4*n, i + n/4);
-	       R s3 = 1.0 / scale(4*n, i + n/2);
-	       R s4 = 1.0 / scale(4*n, i + 3*n/4);
-	       R wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = 1.0 / scale(4*n, i);
+	       Rt s2 = 1.0 / scale(4*n, i + n/4);
+	       Rt s3 = 1.0 / scale(4*n, i + n/2);
+	       Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);

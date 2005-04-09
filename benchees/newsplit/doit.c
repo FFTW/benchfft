@@ -54,12 +54,13 @@ void setup(struct problem *p)
 #ifndef OLDSPLIT
      if (verbose >= 2) {
 	  int k, n = p->n[0];
-	  int kmin = 0, smin = 1.0;
+	  int kmin = 0;
+	  double smin = 1.0;
 	  for (k = 0; k < n/4; ++k) {
 	       double sk = scale(n, k);
-	       if (sk < smin && fabs(sk - smin) < 1e-12 * fabs(smin)) {
+	       if (sk < smin && fabs(sk - smin) > 1e-12 * fabs(smin)) {
 		    kmin = k;
-		    smin = smin;
+		    smin = sk;
 	       }
 	  }
 	  printf("minimum scale(%d, %d) = %g\n", n, kmin, smin);

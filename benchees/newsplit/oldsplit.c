@@ -67,7 +67,7 @@ void oldsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       C w = omega(n, i);
+	       Ct w = omega(n, i);
 
 	       {
 		    C f0 = out[i*os];
@@ -102,7 +102,7 @@ void oldsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       R wabs = sqrt(0.5);
+	       Rt wabs = sqrt(0.5);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = wabs * ((1.0 - I) * out[(i+n/2)*os]);

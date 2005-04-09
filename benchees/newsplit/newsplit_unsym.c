@@ -35,7 +35,7 @@
    and also, for 0 <= m <= n/8:
         omega_tan(n, m) = omega(n, m) * scale(n/4, m) / scale(n, m)
 */
-double scale(int n, int m)
+Rt scale(int n, int m)
 {
      if (n <= 4)
 	  return 1.0;
@@ -102,7 +102,7 @@ void nsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       double wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = wabs * ((1.0 - I) * out[(i+n/2)*os]);
@@ -265,7 +265,7 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 	  
 	  /* i == 0 case (few multiplies): */
 	  {
-	       double s2 = 1.0 / scale(2*n, n/4);
+	       Rt s2 = 1.0 / scale(2*n, n/4);
 	       C f0 = out[0*os];
                C f1 = out[(0+n/4)*os];
                C g = out[(0+n/2)*os];
@@ -282,12 +282,12 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 	  }
 
 	  for (i = 1; i < n/8; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    double s1 = 1.0 / scale(2*n, i);
-		    double s2 = 1.0 / scale(2*n, i + n/4);
+		    Rt s1 = 1.0 / scale(2*n, i);
+		    Rt s2 = 1.0 / scale(2*n, i + n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
@@ -306,9 +306,9 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       double s1 = 1.0 / scale(2*n, i);
-	       double s2 = 1.0 / scale(2*n, i + n/4);
-	       double wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = 1.0 / scale(2*n, i);
+	       Rt s2 = 1.0 / scale(2*n, i + n/4);
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);
@@ -325,12 +325,12 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 	  }
 
 	  for (i = n/8+1; i < n/4; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    double s1 = 1.0 / scale(2*n, i);
-		    double s2 = 1.0 / scale(2*n, i + n/4);
+		    Rt s1 = 1.0 / scale(2*n, i);
+		    Rt s2 = 1.0 / scale(2*n, i + n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
@@ -356,7 +356,7 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
      if (n == 1)
 	  out[0] = *in0;
      else if (n == 2) {
-	  double s1 = sqrt(2.0); /* = 1.0 / scale(4*n, 1); */
+	  Rt s1 = sqrt(2.0); /* = 1.0 / scale(4*n, 1); */
 	  C a, b;
 	  a = *in0;
 	  b = *in1;
@@ -374,9 +374,9 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 	  
 	  /* i == 0 case (few multiplies): */
 	  {
-	       double s2 = 1.0 / scale(4*n, n/4);
-	       double s3 = 1.0 / scale(4*n, n/2);
-	       double s4 = 1.0 / scale(4*n, 3*n/4);
+	       Rt s2 = 1.0 / scale(4*n, n/4);
+	       Rt s3 = 1.0 / scale(4*n, n/2);
+	       Rt s4 = 1.0 / scale(4*n, 3*n/4);
 	       C f0 = out[0*os];
                C f1 = out[(0+n/4)*os];
                C g = out[(0+n/2)*os];
@@ -393,14 +393,14 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 	  }
 
 	  for (i = 1; i < n/8; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    double s1 = 1.0 / scale(4*n, i);
-		    double s2 = 1.0 / scale(4*n, i + n/4);
-		    double s3 = 1.0 / scale(4*n, i + n/2);
-		    double s4 = 1.0 / scale(4*n, i + 3*n/4);
+		    Rt s1 = 1.0 / scale(4*n, i);
+		    Rt s2 = 1.0 / scale(4*n, i + n/4);
+		    Rt s3 = 1.0 / scale(4*n, i + n/2);
+		    Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
@@ -419,11 +419,11 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       double s1 = 1.0 / scale(4*n, i);
-	       double s2 = 1.0 / scale(4*n, i + n/4);
-	       double s3 = 1.0 / scale(4*n, i + n/2);
-	       double s4 = 1.0 / scale(4*n, i + 3*n/4);
-	       double wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = 1.0 / scale(4*n, i);
+	       Rt s2 = 1.0 / scale(4*n, i + n/4);
+	       Rt s3 = 1.0 / scale(4*n, i + n/2);
+	       Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
+	       Rt wabs = sqrt(0.5) * scale(n/4, i);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);
@@ -440,14 +440,14 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 	  }
 
 	  for (i = n/8+1; i < n/4; ++i) {
-	       C wscale = wcos(n, i) * scale(n/4, i);
-	       C w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Ct wscale = wcos(n, i) * scale(n/4, i);
+	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
 
 	       {
-		    double s1 = 1.0 / scale(4*n, i);
-		    double s2 = 1.0 / scale(4*n, i + n/4);
-		    double s3 = 1.0 / scale(4*n, i + n/2);
-		    double s4 = 1.0 / scale(4*n, i + 3*n/4);
+		    Rt s1 = 1.0 / scale(4*n, i);
+		    Rt s2 = 1.0 / scale(4*n, i + n/4);
+		    Rt s3 = 1.0 / scale(4*n, i + n/2);
+		    Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];

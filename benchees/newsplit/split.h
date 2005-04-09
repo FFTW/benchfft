@@ -40,14 +40,19 @@ typedef complex double C;
 #endif
 typedef bench_real R;
 
-#ifdef BENCHFFT_LDOUBLE
-typedef long double trigreal;
+#define LDOUBLE_TRIG 1
+
+#if !defined(BENCHFFT_SINGLE) && (defined(BENCHFFT_LDOUBLE) || LDOUBLE_TRIG)
+typedef long double Rt;
+typedef complex long double Ct;
 #  define cos cosl
 #  define sin sinl
 #  define tan tanl
+#  define sqrt sqrtl
 #  define KTRIG(x) (x##L)
 #else
-typedef double trigreal;
+typedef double Rt;
+typedef complex double Ct;
 #  define KTRIG(x) (x)
 #endif
 
@@ -68,13 +73,13 @@ typedef double trigreal;
 extern int adds;
 extern int muls;
 
-C omega(int n, int m);
-C omega_tan(int n, int m);
-R wcos(int n, int m);
+Ct omega(int n, int m);
+Ct omega_tan(int n, int m);
+Rt wcos(int n, int m);
 
 void oldsplit(int n, C *in0, C *in1, int is, C *out, int os);
 
-R scale(int n, int m);
+Rt scale(int n, int m);
 void nsplit(int n, C *in0, C *in1, int is, C *out, int os);
 void nsplitds(int n, C *in0, C *in1, int is, C *out, int os);
 void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os);

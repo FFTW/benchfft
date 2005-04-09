@@ -26,21 +26,21 @@
 int adds = 0;
 int muls = 0;
 
-C omega(int n, int m)
+Ct omega(int n, int m)
 {
-     R theta = (-TWOPI / n) * m;
+     Rt theta = (-TWOPI / n) * m;
      return (cos(theta) + I * sin(theta));
 }
 
 /* Really, this should be inlined so that when it is multiplied by
    something the * 1.0 multiplication can be eliminated. */
-C omega_tan(int n, int m)
+Ct omega_tan(int n, int m)
 {
-     R theta = (-TWOPI / n) * m;
+     Rt theta = (-TWOPI / n) * m;
      return (1.0 + I * tan(theta));
 }
 
-R wcos(int n, int m)
+Rt wcos(int n, int m)
 {
      return cos((TWOPI / n) * m);
 }
