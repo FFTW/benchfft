@@ -46,10 +46,11 @@ void setup(struct problem *p)
 {
      BENCH_ASSERT(can_do(p));
 
-     if (verbose) {
-	  adds = muls = 0;
+     if (verbose >= 2) {
+	  adds = muls = twids = 0;
 	  doit(1, p);
 	  printf("adds = %d, muls = %d, flops = %d\n", adds, muls, adds+muls);
+	  printf("real twiddle loads = %d\n", twids);
      }
 #ifndef OLDSPLIT
      if (verbose >= 2) {

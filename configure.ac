@@ -454,6 +454,7 @@ benchees/mpfun77/Makefile
 benchees/mpfun90/Makefile
 benchees/nag/Makefile
 benchees/napack/Makefile
+benchees/newsplit/Makefile
 benchees/nr/Makefile
 benchees/numutils/Makefile
 benchees/ooura/Makefile

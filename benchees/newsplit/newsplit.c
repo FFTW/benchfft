@@ -144,6 +144,7 @@ void nsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += (COMPLEX_MUL_ADDS * 2 + 2 * 6) * 2;
 	       muls += (COMPLEX_MUL_MULS * 2) * 2;
+	       twids += 2;
 	  }
 
 	  /* i == n/8 case (simpler multiply): */
@@ -162,6 +163,7 @@ void nsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += 2 * 2 + 2 * 6;
 	       muls += 2 * 2;
+	       twids += 1;
 	  }
      }
 }
@@ -238,6 +240,7 @@ void nsplitds(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += (2 * 2 + 2 * 6) * 2;
 	       muls += (2 * 2) * 2;
+	       twids += 1;
 	  }
 
 	  /* i == n/8 case (simpler multiply): */
@@ -295,22 +298,22 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += 2 * 6;
 	       muls += 1 * 2;
+	       twids += 1;
 	  }
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       Ct wscale = wcos(n, i) * scale(n/4, i);
 	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Rt s1 = scale(n, i) / scale(2*n, i);
+	       Rt s2 = scale(n, i) / scale(2*n, i + n/4);
 
 	       {
-		    Rt s1 = 1.0 / scale(2*n, i);
-		    Rt s2 = 1.0 / scale(2*n, i + n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
 		    C wh = conj(w) * out[(i+3*n/4)*os];
-		    C wghp = (wg + wh) * (s1 * wscale);
-		    C wghm = (wg - wh) * (s2 * wscale);
+		    C wghp = (wg + wh) * s1;
+		    C wghm = (wg - wh) * s2;
 		    out[i*os] = f0 + wghp;
 		    out[(i+n/4)*os] = f1 - I * wghm;
 		    out[(i+n/2)*os] = f0 - wghp;
@@ -319,14 +322,12 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       {
 		    int j = n/4 - i;
-		    Rt s1 = 1.0 / scale(2*n, j);
-		    Rt s2 = 1.0 / scale(2*n, j + n/4);
 		    C f0 = out[j*os];
 		    C f1 = out[(j+n/4)*os];
 		    C wg = -I * conj(w) * out[(j+n/2)*os];
 		    C wh = I * w * out[(j+3*n/4)*os];
-		    C wghp = (wg + wh) * (s1 * wscale);
-		    C wghm = (wg - wh) * (s2 * wscale);
+		    C wghp = (wg + wh) * s2;
+		    C wghm = (wg - wh) * s1;
 		    out[j*os] = f0 + wghp;
 		    out[(j+n/4)*os] = f1 - I * wghm;
 		    out[(j+n/2)*os] = f0 - wghp;
@@ -335,19 +336,19 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 	       
 	       adds += (2 * 2 + 2 * 6) * 2;
 	       muls += (2 * 2 + 2 * 2) * 2;
+	       twids += 3;
 	  }
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       Rt s1 = 1.0 / scale(2*n, i);
-	       /* Rt s2 = 1.0 / scale(2*n, i + n/4); == s1 */
-	       Rt wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = scale(n, i) / scale(2*n, i);
+	       /* Rt s2 = scale(n, i) / scale(2*n, i + n/4) == s1; */
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);
                C wh = ((1.0 + I) * out[(i+3*n/4)*os]);
-               C wghp = (wg + wh) * (wabs * s1);
-               C wghm = (wg - wh) * (wabs * s1);
+               C wghp = (wg + wh) * s1;
+               C wghm = (wg - wh) * s1;
                out[i*os] = f0 + wghp;
                out[(i+n/4)*os] = f1 - I * wghm;
                out[(i+n/2)*os] = f0 - wghp;
@@ -355,6 +356,7 @@ void nsplitds2(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += 2 * 2 + 2 * 6;
 	       muls += 2 * 2;
+	       twids += 1;
 	  }
      }
 }
@@ -398,72 +400,69 @@ void nsplitds4(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += 2 * 6;
 	       muls += 2 * 3;
+	       twids += 2;
 	  }
 
 	  /* 1 <= i < n/8 are pairs of related twiddle factors */
 	  for (i = 1; i < n/8; ++i) {
-	       Ct wscale = wcos(n, i) * scale(n/4, i);
 	       Ct w = omega_tan(n, i); /* *w should take 2 mults + 2 adds */
+	       Rt s1 = scale(n, i) / scale(4*n, i);
+	       Rt s2 = scale(n, i) / scale(4*n, i + n/4);
+	       Rt s3 = scale(n, i) / scale(4*n, i + n/2);
+	       Rt s4 = scale(n, i) / scale(4*n, i + 3*n/4);
 
 	       {
-		    Rt s1 = 1.0 / scale(4*n, i);
-		    Rt s2 = 1.0 / scale(4*n, i + n/4);
-		    Rt s3 = 1.0 / scale(4*n, i + n/2);
-		    Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
 		    C f0 = out[i*os];
 		    C f1 = out[(i+n/4)*os];
 		    C wg = w * out[(i+n/2)*os];
 		    C wh = conj(w) * out[(i+3*n/4)*os];
 		    C wghp = wg + wh;
 		    C wghm = wg - wh;
-		    out[i*os] = (f0 + wghp) * (s1 * wscale);
-		    out[(i+n/4)*os] = (f1 - I * wghm) * (s2 * wscale);
-		    out[(i+n/2)*os] = (f0 - wghp) * (s3 * wscale);
-		    out[(i+3*n/4)*os] = (f1 + I * wghm) * (s4 * wscale);
+		    out[i*os] = (f0 + wghp) * s1;
+		    out[(i+n/4)*os] = (f1 - I * wghm) * s2;
+		    out[(i+n/2)*os] = (f0 - wghp) * s3;
+		    out[(i+3*n/4)*os] = (f1 + I * wghm) * s4;
 	       }
 
 	       {
 		    int j = n/4 - i;
-		    Rt s1 = 1.0 / scale(4*n, j);
-		    Rt s2 = 1.0 / scale(4*n, j + n/4);
-		    Rt s3 = 1.0 / scale(4*n, j + n/2);
-		    Rt s4 = 1.0 / scale(4*n, j + 3*n/4);
 		    C f0 = out[j*os];
 		    C f1 = out[(j+n/4)*os];
 		    C wg = -I * conj(w) * out[(j+n/2)*os];
 		    C wh = I * w * out[(j+3*n/4)*os];
 		    C wghp = wg + wh;
 		    C wghm = wg - wh;
-		    out[j*os] = (f0 + wghp) * (s1 * wscale);
-		    out[(j+n/4)*os] = (f1 - I * wghm) * (s2 * wscale);
-		    out[(j+n/2)*os] = (f0 - wghp) * (s3 * wscale);
-		    out[(j+3*n/4)*os] = (f1 + I * wghm) * (s4 * wscale);
+		    out[j*os] = (f0 + wghp) * s4;
+		    out[(j+n/4)*os] = (f1 - I * wghm) * s3;
+		    out[(j+n/2)*os] = (f0 - wghp) * s2;
+		    out[(j+3*n/4)*os] = (f1 + I * wghm) * s1;
 	       }
 	       
 	       adds += (2 * 2 + 2 * 6) * 2;
 	       muls += (2 * 2 + 2 * 4) * 2;
+	       twids += 5;
 	  }
 
 	  /* i == n/8 case (simpler multiply): */
 	  if (i == n/8) {
-	       Rt s1 = 1.0 / scale(4*n, i);
-	       Rt s2 = 1.0 / scale(4*n, i + n/4);
-	       Rt s3 = 1.0 / scale(4*n, i + n/2);
-	       Rt s4 = 1.0 / scale(4*n, i + 3*n/4);
-	       Rt wabs = sqrt(0.5) * scale(n/4, i);
+	       Rt s1 = scale(n, i) / scale(4*n, i);
+	       Rt s2 = scale(n, i) / scale(4*n, i + n/4);
+	       Rt s3 = scale(n, i) / scale(4*n, i + n/2);
+	       Rt s4 = scale(n, i) / scale(4*n, i + 3*n/4);
 	       C f0 = out[i*os];
                C f1 = out[(i+n/4)*os];
                C wg = ((1.0 - I) * out[(i+n/2)*os]);
                C wh = ((1.0 + I) * out[(i+3*n/4)*os]);
                C wghp = wg + wh;
                C wghm = wg - wh;
-               out[i*os] = (f0 + wghp) * (s1 * wabs);
-               out[(i+n/4)*os] = (f1 - I * wghm) * (s2 * wabs);
-               out[(i+n/2)*os] = (f0 - wghp) * (s3 * wabs);
-               out[(i+3*n/4)*os] = (f1 + I * wghm) * (s4 * wabs);
+               out[i*os] = (f0 + wghp) * s1;
+               out[(i+n/4)*os] = (f1 - I * wghm) * s2;
+               out[(i+n/2)*os] = (f0 - wghp) * s3;
+               out[(i+3*n/4)*os] = (f1 + I * wghm) * s4;
 
 	       adds += 2 * 2 + 2 * 6;
 	       muls += 2 * 4;
+	       twids += 4;
 	  }
      }
 }

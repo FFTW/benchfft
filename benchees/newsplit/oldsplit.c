@@ -98,6 +98,7 @@ void oldsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += (COMPLEX_MUL_ADDS * 2 + 2 * 6) * 2;
 	       muls += (COMPLEX_MUL_MULS * 2) * 2;
+	       twids += 2;
 	  }
 
 	  /* i == n/8 case (simpler multiply): */
@@ -116,6 +117,7 @@ void oldsplit(int n, C *in0, C *in1, int is, C *out, int os)
 
 	       adds += 2 * 2 + 2 * 6;
 	       muls += 2 * 2;
+	       twids += 1;
 	  }
      }
 }

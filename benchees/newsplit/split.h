@@ -73,6 +73,8 @@ typedef complex double Ct;
 extern int adds;
 extern int muls;
 
+extern int twids; /* count of non-trivial (real) twiddle loads */
+
 Ct omega(int n, int m);
 Ct omega_tan(int n, int m);
 Rt wcos(int n, int m);

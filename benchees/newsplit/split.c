@@ -26,6 +26,8 @@
 int adds = 0;
 int muls = 0;
 
+int twids = 0; /* count of non-trivial (real) twiddle loads */
+
 Ct omega(int n, int m)
 {
      Rt theta = (-TWOPI / n) * m;
