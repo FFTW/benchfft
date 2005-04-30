@@ -33,7 +33,6 @@
 	n^(-1/4) <= scale(n, m) <= 1
     Fun fact: the lower bound on scale(n, m) goes asymptotically as
     a constant (~ 1) times n^log_4(cos(pi/5)).  Proof left as an exercise.
-    Fun fact 2: scale(n, m) vs. m is a fractal with dimension ~ 1.924.
 */
 Rt scale(int n, int m)
 {
