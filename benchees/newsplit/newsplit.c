@@ -49,9 +49,9 @@ Rt scale(int n, int m)
      }
 }
 
-/* As split, but using new twiddle-scaling algorithm; compared to
-   split-radix, this has the same number of additions and saves
-   a number of multiplications for n >= 64.
+/* As oldsplit, but using new twiddle-scaling algorithm; compared to
+   split-radix, this has the same number of additions and saves a
+   number of multiplications for n >= 64.
 
    The actual savings all occur in the nsplitds routine; nsplit
    itself has the same number of operations as split, while nsplitds2
