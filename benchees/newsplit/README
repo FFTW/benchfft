@@ -68,12 +68,10 @@ serious implementation:
 4) A larger radix (or "strength-reduced" recursion) is probably
    also necessary to fully exploit the CPU, as in FFTW.
 
-In practice, the ~ 5.6% (1/18) arithmetic savings may not be
-sufficient to justify much effort to use this algorithm in a practical
-setting, especially since they may be counteracted by increased memory
-pressure from the rescaled twiddle factors.  Our primary intention is
-to set a new bound in the arithmetic complexity theory of FFT
-algorithms.
+Even given the above improvements, it is unclear whether the ~ 5.6%
+(1/18) arithmetic savings will result in practical improvements in FFT
+execution speed.  Our primary intention is to set a new bound in the
+arithmetic complexity theory of FFT algorithms.
 
 We have also modified the FFTW codelet generator to use the same
 algorithm, and it can also automatically derive resulting savings in
@@ -86,14 +84,3 @@ Steven G. Johnson
 Matteo Frigo
 1/27/2004
 (paper forthcoming in 2005)
-
-PS. A related algorithm in the literature seems to be that of:
-
- Elliot Linzer and Ephraim Feig, "Modified FFTs for fused
- multiply-add architectures," Mathematics of Computation 60
- (201), 347-361 (1993).
-
-which also pulls a cosine or sine out of the twiddle factors in
-order to put them in a 1 + i tan(..) form, but does so in order to
-turn all multiplies into fused multiply-add (fma) ops.  It does
-much worse than Yavne if an fma is counted as 1 add + 1 multiply.
