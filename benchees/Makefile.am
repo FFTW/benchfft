@@ -3,8 +3,8 @@ emayer esrfft essl ffte fftpack fftreal fftw2 fftw3 fxt glassman	\
 goedecker gpfa green-ffts-2.0 gsl harm hp-mlib imsl intel-mkl		\
 intel-ipps jmfft kissfft krukar mfft mixfft monnier morris mpfun77	\
 mpfun90 nag napack newsplit nr numutils ooura qft ransom rmayer		\
-sciport sgimath singleton sorensen spiral-fft statlib sunperf		\
-temperton teneyck valkenburg vbigdsp vdsp
+scimark2c sciport sgimath singleton sorensen spiral-fft statlib		\
+sunperf temperton teneyck valkenburg vbigdsp vdsp
 
 EXTRA_DIST = Makefile.common
 

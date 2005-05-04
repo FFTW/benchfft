@@ -461,6 +461,7 @@ benchees/ooura/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
 benchees/rmayer/Makefile
+benchees/scimark2c/Makefile
 benchees/sciport/Makefile
 benchees/sgimath/Makefile
 benchees/singleton/Makefile
