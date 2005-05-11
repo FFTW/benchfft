@@ -40,6 +40,12 @@ typedef complex double C;
 #endif
 typedef bench_real R;
 
+/* Calculate the precomputed trigonometric constants in extended precision,
+   so that we are measuring the accuracy of the algorithm per se and not
+   of the twiddle factors.  (Note that we don't *need* to use extended
+   precision...the algorithm is still observed to have
+   O(sqrt(log N)) rms errors without it...turning this off just
+   increases the errors by 10-20% or so.) */
 #define LDOUBLE_TRIG 1
 
 #if !defined(BENCHFFT_SINGLE) && (defined(BENCHFFT_LDOUBLE) || LDOUBLE_TRIG)
