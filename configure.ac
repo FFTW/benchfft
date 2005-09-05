@@ -278,6 +278,16 @@ AC_CHECK_HEADERS([gsl/gsl_fft_halfcomplex.h gsl/gsl_version.h])
 AM_CONDITIONAL(HAVE_GSL, test -n "$have_gsl")
 LIBS=$SAVE_LIBS
 
+dnl Check for libavcodec from the ffmpeg project
+AC_CHECK_PROG(FFMPEG_CONFIG, ffmpeg-config, ffmpeg-config)
+if test "x$FFMPEG_CONFIG" = "xffmpeg-config"; then
+  have_ffmpeg=yes
+  FFMPEG_LIBS=`$FFMPEG_CONFIG --libs avcodec`
+  AC_SUBST(FFMPEG_LIBS)
+fi
+AM_CONDITIONAL(HAVE_FFMPEG, test -n "$have_ffmpeg")
+
+
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
 
@@ -406,6 +416,7 @@ cat <<EOF
                                 FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
                FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
   GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
+                        FFMPEG (free, ffmpeg.sourceforge.net): ${have_ffmpeg-no}
 *******************************************************************************
 EOF
 
@@ -427,6 +438,7 @@ benchees/dxml/Makefile
 benchees/emayer/Makefile
 benchees/esrfft/Makefile
 benchees/essl/Makefile
+benchees/ffmpeg/Makefile
 benchees/ffte/Makefile
 benchees/fftpack/Makefile
 benchees/fftreal/Makefile

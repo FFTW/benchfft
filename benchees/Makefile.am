@@ -1,5 +1,5 @@
 SUBDIRS = acml arprec bloodworth burrus cross cwplib dfftpack dsp dxml	\
-emayer esrfft essl ffte fftpack fftreal fftw2 fftw3 fxt glassman	\
+emayer esrfft essl ffmpeg ffte fftpack fftreal fftw2 fftw3 fxt glassman	\
 goedecker gpfa green-ffts-2.0 gsl harm hp-mlib imsl intel-mkl		\
 intel-ipps jmfft kissfft krukar mfft mixfft monnier morris mpfun77	\
 mpfun90 nag napack newsplit nr numutils ooura qft ransom rmayer		\
