@@ -37,6 +37,7 @@ int can_do(struct problem *p)
 	     p->rank == 1 &&
 	     p->kind == PROBLEM_COMPLEX &&
 	     p->n[0] >= 8 && /* 20050313 version crashes for smaller sizes */
+	     p->n[0] <= 65536 && /* 20050313 has a uint16_t bitrev table */
 	     problem_power_of_two(p, 1));
 }
 
