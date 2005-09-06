@@ -3,10 +3,13 @@
 #include "bench-user.h"
 #include <math.h>
 
+#include "dsputil.h"
+
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "ffmpeg")
 BENCH_DOC("author", "Fabrice Bellard")
 BENCH_DOC("year", "2002")
+BENCH_DOC("version", LIBAVCODEC_IDENT)
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "fabrice@bellard.org")
 BENCH_DOC("url", "http://ffmpeg.sourceforge.net/")
@@ -40,8 +43,6 @@ int can_do(struct problem *p)
 	     p->n[0] <= 65536 && /* 20050313 has a uint16_t bitrev table */
 	     problem_power_of_two(p, 1));
 }
-
-#include "dsputil.h"
 
 FFTContext cntxt;
 
