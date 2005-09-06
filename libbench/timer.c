@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.7 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: timer.c,v 1.8 2005-09-06 02:23:24 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>
@@ -92,7 +92,7 @@ if you find them useful.
 typedef char *TYPE;
 static const double tmin_try = 1.0e-6; /* seconds */
 static const double tmax_try = 1.0;    /* seconds */
-static const double tolerance = 0.001;
+static const double tolerance = 0.01;
 
 static TYPE **work(int n, TYPE **p)
 {
@@ -174,6 +174,7 @@ static int acceptable(double tmin)
 	  double usecs = time_n((int)((double) n * test_points[i]));
 	  double expected = baseline * test_points[i];
 	  double diff = expected > usecs ? expected - usecs : usecs - expected;
+	  printf("%g %g %g %g\n", usecs, expected, diff, diff / expected);
 	  if (diff / expected > tolerance)
 	       return 0;
      }
