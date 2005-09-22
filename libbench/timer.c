@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: timer.c,v 1.8 2005-09-06 02:23:24 athena Exp $ */
+/* $Id: timer.c,v 1.9 2005-09-22 12:43:47 athena Exp $ */
 
 #include "config.h"
 #include <stdio.h>
@@ -174,7 +174,6 @@ static int acceptable(double tmin)
 	  double usecs = time_n((int)((double) n * test_points[i]));
 	  double expected = baseline * test_points[i];
 	  double diff = expected > usecs ? expected - usecs : usecs - expected;
-	  printf("%g %g %g %g\n", usecs, expected, diff, diff / expected);
 	  if (diff / expected > tolerance)
 	       return 0;
      }
