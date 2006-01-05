@@ -17,6 +17,7 @@ BENCH_DOC("author", "Bruce Miller")
 BENCH_DOC("email", "bruce.miller@nist.gov")
 BENCH_DOC("url", "http://math.nist.gov/scimark2/")
 BENCH_DOC("url-was-valid-on", "Tue May  3 22:33:43 EDT 2005")
+BENCH_DOC("notes", "C version of SciMark Java benchmark.")
 BENCH_DOC("notes", "The backwards transform is scaled.")
 
 END_BENCH_DOC
