@@ -1,5 +1,5 @@
 # This Makefile is included by all benchmark programs
-noinst_PROGRAMS=$(PRG)
+noinst_PROGRAMS=$(PRG) $(EXTRA_PRG)
 
 LIBBENCH=${top_builddir}/libbench/libbench.a
 INCLBENCH=-I${top_srcdir}/libbench

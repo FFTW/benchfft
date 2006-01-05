@@ -1,4 +1,5 @@
-PRG=doit doit_unsym doit_oldsplit
+PRG=doit
+EXTRA_PRG=doit_unsym doit_oldsplit
 
 EXTRA_DIST = README doit.c
 
