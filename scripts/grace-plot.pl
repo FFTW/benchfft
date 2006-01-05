@@ -101,9 +101,21 @@ while (@ARGV) {
 	   "fftw3-r2r" => "blue:dash:1:blue:square:0.5:blue",
 	   "fxt-4step" => "yellow:solid:2:grey:circle:0.25:none",
 	   "fxt-matrixfft" => "yellow:solid:2:grey:circle:0.25:none",
+	   "fxt-cmatrixfft" => "yellow:solid:2:grey:circle:0.25:grey",
 	   "fxt-dif" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-dif2" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-depth-first-dif2" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-dif4" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-cdif4" => "grey:solid:1:yellow:circle:0.5:grey",
+	   "fxt-recursive-dif2" => "grey:solid:1:yellow:circle:0.5:grey",
 	   "fxt-dit" => "grey:solid:1:yellow:square:0.5:yellow",
+	   "fxt-dit2" => "grey:solid:1:yellow:square:0.5:yellow",
+	   "fxt-depth-first-dit2" => "grey:solid:1:yellow:square:0.5:yellow",
+	   "fxt-dit4" => "grey:solid:1:yellow:square:0.5:yellow",
+	   "fxt-cdit4" => "grey:solid:1:yellow:square:0.5:yellow",
+	   "fxt-recursive-dit2" => "grey:solid:1:yellow:square:0.5:yellow",
 	   "fxt-fht" => "grey:solid:1:grey:triangle-up:0.7:yellow",
+	   "fxt-cfht" => "grey:solid:1:grey:triangle-up:0.7:yellow",
 	   "fxt-fht-real" => "grey:solid:1:grey:triangle-up:0.7:yellow",
 	   "fxt-ndim" => "grey:solid:1:yellow:star:1:none",
 	   "fxt-split" => "grey:solid:1:grey:square:0.7:yellow",
@@ -289,7 +301,7 @@ else{
 
 # transforms that we always plot separate from their "family" even if 
 # the --no-dups option is specified
-%distinct_ffts = ("intel-mkl-dfti" => 0, "fftw3-r2r" => 0, "fxt-matrixfft" => 0, "fftw3-estimate" => 0, "fftw3-no-simd" => 0, "fftw3-impatient" => 0);
+%distinct_ffts = ("intel-mkl-dfti" => 0, "fftw3-r2r" => 0, "fxt-cmatrixfft" => 0, "fftw3-estimate" => 0, "fftw3-no-simd" => 0, "fftw3-impatient" => 0);
 
 #############################################################################
 # Read and process the data.
@@ -392,6 +404,8 @@ foreach $norm_val (@sorted_norm_vals) {
 
     # backwards compatibility
     $namleg = "fxt-matrixfft" if ($namleg eq "fxt-4step");
+    $namleg = "fxt-cdif4" if ($namleg eq "fxt-dif");
+    $namleg = "fxt-cdit4" if ($namleg eq "fxt-dit");
     $namleg = "spiral-egner-fft" if ($namleg eq "spiral-fft");
     $namleg = "green" if ($namleg eq "green-ffts-2.0");
     $namleg = "cxml" if ($namleg eq "dxml");
