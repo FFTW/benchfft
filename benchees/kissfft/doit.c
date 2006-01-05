@@ -8,8 +8,8 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "1.2.1")
-BENCH_DOC("year", "2004")
+BENCH_DOC("version", "1.2.4")
+BENCH_DOC("year", "2005")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
 BENCH_DOC("url", "http://sourceforge.net/projects/kissfft/")

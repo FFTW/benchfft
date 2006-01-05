@@ -1,5 +1,5 @@
 PRG=doit
-PKG=kiss_fft_v1_2_1
+PKG=kiss_fft_v1_2_4
 PKGSUB = $(PKG)/tools
 TARFILE=$(PKG).tar.gz
 INCLUDES = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)
