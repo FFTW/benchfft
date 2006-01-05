@@ -1,12 +1,12 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
 BENCH_DOC("package", "FXT")
-BENCH_DOC("version", "8-February-2005")
+BENCH_DOC("version", "20-November-2005")
 BENCH_DOC("author", "J&ouml;rg Arndt")
 BENCH_DOC("year", "2005")
 BENCH_DOC("email", "arndt@jjj.de")
 BENCH_DOC("url", "http://www.jjj.de/fxt/")
-BENCH_DOC("url-was-valid-on", "Tue Apr 29 18:19:29 EDT 2003")
+BENCH_DOC("url-was-valid-on", "Thu Jan  5 16:46:39 EST 2006")
 BENCH_DOC("copyright", 
 "Copyright (c) 2001 Joerg Arndt\n"
 "\n"

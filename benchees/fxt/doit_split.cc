@@ -1,5 +1,5 @@
 #define NAME "fxt-split"
-#define NOTES "Split-radix algorithm, iterative trig. factor calculation."
+#define NOTES "Split-radix algorithm, split real/imag format."
 
 #define NO_Complex 1
 

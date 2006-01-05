@@ -4,7 +4,6 @@
 #include <math.h>
 
 #include "fft-all.h"
-#include "matrixfft-all.h"
 
 #include "doit-doc.h"
 

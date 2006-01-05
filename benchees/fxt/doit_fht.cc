@@ -1,5 +1,5 @@
 #define NAME "fxt-fht"
-#define NOTES "FFT by FHT algorithm."
+#define NOTES "FFT by FHT algorithm, split real/imag format"
 
 #define NO_Complex 1
 
