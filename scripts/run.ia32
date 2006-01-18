@@ -4,19 +4,21 @@
 HOSTNAME=${HOSTNAME:-`hostname`}
 VARIANT=${VARIANT:-gcc}
 DIRNAME=$HOSTNAME-$VARIANT
+ICCARCH=${ICCARCH:-"-xW"}
+GCCARCH=${ICCARCH:-"pentium4"}
 
 if test "$VARIANT" = icc; then
     CC=icc
     F77=ifort
     CXX=icc
-    CFLAGS='-O3 -xW'
-    FFLAGS='-O3 -WB -xW'
-    CXXFLAGS='-O3 -xW'
+    CFLAGS="-O3 $ICCARCH"
+    FFLAGS="-O3 -WB $ICCARCH"
+    CXXFLAGS="-O3 $ICCARCH"
     FFTW_DIR=$HOME/local/icc
 else
-    FFLAGS='-O2 -fomit-frame-pointer -march=pentium4 -mtune=pentium4'
-    CXXFLAGS='-O2 -fomit-frame-pointer -mmarch=pentium4 -mtune=pentium4'
-    FFLAGS='-O2 -fomit-frame-pointer -mmarch=pentium4 -mtune=pentium4'
+    FFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
+    CXXFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
+    FFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     FFTW_DIR=$HOME/local/gcc
 fi
 
@@ -39,9 +41,9 @@ if test "$NORUN"xxx = xxx; then
     ( 
 	cd $DIRNAME
 	../configure --disable-single --with-f90
-	make -k; nice --20 make -k benchmark; make clean
+	make -k; $NICE make -k benchmark; make clean
 	../configure --enable-single --with-f90
-	make -k; nice --20 make -k benchmark; make clean
+	make -k; $NICE make -k benchmark; make clean
 	../configure --disable-single --with-f90
 	make -k; make -k accuracy; make clean
 	../configure --enable-single --with-f90
