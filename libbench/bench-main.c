@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench-main.c,v 1.20 2003-05-01 10:50:34 athena Exp $ */
+/* $Id: bench-main.c,v 1.21 2006-01-18 01:40:38 athena Exp $ */
 
 #include "config.h"
 #include "getopt.h"
@@ -47,6 +47,7 @@ static struct option long_options[] =
   {"report-time", no_argument, 0, 310},
   {"report-verbose", no_argument, 0, 330},
   {"speed", required_argument, 0, 's'},
+  {"setup-speed", required_argument, 0, 'S'},
   {"time-min", required_argument, 0, 't'},
   {"time-repeat", required_argument, 0, 'r'},
   {"user-option", required_argument, 0, 'o'},
@@ -92,7 +93,11 @@ static int bench_main1(int argc, char *argv[])
 		   break;
 	      case 's':
 		   timer_init(tmin, repeat);
-		   speed(optarg);
+		   speed(optarg, 0);
+		   break;
+	      case 'S':
+		   timer_init(tmin, repeat);
+		   speed(optarg, 1);
 		   break;
 	      case 'd':
 		   report_can_do(optarg);
@@ -186,7 +191,7 @@ static int bench_main1(int argc, char *argv[])
         benchmarked */
      while (optind < argc) {
 	  timer_init(tmin, repeat);
-	  speed(argv[optind++]);
+	  speed(argv[optind++], 0);
      }
 
      bench_free(short_options);     

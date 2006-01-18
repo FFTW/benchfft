@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2001 Matteo Frigo
- * Copyright (c) 2001 Steven G. Johnson
+ * Copyright (c) 2001 Massachusetts Institute of Technology
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,46 +18,48 @@
  *
  */
 
-/* $Id: speed.c,v 1.12 2003-04-22 14:40:05 athena Exp $ */
+/* $Id: speed.c,v 1.13 2006-01-18 01:40:38 athena Exp $ */
 
-#include "config.h"
 #include "bench.h"
 
-void speed(const char *param)
+void speed(const char *param, int setup_only)
 {
      double *t;
-     int iter, k;
+     int iter = 0, k;
      struct problem *p;
      double tmin, y;
 
-     t = bench_malloc(time_repeat * sizeof(double));
+     t = (double *) bench_malloc(time_repeat * sizeof(double));
+
+     for (k = 0; k < time_repeat; ++k) 
+	  t[k] = 0;
 
      p = problem_parse(param);
      BENCH_ASSERT(can_do(p));
      problem_alloc(p);
      problem_zero(p);
 
-     timer_start();
+     timer_start(LIBBENCH_TIMER);
      setup(p);
-     p->setup_time = timer_stop();
+     p->setup_time = timer_stop(LIBBENCH_TIMER);
+     
+     if (setup_only)
+	  goto done;
 
  start_over:
      for (iter = 1; iter < (1<<30); iter *= 2) {
 	  tmin = 1.0e20;
 	  for (k = 0; k < time_repeat; ++k) {
-	       timer_start();
+	       timer_start(LIBBENCH_TIMER);
 	       doit(iter, p);
-	       t[k] = timer_stop();
-	  }
-	  
-	  for (k = 0; k < time_repeat; ++k) {
-	       y = t[k];
+	       y = timer_stop(LIBBENCH_TIMER);
 	       if (y < 0) /* yes, it happens */
 		    goto start_over;
+	       t[k] = y;
 	       if (y < tmin)
 		    tmin = y;
 	  }
-
+	  
 	  if (tmin >= time_min)
 	       goto done;
      }
@@ -67,9 +69,12 @@ void speed(const char *param)
  done:
      done(p);
 
-     for (k = 0; k < time_repeat; ++k) {
-	  t[k] /= iter;
-     }
+     if (iter) 
+	  for (k = 0; k < time_repeat; ++k) 
+	       t[k] /= iter;
+     else
+	  for (k = 0; k < time_repeat; ++k) 
+	       t[k] = 0;
 
      report(p, t, time_repeat);
 

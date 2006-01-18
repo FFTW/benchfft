@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2001 Matteo Frigo
- * Copyright (c) 2001 Steven G. Johnson
+ * Copyright (c) 2001 Massachusetts Institute of Technology
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,9 @@
  *
  */
 
-/* $Id: timer.c,v 1.9 2005-09-22 12:43:47 athena Exp $ */
+/* $Id: timer.c,v 1.10 2006-01-18 01:40:38 athena Exp $ */
 
-#include "config.h"
+#include "bench.h"
 #include <stdio.h>
 
 /* 
@@ -43,6 +43,29 @@
 
 double time_min;
 int time_repeat;
+
+#if !defined(HAVE_TIMER) && (defined(__WIN32__) || defined(_WIN32) || defined(_WINDOWS) || defined(__CYGWIN__))
+#include <windows.h>
+typedef LARGE_INTEGER mytime;
+
+static mytime get_time(void)
+{
+     mytime tv;
+     QueryPerformanceCounter(&tv);
+     return tv;
+}
+
+static double elapsed(mytime t1, mytime t0)
+{
+     LARGE_INTEGER freq;
+     QueryPerformanceFrequency(&freq);
+     return ((double) (t1.QuadPart - t0.QuadPart)) /
+	  ((double) freq.QuadPart);
+}
+
+#define HAVE_TIMER
+#endif
+
 
 #if defined(HAVE_GETTIMEOFDAY) && !defined(HAVE_TIMER)
 typedef struct timeval mytime;
@@ -67,51 +90,21 @@ static double elapsed(mytime t1, mytime t0)
 #error "timer not defined"
 #endif
 
-/*
- * Routines to calibrate the slow timer.  Derived from Larry McVoy's
- * lmbench, distributed under the GNU General Public License.
- *
- *
-
-From: "Staelin, Carl" <staelin@exch.hpl.hp.com>
-To: Larry McVoy <lm@bitmover.com>, athena@fftw.org, stevenj@alum.mit.edu
-Date: Sat, 7 Jul 2001 23:50:49 -0700 
-
-Matteo,
-
-You have my permission to use the enough_duration, 
-duration, time_N, find_N, test_time, and 
-compute_enough from lib_timing.c routines
-under the LGPL license.  You may also use the
-BENCH* macros from bench.h under the LGPL
-if you find them useful.
-
-*/
-
-
-typedef char *TYPE;
-static const double tmin_try = 1.0e-6; /* seconds */
 static const double tmax_try = 1.0;    /* seconds */
-static const double tolerance = 0.01;
+static const int nmin = 128, nmax = 133;
 
-static TYPE **work(int n, TYPE **p)
+static double time_one(int n)
 {
-#define	ENOUGH_DURATION_TEN(one)	one one one one one one one one one one
-     while (n-- > 0) {
-	  ENOUGH_DURATION_TEN(p = (TYPE **) *p;);
-     }
-     return (p);
-}
-
-/* do N units of work */
-static double duration(int n)
-{
-     TYPE   *x = (TYPE *)&x;
-     TYPE  **p = (TYPE **)&x;
+     float X[16], Y[16];
+     int i;
      mytime t0, t1;
 
+     for (i = 0; i < 16; ++i)
+	  X[i] = 0;
+
      t0 = get_time();
-     p = work(n, p);
+     for (i = 0; i < n; ++i)
+	  bench_fft8(X, X+1, Y, Y+1, 2, 2);
      t1 = get_time();
      return (elapsed(t1, t0));
 }
@@ -121,77 +114,66 @@ static double time_n(int n)
      int     i;
      double  tmin;
 
-     tmin = duration(n);
+     tmin = time_one(n);
      for (i = 1; i < time_repeat; ++i) {
-	  double t = duration(n);
+	  double t = time_one(n);
 	  if (t < tmin)
 	       tmin = t;
      }
      return tmin;
 }
 
-/* return the amount of work needed to run TMIN seconds */
-static int find_n(double tmin)
+static int good_enough_p(int n, double *tp)
 {
-     int tries;
-     int n = 10000;
-     double t;
-	
-     t = time_n(n);
+     int i;
+     double t = 0.0;
 
-     for (tries = 0; tries < 10; ++tries) {
-	  if (0.98 * tmin < t && t < 1.02 * tmin)
-	       return n;
-	  if (t < tmin_try)
-	       n *= 10;
-	  else {
-	       double k = n;
+     /* vary nmin and see if time scales proportionally */
+     for (i = nmin; i < nmax; ++i) {
+	  double t1 = time_n(n * i);
 
-	       k /= t;
-	       k *= tmin;
-	       n = k + 1;
+	  if (t1 <= 0)
+	       return 0; /* not enough resolution */
+
+	  if (t1 >= tmax_try) {
+	       t = t1;
+	       break;
 	  }
-	  t = time_n(n);
-     }
-     return (-1);
-}
 
-/* Verify that small modifications affect the runtime proportionally */
-static int acceptable(double tmin)
-{
-     int n;
-     unsigned int i;
-     static const double test_points[] = { 1.015, 1.02, 1.035 };
-     double baseline;
-     
-     n = find_n(tmin);
-     if (n <= 0)
-	  return 0;
+	  t = (i == nmin) ? t1 : t;
 
-     baseline = time_n(n);
+	  if (t1 >= (t * (i + 0.5) / nmin))
+	       return 0;
 
-     for (i = 0; i < sizeof(test_points) / sizeof(double); ++i) {
-	  double usecs = time_n((int)((double) n * test_points[i]));
-	  double expected = baseline * test_points[i];
-	  double diff = expected > usecs ? expected - usecs : usecs - expected;
-	  if (diff / expected > tolerance)
+	  if (t1 <= (t * (i - 0.5) / nmin))
 	       return 0;
      }
+
+     *tp = t;
      return 1;
 }
 
 static double calibrate(void)
 {
-     double tmin;
+     double t = tmax_try;
+     int n;
 
-     for (tmin = tmin_try; tmin < tmax_try && !acceptable(tmin); tmin *= 2.0)
-	  ;
-     return tmin;
+     for (n = 1; n < (1 << 20); n += n) 
+	  if (good_enough_p(n, &t))
+	       break;
+
+     return t;
 }
 
 
 void timer_init(double tmin, int repeat)
 {
+     static int inited = 0;
+
+     if (inited)
+	  return;
+     inited = 1;
+
      if (!repeat)
 	  repeat = 8;
      time_repeat = repeat;
@@ -202,17 +184,19 @@ void timer_init(double tmin, int repeat)
 	  time_min = calibrate();
 }
 
-static mytime t0;
+static mytime t0[NTIMERS];
 
-void timer_start(void)
+void timer_start(int n)
 {
-     t0 = get_time();
+     BENCH_ASSERT(n >= 0 && n < NTIMERS);
+     t0[n] = get_time();
 }
 
-double timer_stop(void)
+double timer_stop(int n)
 {
      mytime t1;
+     BENCH_ASSERT(n >= 0 && n < NTIMERS);
      t1 = get_time();
-     return elapsed(t1, t0);
+     return elapsed(t1, t0[n]);
 }
 

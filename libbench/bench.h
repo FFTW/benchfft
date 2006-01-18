@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: bench.h,v 1.14 2003-05-01 10:50:34 athena Exp $ */
+/* $Id: bench.h,v 1.15 2006-01-18 01:40:38 athena Exp $ */
 
 /* benchmark program definitions */
 #include "config.h"
@@ -29,8 +29,14 @@ extern int time_repeat;
 extern int verbose;
 
 extern void timer_init(double tmin, int repeat);
-extern void timer_start(void);
-extern double timer_stop(void);
+extern void bench_fft8(const float *ri, const float *ii, float *ro, float *io,
+		       int is, int os);
+
+#define LIBBENCH_TIMER 0
+#define USER_TIMER 1
+#define NTIMERS 2
+extern void timer_start(int which_timer);
+extern double timer_stop(int which_timer);
 
 /* report functions */
 extern void (*report)(const struct problem *p, double *t, int st);
@@ -46,7 +52,7 @@ void report_info_all(void);
 
 extern int bench_main(int argc, char *argv[]);
 
-extern void speed(const char *param);
+void speed(const char *param, int setup_only);
 extern void verify(const char *param, int rounds, double tol);
 extern void accuracy(const char *param, int rounds);
 
