@@ -50,7 +50,7 @@ for prog in arch "arch -k" machine "uname -X" "/usr/sbin/sizer -c" vmstat sys ho
 done 2>/dev/null
 
 # programs with a more verbose output
-for prog in hinv /usr/sbin/sysdef /usr/contrib/bin/machinfo '/usr/sbin/psrinfo -v' '/usr/sbin/pset_info' '/usr/sbin/ainfo NODEINFO' '/usr/sbin/AppleSystemProfiler'; do
+for prog in x86info hinv /usr/sbin/sysdef /usr/contrib/bin/machinfo '/usr/sbin/psrinfo -v' '/usr/sbin/pset_info' '/usr/sbin/ainfo NODEINFO' '/usr/sbin/AppleSystemProfiler'; do
   x=`$prog 2>/dev/null`
   if test -n "$x"; then 
     echo
