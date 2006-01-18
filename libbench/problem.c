@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: problem.c,v 1.15 2004-01-07 01:57:33 stevenj Exp $ */
+/* $Id: problem.c,v 1.16 2006-01-18 03:30:10 athena Exp $ */
 
 #include "config.h"
 #include "bench.h"
@@ -27,6 +27,41 @@
 #include <ctype.h>
 #include <string.h>
 
+
+static const char *parseint(const char *s, int *n)
+{
+     int sign = 1;
+
+     *n = 0;
+
+     if (*s == '-') { 
+	  sign = -1;
+	  ++s;
+     } else if (*s == '+') { 
+	  sign = +1; 
+	  ++s; 
+     }
+
+     BENCH_ASSERT(isdigit(*s));
+     while (isdigit(*s)) {
+	  *n = *n * 10 + (*s - '0');
+	  ++s;
+     }
+     
+     *n *= sign;
+
+     if (*s == 'k' || *s == 'K') {
+	  *n *= 1024;
+	  ++s;
+     }
+
+     if (*s == 'm' || *s == 'M') {
+	  *n *= 1024 * 1024;
+	  ++s;
+     }
+
+     return s;
+}
 
 /* parse a problem description, return a problem */
 struct problem *problem_parse(const char *s)
@@ -66,14 +101,7 @@ struct problem *problem_parse(const char *s)
 
      /* parse size */
  L2:
-     n = 0;
-
-     BENCH_ASSERT(isdigit(*s));
-
-     while (isdigit(*s)) {
-	  n = n * 10 + (*s - '0');
-	  ++s;
-     }
+     s = parseint(s, &n);
 
      BENCH_ASSERT(n > 0);
      p->n[p->rank] = n;
@@ -91,14 +119,7 @@ struct problem *problem_parse(const char *s)
 	  /* parse vector size */
 	  ++s;
      L4:
-	  n = 0;
-
-	  BENCH_ASSERT(isdigit(*s));
-
-	  while (isdigit(*s)) {
-	       n = n * 10 + (*s - '0');
-	       ++s;
-	  }
+	  s = parseint(s, &n);
 
 	  BENCH_ASSERT(n > 0);
 	  p->vn[p->vrank] = n;

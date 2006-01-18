@@ -110,7 +110,10 @@ void setup(struct problem *p)
      BENCH_ASSERT(status);
      DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
 		  problem_in_place(p) ? DFTI_INPLACE : DFTI_NOT_INPLACE);
+#if 0
+     /* this disappeared in mkl 8 */
      DftiSetValue(the_descriptor, DFTI_INITIALIZATION_EFFORT, DFTI_HIGH);
+#endif
 		  
      DftiCommitDescriptor(the_descriptor);
 }
