@@ -299,10 +299,9 @@ void setup(struct problem *p)
 		   }
 		   break;
 	  }
-	  if (problem_in_place(p)) {
-	       stride1 = stride1o == 1 ? 1 : stride1o * 2;
-	       stride2 = stride2o * 2;
-	  }
+
+	  stride1 = stride1o == 1 ? 1 : stride1o * 2;
+	  stride2 = stride2o * 2;
      }
 
      work1 = (double *) bench_malloc(sizeof(double) * nwork1);
@@ -412,9 +411,8 @@ void doit(int iter, struct problem *p)
 	  switch (p->rank) {
 	      case 1:
 		   n1 = p->n[0]; n2 = 1;
-		   stride2 = n1; stride2o = n1/2 + 1;
-		   if (problem_in_place(p))
-			stride2 = stride2o * 2;
+		   stride2o = n1/2 + 1;
+		   stride2 = stride2o * 2;
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i) {
 			     RCFT(&init,
@@ -434,10 +432,9 @@ void doit(int iter, struct problem *p)
 		   break;
 	      case 2:
 		   n1 = p->n[1]; n2 = p->n[0];
-		   stride1 = 1; stride2 = n1;
+		   stride1 = 1; 
 		   stride2o = n1/2 + 1;
-		   if (problem_in_place(p))
-                        stride2 = stride2o * 2;
+		   stride2 = stride2o * 2;
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i) {
 			     RCFT2(&init,
@@ -457,12 +454,10 @@ void doit(int iter, struct problem *p)
 		   break;
 	      case 3:
 		   n1 = p->n[2]; n2 = p->n[1]; n3 = p->n[0];
-		   stride1 = n1; stride2 = n1*n2;
-		   stride1o = n1/2 + 1; stride2o = stride1o * n2;
-		   if (problem_in_place(p)) {
-			stride1 = stride1o * 2;
-                        stride2 = stride2o * 2;
-		   }
+		   stride1o = n1/2 + 1; 
+		   stride2o = stride1o * n2;
+		   stride1 = stride1o * 2;
+		   stride2 = stride2o * 2;
 		   if (p->sign == -1)
 			for (i = 0; i < iter; ++i) {
 			     RCFT3((bench_real *) p->in, &stride1, &stride2, 
@@ -504,16 +499,10 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 void copy_r2c(struct problem *p, bench_complex *out)
 {
-     if (problem_in_place(p))
-	  copy_r2c_unpacked(p, out);	  
-     else
-	  copy_r2c_packed(p, out);
+     copy_r2c_unpacked(p, out);	  
 }
 
 void copy_c2r(struct problem *p, bench_complex *in)
 {
-     if (problem_in_place(p))
-	  copy_c2r_unpacked(p, in);
-     else
-	  copy_c2r_packed(p, in);
+     copy_c2r_unpacked(p, in);
 }
