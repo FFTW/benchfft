@@ -397,7 +397,7 @@ cat <<EOF
                                     HP MLIB (PA-RISC/Itanium): ${have_mlib-no}
                          Sun Performance Library (SPARC only): ${have_sunperf-no}
                                       sgimath (SGI/MIPS only): ${have_sgimath-no}
-                                          ESSL (IBM/AIX only): ${have_essl-no}
+                                           ESSL (IBM/PowerPC): ${have_essl-no}
                                   Apple VDSP (Macintosh only): ${have_vdsp-no}
 
                                NAG (proprietary, www.nag.com): ${have_nag-no}
