@@ -389,37 +389,6 @@ esac
 AC_SUBST(PFFTW_ARCH)
 AM_CONDITIONAL(HAVE_PFFTW_ARCH, test -n "$PFFTW_ARCH")
 
-cat <<EOF
-*******************************************************************************
-		    Optional FFT libraries Found:
-
-                                       DXML/CXML (Alpha only): ${have_dxml-no}
-                                    HP MLIB (PA-RISC/Itanium): ${have_mlib-no}
-                         Sun Performance Library (SPARC only): ${have_sunperf-no}
-                                      sgimath (SGI/MIPS only): ${have_sgimath-no}
-                                           ESSL (IBM/PowerPC): ${have_essl-no}
-                                  Apple VDSP (Macintosh only): ${have_vdsp-no}
-
-                               NAG (proprietary, www.nag.com): ${have_nag-no}
-                              IMSL (proprietary, www.vni.com): ${have_imsl-no}
-             Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
-       Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
-
-      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
-                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
-                                          Intel IPPS (gratis): ${have_ipps-no}
-                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
-                                            AMD ACML (gratis): ${have_acml-no}
-
-                                FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
-               FFTW 2.x single precision (free, www.fftw.org): ${have_sfftw2_all-no}
-                                FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
-               FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
-  GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
-                        FFMPEG (free, ffmpeg.sourceforge.net): ${have_ffmpeg-no}
-*******************************************************************************
-EOF
-
 AC_OUTPUT([
 Makefile
 libbench/Makefile
@@ -488,3 +457,34 @@ benchees/vbigdsp/Makefile
 benchees/vdsp/Makefile
 
 ])
+
+cat <<EOF
+*******************************************************************************
+		    Optional FFT libraries Found:
+
+                                       DXML/CXML (Alpha only): ${have_dxml-no}
+                                    HP MLIB (PA-RISC/Itanium): ${have_mlib-no}
+                         Sun Performance Library (SPARC only): ${have_sunperf-no}
+                                      sgimath (SGI/MIPS only): ${have_sgimath-no}
+                                           ESSL (IBM/PowerPC): ${have_essl-no}
+                                  Apple VDSP (Macintosh only): ${have_vdsp-no}
+
+                               NAG (proprietary, www.nag.com): ${have_nag-no}
+                              IMSL (proprietary, www.vni.com): ${have_imsl-no}
+             Numerical Recipes in C (proprietary, www.nr.com): ${have_nrc-no}
+       Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
+
+      Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
+                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
+                                          Intel IPPS (gratis): ${have_ipps-no}
+                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
+                                            AMD ACML (gratis): ${have_acml-no}
+
+                                FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}
+               FFTW 2.x single precision (free, www.fftw.org): ${have_sfftw2_all-no}
+                                FFTW 3.x (free, www.fftw.org): ${have_fftw3_all-no}
+               FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
+  GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
+                        FFMPEG (free, ffmpeg.sourceforge.net): ${have_ffmpeg-no}
+*******************************************************************************
+EOF

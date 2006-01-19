@@ -1,0 +1,50 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=${HOSTNAME:-`hostname`}
+VARIANT=${VARIANT:-gcc}
+DIRNAME=$HOSTNAME-$VARIANT
+
+if test "$VARIANT" = gcc-3.4; then
+    CC=gcc-3.4
+    F77=g77-3.4
+    CXX=g++-3.4
+    FFTW_DIR=/scratch/local/gcc-3.4
+else
+    CC=gcc
+    F77=g77
+    CXX=g++
+    FFTW_DIR=/scratch/local/gcc
+fi
+
+CPPFLAGS="-I$FFTW_DIR/include" 
+LDFLAGS="-L$FFTW_DIR/lib"
+
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+FLIBS="/opt/ibmcmp/lib/libxlfmath.so.1 /opt/ibmcmp/lib/libxlomp_ser.so.1 /opt/ibmcmp/lib/libxlf90_t.so.1 /opt/ibmcmp/xlf/9.1/lib/libxl.a -lm"
+
+export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
+
+export LD_LIBRARY_PATH=/opt/ibmcmp/lib
+
+if test "$NORUN"xxx = xxx; then
+    rm -rf $DIRNAME
+    mkdir $DIRNAME
+
+
+    ( 
+	cd $DIRNAME
+	../configure --disable-single --with-f90
+	make -k; make -k benchmark; make clean
+	../configure --enable-single --with-f90
+	make -k; make -k benchmark; make clean
+	../configure --disable-single --with-f90
+	make -k; make -k accuracy; make clean
+	../configure --enable-single --with-f90
+	make -k; make -k accuracy; make clean
+	make collect OUTFILE=$DIRNAME
+    )
+fi
