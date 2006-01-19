@@ -31,6 +31,13 @@ END_BENCH_DOC
 
 DFTI_DESCRIPTOR *the_descriptor;
 
+#define ERROR_CHECK							\
+     if (status) {							\
+	  if (verbose > 3)						\
+	       printf("DFTI error: %s\n", DftiErrorMessage(status));	\
+	  return 0;							\
+     }
+
 static int mkdescriptor(struct problem *p)
 {
      long status;
@@ -56,10 +63,32 @@ static int mkdescriptor(struct problem *p)
 					p->rank,
 					p->n);
 
-     if (status && verbose > 3) 
-	  printf("DFTI error: %s\n", DftiErrorMessage(status));
+     ERROR_CHECK;
+
+     status = DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
+			   problem_in_place(p) ? 
+			   DFTI_INPLACE : DFTI_NOT_INPLACE);
      
-     return (!status);
+     ERROR_CHECK;
+
+#if 0
+     /* this disappeared in mkl 8 */
+     DftiSetValue(the_descriptor, DFTI_INITIALIZATION_EFFORT, DFTI_HIGH);
+#endif
+
+     if (p->kind == PROBLEM_REAL && p->rank > 1) {
+	  /* we are already benchmarking CCS in doit.c */
+	  status = DftiSetValue(the_descriptor, DFTI_PACKED_FORMAT, 
+				DFTI_CCE_FORMAT);
+     }
+
+     ERROR_CHECK;
+
+     status = DftiCommitDescriptor(the_descriptor);
+
+     ERROR_CHECK;
+
+     return 1;
 }
 
 int can_do(struct problem *p)
@@ -77,20 +106,12 @@ int can_do(struct problem *p)
 
 void copy_h2c(struct problem *p, bench_complex *out)
 {
-     if (p->rank == 1) {
-	  copy_h2c_unpacked(p, out, -1.0);
-     } else {
-	  BENCH_ASSERT(0  /* not implemented in mkl 6.0 */);
-     }
+     copy_h2c_unpacked(p, out, -1.0);
 }
 
 void copy_c2h(struct problem *p, bench_complex *in)
 {
-     if (p->rank == 1) {
-	  copy_c2h_unpacked(p, in, -1.0);
-     } else {
-	  BENCH_ASSERT(0  /* not implemented in mkl 6.0 */);
-     }
+     copy_c2h_unpacked(p, in, -1.0);
 }
 
 void copy_r2c(struct problem *p, bench_complex *out)
@@ -108,14 +129,6 @@ void setup(struct problem *p)
      int status = mkdescriptor(p);
 
      BENCH_ASSERT(status);
-     DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
-		  problem_in_place(p) ? DFTI_INPLACE : DFTI_NOT_INPLACE);
-#if 0
-     /* this disappeared in mkl 8 */
-     DftiSetValue(the_descriptor, DFTI_INITIALIZATION_EFFORT, DFTI_HIGH);
-#endif
-		  
-     DftiCommitDescriptor(the_descriptor);
 }
 
 void doit(int iter, struct problem *p)
