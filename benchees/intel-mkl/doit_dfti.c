@@ -32,16 +32,19 @@ END_BENCH_DOC
 DFTI_DESCRIPTOR *the_descriptor;
 
 #define ERROR_CHECK							\
-     if (status) {							\
+     if (!DftiErrorClass(status, DFTI_NO_ERROR)) {			\
 	  if (verbose > 3)						\
 	       printf("DFTI error: %s\n", DftiErrorMessage(status));	\
 	  return 0;							\
      }
 
+#define MAXRNK 7 /* or so the paper claims */
 static int mkdescriptor(struct problem *p)
 {
      long status;
      enum DFTI_CONFIG_VALUE domain;
+
+     the_descriptor = 0;
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  domain = DFTI_COMPLEX;
@@ -62,30 +65,54 @@ static int mkdescriptor(struct problem *p)
 					domain,
 					p->rank,
 					p->n);
-
      ERROR_CHECK;
 
      status = DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
 			   problem_in_place(p) ? 
 			   DFTI_INPLACE : DFTI_NOT_INPLACE);
-     
      ERROR_CHECK;
+
+     status = DftiSetValue(the_descriptor,
+			   DFTI_CONJUGATE_EVEN_STORAGE, 
+			   DFTI_COMPLEX_COMPLEX);
+     ERROR_CHECK;
+
+     /* we are already benchmarking CCS in doit.c */
+     status = DftiSetValue(the_descriptor, DFTI_PACKED_FORMAT, 
+			   DFTI_CCE_FORMAT);
+     ERROR_CHECK;
+
+
+     if (p->kind == PROBLEM_REAL && p->rank <= MAXRNK) {
+	  /* these guys must be kidding */
+	  long strides[MAXRNK+1];
+	  int i;
+
+	  strides[p->rank] = 1;
+	  if (p->rank > 0) {
+	       strides[p->rank - 1] = p->n[p->rank - 1] / 2 + 1;
+
+	       for (i = p->rank - 2; i > 0; --i) 
+		    strides[i] = strides[i+1] * p->n[i];
+
+	       /* if this is not zero the thing doesn't work */
+	       strides[0] = 0;
+	  }
+	  
+	  status = DftiSetValue(the_descriptor, 
+				(p->sign > 0 ? 
+				 DFTI_INPUT_STRIDES : DFTI_OUTPUT_STRIDES), 
+				strides);
+	  ERROR_CHECK;
+     }
 
 #if 0
      /* this disappeared in mkl 8 */
      DftiSetValue(the_descriptor, DFTI_INITIALIZATION_EFFORT, DFTI_HIGH);
+     ERROR_CHECK;
 #endif
 
-     if (p->kind == PROBLEM_REAL && p->rank > 1) {
-	  /* we are already benchmarking CCS in doit.c */
-	  status = DftiSetValue(the_descriptor, DFTI_PACKED_FORMAT, 
-				DFTI_CCE_FORMAT);
-     }
-
-     ERROR_CHECK;
-
      status = DftiCommitDescriptor(the_descriptor);
-
      ERROR_CHECK;
 
      return 1;
@@ -97,7 +124,8 @@ int can_do(struct problem *p)
 
      /* ask mkl whether it can do it or not */
      if (mkdescriptor(p)) {
-	  DftiFreeDescriptor(&the_descriptor);
+	  if (the_descriptor)
+	       DftiFreeDescriptor(&the_descriptor);
 	  return 1;
      } else 
 	  return 0;
@@ -116,12 +144,18 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 void copy_r2c(struct problem *p, bench_complex *out)
 {
-     copy_r2c_unpacked(p, out);
+     if (problem_in_place(p))
+	  copy_r2c_unpacked(p, out);	  
+     else
+	  copy_r2c_packed(p, out);
 }
 
 void copy_c2r(struct problem *p, bench_complex *in)
 {
-     copy_c2r_unpacked(p, in);
+     if (problem_in_place(p))
+	  copy_c2r_unpacked(p, in);
+     else
+	  copy_c2r_packed(p, in);
 }
 
 void setup(struct problem *p)
