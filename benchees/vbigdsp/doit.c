@@ -67,9 +67,8 @@ int can_do(struct problem *p)
 {
      return (SINGLE_PRECISION &&
 	     p->rank <= 2 &&
-	     p->n[0] >= 2 &&
+	     p->n[0] >= 4 &&
 	     (p->kind == PROBLEM_COMPLEX 
-	      || p->rank == 1
 	      || (p->n[0] >= 8 && p->n[1] >= 8)) &&
              problem_power_of_two(p, 1));
 }
