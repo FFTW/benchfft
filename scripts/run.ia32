@@ -5,7 +5,7 @@ HOSTNAME=${HOSTNAME:-`hostname`}
 VARIANT=${VARIANT:-gcc}
 DIRNAME=$HOSTNAME-$VARIANT
 ICCARCH=${ICCARCH:-"-xW"}
-GCCARCH=${ICCARCH:-"pentium4"}
+GCCARCH=${GCCARCH:-"pentium4"}
 
 if test "$VARIANT" = icc; then
     CC=icc
