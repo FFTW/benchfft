@@ -1,7 +1,9 @@
-dnl @synopsis AX_GCC_ARCHFLAG(PORTABLE?, [ACTION-SUCCESS], [ACTION-FAILURE])
+dnl @synopsis AX_GCC_ARCHFLAG([PORTABLE?], [ACTION-SUCCESS], [ACTION-FAILURE])
+dnl @summary find target architecture name for gcc -march/-mtune flags
+dnl @category Misc
 dnl
 dnl This macro tries to guess the "native" arch corresponding to
-dnl the host architecture for use with gcc's -march=arch or -mtune=arch
+dnl the target architecture for use with gcc's -march=arch or -mtune=arch
 dnl flags.  If found, the cache variable $ax_cv_gcc_archflag is set to this
 dnl flag and ACTION-SUCCESS is executed; otherwise $ax_cv_gcc_archflag is
 dnl is set to "unknown" and ACTION-FAILURE is executed.  The default
@@ -22,7 +24,11 @@ dnl called unless the user specified --with-gcc-arch manually.
 dnl
 dnl Requires macros: AX_CHECK_COMPILER_FLAGS, AX_GCC_X86_CPUID
 dnl
-dnl @version $Id: ax_gcc_archflag.m4,v 1.1 2005-02-12 23:31:11 stevenj Exp $
+dnl (The main emphasis here is on recent CPUs, on the principle that
+dnl  doing high-performance computing on old hardware is uncommon.)
+dnl
+dnl @version 2006-01-04
+dnl @license GPLWithACException
 dnl @author Steven G. Johnson <stevenj@alum.mit.edu> and Matteo Frigo.
 AC_DEFUN([AX_GCC_ARCHFLAG],
 [AC_REQUIRE([AC_PROG_CC])
@@ -37,10 +43,11 @@ AC_CACHE_VAL(ax_cv_gcc_archflag,
 [
 ax_cv_gcc_archflag="unknown"
 
-if test "$GCC" = yes -a "$cross_compiling" = no; then
+if test "$GCC" = yes; then
 
 if test "x$ax_gcc_arch" = xyes; then
 ax_gcc_arch=""
+if test "$cross_compiling" = no; then
 case $host_cpu in
   i386*) ax_gcc_arch=i386 ;;
   i486*) ax_gcc_arch=i486 ;;
@@ -57,20 +64,23 @@ case $host_cpu in
 	    *6a?:*[[234]]:*:*) ax_gcc_arch="pentium3 pentiumpro" ;;
 	    *6[[789b]]?:*:*:*) ax_gcc_arch="pentium3 pentiumpro" ;;
 	    *6??:*:*:*) ax_gcc_arch=pentiumpro ;;
-            *f3[[37]]:*:*:*) ax_gcc_arch="prescott pentium4 pentiumpro";;
-            *f34:*:*:*) ax_gcc_arch="nocona prescott pentium4 pentiumpro";;
+            *f3[[347]]:*:*:*|*f4[1347]:*:*:*)
+		case $host_cpu in
+                  x86_64*) ax_gcc_arch="nocona pentium4 pentiumpro" ;;
+                  *) ax_gcc_arch="prescott pentium4 pentiumpro" ;;
+                esac ;;
             *f??:*:*:*) ax_gcc_arch="pentium4 pentiumpro";;
           esac ;;
        *:68747541:*:*) # AMD
           case $ax_cv_gcc_x86_cpuid_1 in
 	    *5[[67]]?:*:*:*) ax_gcc_arch=k6 ;;
-	    *5[[8c]]?:*:*:*) ax_gcc_arch="k6-2 k6" ;;
-	    *5[[9d]]?:*:*:*) ax_gcc_arch="k6-3 k6" ;;
+	    *5[[8d]]?:*:*:*) ax_gcc_arch="k6-2 k6" ;;
+	    *5[[9]]?:*:*:*) ax_gcc_arch="k6-3 k6" ;;
 	    *60?:*:*:*) ax_gcc_arch=k7 ;;
 	    *6[[12]]?:*:*:*) ax_gcc_arch="athlon k7" ;;
 	    *6[[34]]?:*:*:*) ax_gcc_arch="athlon-tbird k7" ;;
 	    *67?:*:*:*) ax_gcc_arch="athlon-4 athlon k7" ;;
-	    *6[[68]]?:*:*:*) 
+	    *6[[68a]]?:*:*:*) 
 	       AX_GCC_X86_CPUID(0x80000006) # L2 cache size
 	       case $ax_cv_gcc_x86_cpuid_0x80000006 in
                  *:*:*[[1-9a-f]]??????:*) # (L2 = ecx >> 16) >= 256
@@ -79,6 +89,7 @@ case $host_cpu in
 	       esac ;;
 	    *f[[4cef8b]]?:*:*:*) ax_gcc_arch="athlon64 k8" ;;
 	    *f5?:*:*:*) ax_gcc_arch="opteron k8" ;;
+	    *f7?:*:*:*) ax_gcc_arch="athlon-fx opteron k8" ;;
 	    *f??:*:*:*) ax_gcc_arch="k8" ;;
           esac ;;
 	*:746e6543:*:*) # IDT
@@ -99,14 +110,14 @@ case $host_cpu in
 
   sparc*)
      AC_PATH_PROG([PRTDIAG], [prtdiag], [prtdiag], [$PATH:/usr/platform/`uname -i`/sbin/:/usr/platform/`uname -m`/sbin/])
-     cputype=`(((grep cpu /proc/cpuinfo | cut -d: -f2) ; ($PRTDIAG -v |grep -i sparc) ) | head -n 1) 2> /dev/null`
+     cputype=`(((grep cpu /proc/cpuinfo | cut -d: -f2) ; ($PRTDIAG -v |grep -i sparc) ; grep -i cpu /var/run/dmesg.boot ) | head -n 1) 2> /dev/null`
      cputype=`echo "$cputype" | tr -d ' -' |tr $as_cr_LETTERS $as_cr_letters`
      case $cputype in
-         *ultrasparciv*) ax_gcc_arch="ultrasparc4 ultrasparc v9" ;;
+         *ultrasparciv*) ax_gcc_arch="ultrasparc4 ultrasparc3 ultrasparc v9" ;;
          *ultrasparciii*) ax_gcc_arch="ultrasparc3 ultrasparc v9" ;;
          *ultrasparc*) ax_gcc_arch="ultrasparc v9" ;;
-         *supersparc*) ax_gcc_arch="supersparc v8" ;;
-         *hypersparc*) ax_gcc_arch="hypersparc v8" ;;
+         *supersparc*|*tms390z5[[05]]*) ax_gcc_arch="supersparc v8" ;;
+         *hypersparc*|*rt62[[056]]*) ax_gcc_arch="hypersparc v8" ;;
          *cypress*) ax_gcc_arch=cypress ;;
      esac ;;
 
@@ -122,25 +133,32 @@ case $host_cpu in
   alphaev79) ax_gcc_arch="ev79 ev7 ev69 ev68 ev67" ;;
 
   powerpc*)
-     cputype=`((grep cpu /proc/cpuinfo | head -n 1 | cut -d: -f2 | sed 's/ //g') ; /usr/bin/machine ; /bin/machine) 2> /dev/null`
-     cputype=`echo $cputype | sed -e s/ppc//g`
+     cputype=`((grep cpu /proc/cpuinfo | head -n 1 | cut -d: -f2 | cut -d, -f1 | sed 's/ //g') ; /usr/bin/machine ; /bin/machine; grep CPU /var/run/dmesg.boot | head -n 1 | cut -d" " -f2) 2> /dev/null`
+     cputype=`echo $cputype | sed -e 's/ppc//g;s/ *//g'`
      case $cputype in
        *750*) ax_gcc_arch="750 G3" ;;
+       *740[[0-9]]*) ax_gcc_arch="$cputype 7400 G4" ;;
+       *74[[4-5]][[0-9]]*) ax_gcc_arch="$cputype 7450 G4" ;;
        *74[[0-9]][[0-9]]*) ax_gcc_arch="$cputype G4" ;;
-       *970*) ax_gcc_arch="970 G5";;
-       *POWER4*|*power4*|*gq*) ax_gcc_arch="power4";;
+       *970*) ax_gcc_arch="970 G5 power4";;
+       *POWER4*|*power4*|*gq*) ax_gcc_arch="power4 970";;
+       *POWER5*|*power5*|*gr*|*gs*) ax_gcc_arch="power5 power4 970";;
+       603ev|8240) ax_gcc_arch="$cputype 603e 603";;
        *) ax_gcc_arch=$cputype ;;
      esac
      ax_gcc_arch="$ax_gcc_arch powerpc"
      ;;
 esac
+fi # not cross-compiling
 fi # guess arch
 
 if test "x$ax_gcc_arch" != x -a "x$ax_gcc_arch" != xno; then
-
 for arch in $ax_gcc_arch; do
   if test "x[]m4_default([$1],yes)" = xyes; then # if we require portable code
-    flags="-mtune=$arch -mcpu=$arch"
+    flags="-mtune=$arch"
+    # -mcpu=$arch and m$arch generate nonportable code on every arch except
+    # x86.  And some other arches (e.g. Alpha) don't accept -mtune.  Grrr.
+    case $host_cpu in i*86|x86_64*) flags="$flags -mcpu=$arch -m$arch";; esac
   else
     flags="-march=$arch -mcpu=$arch -m$arch"
   fi
@@ -151,7 +169,7 @@ for arch in $ax_gcc_arch; do
 done
 fi
 
-fi
+fi # $GCC=yes
 ])
 AC_MSG_CHECKING([for gcc architecture flag])
 AC_MSG_RESULT($ax_cv_gcc_archflag)
