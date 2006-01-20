@@ -25,6 +25,7 @@ int can_do(struct problem *p)
      return (DOUBLE_PRECISION &&
 	     p->rank == 1 &&
 	     p->kind == PROBLEM_COMPLEX &&
+	     p->n[0] >= 8 &&
 	     problem_power_of_two(p, 1)
 	  );
 }
