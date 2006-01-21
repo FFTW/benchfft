@@ -4,6 +4,7 @@ else
 endif
 
 INCLUDES = $(INCLBENCH)
+#BENCHMARK_USEROPT='-o=patient'
 
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBBENCH) -lacml @FLIBS@

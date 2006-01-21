@@ -6,6 +6,7 @@ VARIANT=${VARIANT:-gcc}
 DIRNAME=$HOSTNAME-$VARIANT
 ICCARCH=${ICCARCH:-"-xW"}
 GCCARCH=${GCCARCH:-"pentium4"}
+OPT=${OPT:-"/opt"}
 
 if test "$VARIANT" = icc; then
     CC=icc
@@ -16,14 +17,14 @@ if test "$VARIANT" = icc; then
     CXXFLAGS="-O3 $ICCARCH"
     FFTW_DIR=$HOME/local/icc
 else
-    FFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
+    CFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     CXXFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     FFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     FFTW_DIR=$HOME/local/gcc
 fi
 
-CPPFLAGS="-I/opt/intel/mkl/8.0.1/include -I/opt/intel/ipp/5.0/ia32/include -I$FFTW_DIR/include" 
-LDFLAGS="-L/opt/intel/mkl/8.0.1/lib/32 -L/opt/intel/ipp/5.0/ia32/sharedlib -L$FFTW_DIR/lib"
+CPPFLAGS="-I$OPT/intel/mkl/8.0.1/include -I$OPT/intel/ipp/5.0/ia32/include -I$FFTW_DIR/include -I$OPT/amd/acml-3.0/gnu32/include" 
+LDFLAGS="-L$OPT/intel/mkl/8.0.1/lib/32 -L$OPT/intel/ipp/5.0/ia32/sharedlib -L$FFTW_DIR/lib -L$OPT/amd/acml-3.0/gnu32/lib"
 
 MAKE=make
 
@@ -31,7 +32,7 @@ OMP_NUM_THREADS=1
 
 export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
 
-LD_LIBRARY_PATH=/opt/intel/fc/9.0/lib:/opt/intel/cc/9.0/lib:/opt/intel/mkl/8.0.1/lib/32:/opt/intel/ipp/5.0/ia32/sharedlib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$OPT/intel/fc/9.0/lib:$OPT/intel/cc/9.0/lib:$OPT/intel/mkl/8.0.1/lib/32:$OPT/intel/ipp/5.0/ia32/sharedlib:$OPT/amd/acml-3.0/gnu32/lib; export LD_LIBRARY_PATH
 
 if test "$NORUN"xxx = xxx; then
     rm -rf $DIRNAME

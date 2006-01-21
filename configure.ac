@@ -189,6 +189,7 @@ AC_CHECK_HEADERS(fft.h)
 # Check for AMD Core Math Library (ACML):
 AC_CHECK_LIB(acml, zfft1d_, [have_acml=yes], [], $FLIBS)
 AM_CONDITIONAL(HAVE_ACML, test -n "$have_acml")
+AC_CHECK_HEADERS(acml.h)
 
 # Check for ESSL library (some versions have only one precision):
 if test "x$benchfft_single" = xyes; then

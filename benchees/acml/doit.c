@@ -4,6 +4,10 @@
 #include <math.h>
 #include <stdio.h>
 
+#if HAVE_ACML_H
+#include <acml.h>
+#endif
+
 static const char *mkvers(void)
 {
      int major, minor;
@@ -13,13 +17,23 @@ static const char *mkvers(void)
      return buf;
 }
 
+int mode = 0;
+
+/* acml now has a FFTW-like planner---yeah! */
+void useropt(const char *arg)
+{
+     if (!strcmp(arg, "patient")) mode = 100;
+     else if (!strcmp(arg, "estimate")) mode = 0;
+
+     else fprintf(stderr, "unknown user option: %s.  Ignoring.\n", arg);
+}
+
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "acml")
 BENCH_DOC("package", "AMD Core Math Library (ACML)")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "transform is scaled by sqrt(n)")
-BENCH_DOC("notes", "backward real transform is scaled by 2")
 END_BENCH_DOC
 
 
@@ -69,12 +83,10 @@ void copy_h2c(struct problem *p, bench_complex *out)
 void copy_c2h(struct problem *p, bench_complex *in)
 {
      copy_c2h_1d_halfcomplex(p, in, +1.0);
-     ascale(p->in, p->size, 2.0);
 }
 
 void setup(struct problem *p)
 {
-     int mode = 0;
      int info;
  
      BENCH_ASSERT(can_do(p));
@@ -82,26 +94,26 @@ void setup(struct problem *p)
      if (p->kind == PROBLEM_COMPLEX) {
 	  switch (p->rank) {
 	      case 1:
-		   WORK = bench_malloc((2*p->n[0] + 100) *
+		   WORK = bench_malloc((5*p->n[0] + 100) *
 				       sizeof(bench_complex));
 		   CFFT1D(&mode, p->n, p->in, WORK, &info);
 		   break;
 	      case 2:
 		   WORK = bench_malloc((p->n[0] * p->n[1] 
-					+ 2 * p->n[0] 
-					+ 2 * p->n[1])
+					+ 5 * p->n[0] 
+					+ 5 * p->n[1])
 				       * sizeof(bench_complex));
 		   break;
 	      case 3:
 		   WORK = bench_malloc((p->n[0] * p->n[1] * p->n[2]
-					+ 2 * p->n[0] 
-					+ 2 * p->n[1]
-					+ 2 * p->n[2])
+					+ 5 * p->n[0] 
+					+ 5 * p->n[1]
+					+ 5 * p->n[2])
 				       * sizeof(bench_complex));
 		   break;
 	  }
      } else {
-	  WORK = bench_malloc((2*p->n[0] + 100) * sizeof(bench_complex));
+	  WORK = bench_malloc((5*p->n[0] + 100) * sizeof(bench_complex));
 	  if (p->sign == -1) {
 	       SCFFT(&mode, p->n, p->in, WORK, &info);
 	  } else {
