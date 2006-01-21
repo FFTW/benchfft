@@ -17,9 +17,10 @@ static const char *mkvers(void)
 
 BEGIN_BENCH_DOC 
 BENCH_DOC("name", "intel-mkl-f")
-BENCH_DOC("package", "Intel Math Kernel Library (MKL)")
+BENCH_DOC("package", "Intel Math Kernel Library (MKL), old interface")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "backward transform is scaled")
+BENCH_DOC("notes", "Intel now deprecates these routines in favor of the DFTI interface.")
 END_BENCH_DOC 
 
 int can_do(struct problem *p)
