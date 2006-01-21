@@ -10,16 +10,17 @@
 
 static const char *mkvers(void)
 {
-     int major, minor;
+     int major, minor, patch;
      static char buf[160];
-     acmlversion(&major, &minor);
-     sprintf(buf, "%d.%d", major, minor);
+     acmlversion(&major, &minor, &patch);
+     sprintf(buf, "%d.%d.%d", major, minor, patch);
      return buf;
 }
 
+
+/* acml now has a FFTW-like planner. */
 int mode = 0;
 
-/* acml now has a FFTW-like planner---yeah! */
 void useropt(const char *arg)
 {
      if (!strcmp(arg, "patient")) mode = 100;
@@ -34,6 +35,7 @@ BENCH_DOC("name", "acml")
 BENCH_DOC("package", "AMD Core Math Library (ACML)")
 BENCH_DOCF("version", mkvers)
 BENCH_DOC("notes", "transform is scaled by sqrt(n)")
+BENCH_DOC("notes", "using the runtime planner (MODE=100)")
 END_BENCH_DOC
 
 
