@@ -38,9 +38,9 @@ if test "$NORUN"xxx = xxx; then
 	../configure --enable-single --with-f90
 	make -k; make -k benchmark; make clean
 	../configure --disable-single --with-f90
-	make -k; make -k accuracy; make clean
+	make -k; nice -20 make -k accuracy; make clean
 	../configure --enable-single --with-f90
-	make -k; make -k accuracy; make clean
+	make -k; nice -20 make -k accuracy; make clean
 	make collect OUTFILE=$DIRNAME
     )
 fi
