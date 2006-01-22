@@ -17,6 +17,10 @@ else
     FFTW_DIR=/scratch/local/gcc
 fi
 
+CFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+CXXFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+FFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+
 CPPFLAGS="-I$FFTW_DIR/include" 
 LDFLAGS="-L$FFTW_DIR/lib"
 
