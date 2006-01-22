@@ -1,0 +1,44 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=power5
+DIRNAME=$HOSTNAME
+
+CC=gcc
+CXX=g++
+CFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+CXXFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+FFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+FFTW_DIR=$HOME/local/osx
+
+CPPFLAGS="-I$FFTW_DIR/include" 
+LDFLAGS="-L$FFTW_DIR/lib"
+
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+FLIBS="-lm"
+
+export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
+
+export LD_LIBRARY_PATH=$FFTW_DIR/lib
+
+if test "$NORUN"xxx = xxx; then
+    rm -rf $DIRNAME
+    mkdir $DIRNAME
+
+
+    ( 
+	cd $DIRNAME
+	../configure --disable-single  --disable-fortran
+	make -k; make -k benchmark; make clean
+	../configure --enable-single   --disable-fortran
+	make -k; make -k benchmark; make clean
+	../configure --disable-single   --disable-fortran
+	make -k; make -k accuracy; make clean
+	../configure --enable-single  --disable-fortran
+	make -k; make -k accuracy; make clean
+	make collect OUTFILE=$DIRNAME
+    )
+fi

@@ -1,0 +1,41 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=${HOSTNAME:-`hostname`}
+DIRNAME=$HOSTNAME
+OPT=$HOME/local/opt
+
+CFLAGS="-O3 -fomit-frame-pointer"
+CXXFLAGS="-O3 -fomit-frame-pointer"
+FFLAGS="-O3 -fomit-frame-pointer"
+FFTW_DIR=$HOME/local/opteron
+
+CPPFLAGS="-I$OPT/intel/mkl/8.0.1/include -I$FFTW_DIR/include -I$OPT/amd/acml-3.0/gnu64/include" 
+LDFLAGS="-L$OPT/intel/mkl/8.0.1/lib/em64t -L$FFTW_DIR/lib -L$OPT/amd/acml-3.0/gnu64/lib"
+
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
+
+LD_LIBRARY_PATH=$OPT/intel/mkl/8.0.1/lib/em64t:$OPT/amd/acml-3.0/gnu64/lib; export LD_LIBRARY_PATH
+
+if test "$NORUN"xxx = xxx; then
+    rm -rf $DIRNAME
+    mkdir $DIRNAME
+
+
+    ( 
+	cd $DIRNAME
+	../configure --disable-single --with-f90
+	make -k; $NICE make -k benchmark; make clean
+	../configure --enable-single --with-f90
+	make -k; $NICE make -k benchmark; make clean
+	../configure --disable-single --with-f90
+	make -k; make -k accuracy; make clean
+	../configure --enable-single --with-f90
+	make -k; make -k accuracy; make clean
+	make collect OUTFILE=$DIRNAME
+    )
+fi
