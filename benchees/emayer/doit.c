@@ -57,16 +57,16 @@ int can_do(struct problem *p)
 	  );
 }
 
-#define FFT F77_FUNC_(dlanczos_fwd,DLANCZOS_FWD)
+#define FFT FC_FUNC_(dlanczos_fwd,DLANCZOS_FWD)
 extern void FFT(bench_complex *a, int *two_n);
 
-#define IFFT F77_FUNC_(dlanczos_rev,DLANCZOS_REV)
+#define IFFT FC_FUNC_(dlanczos_rev,DLANCZOS_REV)
 extern void IFFT(bench_complex *a, int *two_n);
 
-#define REAL_FFT F77_FUNC_(dfft_fwd,DFFT_FWD)
+#define REAL_FFT FC_FUNC_(dfft_fwd,DFFT_FWD)
 extern void REAL_FFT(bench_real *a, int *n);
 
-#define REAL_IFFT F77_FUNC_(dfft_rev,DFFT_REV)
+#define REAL_IFFT FC_FUNC_(dfft_rev,DFFT_REV)
 extern void REAL_IFFT(bench_real *a, int *n);
 
 void setup(struct problem *p)

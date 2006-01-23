@@ -18,7 +18,7 @@
  *
  */
 
-/* $Id: main.c,v 1.5 2002-08-16 22:23:39 athena Exp $ */
+/* $Id: main.c,v 1.6 2006-01-23 21:00:56 stevenj Exp $ */
 
 #include "bench.h"
 
@@ -31,6 +31,12 @@
      extern "C"
 #  endif
      int F77_DUMMY_MAIN() { return 1; }
+#endif
+#if defined(FC_DUMMY_MAIN) && !defined(FC_F77_DUMMY_MAINS_IDENTICAL)
+#  ifdef __cplusplus
+     extern "C"
+#  endif
+     int FC_DUMMY_MAIN() { return 1; }
 #endif
 
 /* in a separate file so that the user can override it */

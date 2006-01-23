@@ -1,5 +1,5 @@
 if DOUBLE
-if HAVE_F90
+if HAVE_FC
 PRG = doit
 endif
 endif
@@ -12,7 +12,7 @@ LOCAL_COPIES = mpfun90.f90
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-doit_LDADD=mpfun90.o $(LIBBENCH) @F90LIBS@
+doit_LDADD=mpfun90.o $(LIBBENCH) @FCLIBS@
 
 # We need to extract just modules mpfuna and mpfung, and "unmodulize"
 # mpfung.  For one thing, autoconf doesn't know how to mangle
@@ -26,6 +26,6 @@ mpfun90.f90: extract
 	@PATCH@ $@ <$(srcdir)/mpfun90.patch
 
 mpfun90.o: mpfun90.f90
-	$(F90) @F90FLAGS@ -c mpfun90.f90
+	$(FC) @FCFLAGS@ -c $(FCFLAGS_f90) mpfun90.f90
 
 include ../Makefile.common

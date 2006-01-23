@@ -26,8 +26,8 @@ BENCH_DOC("notes",
 	  "The fftcache parameter is set to " STRINGIFY(FFTCACHE) "KB.  This may be wrong on your system.")
 END_BENCH_DOC
 
-#define SG_FFT_ F77_FUNC_(sg_fft, SG_FFT)
-extern void SG_FFT_();
+#define SG_FFT FC_FUNC_(sg_fft, SG_FFT)
+extern void SG_FFT();
  
 int can_do(struct problem *p)
 {
@@ -57,7 +57,7 @@ void doit(int iter, struct problem *p)
      double sign = p->sign;
 
      for (i = 0; i < iter; ++i) {
-	  SG_FFT_(&fftcache, &n1, &n2, &n3, &n1, &n2, &n3, in, out, &sign); 
+	  SG_FFT(&fftcache, &n1, &n2, &n3, &n1, &n2, &n3, in, out, &sign); 
      }
 }
 

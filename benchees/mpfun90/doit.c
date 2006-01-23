@@ -45,22 +45,22 @@ int can_do(struct problem *p)
 
 /* We must call mpinix before calling any FFT routines, in order to
    initialize the trig tables. */
-#define MPINIX_F77 F77_FUNC(mpinix, MPINIX)
-extern void MPINIX_F77(unsigned int *n);
+#define MPINIX FC_FUNC(mpinix, MPINIX)
+extern void MPINIX(unsigned int *n);
 
 /* Bailey complex FFT: */
-#define MPFFT1_F77 F77_FUNC(mpfft1, MPFFT1)
-extern void MPFFT1_F77(int *is, int *m, int *n1, int *n2,
+#define MPFFT1 FC_FUNC(mpfft1, MPFFT1)
+extern void MPFFT1(int *is, int *m, int *n1, int *n2,
 		       bench_complex *x, bench_complex *y);
 
 /* Bailey real<->complex FFT routines.  These just wrap around the
    complex FFT with the usual n/2 trick, so I'm not sure they're worth
    benchmarking separately. */
-#define MPFFTRC_F77 F77_FUNC(mpfftrc, MPFFTRC)
-extern void MPFFTRC_F77(int *is, int *m, int *n, int *nsq,
+#define MPFFTRC FC_FUNC(mpfftrc, MPFFTRC)
+extern void MPFFTRC(int *is, int *m, int *n, int *nsq,
 			bench_complex *x, bench_complex *y);
-#define MPFFTCR_F77 F77_FUNC(mpfftcr, MPFFTCR)
-extern void MPFFTCR_F77(int *is, int *m, int *n, int *nsq,
+#define MPFFTCR FC_FUNC(mpfftcr, MPFFTCR)
+extern void MPFFTCR(int *is, int *m, int *n, int *nsq,
 			bench_complex *x, bench_complex *y);
 
 static bench_complex *y = 0;
@@ -77,7 +77,7 @@ void setup(struct problem *p)
      n2 = 1 << (m - (m + 1) / 2);
      y = (bench_complex *) bench_malloc((n + n1 * mpnsp1) * 
 					sizeof(bench_complex));
-     MPINIX_F77(&n);
+     MPINIX(&n);
 }
 
 void doit(int iter, struct problem *p)
@@ -87,7 +87,7 @@ void doit(int iter, struct problem *p)
      int i;
 
      for (i = 0; i < iter; ++i) {
-	  MPFFT1_F77(&is, &m, &n1, &n2, in, y);
+	  MPFFT1(&is, &m, &n1, &n2, in, y);
      }
 }
 

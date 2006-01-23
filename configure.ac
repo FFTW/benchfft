@@ -52,38 +52,40 @@ AC_CHECK_PROG(TR, tr, tr)
 AC_CHECK_PROG(CP, cp, cp)
 AC_CHECK_PROG(PATCH, patch, patch)
 
-# Until autoconf gets separate F90 support, we must require that *all*
-# .f files be compiled F90 if we want anything to be compiled with F90.
-AC_ARG_WITH(f90, [AC_HELP_STRING([--with-f90],[use F90 compiler for Fortran])],
-	ok=$withval, ok=no)
-if test "x$ok" = "xyes"; then
-	AC_CHECK_PROGS(F90, f90 xlf90 pgf90 fort f95 xlf95 g95)
-	test -n "$F90" && F77="$F90"
-fi
-
 AC_PROG_F77
 if test -n "$F77"; then
-	dnl replace with AC_F77_LIBRARY_LDFLAGS when autoconf is fixed. 
 	AC_F77_LIBRARY_LDFLAGS
 	AC_F77_DUMMY_MAIN([], bench_f77_fails=yes)
 	if test "x$bench_f77_fails" = xyes; then
 		AC_MSG_WARN([Cannot figure out how to link C code with Fortran libraries.])
 		F77=""  # disable F77 benchmarks
-		F90=""  # F90 too, since they use the same compiler
 	else
 		AC_F77_WRAPPERS
 		AX_F77_CMAIN_FFLAGS
 	fi
 fi
 
-test "x$F90FLAGS" = x && F90FLAGS="$FFLAGS"
-test "x$F90LIBS" = x && F90LIBS="$FLIBS"
-AC_SUBST(F90FLAGS)
-AC_SUBST(F90LIBS)
+AC_PROG_FC([], [Fortran 90])
+if test -n "$FC"; then
+	AC_FC_LIBRARY_LDFLAGS
+	AC_FC_DUMMY_MAIN([], bench_fc_fails=yes)
+	if test "x$bench_fc_fails" = xyes; then
+		AC_MSG_WARN([Cannot figure out how to link C code with Fortran libraries.])
+		FC=""  # disable FC benchmarks
+	else
+		if test "x$FC_DUMMY_MAIN" = "x$F77_DUMMY_MAIN"; then
+			AC_DEFINE([FC_F77_DUMMY_MAINS_IDENTICAL], [1], [if identical])
+		fi
+		AC_FC_WRAPPERS
+		AC_LANG_PUSH(Fortran)
+		AC_FC_SRCEXT(f90)
+		AC_LANG_POP(Fortran)
+	fi
+fi
 
 AM_CONDITIONAL(HAVE_CXX, test -n "$CXX")
 AM_CONDITIONAL(HAVE_F77, test -n "$F77")
-AM_CONDITIONAL(HAVE_F90, test -n "$F90")
+AM_CONDITIONAL(HAVE_FC, test -n "$FC")
 
 # Checks for header files.
 AC_HEADER_STDC
