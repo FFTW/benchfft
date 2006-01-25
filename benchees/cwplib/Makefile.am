@@ -1,18 +1,8 @@
-if SINGLE
 PRG=doit
-endif
 
-PKG=cwplib
-INCLUDES = $(INCLBENCH) -I$(PKG)
-TARFILE=$(PKG).tar.gz
-EXTRA_DIST = $(TARFILE)
+INCLUDES = $(INCLBENCH)
 
-doit_SOURCES=doit.c
-nodist_doit_SOURCES=$(PKG)/pfafft.c
+doit_SOURCES=doit.c pfafft.c dpfafft.c cwp.h
 doit_LDADD=$(LIBBENCH)
 
 include ../Makefile.common
-
-$(PKG)/pfafft.c $(PKG)/cwp.h: extract
-
-doit.o: $(PKG)/cwp.h
