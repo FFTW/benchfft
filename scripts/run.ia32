@@ -41,13 +41,13 @@ if test "$NORUN"xxx = xxx; then
 
     ( 
 	cd $DIRNAME
-	../configure --disable-single --with-f90
+	../configure --disable-single
 	make -k; make -k benchmark; make clean
-	../configure --enable-single --with-f90
+	../configure --enable-single
 	make -k; make -k benchmark; make clean
-	../configure --disable-single --with-f90
+	../configure --disable-single
 	make -k; nice -20 make -k accuracy; make clean
-	../configure --enable-single --with-f90
+	../configure --enable-single
 	make -k; nice -20 make -k accuracy; make clean
 	make collect OUTFILE=$DIRNAME
     )
