@@ -4,29 +4,31 @@
 HOSTNAME=`hostname`
 
 CC=cc
+CXX=CC
 F77=f77
-F90=f90
+FC=f90
 FFLAGS="-native -fast -xO5 -dalign"
+FCFLAGS="-native -fast -xO5 -dalign"
 CFLAGS="-native -fast -xO5 -dalign"
 CXXFLAGS="-native -fast -xO5 -dalign"
-CPPFLAGS="-I/usr/local/include" 
-LDFLAGS="-L/usr/local/lib" 
+CPPFLAGS="-I$HOME/install/include" 
+LDFLAGS="-L$HOME/install/lib" 
 MAKE=make
 
-export CC F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE
+export CC CXX F77 FC LDFLAGS CFLAGS FFLAGS FCFLAGS CPPFLAGS CXXFLAGS MAKE
 
 rm -rf $HOSTNAME
 mkdir $HOSTNAME
 
 ( 
   cd $HOSTNAME
-  ../configure --disable-single --with-f90
-  make -k; make -k; make -k benchmark; make clean
-  ../configure --enable-single --with-f90
-  make -k; make -k; make -k benchmark; make clean
-  ../configure --disable-single --with-f90
-  make -k; make -k; make -k accuracy; make clean
-  ../configure --enable-single --with-f90
-  make -k; make -k; make -k accuracy; make clean
-  make collect
+  ../configure --disable-single
+  $MAKE -k; $MAKE -k; $MAKE -k benchmark; $MAKE clean
+  ../configure --enable-single
+  $MAKE -k; $MAKE -k; $MAKE -k benchmark; $MAKE clean
+  ../configure --disable-single
+  $MAKE -k; $MAKE -k; $MAKE -k accuracy; $MAKE clean
+  ../configure --enable-single
+  $MAKE -k; $MAKE -k; $MAKE -k accuracy; $MAKE clean
+  $MAKE collect
 )
