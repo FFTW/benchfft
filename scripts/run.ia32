@@ -17,6 +17,9 @@ if test "$VARIANT" = icc; then
     CXXFLAGS="-O3 $ICCARCH"
     FFTW_DIR=$HOME/local/icc
 else
+    CC=gcc
+    F77=gfortran
+    CXX=g++
     CFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     CXXFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
     FFLAGS="-O2 -fomit-frame-pointer -march=$GCCARCH -mtune=$GCCARCH"
