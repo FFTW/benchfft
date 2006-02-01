@@ -2,24 +2,49 @@
 
 # execute this script from the top-level directory
 HOSTNAME=${HOSTNAME:-`hostname`}
-VARIANT=${VARIANT:-gcc}
+VARIANT=${VARIANT:-gcc-m32}
+OPT=${OPT:-/opt}
+CPU=${CPU:-970}
 DIRNAME=$HOSTNAME-$VARIANT
 
-if test "$VARIANT" = gcc-3.4; then
-    CC=gcc-3.4
-    F77=g77-3.4
-    CXX=g++-3.4
-    FFTW_DIR=/scratch/local/gcc-3.4
-else
-    CC=gcc
-    F77=g77
-    CXX=g++
-    FFTW_DIR=/scratch/local/gcc
-fi
+case "$VARIANT" in
+gcc-3.4-m64)
+    CC='gcc-3.4 -m64'
+    F77='g77-3.4 -m64'
+    CXX='g++-3.4 -m64'
+    FFTW_DIR=/scratch/local/64/gcc-3.4
+    IBMCMP=$OPT/ibmcmp/lib64
+    LIBXLF=$OPT/ibmcmp/xlf/9.1/lib64
+    ;;
+gcc-m64)
+    CC='gcc -m64'
+    F77='gfortran -m64'
+    CXX='g++ -m64'
+    FFTW_DIR=/scratch/local/64/gcc
+    IBMCMP=$OPT/ibmcmp/lib64
+    LIBXLF=$OPT/ibmcmp/xlf/9.1/lib64
+    ;;
+gcc-3.4)
+    CC='gcc-3.4 -m32'
+    F77='g77-3.4 -m32'
+    CXX='g++-3.4 -m32'
+    FFTW_DIR=/scratch/local/32/gcc-3.4
+    IBMCMP=$OPT/ibmcmp/lib
+    LIBXLF=$OPT/ibmcmp/xlf/9.1/lib
+    ;;
+*)
+    CC='gcc -m32'
+    F77='gfortran -m32'
+    CXX='g++ -m32'
+    FFTW_DIR=/scratch/local/32/gcc
+    IBMCMP=$OPT/ibmcmp/lib
+    LIBXLF=$OPT/ibmcmp/xlf/9.1/lib
+    ;;
+esac
 
-CFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
-CXXFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
-FFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=970"
+CFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=$CPU"
+CXXFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=$CPU"
+FFLAGS="-O3 -fomit-frame-pointer -fstrict-aliasing -mcpu=$CPU"
 
 CPPFLAGS="-I$FFTW_DIR/include" 
 LDFLAGS="-L$FFTW_DIR/lib"
@@ -28,11 +53,11 @@ MAKE=make
 
 OMP_NUM_THREADS=1
 
-FLIBS="/opt/ibmcmp/lib/libxlfmath.so.1 /opt/ibmcmp/lib/libxlomp_ser.so.1 /opt/ibmcmp/lib/libxlf90_t.so.1 /opt/ibmcmp/xlf/9.1/lib/libxl.a -lm"
+FLIBS="$IBMCMP/libxlfmath.so.1 $IBMCMP/libxlomp_ser.so.1 $IBMCMP/libxlf90_t.so.1 $LIBXLF/libxl.a -lm"
 
 export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
 
-export LD_LIBRARY_PATH=/opt/ibmcmp/lib
+export LD_LIBRARY_PATH=$IBMCMP
 
 if test "$NORUN"xxx = xxx; then
     rm -rf $DIRNAME
@@ -41,13 +66,13 @@ if test "$NORUN"xxx = xxx; then
 
     ( 
 	cd $DIRNAME
-	../configure --disable-single --with-f90
+	../configure --disable-single
 	make -k; make -k benchmark; make clean
-	../configure --enable-single --with-f90
+	../configure --enable-single
 	make -k; make -k benchmark; make clean
-	../configure --disable-single --with-f90
+	../configure --disable-single
 	nice -20 make -k; nice -20 make -k accuracy; make clean
-	../configure --enable-single --with-f90
+	../configure --enable-single
 	nice -20 make -k; nice -20 make -k accuracy; make clean
 	make collect OUTFILE=$DIRNAME
     )
