@@ -12,7 +12,7 @@ if test "$VARIANT" = gcc-3.4; then
     FFTW_DIR=/scratch/local/gcc-3.4
 else
     CC=gcc
-    F77=g77
+    F77=gfortran
     CXX=g++
     FFTW_DIR=/scratch/local/gcc
 fi
