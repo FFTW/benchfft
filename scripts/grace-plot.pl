@@ -446,6 +446,9 @@ foreach $norm_val (@sorted_norm_vals) {
     # skip transforms without a plot style
     next if ($skip_missing_styles && !exists($styles{$transform}) && !exists($styles{$namleg}) && !exists($styles{$nam}));
 
+    # skip old MKL interface
+    next if ($nam eq "intel-mkl" || $nam eq "intel-mkl-f");
+
     # check if we have already output a relation of this transform
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
