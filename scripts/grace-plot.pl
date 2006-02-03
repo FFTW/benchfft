@@ -449,6 +449,9 @@ foreach $norm_val (@sorted_norm_vals) {
     # skip old MKL interface
     next if ($nam eq "intel-mkl" || $nam eq "intel-mkl-f");
 
+    # skip experimental "newsplit"
+    next if ($nam0 eq "newsplit");
+
     # check if we have already output a relation of this transform
     next if ($no_dups && exists($done{$nam0}));
     $done{$nam0} = 1;
