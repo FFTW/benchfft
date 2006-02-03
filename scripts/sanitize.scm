@@ -8,7 +8,7 @@
     (set! entry (cons (list field with) entry)))
   (let ((x (assoc 'name entry)))
     (case (and x (string->symbol (cadr x)))
-      ((fftw3-r2r) (replace! 'package "FFTW 3"))
+      ((fftw3-r2r) (replace! 'package "FFTW 3.1"))
       ((fftw3) 
        (add! 'notes "Using unpacked complex format for real transforms."))
       ((intel-mkl) 
