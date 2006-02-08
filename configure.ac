@@ -263,6 +263,8 @@ AC_CHECK_HEADERS(mkl_blas.h)
 AC_CHECK_HEADERS(ipps.h)
 AC_CHECK_LIB(ipps, ippsGetLibVersion, [have_ipps=yes])
 AM_CONDITIONAL(HAVE_IPPS, test -n "$have_ipps")
+AC_CHECK_LIB(ippsem64t, ippsGetLibVersion, [have_ippsem64t=yes])
+AM_CONDITIONAL(HAVE_IPPSEM64T, test -n "$have_ippsem64t")
 AC_CHECK_LIB(ipps64, ippsGetLibVersion, [have_ipps64=yes])
 AM_CONDITIONAL(HAVE_IPPS64, test -n "$have_ipps64")
 
@@ -479,6 +481,7 @@ cat <<EOF
       Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
                                    Intel MKL, DFTI interface : ${have_mkl_dfti-no}
                                           Intel IPPS (gratis): ${have_ipps-no}
+                                    Intel IPPS em64t (gratis): ${have_ippsem64t-no}
                                    Intel IPPS 64 bit (gratis): ${have_ipps64-no}
                                             AMD ACML (gratis): ${have_acml-no}
 
