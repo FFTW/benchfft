@@ -97,10 +97,10 @@ static int mkdescriptor(struct problem *p)
 
 	  strides[p->rank] = 1;
 	  if (p->rank > 0) {
-	       strides[p->rank - 1] = p->n[p->rank - 1] / 2 + 1;
+	       strides[p->rank - 1] = pn[p->rank - 1] / 2 + 1;
 
 	       for (i = p->rank - 2; i > 0; --i) 
-		    strides[i] = strides[i+1] * p->n[i];
+		    strides[i] = strides[i+1] * pn[i];
 
 	       /* if this is not zero the thing doesn't work */
 	       strides[0] = 0;
