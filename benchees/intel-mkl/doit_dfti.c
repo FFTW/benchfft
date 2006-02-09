@@ -43,8 +43,16 @@ static int mkdescriptor(struct problem *p)
 {
      long status;
      enum DFTI_CONFIG_VALUE domain;
+     long pn[MAXRNK];
+     int i;
 
      the_descriptor = 0;
+
+     if (p->rank > MAXRNK)
+	  return 0;
+
+     for (i = 0; i < p->rank; ++i)
+	  pn[i] = p->n[i]; /* convert int -> long */
 
      if (p->kind == PROBLEM_COMPLEX) {
 	  domain = DFTI_COMPLEX;
@@ -58,13 +66,13 @@ static int mkdescriptor(struct problem *p)
 					PRECISION,
 					domain,
 					1,
-					p->n[0]);
+					pn[0]);
      else 
 	  status = DftiCreateDescriptor(&the_descriptor,
 					PRECISION,
 					domain,
 					p->rank,
-					p->n);
+					pn);
      ERROR_CHECK;
 
      status = DftiSetValue(the_descriptor, DFTI_PLACEMENT, 
@@ -83,10 +91,9 @@ static int mkdescriptor(struct problem *p)
      ERROR_CHECK;
 
 
-     if (p->kind == PROBLEM_REAL && p->rank <= MAXRNK) {
+     if (p->kind == PROBLEM_REAL) {
 	  /* these guys must be kidding */
 	  long strides[MAXRNK+1];
-	  int i;
 
 	  strides[p->rank] = 1;
 	  if (p->rank > 0) {
