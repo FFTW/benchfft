@@ -3,15 +3,15 @@
 # execute this script from the top-level directory
 HOSTNAME=${HOSTNAME:-`hostname`}
 DIRNAME=$HOSTNAME
-OPT=$HOME/local/opt
+OPT=/opt
 
 CFLAGS="-O3 -fomit-frame-pointer"
 CXXFLAGS="-O3 -fomit-frame-pointer"
 FFLAGS="-O3 -fomit-frame-pointer"
 FFTW_DIR=$HOME/local/opteron
 
-CPPFLAGS="-I$OPT/intel/mkl/8.0.1/include -I$FFTW_DIR/include -I$OPT/amd/acml-3.0/gnu64/include" 
-LDFLAGS="-L$OPT/intel/mkl/8.0.1/lib/em64t -L$FFTW_DIR/lib -L$OPT/amd/acml-3.0/gnu64/lib"
+CPPFLAGS="-I$OPT/intel/mkl/8.1.1/include -I$OPT/intel/ipp/5.1/em64t/include -I$FFTW_DIR/include -I$OPT/amd/acml3.5.0/gnu64/include" 
+LDFLAGS="-L$OPT/intel/mkl/8.1.1/lib/em64t -L$OPT/intel/ipp/5.1/em64t/sharedlib -L$FFTW_DIR/lib -L$OPT/amd/acml3.5.0/gnu64/lib"
 
 MAKE=make
 
@@ -19,7 +19,7 @@ OMP_NUM_THREADS=1
 
 export CC CXX F77 F90 LDFLAGS CFLAGS FFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS FLIBS
 
-LD_LIBRARY_PATH=$OPT/intel/mkl/8.0.1/lib/em64t:$OPT/amd/acml-3.0/gnu64/lib; export LD_LIBRARY_PATH
+LD_LIBRARY_PATH=$OPT/intel/mkl/8.1.1/lib/em64t:$OPT/intel/ipp/5.1/em64t/sharedlib:$OPT/amd/acml3.5.0/gnu64/lib; export LD_LIBRARY_PATH
 
 if test "$NORUN"xxx = xxx; then
     rm -rf $DIRNAME
