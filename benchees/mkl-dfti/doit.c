@@ -22,7 +22,7 @@ static const char *mkvers(void)
      MKLGetVersionString(buf, 160);
      return buf;
 #else
-     return "unknown"
+     return "unknown";
 #endif
 }
 
