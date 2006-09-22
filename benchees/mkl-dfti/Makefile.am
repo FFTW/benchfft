@@ -5,6 +5,6 @@ endif
 INCLUDES = $(INCLBENCH)
 
 doit_SOURCES=doit.c
-doit_LDADD=-lmkl_ia32 $(LIBBENCH) @FLIBS@
+doit_LDADD=-lmkl $(LIBBENCH) @FLIBS@
 
 include ../Makefile.common
