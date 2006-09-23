@@ -433,7 +433,6 @@ benchees/kissfft/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
 benchees/mixfft/Makefile
-benchees/mkl-dfti/Makefile
 benchees/monnier/Makefile
 benchees/morris/Makefile
 benchees/mpfun77/Makefile
