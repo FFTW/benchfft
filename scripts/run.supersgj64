@@ -1,0 +1,54 @@
+#! /bin/sh
+
+# execute this script from the top-level directory
+HOSTNAME=${HOSTNAME:-`hostname`}
+VARIANT=${VARIANT:-64}
+DIRNAME=$HOSTNAME-$VARIANT
+
+# about 2GB worth of transforms (in double precision)
+MAXN_BENCH=134217728
+ulimit -v 3984588 # 3.8GB
+
+CC=icc
+CXX="icc -Kc++"
+F77=ifort
+F90=ifort
+FC=ifort
+FFLAGS="-O3 -WB -xT"
+F90FLAGS="-O3 -WB -xT"
+FCFLAGS="-O3 -WB -xT"
+CFLAGS="-no-gcc -O3 -xT"
+CXXFLAGS="-no-gcc -O3 -xT"
+
+BENCH=/home/stevenj/cvs/nbenchfft
+
+CPPFLAGS="-I/opt/intel/mkl/8.1/include -I/opt/intel/ipp/5.1/em64t/include -I/homes0/stevenj/ibench64/include"
+LDFLAGS="-L/homes0/stevenj/ibench64/lib -L/opt/intel/ipp/5.1/em64t/sharedlib -L/opt/intel/mkl/8.1/lib/em64t"
+
+MAKE=make
+
+OMP_NUM_THREADS=1
+
+export CC CXX F77 F90 FC LDFLAGS CFLAGS FFLAGS F90FLAGS FCFLAGS CPPFLAGS CXXFLAGS MAKE OMP_NUM_THREADS
+
+LD_LIBRARY_PATH=/opt/intel/ipp/5.1/em64t/sharedlib/:/opt/intel/mkl/8.1/lib/em64t
+export LD_LIBRARY_PATH
+
+. /opt/intel/cce/9.1.043/bin/iccvars.sh
+. /opt/intel/fce/9.1.037/bin/ifortvars.sh
+
+rm -rf $DIRNAME
+mkdir $DIRNAME
+
+( 
+  cd $DIRNAME
+  $BENCH/configure --disable-single --with-f90
+  $MAKE -k; $MAKE -k MAXN=$MAXN_BENCH MAXND=$MAXN_BENCH benchmark; make clean
+  $BENCH/configure --enable-single --with-f90
+  $MAKE -k; $MAKE -k MAXN=$MAXN_BENCH MAXND=$MAXN_BENCH benchmark; make clean
+  $BENCH/configure --disable-single --with-f90
+  $MAKE -k; nice -20 $MAKE -k accuracy; make clean
+  $BENCH/configure --enable-single --with-f90
+  $MAKE -k; nice -20 $MAKE -k accuracy; make clean
+  make collect OUTFILE=$DIRNAME
+)
