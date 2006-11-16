@@ -559,9 +559,9 @@ else {
     $val_increment = 100; # increment for y-axis labels
     if ($best_val > 1500) { $val_increment = 500; }
 }
-$best_val =~ s/\..*//;
+$best_val = int($best_val);
 $best_val = $best_val + $val_increment - 1 - ($best_val + $val_increment - 1) % $val_increment;
-$worst_val =~ s/\..*//;
+$worst_val = int($worst_val);
 $worst_val = $worst_val + $val_increment - 1 - ($worst_val + $val_increment - 1) % $val_increment;
 
 # Set axis scales, grids, and colors:
