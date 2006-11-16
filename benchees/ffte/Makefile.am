@@ -17,7 +17,7 @@ endif
 
 PKG = ffte-4.0
 TARFILE = $(PKG).tgz
-EXTRA_DIST = $(TARFILE) vzfft2d.f.patch vzfft3d.f.patch
+EXTRA_DIST = $(TARFILE) vzfft2d.f.patch vzfft3d.f.patch doit-ffte.c
 LOCAL_COPIES = cparam.h param.h
 
 INCLUDES = $(INCLBENCH)
