@@ -558,6 +558,8 @@ if ($accuracy) {
 else {
     $val_increment = 100; # increment for y-axis labels
     if ($best_val > 1500) { $val_increment = 500; }
+    if ($best_val > 10000) { $val_increment = 1000; }
+    if ($best_val > 20000) { $val_increment = 5000; }
 }
 $best_val = int($best_val);
 $best_val = $best_val + $val_increment - 1 - ($best_val + $val_increment - 1) % $val_increment;
