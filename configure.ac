@@ -29,6 +29,7 @@ AM_CONDITIONAL(DOUBLE, test "$benchfft_single" = "no" || test "$benchfft_info_on
 # Checks for programs.
 AC_PROG_CC
 AC_PROG_CC_STDC
+AM_PROG_CC_C_O
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
@@ -413,6 +414,7 @@ benchees/esrfft/Makefile
 benchees/essl/Makefile
 benchees/ffmpeg/Makefile
 benchees/ffte/Makefile
+benchees/fftj/Makefile
 benchees/fftpack/Makefile
 benchees/fftreal/Makefile
 benchees/fftw2/Makefile
