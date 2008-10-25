@@ -23,8 +23,8 @@ BENCH_DOC("notes",
 BENCH_DOC("notes", "The forward real transform is scaled by 2.")
 BENCH_DOC("notes", "Complex data are stored in separate real/imag arrays.")
 BENCH_DOC("notes", "Real data are split into even/odd arrays.")
-BENCH_DOC("url", "http://developer.apple.com/techpubs/macosx/CoreTechnologies/vDSP/vDSP.html")
-BENCH_DOC("url-was-valid-on", "Tue Jul 17 23:01:08 EDT 2001")
+BENCH_DOC("url", "http://developer.apple.com/hardwaredrivers/ve/vector_libraries.html")
+BENCH_DOC("url-was-valid-on", "Sat Oct 25 16:32:35 EDT 2008")
 BENCH_DOC("bibitem",
 	  "R. Crandall and J. Klivington, Supercomputer-style FFT library "
 	  "for Apple G4, Apple Technical Report (Jan. 2000).")

@@ -6,7 +6,7 @@ the historical record but do not benchmark it.  The same remark
 applies to subroutine ICSRFFT.
 
 Subroutine SFFTFU was modified by 
-<a href="mailto:kifowit@math.niu.edu">Steve Kifowit</a>, 1997
+<a href="mailto:skifowit@prairiestate.edu">Steve Kifowit</a>, 1997
 
 
 Matteo Frigo
