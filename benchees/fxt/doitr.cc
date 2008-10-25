@@ -41,7 +41,7 @@ void copy_h2c(struct problem *p, bench_complex *out)
   c_im(out[0]) = c_im(out[n/2]) = 0.0;
   for (i = 1; i < n - i; ++i) {
     c_re(out[i]) = c_re(out[n-i]) = pout[2*i];
-    c_im(out[n-i]) = -(c_im(out[i]) = pout[n-2*i+1]);
+    c_im(out[n-i]) = -(c_im(out[i]) = -pout[n-2*i+1]);
   }
   // documented format: copy_h2c_1d_packed(p, out, -1.0);
 }

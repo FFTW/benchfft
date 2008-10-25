@@ -14,7 +14,7 @@ endif
 
 INCLUDES = $(INCLBENCH)
 PKG=fxt
-TARFILE=$(PKG)-2005.11.20.tar.gz
+TARFILE=$(PKG)-2008.08.31.tar.gz
 EXTRA_DIST = $(TARFILE) doit.cc doitr.cc doit-doc.h
 
 AM_CPPFLAGS = -I$(PKG) -I$(PKG)/src
