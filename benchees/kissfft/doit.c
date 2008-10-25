@@ -5,16 +5,17 @@
 #include "kiss_fft.h"
 #include "kiss_fftr.h"
 #include "kiss_fftnd.h"
+#include "kiss_fftndr.h"
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "1.2.4")
-BENCH_DOC("year", "2005")
+BENCH_DOC("version", "1.2.8")
+BENCH_DOC("year", "2008")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
 BENCH_DOC("url", "http://sourceforge.net/projects/kissfft/")
 BENCH_DOC("copyright",
-"Copyright (c) 2003-2004, Mark Borgerding\n"
+"Copyright (c) 2003-2006, Mark Borgerding\n"
 "\n"
 "All rights reserved.\n"
 "\n"
@@ -30,7 +31,8 @@ END_BENCH_DOC
 int can_do(struct problem *p)
 {
      return ((p->kind == PROBLEM_COMPLEX) ||
-	     (p->rank == 1 && p->n[0] % 2 == 0 && p->kind == PROBLEM_REAL));
+	     (p->rank > 0 && p->n[p->rank-1] % 2 == 0 
+	      && p->kind == PROBLEM_REAL));
 }
 
 void copy_h2c(struct problem *p, bench_complex *out)
@@ -78,10 +80,23 @@ void setup(struct problem *p)
 	       bench_free(dims);
 	  }
      }
-     else {
+     else if (p->rank == 1) {
 	  kiss_fftr_alloc(p->n[0], p->sign == 1, 0, &lenmem);
 	  cfg = bench_malloc(lenmem);
 	  kiss_fftr_alloc(p->n[0], p->sign == 1, cfg, &lenmem);
+     }
+     else {
+	       unsigned int i;
+	       int *dims;
+	       dims = (int *) bench_malloc(sizeof(int) * p->rank);
+	       for (i = 0; i < p->rank; ++i)
+		    dims[i] = p->n[i];
+
+	       kiss_fftndr_alloc(dims, p->rank, p->sign == 1, 0, &lenmem);
+	       cfg = bench_malloc(lenmem);
+	       kiss_fftndr_alloc(dims, p->rank, p->sign == 1, cfg, &lenmem);
+
+	       bench_free(dims);
      }
 }
 
@@ -115,28 +130,46 @@ void doit(int iter, struct problem *p)
 	       kiss_fft_cpx *in = (kiss_fft_cpx *) p->in;
 
 	       if (p->in_place) {
-		    for (i = 0; i < iter; ++i) 
-			 kiss_fftri((kiss_fftr_cfg) cfg, 
-				    in, (kiss_fft_scalar *) in);
+		    if (p->rank == 1)
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftri((kiss_fftr_cfg) cfg, 
+					 in, (kiss_fft_scalar *) in);
+		    else
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftndri((kiss_fftndr_cfg) cfg, 
+					   in, (kiss_fft_scalar *) in);
 	       }
 	       else {
 		    kiss_fft_scalar *out = (kiss_fft_scalar *) p->out;
-		    for (i = 0; i < iter; ++i) 
-			 kiss_fftri((kiss_fftr_cfg) cfg, in, out);
+		    if (p->rank == 1)
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftri((kiss_fftr_cfg) cfg, in, out);
+		    else
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftndri((kiss_fftndr_cfg) cfg, in, out);
 	       }
 	  }
 	  else {
 	       kiss_fft_scalar *in = (kiss_fft_scalar *) p->in;
 
 	       if (p->in_place) {
-		    for (i = 0; i < iter; ++i) 
-			 kiss_fftr((kiss_fftr_cfg) cfg, 
-				   in, (kiss_fft_cpx *) in);
+		    if (p->rank == 1)
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftr((kiss_fftr_cfg) cfg, 
+					in, (kiss_fft_cpx *) in);
+		    else
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftndr((kiss_fftndr_cfg) cfg, 
+					  in, (kiss_fft_cpx *) in);
 	       }
 	       else {
 		    kiss_fft_cpx *out = (kiss_fft_cpx *) p->out;
-		    for (i = 0; i < iter; ++i) 
-			 kiss_fftr((kiss_fftr_cfg) cfg, in, out);
+		    if (p->rank == 1)
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftr((kiss_fftr_cfg) cfg, in, out);
+		    else
+			 for (i = 0; i < iter; ++i) 
+			      kiss_fftndr((kiss_fftndr_cfg) cfg, in, out);
 	       }
 	  }
      }

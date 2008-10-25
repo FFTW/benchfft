@@ -1,5 +1,5 @@
 PRG=doit
-PKG=kiss_fft_v1_2_4
+PKG=kiss_fft_v1_2_8
 PKGSUB = $(PKG)/tools
 TARFILE=$(PKG).tar.gz
 INCLUDES = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)
@@ -14,12 +14,12 @@ endif
 
 doit_SOURCES=doit.c
 nodist_doit_SOURCES=$(PKG)/kiss_fft.c \
-	$(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fftnd.c
+	$(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fftnd.c $(PKGSUB)/kiss_fftndr.c
 doit_LDADD=$(LIBBENCH)
 
 include ../Makefile.common
 
-$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h $(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fftnd.c: extract
+$(PKG)/kiss_fft.c $(PKG)/kiss_fft.h $(PKGSUB)/kiss_fftr.c $(PKGSUB)/kiss_fftnd.c $(PKGSUB)/kiss_fftndr.c: extract
 
 doit.o: $(PKG)/kiss_fft.h
 
