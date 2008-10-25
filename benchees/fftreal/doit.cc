@@ -6,16 +6,30 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "fftreal")
 BENCH_DOC("package", "FFTReal")
-BENCH_DOC("year", "2001")
-BENCH_DOC("version", "1.03")
+BENCH_DOC("year", "2005")
+BENCH_DOC("version", "2.00")
 BENCH_DOC("author", "Laurent de Soras")
 BENCH_DOC("email", "ldesoras@club-internet.fr")
 BENCH_DOC("copyright",
-	  "Source code may be freely used for any purpose, including commercial applications. Programs must display in their 'About' dialog-box (or documentation) a text telling they use these routines by Laurent de Soras. Modified source code can be distributed, but modifications must be clearly indicated.")
+	  "(c) Laurent de Soras <laurent.de.soras@club-internet.fr>\n"
+"Object Pascal port (c) Frederic Vanmol <frederic@fruityloops.com>\n"
+"\n"
+"This library is free software; you can redistribute it and/or\n"
+"modify it under the terms of the GNU Lesser General Public\n"
+"License as published by the Free Software Foundation; either\n"
+"version 2.1 of the License, or (at your option) any later version.\n"
+"\n"
+"This library is distributed in the hope that it will be useful,\n"
+"but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU\n"
+"Lesser General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU Lesser General Public\n"
+"License along with this library; if not, write to the Free Software\n"
+"Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA")
 BENCH_DOC("language", "C++")
-BENCH_DOC("notes", "Code is in single precision, but double precision version is created as documented by the author, by changing the flt_t typedef in the FFTReal.h header file")
 BENCH_DOC("url", "http://ldesoras.free.fr/prod.html")
-BENCH_DOC("url-was-valid-on", "Sat Feb 12 18:41:20 EST 2005")
+BENCH_DOC("url-was-valid-on", "Sat Oct 25 14:40:21 EDT 2008")
 END_BENCH_DOC
 
 #include "FFTReal.h"
@@ -53,11 +67,11 @@ void copy_c2h(struct problem *p, bench_complex *in)
     h[n/2 + i] = -c_im(in[i]);
 }
 
-FFTReal *fft = (FFTReal *) 0;
+FFTReal<bench_real> *fft = NULL;
 
 void setup(struct problem *p)
 {
-  fft = new FFTReal(p->n[0]);
+  fft = new FFTReal<bench_real>(p->n[0]);
 }
 
 void doit(int iter, struct problem *p)
