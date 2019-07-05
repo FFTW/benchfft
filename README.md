@@ -4,7 +4,7 @@ benchFFT is a program to benchmark FFT software, assembled by Matteo
 Frigo and Steven G. Johnson at the Massachusetts Institute of
 Technology as part of the FFTW project:
 
-                http://www.fftw.org/benchfft
+* [`http://www.fftw.org/benchfft`](http://www.fftw.org/benchfft)
 
 The benchmark incorporates a large number of publicly available FFT
 implementations, in both C and Fortran, and measures their performance
