@@ -2,7 +2,7 @@ PRG=doit
 PKG=kiss_fft_v1_2_8
 PKGSUB = $(PKG)/tools
 TARFILE=$(PKG).tar.gz
-INCLUDES = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)
 EXTRA_DIST = $(TARFILE)
 
 if SINGLE

@@ -9,7 +9,7 @@ PKG = gpfa
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=libgpfa.a $(LIBBENCH) @FLIBS@ 

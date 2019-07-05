@@ -6,7 +6,7 @@ PKG = fft2
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 
 FFT = $(PKG)/complex/ft.c $(PKG)/complex/w.c $(PKG)/complex/fourier.c
 

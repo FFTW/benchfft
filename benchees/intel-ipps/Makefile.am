@@ -11,7 +11,7 @@ PRG64=doit64
 endif
 
 PRG=$(PRG32) $(PRGEM64T) $(PRG64)
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=-lipps $(LIBBENCH) @FLIBS@

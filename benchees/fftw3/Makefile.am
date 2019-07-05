@@ -10,7 +10,7 @@ FFTW3_LIBS=@LFFTW3F@
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 BENCHMARK_USEROPT='-o=patient'
 
 doit_SOURCES=doit.c

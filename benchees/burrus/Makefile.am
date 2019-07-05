@@ -5,7 +5,7 @@ noinst_LIBRARIES=libfft.a
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c 
 doit_LDADD=libfft.a $(LIBBENCH) @FLIBS@

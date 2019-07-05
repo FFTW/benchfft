@@ -5,7 +5,7 @@ noinst_LIBRARIES=libmfft.a
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 PKG = mfft
 TARFILE = $(PKG).tar.gz

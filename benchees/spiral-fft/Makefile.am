@@ -6,7 +6,7 @@ PKG = spiral_fft
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH) -I$(PKG)/include
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)/include
 
 SPIRAL = $(PKG)/lib/libfft.a
 

@@ -6,7 +6,7 @@ PKG = ransom
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 
 RANSOM = $(PKG)/fastffts.c
 

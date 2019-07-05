@@ -6,7 +6,7 @@ PKG=vBigDSP
 TARFILE=$(PKG)-20030322.tgz
 EXTRA_DIST = $(TARFILE) vBigDSP.c.patch
 
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 
 AM_CFLAGS=@ALTIVEC_CFLAGS@ -Dvalloc=bench_malloc
 doit_SOURCES=doit.c

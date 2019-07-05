@@ -2,7 +2,7 @@ if HAVE_VDSP
 PRG=doit
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBBENCH) @VECLIB@

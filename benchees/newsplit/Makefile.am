@@ -3,7 +3,7 @@ EXTRA_PRG=doit_unsym doit_oldsplit
 
 EXTRA_DIST = README doit.c
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 SPLIT = split.h split.c
 

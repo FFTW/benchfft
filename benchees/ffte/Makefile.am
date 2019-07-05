@@ -20,7 +20,7 @@ TARFILE = $(PKG).tgz
 EXTRA_DIST = $(TARFILE) vzfft2d.f.patch vzfft3d.f.patch doit-ffte.c
 LOCAL_COPIES = cparam.h param.h
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=libfft.a libfft_kernel.a $(LIBBENCH) @FLIBS@

@@ -8,7 +8,7 @@ endif
 EXTRA_DIST = glassman-fft.f glassman-fft.patch doc
 LOCAL_COPIES = glassman-fft-patched.f
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=libfft.a $(LIBBENCH) @FLIBS@

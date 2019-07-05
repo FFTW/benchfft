@@ -1,7 +1,7 @@
 
 PRG=doit
 
-INCLUDES = $(INCLBENCH) -Ddouble_t=double
+AM_CPPFLAGS = $(INCLBENCH) -Ddouble_t=double
 PKG=green-ffts-2.0
 TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) fp.h

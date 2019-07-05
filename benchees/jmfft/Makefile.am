@@ -6,7 +6,7 @@ PKG = JMFFTC-1.0
 TARFILE = jmfftc-1.0.tar.gz
 EXTRA_DIST = $(TARFILE) jmfft-7.2.tar.gz
 
-INCLUDES = $(INCLBENCH) -I$(PKG)/Source
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)/Source
 
 LIBJMFFT = $(PKG)/Source/libjmfft.a
 

@@ -10,7 +10,7 @@ FFTW_LIBS=@LFFTW@
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST = doit.c doitnd.c doit-doc.h
 
 doitm_SOURCES=doitm.c

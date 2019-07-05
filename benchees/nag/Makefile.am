@@ -6,7 +6,7 @@ endif
 
 EXTRA_DIST = doit.c
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_ws_SOURCES = doit-ws.c
 doit_ws_LDADD = @LIBNAG@ $(LIBBENCH) @FLIBS@

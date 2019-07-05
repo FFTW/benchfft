@@ -7,7 +7,7 @@ endif
 
 
 PRG=$(PRG_MKL) $(PRG_DFTI)
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST = doit.c doitf.c
 
 doit_SOURCES=doit.c

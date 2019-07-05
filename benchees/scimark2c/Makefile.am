@@ -6,7 +6,7 @@ PKG = scimark2c
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 
 FFT = $(PKG)/FFT.c $(PKG)/FFT.h
 

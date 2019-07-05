@@ -22,7 +22,7 @@ AC_DEFUN([AX_F77_CMAIN_FFLAGS],
 [AC_CACHE_CHECK([for f77 flags to use C main function], ax_cv_f77_cmain_fflags,
 [ax_cv_f77_cmain_fflags="unknown"
 AC_LANG_PUSH(C)
-AC_COMPILE_IFELSE([[int main(void) { return 0; }]],
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([], [return 0;])],
 		  [mv conftest.$ac_objext conftest_cmain.$ac_objext],
 		  [ax_cv_f77_cmain_fflags=error])
 AC_LANG_POP(C)
@@ -36,11 +36,11 @@ if test "x$ax_cv_f77_cmain_fflags" != xerror; then
 	    none) FFLAGS=$ax_save_FFLAGS ;;
 	    *)    FFLAGS="$ax_save_FFLAGS $ax_flag" ;;
 	esac
-	AC_LINK_IFELSE([
+	AC_LINK_IFELSE([AC_LANG_SOURCE([
       subroutine foobar()
       return
       end
-], [ax_cv_f77_cmain_fflags=$ax_flag; break]);
+])], [ax_cv_f77_cmain_fflags=$ax_flag; break]);
     done
     FFLAGS=$ax_save_FFLAGS
     LIBS=$ax_save_LIBS

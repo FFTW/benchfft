@@ -4,7 +4,7 @@ PRG = doit
 endif
 endif
 
-INCLUDES = $(INCLBENCH) -I$(PKG)/include
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)/include
 PKG = arprec
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) mp.h.patch mpreal.h.patch

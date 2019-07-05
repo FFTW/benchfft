@@ -4,7 +4,7 @@ PKG = fft
 TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 
 FFT = $(PKG)/fourierd.c $(PKG)/fourierf.c $(PKG)/fftmisc.c
 

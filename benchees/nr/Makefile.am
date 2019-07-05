@@ -7,7 +7,7 @@ PRG=doit_c
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST = doit.c
 LOCAL_COPIES = four1f.f fournf.f realftf.f rlft3f.f
 

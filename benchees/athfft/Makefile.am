@@ -1,7 +1,7 @@
 PRG=doit
 PKG=athfft-0.99
 TARFILE=$(PKG).tar.gz
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 LIBFFT=$(PKG)/libathfft.a
 EXTRA_DIST = $(TARFILE)
 

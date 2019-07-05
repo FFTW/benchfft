@@ -12,7 +12,7 @@ endif
 EXTRA_DIST = readme ffts.f fftd.f ffts.patch fftd.patch
 LOCAL_COPIES = ffts-patched.f fftd-patched.f
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBFFT) $(LIBBENCH) @FLIBS@

@@ -3,7 +3,7 @@ PRG=doit doit-dit doit-dif doit-real
 else
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST=doit2.c
 
 doit_SOURCES=doit.c

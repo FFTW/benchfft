@@ -1,6 +1,6 @@
 PRG=doit
 PKG=djbfft-0.76
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 TARFILE=$(PKG).tar.gz
 # EXTRA_DIST = $(TARFILE)
 

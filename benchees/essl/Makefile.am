@@ -2,7 +2,7 @@ if HAVE_ESSL
 PRG=doit
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBBENCH) -lessl $(FLIBS)

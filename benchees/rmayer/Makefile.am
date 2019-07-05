@@ -2,7 +2,7 @@ if DOUBLE
 PRG=doit0 doit1 doit2 doit3 doit4 doit5 doit7
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 PKG=fft
 TARFILE=$(PKG)_source.tar.gz
 EXTRA_DIST = $(TARFILE) doit.c

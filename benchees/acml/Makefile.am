@@ -3,7 +3,7 @@ PRG=doit
 else
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 BENCHMARK_USEROPT='-o=patient'
 
 doit_SOURCES=doit.c

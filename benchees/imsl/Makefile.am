@@ -2,7 +2,7 @@ if HAVE_IMSL
 PRG = doit
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES = doit.c
 doit_LDADD = @LIBIMSL@ $(LIBBENCH) @FLIBS@

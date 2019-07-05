@@ -16,7 +16,7 @@ LOCAL_COPIES=extract2 $(PKG2)
 endif
 
 PRG=doit_sg doit_8g doit_4g doit_sg2d doit_4f2d doit_sg3d $(FORTRAN_PRG)
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST = $(TARFILE) $(TARFILE2) doit.c doit-doc.h doit2d.c doit3d.c
 noinst_LIBRARIES=$(FORTRAN_LIBS)
 

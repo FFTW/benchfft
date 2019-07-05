@@ -2,7 +2,7 @@ if HAVE_SUNPERF
 PRG=doit doit2d doit3d
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 AM_LDFLAGS=-xlic_lib=sunperf
 

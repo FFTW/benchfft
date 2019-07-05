@@ -12,12 +12,10 @@ PRG = doit_fht doit_cfht \
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG) -I$(PKG)/src
 PKG=fxt
 TARFILE=$(PKG)-2008.08.31.tar.gz
 EXTRA_DIST = $(TARFILE) doit.cc doitr.cc doit-doc.h
-
-AM_CPPFLAGS = -I$(PKG) -I$(PKG)/src
 
 LIBFXT = $(PKG)/libfxt.a
 

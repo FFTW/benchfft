@@ -1,9 +1,10 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(libbench/bench.h)
-AC_PREREQ(2.50)
-AC_CANONICAL_SYSTEM
-AM_INIT_AUTOMAKE(benchfft, 3.1)
+AC_INIT([benchfft], [3.2])
+AC_CONFIG_SRCDIR([libbench/bench.h])
+AC_CANONICAL_HOST
+AM_INIT_AUTOMAKE([foreign color-tests parallel-tests silent-rules subdir-objects 1.11])
 AM_CONFIG_HEADER(config.h)
+AC_CONFIG_MACRO_DIR([m4])
 
 # configure options
 AC_ARG_ENABLE(debug, [AC_HELP_STRING([--enable-debug],[compile benchfft with extra runtime checks for debugging])], ok=$enableval, ok=no)

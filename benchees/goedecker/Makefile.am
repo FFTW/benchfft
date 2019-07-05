@@ -5,7 +5,7 @@ noinst_LIBRARIES=libfft.a
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST = sgfft.tar.gz
 
 libfft_a_SOURCES=basis_defs.f90 sg_ctrig.f90 sg_fft.f90 sg_fftpad.f90	\

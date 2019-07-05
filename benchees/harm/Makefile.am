@@ -3,7 +3,7 @@ PRG=doit
 noinst_LIBRARIES=libharm.a
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=libharm.a $(LIBBENCH) @FLIBS@

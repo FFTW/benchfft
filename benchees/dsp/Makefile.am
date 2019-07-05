@@ -8,7 +8,7 @@ endif
 PKG=dsp
 TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) sect17.f sect18.f
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 LOCAL_COPIES=sect04.f sect11.f sect12.f sect13.f sect14.f sect16.f	\
 sect19.f
 

@@ -1,6 +1,6 @@
 PRG=doit doit_fht
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES = doit.c quad2fft.c
 doit_LDADD = $(LIBBENCH)

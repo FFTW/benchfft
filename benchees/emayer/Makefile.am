@@ -5,7 +5,7 @@ endif
 endif
 
 EXTRA_DIST=fft_radix8_fwd_bench_rc.f90 fft_radix8_rev_bench_rc.f90
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES = doit.c
 doit_LDADD = fft_radix8_fwd_bench_rc.o fft_radix8_rev_bench_rc.o	\

@@ -1,6 +1,6 @@
 PKG=fftj-0.2
 TARFILE=$(PKG).tar.gz
-INCLUDES = $(INCLBENCH) -I$(PKG)
+AM_CPPFLAGS = $(INCLBENCH) -I$(PKG)
 EXTRA_DIST = $(TARFILE)
 
 # choose which version of the library to build

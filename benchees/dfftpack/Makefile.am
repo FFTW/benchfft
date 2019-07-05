@@ -5,7 +5,7 @@ noinst_LIBRARIES=libdfftpack.a
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 EXTRA_DIST=test.f
 
 libdfftpack_a_SOURCES=cfftb1.f cfftf1.f cffti1.f cosqb1.f cosqf1.f	\

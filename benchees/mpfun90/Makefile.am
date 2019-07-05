@@ -9,7 +9,7 @@ TARFILE = $(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) mpfun90.patch
 LOCAL_COPIES = mpfun90.f90
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 doit_SOURCES=doit.c
 doit_LDADD=mpfun90.o $(LIBBENCH) @FCLIBS@

@@ -6,7 +6,7 @@ PKG = numutils
 TARFILE = numutil.tar.gz
 EXTRA_DIST = $(TARFILE)
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 
 NUMUTILS = $(PKG)/commonlibs.c
 

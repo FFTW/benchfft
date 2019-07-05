@@ -5,7 +5,7 @@ noinst_LIBRARIES=libfft.a
 endif
 endif
 
-INCLUDES = $(INCLBENCH)
+AM_CPPFLAGS = $(INCLBENCH)
 BENCHMARK_FLAGS=--verify-tolerance 0.1  # inaccurate routine :-(
 
 doit_sfftfu_SOURCES=doit_sfftfu.c 
