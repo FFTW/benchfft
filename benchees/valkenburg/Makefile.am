@@ -13,6 +13,7 @@ FFT = $(PKG)/complex/ft.c $(PKG)/complex/w.c $(PKG)/complex/fourier.c
 doit_SOURCES=doit.c
 nodist_doit_SOURCES=$(FFT)
 doit_LDADD=$(LIBBENCH) @FLIBS@
+BUILT_SOURCES = $(FFT)
 
 doit.c $(FFT): extract
 
