@@ -1,5 +1,5 @@
 PRG=doit
-PKG=kiss_fft_v1_2_8
+PKG=kissfft-131
 PKGSUB = $(PKG)/tools
 TARFILE=$(PKG).tar.gz
 AM_CPPFLAGS = $(INCLBENCH) -I$(PKG) -I$(PKGSUB)

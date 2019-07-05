@@ -9,23 +9,23 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "kissfft")
-BENCH_DOC("version", "1.2.8")
-BENCH_DOC("year", "2008")
+BENCH_DOC("version", "1.3.1")
+BENCH_DOC("year", "2019")
 BENCH_DOC("author", "Mark Borgerding")
 BENCH_DOC("language", "C")
-BENCH_DOC("url", "http://sourceforge.net/projects/kissfft/")
+BENCH_DOC("url", "https://github.com/mborgerding/kissfft")
 BENCH_DOC("copyright",
-"Copyright (c) 2003-2006, Mark Borgerding\n"
+"Copyright (c) 2003-2010 Mark Borgerding . All rights reserved.\n"
 "\n"
-"All rights reserved.\n"
+"KISS FFT is provided under:\n"
 "\n"
-"Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n"
+"  SPDX-License-Identifier: BSD-3-Clause\n"
 "\n"
-"    * Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n"
-"    * Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n"
-"    * Neither the author nor the names of any contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n"
+"Being under the terms of the BSD 3-clause \"New\" or \"Revised\" License,\n"
+"according with:\n"
 "\n"
-	  "THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n")
+"  LICENSES/BSD-3-Clause\n"
+)
 END_BENCH_DOC
 
 int can_do(struct problem *p)

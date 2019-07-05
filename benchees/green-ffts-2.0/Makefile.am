@@ -1,7 +1,7 @@
 
 PRG=doit
 
-AM_CPPFLAGS = $(INCLBENCH) -Ddouble_t=double
+AM_CPPFLAGS = $(INCLBENCH)
 PKG=green-ffts-2.0
 TARFILE=$(PKG).tar.gz
 EXTRA_DIST = $(TARFILE) fp.h
@@ -16,13 +16,14 @@ include ../Makefile.common
 doit.o: extract
 
 # remove Macintosh newlines and C++-style  comments
+# and rename double_t to double
 if SINGLE
 $(LOCAL_COPIES): extract
-	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' >$@
+	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g' | sed 's/double_t/double/g' >$@
 else
 # also replace float with double, as Green documents
 $(LOCAL_COPIES): extract
-	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g;s/float/double/g' >$@
+	(echo "#include <config.h>"; tr '\015' '\012' <$(PKG)/fft\ libraries/$@; echo ""; echo "") | sed -e 's/\/\/.*$$//g;s/float/double/g' | sed 's/double_t/double/g' >$@
 endif
 
 # explicit dependencies because source file need to be created
