@@ -5,6 +5,7 @@ AC_CANONICAL_HOST
 AM_INIT_AUTOMAKE([foreign color-tests parallel-tests silent-rules subdir-objects 1.11])
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+AM_MAINTAINER_MODE
 
 # configure options
 AC_ARG_ENABLE(debug, [AC_HELP_STRING([--enable-debug],[compile benchfft with extra runtime checks for debugging])], ok=$enableval, ok=no)

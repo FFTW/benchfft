@@ -12,5 +12,5 @@ rm -f config.cache
     rm -rf OBJ
     mkdir OBJ
     cd OBJ
-    ../configure $*
+    ../configure --enable-maintainer-mode "$@"
 )

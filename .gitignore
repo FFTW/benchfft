@@ -39,3 +39,6 @@ missing
 py-compile
 compile
 test-driver
+
+# build directory
+OBJ

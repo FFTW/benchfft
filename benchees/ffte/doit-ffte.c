@@ -18,13 +18,13 @@ static const char *mknote(void)
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", NAME)
-BENCH_DOC("version", "4.0")
+BENCH_DOC("version", "6.0")
 BENCH_DOC("author", "Daisuke Takahashi")
-BENCH_DOC("year", "2004")
+BENCH_DOC("year", "2014")
 BENCH_DOC("email", "daisuke@is.tsukuba.ac.jp")
 BENCH_DOC("language", "Fortran 77")
 BENCH_DOC("url", "http://www.ffte.jp/")
-BENCH_DOC("url-was-valid-on", "Tue Apr 29 07:48:19 EDT 2003")
+BENCH_DOC("url-was-valid-on", "Fri Jul  5 16:41:06 EDT 2019")
 DOC_ITEMS
 BENCH_DOC("notes", "The backwards transform is scaled.")
 BENCH_DOCF("notes", mknote)
