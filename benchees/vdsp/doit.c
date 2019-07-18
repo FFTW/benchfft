@@ -5,14 +5,6 @@
 
 #include <vDSP.h>
 
-/* The vec_malloc and vec_free functions are recommended in the Apple
-   vDSP docs, but I can't find them anywhere; let's hope that malloc
-   produces sufficiently-aligned arrays? */
-#if !defined(HAVE_VEC_MALLOC) || !defined(HAVE_VEC_FREE)
-#  define vec_malloc bench_malloc
-#  define vec_free bench_free
-#endif
-
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "vdsp")
 BENCH_DOC("author", "Apple Computer, Inc.")
@@ -30,13 +22,14 @@ BENCH_DOC("bibitem",
 	  "for Apple G4, Apple Technical Report (Jan. 2000).")
 END_BENCH_DOC
 
-#define CONCAT(prefix, name) prefix ## name
+#define CONCAT_(prefix, suffix) prefix ## suffix
+#define CONCAT(prefix, suffix) CONCAT_(prefix, suffix)
 
 #ifdef BENCHFFT_SINGLE
-#define MANGLE(name) name
+#define MANGLE(name) CONCAT(vDSP_, name)
 typedef DSPSplitComplex splitcomplex;
 #else
-#define MANGLE(name) CONCAT(name, D)
+#define MANGLE(name) CONCAT(vDSP_, CONCAT(name, D))
 typedef DSPDoubleSplitComplex splitcomplex;
 #endif
 
@@ -77,19 +70,19 @@ void setup(struct problem *p)
 					      m1 = log_2(n1)),
 					2);
 
-     /* Use Apple vec_malloc for 16-byte alignment */
-     ins.realp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
-     ins.imagp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
+     /* Apple malloc guarantees 16-byte alignment */
+     ins.realp = (bench_real*) malloc(p->size * sizeof(bench_real));
+     ins.imagp = (bench_real*) malloc(p->size * sizeof(bench_real));
      if (!problem_in_place(p)) {
-	  outs.realp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
-	  outs.imagp = (bench_real*) vec_malloc(p->size * sizeof(bench_real));
+	  outs.realp = (bench_real*) malloc(p->size * sizeof(bench_real));
+	  outs.imagp = (bench_real*) malloc(p->size * sizeof(bench_real));
      }
      else {
 	  outs.realp = ins.realp;
 	  outs.imagp = ins.imagp;
-	  buf.realp = (bench_real*) vec_malloc(imin2(4 * p->size, 16384)
+	  buf.realp = (bench_real*) malloc(imin2(4 * p->size, 16384)
 					       * sizeof(bench_real));
-	  buf.imagp = (bench_real*) vec_malloc(imin2(4 * p->size, 16384)
+	  buf.imagp = (bench_real*) malloc(imin2(4 * p->size, 16384)
 					       * sizeof(bench_real));
      }
 }
@@ -168,15 +161,15 @@ void doit(int iter, struct problem *p)
 void done(struct problem *p)
 {
      if (!problem_in_place(p)) {
-	  vec_free(outs.imagp);
-	  vec_free(outs.realp);
+	  free(outs.imagp);
+	  free(outs.realp);
      }
      else {
-	  vec_free(buf.imagp);
-	  vec_free(buf.realp);
+	  free(buf.imagp);
+	  free(buf.realp);
      }
-     vec_free(ins.imagp);
-     vec_free(ins.realp);
+     free(ins.imagp);
+     free(ins.realp);
      MANGLE(destroy_fftsetup)(fftsetup);
 }
 

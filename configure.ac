@@ -237,27 +237,22 @@ AC_SUBST(LIBIMSL)
 
 # Check for Apple's vDSP/vecLib library:
 xsave_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I/System/Library/Frameworks/vecLib.framework/Headers"
-test -z "$VECLIB" && VECLIB=/System/Library/Frameworks/vecLib.framework/vecLib
+CPPFLAGS="$CPPFLAGS -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/vecLib"
+test -z "$VECLIB" && VECLIB="-framework Accelerate"
 AC_CHECK_HEADER(vDSP.h,
-	[AC_CHECK_LIB(m, fft_zop, [have_vdsp=yes],
+	[AC_CHECK_LIB(m, vDSP_fft_zop, [have_vdsp=yes],
 		[CPPFLAGS="$xsave_CPPFLAGS"], $VECLIB)],
 	[CPPFLAGS="$xsave_CPPFLAGS"])
 AC_SUBST(VECLIB)
 AM_CONDITIONAL(HAVE_VDSP, test -n "$have_vdsp")
-if test -n "$have_vdsp"; then
-	xsave_LIBS="$LIBS"
-	LIBS="$LIBS $VECLIB"
-	AC_CHECK_FUNCS(vec_malloc, vec_free)
-	LIBS="$xsave_LIBS"
-fi
 
 # Check for Intel's MKL library:
-AC_CHECK_LIB(mkl, zfft1d_, [have_mkl=yes])
+AC_CHECK_LIB(mkl_rt, zfft1d_, [have_mkl=yes])
 AM_CONDITIONAL(HAVE_MKL, test -n "$have_mkl")
-AC_CHECK_LIB(mkl, DftiCreateDescriptor, [have_mkl_dfti=yes])
+AC_CHECK_LIB(mkl_rt, DftiCreateDescriptor, [have_mkl_dfti=yes])
 AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
 
+AC_CHECK_HEADERS(mkl_dfti.h)
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 
