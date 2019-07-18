@@ -58,7 +58,11 @@ int can_do(struct problem *p)
 static int imax2(int a, int b) { return (a > b ? a : b); }
 static int imin2(int a, int b) { return (a < b ? a : b); }
 
-MANGLE(FFTSetup) fftsetup;
+#ifdef BENCHFFT_SINGLE
+FFTSetup fftsetup;
+#else
+FFTSetupD fftsetup;
+#endif
 splitcomplex ins, outs, buf;
 int m0, m1;
 int n0, n1;

@@ -237,7 +237,7 @@ AC_SUBST(LIBIMSL)
 
 # Check for Apple's vDSP/vecLib library:
 xsave_CPPFLAGS="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Kernel.framework/Versions/Current/Headers/vecLib"
+CPPFLAGS="$CPPFLAGS -I/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/System/Library/Frameworks/Accelerate.framework/Versions/A/Frameworks/vecLib.framework/Versions/A/Headers"
 test -z "$VECLIB" && VECLIB="-framework Accelerate"
 AC_CHECK_HEADER(vDSP.h,
 	[AC_CHECK_LIB(m, vDSP_fft_zop, [have_vdsp=yes],
