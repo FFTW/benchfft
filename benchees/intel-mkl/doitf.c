@@ -3,15 +3,12 @@
 #include "bench-user.h"
 #include <math.h>
 
-
-#if HAVE_MKL_BLAS_H
-#include <mkl_blas.h>
-#endif
+#include <mkl.h>
 
 static const char *mkvers(void)
 {
      static char buf[160];
-     MKLGetVersionString(buf, 160);
+     mkl_get_version_string(buf, 160);
      return buf;
 }
 

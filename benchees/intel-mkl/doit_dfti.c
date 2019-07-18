@@ -1,7 +1,7 @@
 #include "bench-user.h"
 #include <math.h>
 #include <stdio.h>
-#include <mkl_dfti.h>
+#include <mkl.h>
 
 #ifdef BENCHFFT_SINGLE
 #define PRECISION DFTI_SINGLE
@@ -11,14 +11,10 @@
 #define PRECISION DFTI_DOUBLE
 #endif
 
-#if HAVE_MKL_BLAS_H
-#include <mkl_blas.h>
-#endif
-
 static const char *mkvers(void)
 {
      static char buf[160];
-     MKLGetVersionString(buf, 160);
+     mkl_get_version_string(buf, 160);
      return buf;
 }
 
