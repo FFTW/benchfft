@@ -1,29 +1,29 @@
 #! /bin/sh
 
-echo -n "@title \""
+printf "@title \""
 
 if test $# -gt 3; then
-    echo -n "$4"
+    printf "$4"
 fi
 
 problem=$1
 case $problem in
-    dci*) echo -n "double-precision complex, in-place" ;;
-    dco*) echo -n "double-precision complex, out-of-place" ;;
-    sci*) echo -n "single-precision complex, in-place" ;;
-    sco*) echo -n "single-precision complex, out-of-place" ;;
-    dri*) echo -n "double-precision real-data, in-place" ;;
-    dro*) echo -n "double-precision real-data, out-of-place" ;;
-    sri*) echo -n "single-precision real-data, in-place" ;;
-    sro*) echo -n "single-precision real-data, out-of-place" ;;
-    dcx*) echo -n "double-precision complex" ;;
-    scx*) echo -n "single-precision complex" ;;
-    drx*) echo -n "double-precision real-data" ;;
-    srx*) echo -n "single-precision real-data" ;;
+    dci*) printf "double-precision complex, in-place" ;;
+    dco*) printf "double-precision complex, out-of-place" ;;
+    sci*) printf "single-precision complex, in-place" ;;
+    sco*) printf "single-precision complex, out-of-place" ;;
+    dri*) printf "double-precision real-data, in-place" ;;
+    dro*) printf "double-precision real-data, out-of-place" ;;
+    sri*) printf "single-precision real-data, in-place" ;;
+    sro*) printf "single-precision real-data, out-of-place" ;;
+    dcx*) printf "double-precision complex" ;;
+    scx*) printf "single-precision complex" ;;
+    drx*) printf "double-precision real-data" ;;
+    srx*) printf "single-precision real-data" ;;
 esac
 
 rank=$2
-echo -n ", ${rank}d transforms"
+printf ", ${rank}d transforms"
 
 echo "\""
 

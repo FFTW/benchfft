@@ -6,6 +6,8 @@ case $sd in
     *) sd=`pwd`/$sd ;;
 esac
 
+echo "scripts in $sd"
+
 data=$1
 case $data in
     *.speed) type=speed; dname=`basename $data .speed` ;;
@@ -24,8 +26,8 @@ for rank in 1 2 3; do
 		egrep "$pat" $data |
 		perl $sd/grep-rank.pl $rank |
 		perl $sd/grep-${p2}.pl | perl $sd/grace-plot.pl $plotflags) |
-		gracebat -pipe -printfile ${dname}.${rank}d.${problem}.${p2}.ps
-	    echo "${dname}.${rank}d.${problem}.${p2}.ps"
+		gracebat -pipe -hdevice PDF -printfile ${dname}.${rank}d.${problem}.${p2}.pdf
+	    echo "${dname}.${rank}d.${problem}.${p2}.pdf"
 	done
     done
 done
@@ -38,8 +40,8 @@ for rank in 1 2 3; do
 		egrep "$pat" $data |
 		perl $sd/grep-rank.pl $rank |
 		perl $sd/grep-${p2}.pl | perl $sd/grace-plot.pl $plotflags) |
-		gracebat -pipe -printfile ${dname}.${rank}d.${problem}.${p2}.ps
-	    echo "${dname}.${rank}d.${problem}.${p2}.ps"
+		gracebat -pipe -hdevice PDF -printfile ${dname}.${rank}d.${problem}.${p2}.pdf
+	    echo "${dname}.${rank}d.${problem}.${p2}.pdf"
 	done
     done
 done
@@ -59,24 +61,24 @@ for problem in dcxx drxx scxx srxx; do
     egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank |
 	perl $sd/grace-plot.pl $plotflags) |
-	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.ps
-    echo "${dname}.${rank}d.${problem}.ps"
+	gracebat -pipe -hdevice PDF -printfile ${dname}.${rank}d.${problem}.pdf
+    echo "${dname}.${rank}d.${problem}.pdf"
 
     (sh $sd/plot-title.sh $problem $rank;
      echo "@subtitle \"enlargement of most accurate FFTs\"";
      egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank |
 	perl $sd/grace-plot.pl $plotflags --accurate-only) |
-	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.acc.ps
-    echo "${dname}.${rank}d.${problem}.acc.ps"
+	gracebat -pipe -hdevice PDF -printfile ${dname}.${rank}d.${problem}.acc.pdf
+    echo "${dname}.${rank}d.${problem}.acc.pdf"
 
     (sh $sd/plot-title.sh $problem $rank;
      echo "@subtitle \"enlargement of most accurate FFTs, powers of two only\"";
      egrep "$pat" $data |
 	perl $sd/grep-rank.pl $rank | perl $sd/grep-p2.pl |
 	perl $sd/grace-plot.pl $plotflags --accurate-only) |
-	gracebat -pipe -printfile ${dname}.${rank}d.${problem}.acc.p2.ps
-    echo "${dname}.${rank}d.${problem}.acc.p2.ps"
+	gracebat -pipe -hdevice PDF -printfile ${dname}.${rank}d.${problem}.acc.p2.pdf
+    echo "${dname}.${rank}d.${problem}.acc.p2.pdf"
 done
 
 fi

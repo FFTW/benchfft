@@ -143,7 +143,7 @@ complex-transform speed data to a foo.ps PostScript file, you would do:
 
 	egrep 'sc[io][fb]' foo.speed | perl grep-p2.pl | perl grep-rank.pl 1
 		| perl grace-plot.pl --no-dups
-		| gracebat -pipe -printfile foo.ps
+		| gracebat -pipe -hdevice PDF -printfile foo.pdf
 
 (gracebat is a batch-processing program that comes with Grace.)  The
 --no-dups option selects only the "best" variant of each code (just
@@ -159,7 +159,7 @@ do:
 	sh standard-plots.sh foo.speed
 	sh standard-plots.sh foo.accuracy
 
-and the output will be a set of PostScript files (which, for the web,
+and the output will be a set of PDF files (which, for the web,
 we convert to .png via ImageMagick).
 
 ----------------------------------------------------------------------------
