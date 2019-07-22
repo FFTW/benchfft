@@ -163,7 +163,9 @@ void copy_c2r(struct problem *p, bench_complex *in)
 
 void setup(struct problem *p)
 {
-     int status = mkdescriptor(p);
+     int status;
+	 mkl_set_num_threads(1); /* all benchmarks measure only single-threaded performance */
+	 status = mkdescriptor(p);
 
      BENCH_ASSERT(status);
 }
