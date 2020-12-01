@@ -76,17 +76,9 @@
 # endif
 #endif
 
-#ifndef _
-/* This is for other GNU distributions with internationalized messages.  */
-# if defined HAVE_LIBINTL_H || defined _LIBC
-#  include <libintl.h>
-#  ifndef _
-#   define _(msgid)	gettext (msgid)
-#  endif
-# else
-#  define _(msgid)	(msgid)
-# endif
-#endif
+/* don't attempt to use gettext */
+#undef _
+#define _(msgid)	(msgid)
 
 /* This version of `getopt' appears to the caller like standard Unix `getopt'
    but it behaves differently for the user, since it allows the user
