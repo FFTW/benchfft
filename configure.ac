@@ -431,6 +431,7 @@ benchees/jmfft/Makefile
 benchees/kissfft/Makefile
 benchees/krukar/Makefile
 benchees/mfft/Makefile
+benchees/minfft/Makefile
 benchees/mixfft/Makefile
 benchees/monnier/Makefile
 benchees/morris/Makefile
