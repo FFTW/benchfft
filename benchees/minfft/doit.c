@@ -50,7 +50,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
 
 int can_do(struct problem *p)
 {
-	int i;
+	unsigned int i;
 	for (i=0; i<p->rank; ++i)
 		if (!power_of_two(p->n[i]))
 			return 0;
@@ -61,9 +61,9 @@ void setup(struct problem *p)
 {
 	BENCH_ASSERT(can_do(p));
 	if (p->kind==PROBLEM_COMPLEX)
-		a=minfft_mkaux_dft(p->rank,p->n);
+		a=minfft_mkaux_dft(p->rank,(int*)p->n);
 	else
-		a=minfft_mkaux_realdft(p->rank,p->n);
+		a=minfft_mkaux_realdft(p->rank,(int*)p->n);
 	BENCH_ASSERT(a!=NULL);
 }
 
