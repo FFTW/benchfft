@@ -15,6 +15,10 @@ nodist_doit_SOURCES=$(FFT)
 doit_LDADD=$(LIBBENCH) @FLIBS@
 BUILT_SOURCES = $(FFT)
 
-doit.c $(FFT): extract
+doit.c $(FFT): extract-and-patch
+
+extract-and-patch: $(TARFILE)
+	(@GZIP@ -dc ${srcdir}/$(TARFILE) | @TAR@ xf -) && echo timestamp >$@
+	$(PATCH) -p0 < $(srcdir)/fix-modern-compiler.diff
 
 include ../Makefile.common

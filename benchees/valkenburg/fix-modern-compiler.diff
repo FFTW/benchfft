@@ -1,0 +1,88 @@
+Only in fft2/complex: .deps
+Only in fft2/complex: .dirstamp
+diff -ur fft2.orig/complex/fourier.c fft2/complex/fourier.c
+--- fft2.orig/complex/fourier.c	1989-03-22 08:59:25.000000000 +0930
++++ fft2/complex/fourier.c	2021-07-25 18:16:16.000000000 +0930
+@@ -5,6 +5,10 @@
+ #include	<complex.h>
+ #include	"w.h"
+ 
++static void split (COMPLEX *in, unsigned r, unsigned m, COMPLEX *out);
++static void join (COMPLEX *in, unsigned m, unsigned n, COMPLEX *out);
++static unsigned radix (unsigned n);
++
+ /*
+  * Recursive (reverse) complex fast Fourier transform on the n
+  * complex samples of array in, with the Cooley-Tukey method.
+@@ -13,13 +17,12 @@
+  * of factors in the prime-decomposition of n (also the maximum
+  * depth of the recursion), and ri is the i-th primefactor.
+  */
+-Fourier (in, n, out)
++void Fourier (in, n, out)
+ COMPLEX *in;
+ unsigned n;
+ COMPLEX *out;
+ {
+ 	unsigned r;
+-	unsigned radix ();
+ 
+ 	if ((r = radix (n)) < n)
+ 		split (in, r, n / r, out);
+@@ -50,9 +53,9 @@
+  * Then call for each part of out Fourier, so the r recursively
+  * transformed parts will go back to in.
+  */
+-static split (in, r, m, out)
++static void split (in, r, m, out)
+ COMPLEX *in;
+-register unsigned r, m;
++unsigned r, m;
+ COMPLEX *out;
+ {
+ 	register unsigned k, s, i, j;
+@@ -73,7 +76,7 @@
+  * part of in (indices k * m ... (k + 1) * m - 1), and r is the radix.
+  * For k = 0, a complex multiplication with W (0) is avoided.
+  */
+-static join (in, m, n, out)
++static void join (in, m, n, out)
+ COMPLEX *in;
+ register unsigned m, n;
+ COMPLEX *out;
+Only in fft2/complex: fourier.o
+diff -ur fft2.orig/complex/ft.c fft2/complex/ft.c
+--- fft2.orig/complex/ft.c	1989-03-22 08:59:26.000000000 +0930
++++ fft2/complex/ft.c	2021-07-25 17:50:20.000000000 +0930
+@@ -5,6 +5,9 @@
+ #include	<complex.h>
+ #include	"w.h"
+ 
++int W_init(unsigned int n);
++void Fourier (COMPLEX *in, unsigned n, COMPLEX *out);
++
+ /*
+  * Forward Fast Fourier Transform on the n samples of complex array in.
+  * The result is placed in out.  The number of samples, n, is arbitrary.
+Only in fft2/complex: ft.o
+diff -ur fft2.orig/complex/w.c fft2/complex/w.c
+--- fft2.orig/complex/w.c	1989-03-22 08:59:28.000000000 +0930
++++ fft2/complex/w.c	2021-07-25 17:50:51.000000000 +0930
+@@ -1,7 +1,7 @@
+ /*
+  * "w.c", Pjotr '87.
+  */
+-
++#include	<stdlib.h>
+ #include	<complex.h>
+ #include	"w.h"
+ #include	<math.h>
+@@ -19,7 +19,6 @@
+ int W_init (n)
+ unsigned n;
+ {
+-	char *malloc ();
+ #	define pi	3.1415926535897932384626434
+ 	unsigned k;
+ 
+Only in fft2/complex: w.o
