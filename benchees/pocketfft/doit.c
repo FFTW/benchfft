@@ -7,10 +7,10 @@
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "pocketfft")
 BENCH_DOC("author", "Martin Reinecke")
-BENCH_DOC("year", "2004")
+BENCH_DOC("year", "2019")
 BENCH_DOC("version", "1.0")
 BENCH_DOC("language", "C")
-BENCH_DOC("url", "https://gitlab.mpcdf.mpg.de/mtr/pocketfft/-/blob/master/pocketfft.c")
+BENCH_DOC("url", "https://gitlab.mpcdf.mpg.de/mtr/pocketfft")
 BENCH_DOC("url-was-valid-on", "Fri Jul 23 23:06:24 ACST 2020")
 BENCH_DOC("copyright", "3 clause BSDL")
 END_BENCH_DOC
