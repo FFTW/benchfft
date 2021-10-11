@@ -443,6 +443,7 @@ benchees/newsplit/Makefile
 benchees/nr/Makefile
 benchees/numutils/Makefile
 benchees/ooura/Makefile
+benchees/pocketfft/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
 benchees/rmayer/Makefile
