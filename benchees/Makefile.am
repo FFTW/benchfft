@@ -6,9 +6,6 @@ mpfun77 mpfun90 nag napack newsplit nr numutils ooura pocketfft pocketfft_cxx qf
 ransom rmayer scimark2c sciport sgimath singleton sorensen spiral-fft	\
 statlib sunperf temperton teneyck valkenburg vbigdsp vdsp
 
-SUBDIRS = duccfft pocketfft_cxx pocketfft dfftpack
- #fftw3
-
 EXTRA_DIST = Makefile.common
 
 distclean-local:
