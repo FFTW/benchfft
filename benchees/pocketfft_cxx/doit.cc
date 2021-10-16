@@ -19,7 +19,7 @@ BENCH_DOC("url-was-valid-on", "Fri Jul 23 23:06:24 ACST 2020")
 BENCH_DOC("copyright", "3 clause BSDL")
 END_BENCH_DOC
 
-int can_do(struct problem *p)
+int can_do(struct problem * /*p*/)
 {
      return true;
 }
@@ -34,18 +34,13 @@ void copy_c2h(struct problem *p, bench_complex *in)
      copy_c2h_1d_fftpack(p, in, -1.0);
 }
 
+static shape_t shape, axes;
+static stride_t strides;
 
 void setup(struct problem *p)
 {
      BENCH_ASSERT(can_do(p));
-     // populate the transform cache
-     doit(1,p);
-}
-
-void doit(int iter, struct problem *p)
-{
-     static shape_t shape, axes;
-     static stride_t strides;
+     
      shape.resize(p->rank);
      strides.resize(p->rank);
      axes.resize(p->rank);
@@ -59,7 +54,10 @@ void doit(int iter, struct problem *p)
        strides[i] = str;
        str *= shape[i];
      }
+}
 
+void doit(int iter, struct problem *p)
+{
      if (p->kind == PROBLEM_COMPLEX) {
         auto in = reinterpret_cast<complex<bench_real> *>(p->in);
         auto out = reinterpret_cast<complex<bench_real> *>(p->out);

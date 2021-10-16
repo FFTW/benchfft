@@ -36,21 +36,19 @@ void copy_c2h(struct problem *p, bench_complex *in)
      copy_c2h_1d_fftpack(p, in, -1.0);
 }
 
+static fmav_info::shape_t axes;
+static cfmav<complex<bench_real>> in_c;
+static vfmav<complex<bench_real>> out_c;
+static cfmav<bench_real> in_r;
+static vfmav<bench_real> out_r;
 
 void setup(struct problem *p)
 {
      BENCH_ASSERT(can_do(p));
-     // populate the transform cache
-     doit(1,p);
-}
 
-void doit(int iter, struct problem *p)
-{
-      static fmav_info::shape_t shape(p->rank);
-      static fmav_info::shape_t axes(p->rank);
-      shape.resize(p->rank);
-      axes.resize(p->rank);
-      for (int i=0; i<p->rank; ++i) {
+     fmav_info::shape_t shape(p->rank);
+     axes.resize(p->rank);
+     for (int i=0; i<p->rank; ++i) {
         shape[i] = p->n[i];
         axes[i] = i;
         }
@@ -58,18 +56,25 @@ void doit(int iter, struct problem *p)
      if (p->kind == PROBLEM_COMPLEX) {
         auto in = reinterpret_cast<complex<bench_real> *>(p->in);
         auto out = reinterpret_cast<complex<bench_real> *>(p->out);
-        cfmav<complex<bench_real>> min(in, shape);
-        vfmav<complex<bench_real>> mout(out, shape);
-        for (int i = 0; i < iter; ++i) {
-          c2c(min,mout,axes,p->sign==-1,bench_real(1));
-	       }
+        in_c.assign(cfmav<complex<bench_real>>(in, shape));
+        out_c.assign(vfmav<complex<bench_real>>(out, shape));
      } else {
         auto in = reinterpret_cast<bench_real *>(p->in);
         auto out = reinterpret_cast<bench_real *>(p->out);
-        cfmav<bench_real> min(in, shape);
-        vfmav<bench_real> mout(out, shape);
+        in_r.assign(cfmav<bench_real>(in, shape));
+        out_r.assign(vfmav<bench_real>(out, shape));
+     }
+}
+
+void doit(int iter, struct problem *p)
+{
+     if (p->kind == PROBLEM_COMPLEX) {
+        for (int i = 0; i < iter; ++i) {
+          c2c(in_c,out_c,axes,p->sign==-1,bench_real(1));
+	       }
+     } else {
 	       for (int i = 0; i < iter; ++i) {
-          r2r_fftpack(min,mout,axes,p->sign==-1,p->sign==-1,bench_real(1));
+          r2r_fftpack(in_r,out_r,axes,p->sign==-1,p->sign==-1,bench_real(1));
 	       }
 	    }
 }
