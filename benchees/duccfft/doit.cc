@@ -21,7 +21,7 @@ BENCH_DOC("url-was-valid-on", "Fri Jul 23 23:06:24 ACST 2020")
 BENCH_DOC("copyright", "GPLv2+")
 END_BENCH_DOC
 
-int can_do(struct problem *p)
+int can_do(struct problem * /*p*/)
 {
      return true;
 }
