@@ -9,6 +9,7 @@ BENCH_DOC("author", "Alexander Mukhin")
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "alexander.i.mukhin@gmail.com")
 BENCH_DOC("url", "https://github.com/aimukhin/minfft/")
+BENCH_DOC("url-was-valid-on", "Sat Jan  8 16:52:09 UTC 2022")
 BENCH_DOC("copyright", "MIT License")
 END_BENCH_DOC
 
