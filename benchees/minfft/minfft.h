@@ -1,9 +1,16 @@
 // A minimalistic FFT library
-// Copyright (c) 2020 Alexander Mukhin
-// MIT License
+// Copyright (c) 2016-2022 Alexander Mukhin
+// SPDX-License-Identifier: MIT
 
-#include <complex.h>
+#ifndef MINFFT_H
+#define MINFFT_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef complex
+// use C99 complex
 #if MINFFT_SINGLE
 typedef float minfft_real;
 typedef float complex minfft_cmpl;
@@ -13,6 +20,17 @@ typedef long double complex minfft_cmpl;
 #else
 typedef double minfft_real;
 typedef double complex minfft_cmpl;
+#endif
+#else
+// not using C99 complex
+#if MINFFT_SINGLE
+typedef float minfft_real;
+#elif MINFFT_EXTENDED
+typedef long double minfft_real;
+#else
+typedef double minfft_real;
+#endif
+typedef minfft_real minfft_cmpl[2];
 #endif
 
 typedef struct minfft_aux minfft_aux;
@@ -46,3 +64,9 @@ minfft_aux* minfft_mkaux_t4_3d (int, int, int);
 minfft_aux* minfft_mkaux_t4 (int, int*);
 
 void minfft_free_aux (minfft_aux*);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
+
+#endif // MINFFT_H

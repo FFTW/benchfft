@@ -3,8 +3,8 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "minfft")
-BENCH_DOC("version", "1.2.0")
-BENCH_DOC("year", "2020")
+BENCH_DOC("version", "1.2.2")
+BENCH_DOC("year", "2022")
 BENCH_DOC("author", "Alexander Mukhin")
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "alexander.i.mukhin@gmail.com")
