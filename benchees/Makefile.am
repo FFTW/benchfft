@@ -1,10 +1,10 @@
 SUBDIRS = acml arprec bloodworth burrus cross cwplib dfftpack dsp dxml	\
 emayer esrfft essl ffmpeg ffte fftj fftpack fftreal fftw2 fftw3 fxt	\
 glassman goedecker gpfa green-ffts-2.0 gsl harm hp-mlib imsl intel-mkl	\
-intel-ipps jmfft kissfft krukar mfft mixfft monnier morris mpfun77	\
-mpfun90 nag napack newsplit nr numutils ooura pocketfft qft ransom	\
-rmayer scimark2c sciport sgimath singleton sorensen spiral-fft statlib	\
-sunperf temperton teneyck valkenburg vbigdsp vdsp
+intel-ipps jmfft kissfft krukar mfft minfft mixfft monnier morris 	\
+mpfun77 mpfun90 nag napack newsplit nr numutils ooura pocketfft qft	\
+ransom rmayer scimark2c sciport sgimath singleton sorensen spiral-fft	\
+statlib sunperf temperton teneyck valkenburg vbigdsp vdsp
 
 EXTRA_DIST = Makefile.common
 

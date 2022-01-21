@@ -3,35 +3,14 @@
 
 BEGIN_BENCH_DOC
 BENCH_DOC("name", "minfft")
-BENCH_DOC("version", "1.2.0")
-BENCH_DOC("year", "2020")
+BENCH_DOC("version", "1.2.2")
+BENCH_DOC("year", "2022")
 BENCH_DOC("author", "Alexander Mukhin")
 BENCH_DOC("language", "C")
 BENCH_DOC("email", "alexander.i.mukhin@gmail.com")
 BENCH_DOC("url", "https://github.com/aimukhin/minfft/")
-BENCH_DOC("copyright",
-"MIT License\n"
-"\n"
-"Copyright (c) 2020 Alexander Mukhin\n"
-"\n"
-"Permission is hereby granted, free of charge, to any person obtaining a copy\n"
-"of this software and associated documentation files (the \"Software\"), to deal\n"
-"in the Software without restriction, including without limitation the rights\n"
-"to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
-"copies of the Software, and to permit persons to whom the Software is\n"
-"furnished to do so, subject to the following conditions:\n"
-"\n"
-"The above copyright notice and this permission notice shall be included in all\n"
-"copies or substantial portions of the Software.\n"
-"\n"
-"THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
-"IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
-"FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
-"AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
-"LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
-"OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
-"SOFTWARE.\n"
-)
+BENCH_DOC("url-was-valid-on", "Sat Jan  8 16:52:09 UTC 2022")
+BENCH_DOC("copyright", "MIT License")
 END_BENCH_DOC
 
 #include "minfft.h"
