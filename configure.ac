@@ -308,7 +308,8 @@ AC_MSG_RESULT(${ok})
 dnl check for optimization options
 dnl This macro sets ANSI mode for certain compilers, and must
 dnl thus come before the subsequenct checks
-AX_CC_MAXOPT
+dnl TEMPORARY: disabling this, since I didn't find a way of overriding this from the command line.
+dnl AX_CC_MAXOPT
 
 AX_GCC_ARCHFLAG(no, [GCC_ARCH=`echo $ax_cv_gcc_archflag | cut -d= -f2`])
 AC_SUBST(GCC_ARCH)
@@ -405,6 +406,7 @@ benchees/cross/Makefile
 benchees/cwplib/Makefile
 benchees/dfftpack/Makefile
 benchees/dsp/Makefile
+benchees/duccfft/Makefile
 benchees/dxml/Makefile
 benchees/emayer/Makefile
 benchees/esrfft/Makefile
@@ -444,6 +446,7 @@ benchees/nr/Makefile
 benchees/numutils/Makefile
 benchees/ooura/Makefile
 benchees/pocketfft/Makefile
+benchees/pocketfft_cxx/Makefile
 benchees/qft/Makefile
 benchees/ransom/Makefile
 benchees/rmayer/Makefile
