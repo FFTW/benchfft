@@ -13,6 +13,7 @@ EXTRA_DIST = readme ffts.f fftd.f ffts.patch fftd.patch
 LOCAL_COPIES = ffts-patched.f fftd-patched.f
 
 AM_CPPFLAGS = $(INCLBENCH)
+AM_FFLAGS = @LEGACY_FFLAGS@
 
 doit_SOURCES=doit.c
 doit_LDADD=$(LIBFFT) $(LIBBENCH) @FLIBS@
