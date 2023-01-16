@@ -65,8 +65,14 @@ if test -n "$F77"; then
 	else
 		AC_F77_WRAPPERS
 		AX_F77_CMAIN_FFLAGS
+
+		dnl for gfortran to compile old code
+		AC_LANG_PUSH(Fortran 77)
+		AX_CHECK_COMPILER_FLAGS(-std=legacy, LEGACY_FFLAGS="-std=legacy")
+		AC_LANG_POP(Fortran 77)
 	fi
 fi
+AC_SUBST(LEGACY_FFLAGS)
 
 AC_PROG_FC([], [Fortran 90])
 if test -n "$FC"; then
