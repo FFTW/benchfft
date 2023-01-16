@@ -1,3 +1,5 @@
+#! /bin/sh
+
 # script to initialize automake/autoconf etc
 echo "PLEASE IGNORE WARNINGS AND ERRORS"
 
