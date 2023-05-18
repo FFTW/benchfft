@@ -185,7 +185,7 @@ extern int paranoid;
 /**************************************************************
  * assert
  **************************************************************/
-extern void bench_assertion_failed(const char *s, int line, char *file);
+extern void bench_assertion_failed(const char *s, int line, const char *file);
 #define BENCH_ASSERT(ex)						 \
       (void)((ex) || (bench_assertion_failed(#ex, __LINE__, __FILE__), 0))
 
