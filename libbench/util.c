@@ -33,7 +33,7 @@
 #include <malloc.h>
 #endif
 
-void bench_assertion_failed(const char *s, int line, char *file)
+void bench_assertion_failed(const char *s, int line, const char *file)
 {
      fflush(stdout);
      fprintf(stderr, "bench: %s:%d: assertion failed: %s\n", file, line, s);
