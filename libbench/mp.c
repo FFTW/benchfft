@@ -1,10 +1,31 @@
+/*
+ * Copyright (c) 2002 Matteo Frigo
+ * Copyright (c) 2002 Steven G. Johnson
+ * Copyright (c) 2023 Paul Caprioli
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ */
+
 #include "config.h"
 #include "bench.h"
 #include <math.h>
 
 #define DG unsigned short
 #define ACC unsigned long
-#define REAL bench_real
+#define REAL double
 #define BITS_IN_REAL 53 /* mantissa */
 
 #define SHFT 16
@@ -21,8 +42,8 @@
 typedef struct {
      short sign;
      short expt;
-     DG d[LEN]; 
-} N[1];
+     DG d[LEN];
+} N[1], COEFF[16];
 
 #define EXA a->expt
 #define EXB b->expt
@@ -281,62 +302,124 @@ static void inv(const N a, N x)
      }
 }
 
+static const COEFF sinCoeff = {
+     {+1, 1,
+       {0, 0, 0, 0, 0, 0, 0, 0, 0, 1}},
+     {-1, 0,
+       {43670, 43690, 43690, 43690, 43690, 43690, 43690, 43690, 43690, 10922}},
+     {+1, 0,
+       {5348, 8738, 8738, 8738, 8738, 8738, 8738, 8738, 8738, 546}},
+     {-1, 0,
+       {53291, 3325, 208, 53261, 3328, 208, 53261, 3328, 208, 13}},
+     {+1, -1,
+       {47000, 63602, 58211, 40962, 37148, 21891, 26399, 44430, 51018, 11835}},
+     {-1, -1,
+       {18840, 1735, 27570, 57567, 8082, 16285, 5006, 40917, 39189, 107}},
+     {+1, -2,
+       {31480, 49626, 7441, 37348, 36497, 7193, 19429, 17256, 12445, 45202}},
+     {-1, -2,
+       {23808, 49206, 62861, 20482, 11094, 36547, 49400, 14749, 16287, 215}},
+     {+1, -3,
+       {32768, 43479, 33807, 9268, 45296, 12316, 21337, 34154, 15233, 51862}},
+     {-1, -3,
+       {38272, 22718, 30931, 9108, 35035, 9759, 2745, 13322, 42202, 151}},
+     {+1, -4,
+       {32768, 48630, 341, 31983, 25832, 49254, 50587, 29653, 15323, 23662}},
+     {-1, -4,
+       {52320, 13135, 19628, 41005, 37680, 3955, 28399, 9772, 50024, 46}},
+     {+1, -5,
+       {16384, 10745, 42516, 30975, 23226, 4984, 5160, 5212, 52445, 5107}},
+     {-1, -5,
+       {34508, 16922, 59733, 2551, 12116, 51487, 30682, 28278, 18092, 7}},
+     {+1, -6,
+       {46592, 62767, 39438, 40391, 47793, 29729, 64929, 38710, 15746, 587}},
+     {-1, -7,
+       {0, 58473, 50085, 27955, 51332, 49178, 54566, 54370, 45626, 41189}}
+};
 
-/* 2 pi */
-static const N n2pi = {{
-     1, 1,
-     {18450, 59017, 1760, 5212, 9779, 4518, 2886, 54545, 18558, 6}
-}};
-
-/* 1 / 31! */
-static const N i31fac = {{ 
-     1, -7, 
-     {28087, 45433, 51357, 24545, 14291, 3954, 57879, 8109, 38716, 41382}
-}};
-
-
-/* 1 / 32! */
-static const N i32fac = {{
-     1, -7,
-     {52078, 60811, 3652, 39679, 37310, 47227, 28432, 57597, 13497, 1293}
-}};
-
-static void msin(const N a, N b)
-{
-     N a2, g, k;
+static void msin(const N a, N b) {
+     N a2, r, s;
      int i;
 
-     cpy(i31fac, g);
-     cpy(g, b);
      mul(a, a, a2);
 
-     /* Taylor */
-     for (i = 31; i > 1; i -= 2) {
-	  fromshort(i * (i - 1), k);
-	  mul(k, g, g);
-	  mul(a2, b, k);
-	  sub(g, k, b);
+     cpy(&sinCoeff[15], r);
+     for (i = 14; i > 1; --i) {
+          mul(a2, r, r);
+          add(&sinCoeff[i], r, r);
      }
+     mul(a2, r, r);
+     mul(a2, r, r);
+     mul(&sinCoeff[1], a2, a2);
+     add(&sinCoeff[0], a2, s);
+     sub(s, &sinCoeff[0], b);
+     sub(a2, b, b);
+     add(b, r, b);
+     add(b, s, b);
      mul(a, b, b);
 }
 
-static void mcos(const N a, N b)
-{
-     N a2, g, k;
+static const COEFF cosCoeff = {
+     {+1, 1,
+       {0, 0, 0, 0, 0, 0, 0, 0, 0, 1}},
+     {-1, 0,
+       {0, 0, 0, 0, 0, 0, 0, 0, 0, 32768}},
+     {+1, 0,
+       {3160, 43690, 43690, 43690, 43690, 43690, 43690, 43690, 43690, 2730}},
+     {-1, 0,
+       {27406, 23246, 1456, 45147, 23301, 1456, 45147, 23301, 1456, 91}},
+     {+1, 0,
+       {20393, 63968, 40985, 6657, 416, 40986, 6657, 416, 40986, 1}},
+     {-1, -1,
+       {55296, 12180, 19178, 43417, 23375, 48064, 55068, 56871, 37869, 1183}},
+     {+1, -1,
+       {41992, 41980, 39024, 15712, 27980, 55970, 27723, 30716, 63340, 8}},
+     {-1, -2,
+       {63488, 19170, 64630, 58133, 35313, 23919, 20112, 24638, 47700, 3228}},
+     {+1, -2,
+       {57504, 36964, 35902, 16690, 12625, 35052, 56335, 62361, 29689, 13}},
+     {-1, -3,
+       {40960, 36790, 33204, 39943, 51866, 53802, 52157, 56510, 15409, 2881}},
+     {+1, -3,
+       {18876, 47799, 48739, 29224, 14511, 12300, 32905, 59648, 38154, 7}},
+     {-1, -4,
+       {9216, 35552, 65153, 2117, 3423, 4047, 60615, 28157, 36443, 1075}},
+     {+1, -4,
+       {10087, 7554, 40990, 25715, 64520, 58334, 61223, 406, 62159, 1}},
+     {-1, -5,
+       {54400, 58044, 40758, 7255, 18031, 22864, 33827, 39607, 29743, 196}},
+     {+1, -6,
+       {49152, 7848, 60251, 50609, 44223, 6151, 23760, 24871, 61915, 17029}},
+     {-1, -6,
+       {16224, 5731, 28430, 64684, 54368, 57035, 15183, 64415, 31352, 19}}
+};
+
+static void mcos(const N a, N b) {
+     N a2, r, s;
      int i;
 
-     cpy(i32fac, g);
-     cpy(g, b);
      mul(a, a, a2);
 
-     /* Taylor */
-     for (i = 32; i > 0; i -= 2) {
-	  fromshort(i * (i - 1), k);
-	  mul(k, g, g);
-	  mul(a2, b, k);
-	  sub(g, k, b);
+     cpy(&cosCoeff[15], r);
+     for (i = 14; i > 1; --i) {
+          mul(a2, r, r);
+          add(&cosCoeff[i], r, r);
      }
+     mul(a2, r, r);
+     mul(a2, r, r);
+     mul(&cosCoeff[1], a2, a2);
+     add(&cosCoeff[0], a2, s);
+     sub(s, &cosCoeff[0], b);
+     sub(a2, b, b);
+     add(b, r, b);
+     add(b, s, b);
 }
+
+/* Pi/4.  In radix 64K, avoids using 16 bits to store the leading 6 in 2*Pi. */
+static const N quarterPi = {
+    {+1, 0,
+      {19977, 10498, 7377, 32988, 25227, 50374, 49716, 8552, 55970, 51471}}
+};
 
 static void by2pi(REAL m, REAL n, N a)
 {
@@ -344,9 +427,9 @@ static void by2pi(REAL m, REAL n, N a)
 
      fromreal(n, b);
      inv(b, a);
-     fromreal(m, b);
+     fromreal(8*m, b);  /* Note that 8*m is exact in binary floating point. */
      mul(a, b, a);
-     mul(n2pi, a, a);
+     mul(quarterPi, a, a);
 }
 
 static void sin2pi(REAL m, REAL n, N a);
@@ -573,8 +656,8 @@ static void fromrealv(int n, bench_complex *a, N *b)
      int i;
 
      for (i = 0; i < n; ++i) {
-	  fromreal(c_re(a[i]), b[2 * i]);
-	  fromreal(c_im(a[i]), b[2 * i + 1]);
+         fromreal((REAL)c_re(a[i]), b[2 * i]);
+         fromreal((REAL)c_im(a[i]), b[2 * i + 1]);
      }
 }
 

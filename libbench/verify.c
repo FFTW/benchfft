@@ -481,7 +481,7 @@ static void do_accuracy(struct problem *p, int rounds)
 
      fftaccuracy_done();
 
-     ovtpvt("%6.2e %6.2e %6.2e %6.2e %6.2e %6.2e\n", 
+     ovtpvt("%.3e %.3e %.3e %.3e %.3e %.3e\n",
 	    t[0], t[1], t[2], t[3], t[4], t[5]);
 
 }
