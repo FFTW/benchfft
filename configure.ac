@@ -114,13 +114,11 @@ AC_FUNC_VPRINTF
 AC_CHECK_LIB(m, sin)
 AC_CHECK_FUNCS(BSDgettimeofday)
 AC_CHECK_FUNCS(gettimeofday)
-AC_CHECK_FUNCS(drand48)
 AC_CHECK_FUNCS(hypot)
 AC_CHECK_FUNCS(sqrt)
 AC_CHECK_FUNCS(strtod)
 AC_CHECK_FUNCS(memset)
 AC_CHECK_FUNCS(memalign)
-AC_CHECK_DECLS(drand48)
 AC_CHECK_DECLS(hypot,[],[],[#include <math.h>])
 
 # Check for installed libraries
