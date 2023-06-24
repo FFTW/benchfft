@@ -11,10 +11,10 @@ double mflops(const struct problem *p, double t)
      switch (p->kind) {
 	 case PROBLEM_COMPLEX:
 	      return (5.0 * p->vsize * p->size * log((double) p->size) / 
-		      (log(2.0) * t * 1.0e6));
+		      (log(2.0) * t * 1.0e6)) * p->batch;
 	 case PROBLEM_REAL:
 	      return (2.5 * p->vsize * p->size * log((double) p->size) / 
-		      (log(2.0) * t * 1.0e6));
+		      (log(2.0) * t * 1.0e6)) * p->batch;
      }
      BENCH_ASSERT(0 /* can't happen */);
      return 0.0;

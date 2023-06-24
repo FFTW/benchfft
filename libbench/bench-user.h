@@ -71,6 +71,7 @@ struct problem {
      unsigned int vn[MAX_RANK];  
      unsigned int vsize;  /* total vector size of input = PROD vn[i] */
      unsigned int phys_size;  /* total size of allocated input */
+     unsigned int batch;  /* batch sizes */
      int sign;
      int in_place;
      int split;

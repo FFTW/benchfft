@@ -206,6 +206,13 @@ static double acmp(bench_complex *A, bench_complex *B, unsigned int n,
 
 static void do_fft(struct problem *p, bench_complex *in, bench_complex *out)
 {
+     /* Note that do_verify() only initializes (and verifies) the first
+      * transform in a batch.  Prevent round-off errors from accumulating
+      * (and overflowing) in the problem I/O arrays for the others.
+      */
+     if (p->batch > 1)
+         problem_zero(p);
+
      problem_ccopy_from(p, in);
      doit(1, p);
      problem_ccopy_to(p, out);
@@ -395,6 +402,9 @@ static void do_verify(struct problem *p, unsigned int rounds, double tol)
      unsigned int n = p->size;
      double el, ei, es = 0.0;
 
+     /* only works for these cases */
+     BENCH_ASSERT(p->vrank == 0);
+
      if (rounds == 0)
 	  rounds = 20;  /* default value */
 
@@ -444,6 +454,7 @@ static void do_accuracy(struct problem *p, int rounds)
      double t[6], err[6];  
 
      /* only works for these cases */
+     BENCH_ASSERT(p->batch == 1);
      BENCH_ASSERT(p->rank == 1);
      BENCH_ASSERT(p->vrank == 0);
 
