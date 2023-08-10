@@ -80,6 +80,7 @@ struct problem *problem_parse(const char *s)
      p->userinfo = 0;
      p->rank = 0;
      p->vrank = 0;
+     p->batch = 1;
      p->size = 1;      /* the product of 0 things is 1 */
      p->vsize = 1;      /* the product of 0 things is 1 */
      p->pstring = (char *) bench_malloc(sizeof(char) * (strlen(s) + 1));
@@ -132,6 +133,13 @@ struct problem *problem_parse(const char *s)
 	       ++s;
 	       goto L4;
 	  }
+     }
+
+     /* parse batching (how many transforms) */
+     if (*s == 'b' || *s == 'B') {
+          ++s;
+          s = parseint(s, &n);
+          p->batch = n;
      }
 
      return p;

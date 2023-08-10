@@ -1,6 +1,7 @@
 /*
  * Copyright (c) 2000 Matteo Frigo
  * Copyright (c) 2000 Steven G. Johnson
+ * Copyright (c) 2023 Paul Caprioli
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +28,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <math.h>
 
 #if HAVE_MALLOC_H
@@ -45,29 +47,63 @@ int bench_square(int x)
      return x * x;
 }
 
-#ifdef HAVE_DRAND48
-#  if !defined(HAVE_DECL_DRAND48) || !HAVE_DECL_DRAND48
-extern double drand48(void);
-#  endif
-double bench_drand(void)
-{
-     return drand48() - 0.5;
+/* Adapted from the public domain code https://prng.di.unimi.it/splitmix64.c
+   written in 2015 by Sebastiano Vigna. */
+static uint64_t splitmix64(uint64_t *x) {
+    uint64_t z = (*x += UINT64_C(0x9e3779b97f4a7c15));
+    z = (z ^ (z >> 30)) * UINT64_C(0xbf58476d1ce4e5b9);
+    z = (z ^ (z >> 27)) * UINT64_C(0x94d049bb133111eb);
+    return z ^ (z >> 31);
 }
-void bench_srand(int seed)
-{
-     srand48(seed);
+
+/* Internal state for the random number generator */
+static uint64_t state[4];
+
+/* Initializes the internal state.  The seed can be any value. */
+void bench_srand(int seed) {
+    uint64_t x = (uint64_t)seed;
+    state[0] = splitmix64(&x);
+    state[1] = splitmix64(&x);
+    state[2] = splitmix64(&x);
+    state[3] = splitmix64(&x);
 }
-#else
-double bench_drand(void)
-{
-     double d = rand();
-     return (d / (double) RAND_MAX) - 0.5;
+
+static inline uint64_t rotl(const uint64_t x, int k) {
+    return (x << k) | (x >> (64 - k));
 }
-void bench_srand(int seed)
-{
-     srand(seed);
+
+/* Generate random floating point values in the range (-0.5, 0.5). */
+double bench_drand(void) {
+    /* The next 8 lines of code were adapted from the public domain code
+       https://prng.di.unimi.it/xoshiro256plus.c
+       written in 2018 by David Blackman and Sebastiano Vigna. */
+    const uint64_t randombits = state[0] + state[3];
+    const uint64_t t = state[1] << 17;
+    state[2] ^= state[0];
+    state[3] ^= state[1];
+    state[1] ^= state[2];
+    state[0] ^= state[3];
+    state[2] ^= t;
+    state[3] = rotl(state[3], 45);
+
+    const uint64_t negate = randombits & UINT64_C(0x8000000000000000);
+    uint64_t significand = randombits ^ negate;
+    double d;
+    if (sizeof(bench_real) == 2) {
+        /* IEEE 754 binary16, 11 significand bits */
+        significand >>= 52;
+        d = (double)significand * 0x1.0p-12;
+    } else if (sizeof(bench_real) == 4) {
+        /* IEEE 754 binary32, 24 significand bits */
+        significand >>= 39;
+        d = (double)significand * 0x1.0p-25;
+    } else {
+        /* IEEE 754 binary64, 53 significand bits */
+        significand >>= 10;
+        d = (double)significand * 0x1.0p-54;
+    }
+    return (negate) ? -d : d;
 }
-#endif
 
 /**********************************************************
  *   DEBUGGING CODE

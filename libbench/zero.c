@@ -28,10 +28,12 @@ void problem_zero(struct problem *p)
 {
      if (p->kind == PROBLEM_COMPLEX) {
 	  const bench_complex czero = {0, 0};
-	  caset(p->out, p->phys_size, czero);
-	  caset(p->in, p->phys_size, czero);
+	  caset(p->out, p->phys_size * p->batch, czero);
+          if (p->in != p->out)
+              caset(p->in, p->phys_size * p->batch, czero);
      } else {
-	  aset(p->out, p->phys_size, 0.0);
-	  aset(p->in, p->phys_size, 0.0);
+	  aset(p->out, p->phys_size * p->batch, 0.0);
+          if (p->in != p->out)
+              aset(p->in, p->phys_size * p->batch, 0.0);
      }
 }

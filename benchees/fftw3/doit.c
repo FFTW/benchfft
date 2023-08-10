@@ -28,7 +28,7 @@ BENCH_DOC("author", "Matteo Frigo")
 BENCH_DOC("author", "Steven G. Johnson")
 BENCH_DOC("email", "fftw@fftw.org")
 BENCH_DOC("url", "http://www.fftw.org")
-BENCH_DOC("url-was-valid-on", "Fri Mar 28 18:46:22 EST 2003")
+BENCH_DOC("url-was-valid-on", "Fri Mar 28 18:46:22 EST 2023")
 BENCH_DOC("language", "C")
 BENCH_DOC("language", "Objective Caml")
 BENCH_DOC("copyright",
@@ -66,9 +66,11 @@ void useropt(const char *arg)
 
 int can_do(struct problem *p)
 {
+     const int NO = 0;
      const int YES = 1;
-     UNUSED(p);
-     
+
+     if (p->vrank) return NO;  /* FFT of vectors is not implemented below. */
+
      return YES;      /* the way God intended */
 }
 
@@ -85,7 +87,7 @@ void copy_c2h(struct problem *p, bench_complex *in)
 void copy_r2c(struct problem *p, bench_complex *out)
 {
      if (problem_in_place(p))
-	  copy_r2c_unpacked(p, out);	  
+	  copy_r2c_unpacked(p, out);
      else
 	  copy_r2c_packed(p, out);
 }
@@ -101,24 +103,41 @@ void copy_c2r(struct problem *p, bench_complex *in)
 void setup(struct problem *p)
 {
      BENCH_ASSERT(can_do(p));
- 
+
      if (p->kind == PROBLEM_COMPLEX) {
-	  the_plan = FFTW(plan_dft)(
-	       p->rank, p->n,
-	       p->in, p->out,
-	       p->sign, the_flags);
+         the_plan = FFTW(plan_many_dft)(
+                 p->rank, p->n, p->batch,
+                 p->in, NULL, 1, p->size,
+                 p->out, NULL, 1, p->size,
+                 p->sign, the_flags);
      } else {
-	  if (p->sign == -1) {
-	       the_plan = FFTW(plan_dft_r2c)(
-		    p->rank, p->n,
-		    p->in, p->out,
-		    the_flags);
-	  } else {
-	       the_plan = FFTW(plan_dft_c2r)(
-		    p->rank, p->n,
-		    p->in, p->out,
-		    the_flags);
-	  }
+         int cdist = 1;
+         int rdist = 1;
+         if (p->rank > 0) {
+             cdist = p->n[p->rank - 1] / 2 + 1;
+             if (problem_in_place(p)) {
+                 rdist = 2 * cdist;
+             } else {
+                 rdist = p->n[p->rank - 1];
+             }
+             for (int i = p->rank - 2; i >= 0; --i) {
+                 cdist *= p->n[i];
+                 rdist *= p->n[i];
+             }
+         }
+         if (p->sign == -1) {
+             the_plan = FFTW(plan_many_dft_r2c)(
+                     p->rank, p->n, p->batch,
+                     p->in, NULL, 1, rdist,
+                     p->out, NULL, 1, cdist,
+                     the_flags);
+         } else {
+             the_plan = FFTW(plan_many_dft_c2r)(
+                     p->rank, p->n, p->batch,
+                     p->in, NULL, 1, cdist,
+                     p->out, NULL, 1, rdist,
+                     the_flags);
+         }
      }
      BENCH_ASSERT(the_plan);
 
