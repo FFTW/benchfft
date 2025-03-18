@@ -154,7 +154,7 @@ AM_CONDITIONAL(HAVE_SFFTW2, test -n "$have_sfftw2_all")
 AC_CHECK_LIB(fftw3, fftw_execute,
 		    [LFFTW3="-lfftw3"; have_fftw3=yes])
 AC_SUBST(LFFTW3)
-AC_CHECK_LIB(fftw3f, fftwf_execute, 
+AC_CHECK_LIB(fftw3f, fftwf_execute,
 		     [LFFTW3F="-lfftw3f"; have_fftw3f=yes])
 AC_SUBST(LFFTW3F)
 AC_CHECK_HEADERS(fftw3.h, [have_fftw3_h=yes])
@@ -172,11 +172,11 @@ AC_CHECK_HEADERS(dxmldef.h cxmldef.h)
 # Check for HP MLIB (either 32-bit or 64-bit version)
 AC_CHECK_LIB(cl, ZEXP, [:], [have_mlib=no])
 if test "x$have_mlib" = x; then
-    AC_CHECK_LIB(veclib, src3ft, 
+    AC_CHECK_LIB(veclib, src3ft,
        [AC_CHECK_HEADER(veclib.h, [have_mlib=yes; MLIB_LIB="-lveclib -lcl"])])
 fi
 if test "x$have_mlib" = x; then
-    AC_CHECK_LIB(veclib8, src3ft, 
+    AC_CHECK_LIB(veclib8, src3ft,
        [AC_CHECK_HEADER(veclib8.h, [have_mlib=yes; MLIB_LIB="-lveclib8 -lcl"
 	  AC_DEFINE(HAVE_VECLIB8, 1, [yes if linking -lveclib8])])])
 fi
@@ -284,6 +284,13 @@ AC_CHECK_LIB(gsl, gsl_fft_complex_forward, [have_gsl=yes])
 AC_CHECK_HEADERS([gsl/gsl_fft.h gsl/gsl_fft_complex.h gsl/gsl_fft_real.h])
 AC_CHECK_HEADERS([gsl/gsl_fft_halfcomplex.h gsl/gsl_version.h])
 AM_CONDITIONAL(HAVE_GSL, test -n "$have_gsl")
+LIBS=$SAVE_LIBS
+
+dnl Check for libtmpl
+SAVE_LIBS=$LIBS
+AC_CHECK_LIB(tmpl, tmpl_CDouble_FFT, [have_libtmpl=yes])
+AC_CHECK_HEADERS([libtmpl/include/tmpl_fft.h])
+AM_CONDITIONAL(HAVE_LIBTMPL, test -n "$have_libtmpl")
 LIBS=$SAVE_LIBS
 
 dnl Check for libavcodec from the ffmpeg project
@@ -438,6 +445,7 @@ benchees/intel-mkl/Makefile
 benchees/jmfft/Makefile
 benchees/kissfft/Makefile
 benchees/krukar/Makefile
+benchees/libtmpl/Makefile
 benchees/mfft/Makefile
 benchees/minfft/Makefile
 benchees/mixfft/Makefile
@@ -501,5 +509,6 @@ cat <<EOF
                FFTW 3.x single precision (free, www.fftw.org): ${have_fftw3f_all-no}
   GNU Scientific Library (GSL) (free, sources.redhat.com/gsl): ${have_gsl-no}
                         FFMPEG (free, ffmpeg.sourceforge.net): ${have_ffmpeg-no}
+                       libtmpl (free, github.com/ryanmaguire): ${have_libtmpl-no}
 *******************************************************************************
 EOF
