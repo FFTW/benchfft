@@ -114,13 +114,11 @@ AC_FUNC_VPRINTF
 AC_CHECK_LIB(m, sin)
 AC_CHECK_FUNCS(BSDgettimeofday)
 AC_CHECK_FUNCS(gettimeofday)
-AC_CHECK_FUNCS(drand48)
 AC_CHECK_FUNCS(hypot)
 AC_CHECK_FUNCS(sqrt)
 AC_CHECK_FUNCS(strtod)
 AC_CHECK_FUNCS(memset)
 AC_CHECK_FUNCS(memalign)
-AC_CHECK_DECLS(drand48)
 AC_CHECK_DECLS(hypot,[],[],[#include <math.h>])
 
 # Check for installed libraries
@@ -257,20 +255,14 @@ AC_CHECK_LIB(mkl_rt, zfft1d_, [have_mkl=yes])
 AM_CONDITIONAL(HAVE_MKL, test -n "$have_mkl")
 AC_CHECK_LIB(mkl_rt, DftiCreateDescriptor, [have_mkl_dfti=yes])
 AM_CONDITIONAL(HAVE_MKL_DFTI, test -n "$have_mkl_dfti")
-
 AC_CHECK_HEADERS(mkl_dfti.h)
 AC_CHECK_HEADERS(mkl_fft.h)
 AC_CHECK_HEADERS(mkl_blas.h)
 
-
-# Check for Intel's IPP library:
+# Check for Intel's IPP Signal processing library:
 AC_CHECK_HEADERS(ipps.h)
-AC_CHECK_LIB(ipps, ippsGetLibVersion, [have_ipps=yes])
+AC_CHECK_LIB(ipps, ippsGetLibVersion, [have_ipps=yes], [], -lippcore)
 AM_CONDITIONAL(HAVE_IPPS, test -n "$have_ipps")
-AC_CHECK_LIB(ippsem64t, ippsGetLibVersion, [have_ippsem64t=yes])
-AM_CONDITIONAL(HAVE_IPPSEM64T, test -n "$have_ippsem64t")
-AC_CHECK_LIB(ipps64, ippsGetLibVersion, [have_ipps64=yes])
-AM_CONDITIONAL(HAVE_IPPS64, test -n "$have_ipps64")
 
 # check for Numerical Recipes source in benchees/nr
 nr_dir=$srcdir/benchees/nr
@@ -301,7 +293,6 @@ if test "x$FFMPEG_CONFIG" = "xffmpeg-config"; then
   AC_SUBST(FFMPEG_LIBS)
 fi
 AM_CONDITIONAL(HAVE_FFMPEG, test -n "$have_ffmpeg")
-
 
 dnl Check for SCSL library (SGI/Cray Scientific Library):
 AC_CHECK_LIB(scs, zzfft)
@@ -482,8 +473,7 @@ benchees/vdsp/Makefile
 
 cat <<EOF
 *******************************************************************************
-		    Optional FFT libraries Found:
-
+ Optional FFT libraries Found:
                                        DXML/CXML (Alpha only): ${have_dxml-no}
                                     HP MLIB (PA-RISC/Itanium): ${have_mlib-no}
                          Sun Performance Library (SPARC only): ${have_sunperf-no}
@@ -497,10 +487,8 @@ cat <<EOF
        Numerical Recipes in Fortran (proprietary, www.nr.com): ${have_nrf-no}
 
       Intel MKL (gratis, www.intel.com/software/products/mkl): ${have_mkl-no}
-                                   Intel MKL, DFTI interface : ${have_mkl_dfti-no}
-                                          Intel IPPS (gratis): ${have_ipps-no}
-                                    Intel IPPS em64t (gratis): ${have_ippsem64t-no}
-                                   Intel IPPS 64 bit (gratis): ${have_ipps64-no}
+      Intel MKL, DFTI interface (gratis,       .            ): ${have_mkl_dfti-no}
+     Intel IPPS (gratis, www.intel.com/software/products/ipp): ${have_ipps-no}
                                             AMD ACML (gratis): ${have_acml-no}
 
                                 FFTW 2.x (free, www.fftw.org): ${have_fftw2_all-no}

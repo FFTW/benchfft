@@ -17,12 +17,12 @@ void problem_alloc(struct problem *p)
 	  size_t s = p->size * p->vsize;
 
 	  p->phys_size = s;
-	  p->in = bench_malloc(s * sizeof(bench_complex));
+	  p->in = bench_malloc(p->batch * s * sizeof(bench_complex));
 	  
 	  if (p->in_place)
 	       p->out = p->in;
 	  else
-	       p->out = bench_malloc(s * sizeof(bench_complex));
+	       p->out = bench_malloc(p->batch * s * sizeof(bench_complex));
      } else {
 	  size_t s = p->vsize;
 	  unsigned int i;
@@ -32,10 +32,10 @@ void problem_alloc(struct problem *p)
 	       s *= p->n[i] + 2;
 
 	  p->phys_size = s;
-	  p->in = bench_malloc(s * sizeof(bench_real));
+	  p->in = bench_malloc(p->batch * s * sizeof(bench_real));
 	  if (p->in_place)
 	       p->out = p->in;
 	  else
-	       p->out = bench_malloc(s * sizeof(bench_real));
+	       p->out = bench_malloc(p->batch * s * sizeof(bench_real));
      }
 }
